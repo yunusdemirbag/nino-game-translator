@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nino Kurulum Rehberi</title>
+<meta name="description" content="Nino Game Translator: Android TV, Samsung, LG ve iPhone için resimli adım adım kurulum rehberi.">
+<style>
+  :root {
+    --bg: #eef4ff; --bg2: #f7f9fd; --card: #ffffff; --ink: #0a1430; --soft: #55607a; --accent: #0a64d6;
+    --shadow: 0 10px 30px rgba(10, 20, 48, .10); --line: #dde5f3;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: linear-gradient(160deg, var(--bg), var(--bg2) 60%); color: var(--ink);
+         font-family: -apple-system, "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif; min-height: 100vh; }
+  main { max-width: 1120px; margin: 0 auto; padding: 32px 16px 48px; }
+  header { display: flex; align-items: center; gap: 14px; }
+  header img { width: 56px; height: 56px; border-radius: 14px; }
+  h1 { font-size: clamp(28px, 5vw, 44px); margin: 0; letter-spacing: -.8px; }
+  h1 b { color: var(--accent); }
+  .lead { font-size: 18px; color: var(--soft); line-height: 1.5; margin: 14px 0 26px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+  .card { background: var(--card); border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; cursor: zoom-in;
+          border: 0; padding: 0; text-align: left; color: inherit; font: inherit; transition: transform .15s ease, box-shadow .15s ease; }
+  .card:hover, .card:focus-visible { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(10, 20, 48, .16); outline: none; }
+  .card:focus-visible { box-shadow: 0 0 0 4px var(--accent); }
+  .card img { display: block; width: 100%; aspect-ratio: 16 / 13; object-fit: cover; object-position: top; background: #e6ecf7; }
+  .card .t { padding: 14px 18px 18px; }
+  .card b { display: block; font-size: 20px; }
+  .card span { display: block; font-size: 15px; color: var(--soft); margin-top: 4px; }
+  .bot { display: flex; align-items: center; gap: 16px; margin-top: 28px; background: var(--ink); color: #fff; border-radius: 22px; padding: 18px 22px; }
+  .bot img { width: 72px; height: 72px; flex: none; }
+  .bot b { font-size: 21px; display: block; }
+  .bot span { color: #c3cbe0; font-size: 16px; line-height: 1.45; display: block; margin-top: 4px; }
+  .links { margin-top: 22px; font-size: 16px; color: var(--soft); line-height: 1.7; }
+  .links a { color: var(--accent); font-weight: 600; }
+  footer { margin-top: 26px; font-size: 13px; color: #8a93ab; }
+
+  /* Pencere (modal) */
+  .modal { position: fixed; inset: 0; background: rgba(6, 10, 24, .88); display: none; align-items: center; justify-content: center;
+           z-index: 10; padding: 56px 16px 72px; }
+  .modal.open { display: flex; }
+  .modal img { max-width: min(1600px, 100%); max-height: 100%; border-radius: 14px; box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+               background: #fff; touch-action: pan-y pinch-zoom; }
+  .modal .cap { position: fixed; top: 14px; left: 0; right: 0; text-align: center; color: #fff; font-size: 18px; font-weight: 700; }
+  .btn { position: fixed; border: 0; background: rgba(255, 255, 255, .14); color: #fff; width: 48px; height: 48px; border-radius: 50%;
+         font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .btn:hover, .btn:focus-visible { background: rgba(255, 255, 255, .28); outline: none; }
+  .close { top: 10px; right: 12px; }
+  .prev { left: 12px; top: 50%; transform: translateY(-50%); }
+  .next { right: 12px; top: 50%; transform: translateY(-50%); }
+  .dots { position: fixed; bottom: 22px; left: 0; right: 0; display: flex; gap: 8px; justify-content: center; }
+  .dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, .35); }
+  .dots i.on { background: #fff; width: 22px; border-radius: 5px; }
+  @media (max-width: 640px) { .prev, .next { top: auto; bottom: 10px; transform: none; } .dots { bottom: 28px; } }
+</style>
+</head>
+<body>
+<main>
+  <header><img src="logo.png" alt=""><h1>Nino <b>Kurulum Rehberi</b></h1></header>
+  <p class="lead">Cihazınızı seçin; resim büyük açılır. Her adımda nereye basacağınız kırmızıyla işaretli.
+    TV'ye kurulum <b>bir kez</b> yapılır, sonra Nino TV uygulamasını kendisi günceller.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="bot"><img src="bot.png" alt=""><div><b>Takıldınız mı? Nino'ya Sorun.</b>
+    <span>Nino uygulamasında sağ alttaki robota dokunun, TV'nizin markasını ve ne gördüğünüzü yazın. Ekran ekran anlatır; ekran görüntüsü de gönderebilirsiniz.</span></div></div>
+
+  <p class="links">
+    İndir: <a href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip">Mac</a> ·
+    <a href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe">Windows</a> ·
+    <a href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk">Android telefon</a> ·
+    <a href="https://testflight.apple.com/join/1K3Q1KXp">iPhone / iPad (TestFlight)</a> ·
+    <a href="../tv.apk">Android TV (tv.apk)</a><br>
+    Yazılı rehber ve sık sorulanlar: <a href="https://github.com/yunusdemirbag/nino-game-translator#-adım-adım-rehberler">GitHub sayfası</a>
+  </p>
+  <footer>Nino Game Translator · ücretsiz ve açık kaynak (AGPL-3.0) · Based on CouchSubs by Sinan Yorulmaz (https://github.com/yorulmazsinan/couchsubs)</footer>
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mcap">
+  <div class="cap" id="mcap"></div>
+  <img id="mimg" alt="">
+  <button class="btn close" id="mclose" aria-label="Kapat">✕</button>
+  <button class="btn prev" id="mprev" aria-label="Önceki">‹</button>
+  <button class="btn next" id="mnext" aria-label="Sonraki">›</button>
+  <div class="dots" id="mdots"></div>
+</div>
+
+<script>
+  // Her rehber: adres çubuğundaki #ad ile doğrudan açılır (ör. .../rehber/#samsung).
+  var items = [
+    { id: 'fis', src: 'fis-nedir.jpg', title: '"Fişi takın" ne demek?', sub: 'Uygulamadaki Başlat düğmesi; gerçek kabloya dokunmayın.' },
+    { id: 'android-tv', src: 'android-tv.jpg', title: 'Android TV / Google TV', sub: 'TCL, iFFALCON, Sony, Philips, Xiaomi, Hisense, Vestel, Arçelik…' },
+    { id: 'samsung', src: 'samsung.jpg', title: 'Samsung TV', sub: 'Samsung TV (2016+) ve akıllı monitör' },
+    { id: 'lg', src: 'lg.jpg', title: 'LG TV', sub: 'webOS; ücretsiz LG geliştirici hesabıyla' },
+    { id: 'iphone', src: 'iphone.jpg', title: 'iPhone / iPad', sub: 'TestFlight ile kurulum' }
+  ];
+  var grid = document.getElementById('grid'), modal = document.getElementById('modal'),
+      mimg = document.getElementById('mimg'), mcap = document.getElementById('mcap'), dots = document.getElementById('mdots');
+  var current = -1, lastFocus = null;
+
+  items.forEach(function (it, i) {
+    var b = document.createElement('button');
+    b.className = 'card';
+    b.innerHTML = '<img loading="lazy" alt="" src="' + it.src + '"><div class="t"><b></b><span></span></div>';
+    b.querySelector('b').textContent = it.title;
+    b.querySelector('span').textContent = it.sub;
+    b.querySelector('img').alt = it.title + ' resimli rehber';
+    b.addEventListener('click', function () { open(i); });
+    grid.appendChild(b);
+    dots.appendChild(document.createElement('i'));
+  });
+
+  function open(i) {
+    if (current < 0) lastFocus = document.activeElement;
+    current = (i + items.length) % items.length;
+    var it = items[current];
+    mimg.src = it.src; mimg.alt = it.title + ' resimli rehber'; mcap.textContent = it.title;
+    [].forEach.call(dots.children, function (d, k) { d.className = k === current ? 'on' : ''; });
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (location.hash !== '#' + it.id) history.replaceState(null, '', '#' + it.id);
+    document.getElementById('mclose').focus();
+  }
+  function close() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    current = -1;
+    history.replaceState(null, '', location.pathname);
+    if (lastFocus) lastFocus.focus();
+  }
+  document.getElementById('mclose').onclick = close;
+  document.getElementById('mprev').onclick = function () { open(current - 1); };
+  document.getElementById('mnext').onclick = function () { open(current + 1); };
+  modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (current < 0) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') open(current - 1);
+    else if (e.key === 'ArrowRight') open(current + 1);
+  });
+  // Telefonda kaydırarak geçiş.
+  var sx = null;
+  modal.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+  modal.addEventListener('touchend', function (e) {
+    if (sx === null) return;
+    var dx = e.changedTouches[0].clientX - sx; sx = null;
+    if (Math.abs(dx) > 60) open(current + (dx < 0 ? 1 : -1));
+  });
+  // Adresle gelindiyse o rehberi hemen aç.
+  var start = items.findIndex(function (it) { return '#' + it.id === location.hash; });
+  if (start >= 0) open(start);
+</script>
+</body>
+</html>
