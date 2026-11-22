@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!-- Yalnız masaüstünün kurduğu APK: altyazı TV'nin kendi HDMI ekranının üstünde (CaptionOverlay). -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <application>
+        <service
+            android:name=".CaptionOverlay"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Translated game subtitles drawn over the TV's own HDMI picture" />
+        </service>
+    </application>
+</manifest>

@@ -1,0 +1,260 @@
+{
+  "signatures": [
+    {
+      "input": "The lighthouse keeper said the storm would pass before the morning tide.",
+      "folded": "theiighthousekeepersaidthestormwouidpassbeforethemorningtide",
+      "damaged": false,
+      "length": 60,
+      "bits": 256,
+      "bloom": "82240500402010400001008c8c02409580088514042400080880803072710800"
+    },
+    {
+      "input": "MARISOL: The lighthouse keeper sald the st0rm wouId pass beföre the mornlng tide.",
+      "folded": "marisoitheiighthousekeepersaidthestormwouidpassbeforethemorningtide",
+      "damaged": true,
+      "length": 67,
+      "bits": 256,
+      "bloom": "82640d00402810400001008c8c02409580088514042400080880803472730800"
+    },
+    {
+      "input": "Hand me the brass compass.",
+      "folded": "handmethebrasscompass",
+      "damaged": false,
+      "length": 21,
+      "bits": 64,
+      "bloom": "5102107c40200018"
+    },
+    {
+      "input": "Ahoy, the n0rth pier is fIooded!",
+      "folded": "ahoythenorthpierisfiooded",
+      "damaged": true,
+      "length": 25,
+      "bits": 128,
+      "bloom": "0200008328220e801021200020000114"
+    },
+    {
+      "input": "We sail at first light.",
+      "folded": "wesaiiatfirstiight",
+      "damaged": false,
+      "length": 18,
+      "bits": 64,
+      "bloom": "4c0425050c400200"
+    },
+    {
+      "input": "DOCKHAND: Ropes are•tight, captain.",
+      "folded": "dockhandropesaretightcaptain",
+      "damaged": true,
+      "length": 28,
+      "bits": 128,
+      "bloom": "f9808a24004020281922100900100000"
+    },
+    {
+      "input": "Café au lait for the whole crew.",
+      "folded": "cafeauiaitforthewhoiecrew",
+      "damaged": true,
+      "length": 25,
+      "bits": 128,
+      "bloom": "2280018004c04b008000062004000910"
+    },
+    {
+      "input": "Ｌｏｗ ｔｉｄｅ ａｔ １０ ｐｍ",
+      "folded": "iowtideatiopm",
+      "damaged": true,
+      "length": null,
+      "bits": null,
+      "bloom": null
+    },
+    {
+      "input": "Keep the l1ght burning 0n the c1iffs tonight!",
+      "folded": "keeptheiightburningontheciiffstonight",
+      "damaged": true,
+      "length": 37,
+      "bits": 128,
+      "bloom": "0000a58540a005480918806042110019"
+    },
+    {
+      "input": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+      "folded": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+      "damaged": true,
+      "length": 255,
+      "bits": 256,
+      "bloom": "0000000000000000000000000000000000000020000000000000000000000000"
+    },
+    {
+      "input": "tiny line",
+      "folded": "tinyiine",
+      "damaged": false,
+      "length": null,
+      "bits": null,
+      "bloom": null
+    },
+    {
+      "input": "Check the u hold below deck.",
+      "folded": "checktheuhoidbeiowdeck",
+      "damaged": true,
+      "length": 22,
+      "bits": 128,
+      "bloom": "2010402200884c006802000000000a30"
+    },
+    {
+      "input": "The harbormastership is vacant again.",
+      "folded": "theharbormastershipisvacantagain",
+      "damaged": true,
+      "length": 32,
+      "bits": 128,
+      "bloom": "8908010032405000204020480081089f"
+    },
+    {
+      "input": "ægir øster straße œuvre jjjj",
+      "folded": "agirosterstraseouvreiiii",
+      "damaged": true,
+      "length": 24,
+      "bits": 128,
+      "bloom": "010000086001006001008424a0100183"
+    },
+    {
+      "input": "Short of rope.",
+      "folded": "shortofrope",
+      "damaged": false,
+      "length": null,
+      "bits": null,
+      "bloom": null
+    },
+    {
+      "input": "Down the stairs… then left — quickly!",
+      "folded": "downthestairsthenieftquickiy",
+      "damaged": false,
+      "length": 28,
+      "bits": 128,
+      "bloom": "c0046080088084620101140200008092"
+    }
+  ],
+  "similarities": [
+    {
+      "query": "The lighthouse keeper said the storm would pass before the morning tide.",
+      "entry": "MARISOL: The lighthouse keeper sald the st0rm wouId pass beföre the mornlng tide.",
+      "bits": 256,
+      "similarity": 88.38896952104498
+    },
+    {
+      "query": "The lighthouse keeper said the storm would pass before the morning tide.",
+      "entry": "Hand me the brass compass.",
+      "bits": 64,
+      "similarity": -5.494505494505502
+    },
+    {
+      "query": "Hand me the brasscompass.",
+      "entry": "Hand me the brass compass.",
+      "bits": 64,
+      "similarity": 100.0
+    },
+    {
+      "query": "DOCKHAND: Ropes are•tight, captain.",
+      "entry": "Ropes are tight, captain.",
+      "bits": 64,
+      "similarity": 58.44155844155844
+    },
+    {
+      "query": "Who left the lantern on?",
+      "entry": "Who left the lanterns on?",
+      "bits": 64,
+      "similarity": 84.31372549019608
+    },
+    {
+      "query": "We sail at first light.",
+      "entry": "We sail at last light.",
+      "bits": 64,
+      "similarity": 52.662721893491124
+    }
+  ],
+  "looseLabels": [
+    {
+      "input": "-MARISOL: Raise the sails",
+      "label": "-MARISOL: ",
+      "body": "Raise the sails"
+    },
+    {
+      "input": "K]: Is anyone on deck?",
+      "label": "K]: ",
+      "body": "Is anyone on deck?"
+    },
+    {
+      "input": "ii TOMAS: easy now",
+      "label": "ii TOMAS: ",
+      "body": "easy now"
+    },
+    {
+      "input": "· rq„.. ODALYS: As I said, no",
+      "label": "· rq„.. ODALYS: ",
+      "body": "As I said, no"
+    },
+    {
+      "input": "BARTOLO Where is the cargo",
+      "label": "BARTOLO ",
+      "body": "Where is the cargo"
+    },
+    {
+      "input": "O'HARA Leave it here.",
+      "label": "O'HARA ",
+      "body": "Leave it here."
+    },
+    {
+      "input": "He said: wait",
+      "label": null,
+      "body": null
+    },
+    {
+      "input": "İNA DOCKHAND• Any news?",
+      "label": "İNA DOCKHAND• ",
+      "body": "Any news?"
+    },
+    {
+      "input": "-, • VERA: all hands",
+      "label": "-, • VERA: ",
+      "body": "all hands"
+    },
+    {
+      "input": "Pull the rope!",
+      "label": null,
+      "body": null
+    },
+    {
+      "input": "OK Fine",
+      "label": "OK ",
+      "body": "Fine"
+    },
+    {
+      "input": "CAPTAIN: ...",
+      "label": null,
+      "body": null
+    }
+  ],
+  "thresholds": {
+    "clean": [
+      [
+        24,
+        90
+      ],
+      [
+        256,
+        80
+      ]
+    ],
+    "damaged": [
+      [
+        24,
+        70
+      ],
+      [
+        40,
+        60
+      ],
+      [
+        256,
+        55
+      ]
+    ],
+    "margin": 5,
+    "minLength": 16
+  }
+}

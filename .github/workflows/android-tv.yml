@@ -1,0 +1,79 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Android TV / Google TV uygulaması (apps/android-tv): JVM testleri, sayfa testleri ve debug derlemesi.
+# İmza anahtarı kullanılmaz, Play Store'a yükleme yok.
+name: android-tv
+
+on:
+  push:
+    paths:
+      - "apps/android-tv/**"
+      - "apps/tv-web/**"
+      - ".github/workflows/android-tv.yml"
+  pull_request:
+    paths:
+      - "apps/android-tv/**"
+      - "apps/tv-web/**"
+      - ".github/workflows/android-tv.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Depoda Gradle sarmalayıcısı yok; yerelde kullanılan sürüm sabitlenir.
+  GRADLE_VERSION: "9.9.1"
+
+jobs:
+  tv-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "26"
+      - name: Gradle önbelleği
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-tv-${{ runner.os }}-${{ env.GRADLE_VERSION }}-${{ hashFiles('apps/android-tv/**/*.gradle') }}
+          restore-keys: gradle-tv-${{ runner.os }}-${{ env.GRADLE_VERSION }}-
+      - name: Gradle kur
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl -fsSLo gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
+          echo "$(curl -fsSL "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip.sha256")  gradle.zip" | sha256sum -c -
+          unzip -q gradle.zip
+          echo "$RUNNER_TEMP/gradle-${GRADLE_VERSION}/bin" >> "$GITHUB_PATH"
+
+      # Android TV katmanının sayfa testleri (web/androidtv.js).
+      - name: Sayfa testleri
+        run: node --test apps/android-tv/web/test/
+
+      # Yalnız debug türleri: sideload (ADB ile kurulan, katmanlı) ve play (katmansız).
+      - name: JVM testleri ve debug derlemesi
+        working-directory: apps/android-tv
+        run: gradle --no-daemon testSideloadDebugUnitTest testPlayDebugUnitTest assembleSideloadDebug assemblePlayDebug
+      - name: Test raporları
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-tv-test-raporlari
+          path: apps/android-tv/app/build/reports/tests
+          if-no-files-found: ignore
+      - name: Debug APK'lar
+        uses: actions/upload-artifact@v4
+        with:
+          name: nino-androidtv-debug
+          path: apps/android-tv/app/build/outputs/apk/*/debug/*.apk
+          retention-days: 7

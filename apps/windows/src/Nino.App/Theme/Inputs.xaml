@@ -1,0 +1,325 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!--
+  Giriş denetimleri (genel stiller): TextBox, PasswordBox, CheckBox (anahtar olarak çizilir), RadioButton, ComboBox,
+  ComboBoxItem, Slider. Bölmeli seçim: dış kutu Border Style="{StaticResource Segment.Rail}" içinde yatay
+  StackPanel ve her bölme RadioButton Style="{StaticResource Segment}" (aynı GroupName). Hepsi animasyonsuz.
+
+  Düzen: önce ortak temel stiller (el imleci, odak çerçevesi yok, kapalıyken soluk), sonra şablonlar (anahtarlı
+  ControlTemplate kaynakları), en sonda bunları birleştiren stiller.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="Base.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <!-- ===== Ortak temeller ===== -->
+
+  <!-- Tıklanan denetimler: el imleci, sistemin odak çerçevesi yok. -->
+  <Style x:Key="Input.Clickable" TargetType="Control">
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <!-- Kapalıyken bütün denetim %40 görünür. -->
+  <Style x:Key="Input.Dimmable" TargetType="Control" BasedOn="{StaticResource Input.Clickable}">
+    <Style.Triggers>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Opacity" Value="0.4" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <!-- Aynı yazı ailesi ve boyu (15) kullanan denetimler. -->
+  <Style x:Key="Input.Typed" TargetType="Control" BasedOn="{StaticResource Input.Clickable}">
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+  </Style>
+
+  <!-- ===== Şablonlar ===== -->
+
+  <!-- Metin/parola kutusu: köşeli zemin, içinde kaydırılmayan içerik alanı. -->
+  <ControlTemplate x:Key="Input.BoxTemplate" TargetType="Control">
+    <Border x:Name="Box" SnapsToDevicePixels="True" CornerRadius="{DynamicResource radius.control}"
+            BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
+            Background="{TemplateBinding Background}">
+      <ScrollViewer x:Name="PART_ContentHost" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Focusable="False"
+                    Margin="{TemplateBinding Padding}" />
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter TargetName="Box" Property="Opacity" Value="0.4" />
+      </Trigger>
+      <Trigger Property="IsKeyboardFocusWithin" Value="True">
+        <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource accentTextBrush}" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <!-- Anahtar: 52 × 32 iz, içinde 24'lük düğme; yanında (varsa) yazı. -->
+  <ControlTemplate x:Key="Switch.Template" TargetType="CheckBox">
+    <Grid Background="Transparent">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Border x:Name="Track" SnapsToDevicePixels="True" VerticalAlignment="Center" Background="{DynamicResource borderBrush}"
+              BorderBrush="Transparent" BorderThickness="2" CornerRadius="16" Height="32" Width="52">
+        <Ellipse x:Name="Knob" Fill="{DynamicResource textPrimaryBrush}" Margin="2,0,2,0" VerticalAlignment="Center"
+                 HorizontalAlignment="Left" Height="24" Width="24" />
+      </Border>
+      <ContentPresenter x:Name="Label" RecognizesAccessKey="True" VerticalAlignment="Center" Margin="12,0,0,0"
+                        Grid.Column="1">
+        <ContentPresenter.Resources>
+          <Style TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}" />
+        </ContentPresenter.Resources>
+      </ContentPresenter>
+    </Grid>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsKeyboardFocused" Value="True">
+        <Setter TargetName="Track" Property="BorderBrush" Value="{DynamicResource accentTextBrush}" />
+      </Trigger>
+      <Trigger Property="HasContent" Value="False">
+        <Setter TargetName="Label" Property="Margin" Value="0" />
+      </Trigger>
+      <Trigger Property="IsChecked" Value="True">
+        <Setter TargetName="Knob" Property="Fill" Value="{DynamicResource onAccentBrush}" />
+        <Setter TargetName="Track" Property="Background" Value="{DynamicResource accentBrush}" />
+        <Setter TargetName="Knob" Property="HorizontalAlignment" Value="Right" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <!-- Bölme: seçiliyken zemin border, yazı textPrimary ve yarı kalın; yazı ortalı. -->
+  <ControlTemplate x:Key="Segment.Template" TargetType="RadioButton">
+    <Border x:Name="Box" SnapsToDevicePixels="True" Background="Transparent" BorderBrush="Transparent"
+            BorderThickness="1" Padding="12,6" CornerRadius="{DynamicResource radius.inner}">
+      <ContentPresenter RecognizesAccessKey="True" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <ContentPresenter.Resources>
+          <Style TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}">
+            <Setter Property="TextAlignment" Value="Center" />
+          </Style>
+        </ContentPresenter.Resources>
+      </ContentPresenter>
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsKeyboardFocused" Value="True">
+        <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource accentTextBrush}" />
+      </Trigger>
+      <Trigger Property="IsChecked" Value="True">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+        <Setter TargetName="Box" Property="Background" Value="{DynamicResource borderBrush}" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <!-- Açılır listenin kutusu ve sağdaki ok. -->
+  <ControlTemplate x:Key="ComboBox.ToggleTemplate" TargetType="ToggleButton">
+    <Border x:Name="Box" SnapsToDevicePixels="True" CornerRadius="{DynamicResource radius.control}"
+            BorderThickness="1" BorderBrush="{DynamicResource borderBrush}" Background="{DynamicResource surface2Brush}">
+      <TextBlock Margin="0,0,14,0" VerticalAlignment="Center" HorizontalAlignment="Right"
+                 Foreground="{DynamicResource textSecondaryBrush}" FontSize="12" FontFamily="{DynamicResource font.icon}"
+                 Style="{x:Null}" Text="&#xE70D;" />
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource textSecondaryBrush}" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <Style x:Key="ComboBox.Toggle" TargetType="ToggleButton">
+    <Setter Property="Template" Value="{StaticResource ComboBox.ToggleTemplate}" />
+    <Setter Property="ClickMode" Value="Press" />
+    <Setter Property="Focusable" Value="False" />
+  </Style>
+
+  <ControlTemplate x:Key="ComboBox.Template" TargetType="ComboBox">
+    <Grid x:Name="Root" SnapsToDevicePixels="True">
+      <ToggleButton x:Name="Toggle"
+                    IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                    Style="{StaticResource ComboBox.Toggle}" />
+      <ContentPresenter x:Name="Selection"
+                        ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                        Content="{TemplateBinding SelectionBoxItem}"
+                        VerticalAlignment="Center" HorizontalAlignment="Left" IsHitTestVisible="False"
+                        Margin="14,0,38,0">
+        <ContentPresenter.Resources>
+          <Style TargetType="TextBlock">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+          </Style>
+        </ContentPresenter.Resources>
+      </ContentPresenter>
+      <Border x:Name="FocusRing" Visibility="Collapsed" IsHitTestVisible="False"
+              CornerRadius="{DynamicResource radius.control}" BorderThickness="2"
+              BorderBrush="{DynamicResource accentTextBrush}" />
+      <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" PopupAnimation="Fade" Focusable="False"
+             AllowsTransparency="True" VerticalOffset="4" Placement="Bottom">
+        <Border MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=Root}"
+                Padding="4" CornerRadius="{DynamicResource radius.control}" BorderThickness="1"
+                BorderBrush="{DynamicResource borderBrush}" Background="{DynamicResource surfaceBrush}">
+          <ScrollViewer x:Name="DropDownScroll" KeyboardNavigation.DirectionalNavigation="Contained">
+            <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+          </ScrollViewer>
+        </Border>
+      </Popup>
+    </Grid>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter TargetName="Root" Property="Opacity" Value="0.4" />
+      </Trigger>
+      <Trigger Property="IsKeyboardFocusWithin" Value="True">
+        <Setter TargetName="FocusRing" Property="Visibility" Value="Visible" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <!-- Liste satırı: üstüne gelince ve seçiliyken surface2 zemin; seçili yarı kalın. -->
+  <ControlTemplate x:Key="ComboBoxItem.Template" TargetType="ComboBoxItem">
+    <Border x:Name="Row" SnapsToDevicePixels="True" Padding="{TemplateBinding Padding}"
+            CornerRadius="{DynamicResource radius.inner}" Background="Transparent">
+      <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsSelected" Value="True">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter TargetName="Row" Property="Background" Value="{DynamicResource surface2Brush}" />
+      </Trigger>
+      <Trigger Property="IsHighlighted" Value="True">
+        <Setter TargetName="Row" Property="Background" Value="{DynamicResource surface2Brush}" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <!-- Kaydırıcının dolu/boş kısmı: 8 yüksek, köşe 4, zemini düğmenin Background'u. -->
+  <ControlTemplate x:Key="Slider.PartTemplate" TargetType="RepeatButton">
+    <Grid Background="Transparent">
+      <Border VerticalAlignment="Center" Background="{TemplateBinding Background}" CornerRadius="4" Height="8" />
+    </Grid>
+  </ControlTemplate>
+
+  <Style x:Key="Slider.Part" TargetType="RepeatButton">
+    <Setter Property="Template" Value="{StaticResource Slider.PartTemplate}" />
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="Focusable" Value="False" />
+  </Style>
+
+  <ControlTemplate x:Key="Slider.ThumbTemplate" TargetType="Thumb">
+    <Ellipse Fill="{DynamicResource textPrimaryBrush}" Height="24" Width="24" />
+  </ControlTemplate>
+
+  <Style x:Key="Slider.Thumb" TargetType="Thumb">
+    <Setter Property="Template" Value="{StaticResource Slider.ThumbTemplate}" />
+    <Setter Property="Focusable" Value="False" />
+  </Style>
+
+  <!-- Kaydırıcı: 28 yüksek iz; dolu kısım accent, boş kısım border; 24'lük daire tutamaç. -->
+  <ControlTemplate x:Key="Slider.Template" TargetType="Slider">
+    <Grid Background="Transparent" Height="28">
+      <Track x:Name="PART_Track">
+        <Track.Thumb>
+          <Thumb Style="{StaticResource Slider.Thumb}" />
+        </Track.Thumb>
+        <Track.IncreaseRepeatButton>
+          <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Background="{DynamicResource borderBrush}"
+                        Style="{StaticResource Slider.Part}" />
+        </Track.IncreaseRepeatButton>
+        <Track.DecreaseRepeatButton>
+          <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Background="{DynamicResource accentBrush}"
+                        Style="{StaticResource Slider.Part}" />
+        </Track.DecreaseRepeatButton>
+      </Track>
+    </Grid>
+  </ControlTemplate>
+
+  <!-- ===== Stiller ===== -->
+
+  <!-- Metin alanı ve parola alanı: aynı görünüş. -->
+  <Style x:Key="Input.Base" TargetType="Control">
+    <Setter Property="Template" Value="{StaticResource Input.BoxTemplate}" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="BorderBrush" Value="{DynamicResource borderBrush}" />
+    <Setter Property="MinHeight" Value="{DynamicResource size.buttonHeight}" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+    <Setter Property="Padding" Value="14,0" />
+    <Setter Property="Background" Value="{DynamicResource surface2Brush}" />
+    <Setter Property="FontSize" Value="15" />
+  </Style>
+
+  <Style TargetType="TextBox" BasedOn="{StaticResource Input.Base}">
+    <Setter Property="SelectionBrush" Value="{DynamicResource accentBrush}" />
+    <Setter Property="CaretBrush" Value="{DynamicResource textPrimaryBrush}" />
+  </Style>
+
+  <Style TargetType="PasswordBox" BasedOn="{StaticResource Input.Base}">
+    <Setter Property="SelectionBrush" Value="{DynamicResource accentBrush}" />
+    <Setter Property="CaretBrush" Value="{DynamicResource textPrimaryBrush}" />
+  </Style>
+
+  <!-- Seçenek düğmesi: sistemin kendi görünüşü; yazı 15, textPrimary, üst/alt 4. -->
+  <Style TargetType="RadioButton">
+    <Setter Property="Margin" Value="0,4" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+    <Setter Property="FontSize" Value="15" />
+  </Style>
+
+  <!-- Anahtar (aç/kapat): her onay kutusu anahtar olarak çizilir. -->
+  <Style TargetType="CheckBox" BasedOn="{StaticResource Input.Dimmable}">
+    <Setter Property="Template" Value="{StaticResource Switch.Template}" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+  </Style>
+
+  <!-- Bölmeli seçim rayı: surface2 zemin, köşe 14, iç boşluk 2, sola yaslı. -->
+  <Style x:Key="Segment.Rail" TargetType="Border">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Padding" Value="2" />
+    <Setter Property="Background" Value="{DynamicResource surface2Brush}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource radius.control}" />
+  </Style>
+
+  <!-- Bölme: yazı ortalı, gerekirse iki satır. -->
+  <Style x:Key="Segment" TargetType="RadioButton" BasedOn="{StaticResource Input.Dimmable}">
+    <Setter Property="Template" Value="{StaticResource Segment.Template}" />
+    <Setter Property="MinHeight" Value="36" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="Margin" Value="2" />
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+    <Setter Property="FontSize" Value="15" />
+  </Style>
+
+  <!-- Açılır liste. -->
+  <Style TargetType="ComboBox" BasedOn="{StaticResource Input.Typed}">
+    <Setter Property="Template" Value="{StaticResource ComboBox.Template}" />
+    <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+    <Setter Property="MinWidth" Value="220" />
+    <Setter Property="MaxDropDownHeight" Value="360" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="MinHeight" Value="{DynamicResource size.buttonHeight}" />
+  </Style>
+
+  <Style TargetType="ComboBoxItem" BasedOn="{StaticResource Input.Clickable}">
+    <Setter Property="Template" Value="{StaticResource ComboBoxItem.Template}" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="Padding" Value="12,8" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+  </Style>
+
+  <Style TargetType="Slider" BasedOn="{StaticResource Input.Dimmable}">
+    <Setter Property="Template" Value="{StaticResource Slider.Template}" />
+    <Setter Property="IsMoveToPointEnabled" Value="False" />
+  </Style>
+</ResourceDictionary>

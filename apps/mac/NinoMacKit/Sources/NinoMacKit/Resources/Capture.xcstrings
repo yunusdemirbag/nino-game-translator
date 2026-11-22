@@ -1,0 +1,310 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "capture.greenlight.error.copy": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّر على Nino وضع Greenlight في مجلد التطبيقات."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino, Greenlight-কে আপনার Applications folder-এ রাখতে পারল না।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino couldn't put Greenlight into your Applications folder."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi mailagay ng Nino ang Greenlight sa iyong Applications folder."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino, Greenlight को आपके ऐप्लिकेशन फ़ोल्डर में नहीं रख सका।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino tidak dapat menaruh Greenlight ke folder Aplikasi Anda."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino tidak dapat meletakkan Greenlight dalam folder Aplikasi anda."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino kon Greenlight niet in je map Apps zetten."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino ไม่สามารถใส่ Greenlight ลงในโฟลเดอร์แอปพลิเคชันได้"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino, Greenlight'ı Uygulamalar klasörünüze koyamadı."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino، Greenlight کو آپ کے Applications فولڈر میں نہیں رکھ سکا۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino không thể đặt Greenlight vào thư mục Ứng dụng của bạn."
+          }
+        }
+      }
+    },
+    "capture.greenlight.error.damaged": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ملف Greenlight الذي نزل تالف. حاول مرة أخرى من فضلك."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight-এর ডাউনলোড ভাঙাচোরা হয়ে এসেছে। দয়া করে আরেকবার করে দেখুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Greenlight download arrived damaged. Please try once more."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sira ang dumating na download ng Greenlight. Pakisubukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight की फ़ाइल बिगड़ी हुई आई। एक दफ़ा और आज़माएँ।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unduhan Greenlight rusak. Silakan coba sekali lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muat turun Greenlight rosak. Sila cuba sekali lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De Greenlight-download is beschadigd aangekomen. Probeer het nog een keer."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight ที่โหลดมาเสียหาย ลองอีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight dosyası bozuk indi. Lütfen bir kez daha deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight کی ڈاؤن لوڈ خراب ہو کر پہنچی۔ براہ کرم ایک بار پھر کوشش کریں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bản tải Greenlight bị hỏng. Hãy thử thêm lần nữa."
+          }
+        }
+      }
+    },
+    "capture.greenlight.error.download": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقطع تنزيل Greenlight. تأكد أنك متصل بالإنترنت، ثم حاول مجددا."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight-এর ডাউনলোড মাঝপথে আটকে গেল। নেট কানেকশন মিলিয়ে দেখে আরেকবার করে দেখুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight's download stopped partway. Make sure you're online, then try again."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naputol ang download ng Greenlight. Tiyaking online ka, saka subukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight की फ़ाइल अधूरी रुक गई। नेट चालू है, यह जाँचकर दोबारा आज़माएँ।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unduhan Greenlight terhenti di tengah jalan. Pastikan Anda online, lalu coba lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muat turun Greenlight terhenti di tengah jalan. Pastikan anda dalam talian, kemudian cuba sekali lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het downloaden van Greenlight is halverwege gestopt. Kijk of je online bent en doe dan nog een poging."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การดาวน์โหลด Greenlight หยุดกลางคัน ตรวจว่าออนไลน์อยู่ แล้วลองอีกที"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight'ın indirilmesi tamamlanamadı. İnternet bağlantınıza bakıp yeniden deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight کا ڈاؤن لوڈ بیچ میں رک گیا۔ انٹرنیٹ چلتا ہو تو ایک بار اور آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Việc tải Greenlight dừng giữa chừng. Kiểm tra mạng rồi thử lại."
+          }
+        }
+      }
+    },
+    "capture.greenlight.error.latest": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم نجد آخر إصدار من Greenlight. تأكد أنك متصل بالإنترنت."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight-এর সবচেয়ে নতুন release মিলল না। নেট কানেকশন ঠিক আছে তো?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We couldn't find the newest Greenlight release. Make sure you're online."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi namin mahanap ang pinakabagong release ng Greenlight. Pakitingnan ang internet connection mo."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight की ताज़ा रिलीज़ हाथ नहीं लगी। नेट चालू है, यह जाँच लें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rilis Greenlight terbaru tidak ditemukan. Pastikan Anda online."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keluaran Greenlight terbaharu tidak dapat ditemui. Pastikan anda dalam talian."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De laatste release van Greenlight is niet gevonden. Controleer je internetverbinding."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หา Greenlight รุ่นล่าสุดไม่เจอ ตรวจดูว่าออนไลน์อยู่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight'ın en yeni sürümüne ulaşılamadı. Lütfen internet bağlantınıza bakın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greenlight کا سب سے نیا ریلیز نہیں ملا۔ دیکھیں کہ انٹرنیٹ چل رہا ہے۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không tìm ra bản Greenlight mới nhất. Bạn xem lại mạng nhé."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

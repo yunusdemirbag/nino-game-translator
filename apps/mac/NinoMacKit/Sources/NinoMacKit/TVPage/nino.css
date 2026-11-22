@@ -1,0 +1,375 @@
+/* SPDX-License-Identifier: AGPL-3.0-only */
+/* Copyright (C) 2026 Nino contributors */
+/* Nino TV (LG, Samsung). Ölçüler 1920×1080 içindir. Tarif: docs/yeni/tv-web/tarif.md.
+   Eski TV tarayıcıları için önekli kurallar (-webkit-) de yazılır. */
+
+/* ── Temel ─────────────────────────────────────────────────────────────── */
+@font-face { font-family: "Nino Modern"; src: url("fonts/Barlow-SemiBold.ttf") format("truetype"); font-weight: 600; }
+@font-face { font-family: "Nino Modern"; src: url("fonts/Barlow-Bold.ttf") format("truetype"); font-weight: 700; }
+@font-face { font-family: "Nino Condensed"; src: url("fonts/BarlowCondensed-SemiBold.ttf") format("truetype"); font-weight: 600; }
+@font-face { font-family: "Nino Condensed"; src: url("fonts/BarlowCondensed-Bold.ttf") format("truetype"); font-weight: 700; }
+@font-face { font-family: "Nino Rounded"; src: url("fonts/Nunito-Variable.ttf") format("truetype"); font-weight: 200 1000; }
+
+html, body {
+  margin: 0; width: 100%; height: 100%; overflow: hidden;
+  background: transparent; /* HDMI görüntüsü sayfanın altındaki katmanda */
+  color: #fff;
+  font-family: "LG Smart UI", "Museo Sans", "SamsungOne", "Tizen Sans", Roboto, Arial, "Noto Naskh Arabic", "Noto Sans Arabic", "Droid Arabic Naskh", sans-serif;
+}
+[dir="rtl"] { letter-spacing: 0 !important; unicode-bidi: embed; }
+.off { display: none !important; }
+
+#hdmi, #hdmi video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+
+@-webkit-keyframes n-fade { from { opacity: 0; -webkit-transform: translateY(-12px); } to { opacity: 1; -webkit-transform: none; } }
+@keyframes n-fade { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+@-webkit-keyframes n-pop { from { opacity: 0; -webkit-transform: translateY(-12px) scale(0.97); } to { opacity: 1; -webkit-transform: none; } }
+@keyframes n-pop { from { opacity: 0; transform: translateY(-12px) scale(0.97); } to { opacity: 1; transform: none; } }
+@-webkit-keyframes n-appear { from { opacity: 0; } to { opacity: 1; } }
+@keyframes n-appear { from { opacity: 0; } to { opacity: 1; } }
+@-webkit-keyframes n-float { 0%, 100% { -webkit-transform: translateY(0); } 50% { -webkit-transform: translateY(-10px); } }
+@keyframes n-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* ── Altyazı ───────────────────────────────────────────────────────────── */
+#caption {
+  position: absolute; left: 8%; right: 8%; bottom: 7%; z-index: 10; text-align: center;
+  -webkit-transform: translateZ(0); transform: translateZ(0); /* kendi katmanında kalsın */
+}
+#caption.off { display: block !important; visibility: hidden; }
+#caption .current, #caption .line span {
+  display: inline-block; font-weight: 600; line-height: 1.3; border-radius: 18px;
+  background: rgba(6, 12, 30, 0.74);
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 0 3px #000, 0 0 3px #000, 0 2px 4px #000;
+}
+#caption .current { padding: 10px 26px; font-size: 46px; }
+#caption .line span { padding: 6px 20px; font-size: 37px; }
+#caption .line { margin-bottom: 14px; opacity: 0.75; -webkit-transition: opacity 0.4s linear; transition: opacity 0.4s linear; }
+#caption .line.older { opacity: 0.6; }
+#caption .line.fading { opacity: 0; }
+body.lobby #caption .current { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), 0 0 0 2px rgba(45, 140, 255, 0.35); }
+
+/* Zemin çok saydamken sert kontur. */
+body.thin-bg #caption .current, body.thin-bg #caption .line span {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 4px #000, 0 2px 4px #000;
+}
+/* Ekranın iki kenarına uzanan bant. */
+body.band #caption { left: 0 !important; right: 0 !important; }
+body.band #caption .current, body.band #caption .line span { display: block; box-sizing: border-box; border-radius: 0; }
+
+/* Oyundaki İngilizceyi örten zemin. */
+#shade { position: absolute; z-index: 9; border-radius: 6px; background: #000; }
+body.band #shade { border-radius: 0; }
+body.covering #caption .current, body.covering #caption .line span {
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important; text-shadow: none !important;
+}
+
+/* Temalar */
+body[data-theme="cinema"] #caption .current, body[data-theme="cinema"] #caption .line span {
+  background: transparent !important; box-shadow: none !important; -webkit-backdrop-filter: none; backdrop-filter: none;
+  letter-spacing: 0.5px; text-shadow: 0 2px 3px #000, 0 0 14px rgba(0, 0, 0, 0.95), 0 0 2px #000;
+}
+body[data-theme="minimal"] #caption .current, body[data-theme="minimal"] #caption .line span {
+  background: transparent !important; box-shadow: none !important; -webkit-backdrop-filter: none; backdrop-filter: none;
+  font-weight: 500 !important; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 10px rgba(0, 0, 0, 0.6);
+}
+body[data-theme="glass"] #caption .current, body[data-theme="glass"] #caption .line span {
+  background: rgba(6, 12, 30, 0.86) !important; border: 2px solid rgba(45, 140, 255, 0.45); border-radius: 22px;
+  -webkit-backdrop-filter: blur(24px) saturate(160%); backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), 0 0 22px rgba(45, 140, 255, 0.22) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+body[data-theme="contrast"] #caption .current, body[data-theme="contrast"] #caption .line span {
+  background: #000 !important; border-radius: 6px; box-shadow: none !important; text-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+body[data-theme="outline"] #caption .current, body[data-theme="outline"] #caption .line span {
+  background: transparent !important; box-shadow: none !important; -webkit-backdrop-filter: none; backdrop-filter: none;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000, 2px 0 0 #000, 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+/* Yazı tipleri */
+body[data-font="modern"] #caption, body[data-font="modern"] #board { font-family: "Nino Modern", "LG Smart UI", "Museo Sans", "SamsungOne", "Tizen Sans", Roboto, Arial, "Noto Naskh Arabic", "Noto Sans Arabic", "Droid Arabic Naskh", sans-serif; }
+body[data-font="condensed"] #caption, body[data-font="condensed"] #board { font-family: "Nino Condensed", "LG Smart UI", "Museo Sans", "SamsungOne", "Tizen Sans", Roboto, Arial, "Noto Naskh Arabic", "Noto Sans Arabic", "Droid Arabic Naskh", sans-serif; letter-spacing: 0.01em; }
+body[data-font="rounded"] #caption, body[data-font="rounded"] #board { font-family: "Nino Rounded", "LG Smart UI", "Museo Sans", "SamsungOne", "Tizen Sans", Roboto, Arial, "Noto Naskh Arabic", "Noto Sans Arabic", "Droid Arabic Naskh", sans-serif; }
+
+/* Cam görünüm (zemin koyuluğu %90 ve üstü): oval, kenarları eriyen zemin; yuvarlak yazı; %70 ölçek. */
+body.glass #shade { border: 0; border-radius: 30px; background: rgb(10, 10, 10) !important; box-shadow: 0 0 24px 6px rgba(10, 10, 10, 0.8); }
+body.glass #caption .current, body.glass #caption .line span {
+  border: 0; border-radius: 40px; box-shadow: none;
+  background: radial-gradient(ellipse at center, rgba(8, 8, 8, 0.75) 0%, rgba(8, 8, 8, 0.7) 55%, rgba(8, 8, 8, 0) 100%) !important;
+  -webkit-transform: scale(0.7); transform: scale(0.7);
+}
+body.glass #caption, body.glass #caption .current, body.glass #caption .line span {
+  font-family: "Nino Rounded", "LG Smart UI", Roboto, Arial, sans-serif !important; font-weight: 600 !important; letter-spacing: 0.01em;
+  text-shadow: -1px -1px 0 rgba(0,0,0,0.75), 1px -1px 0 rgba(0,0,0,0.75), -1px 1px 0 rgba(0,0,0,0.75), 1px 1px 0 rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.6) !important;
+}
+body.glass #caption .current { line-height: 1.18; padding: 6px 18px; }
+body.glass.covering #caption .current { background: transparent !important; }
+/* Buzlu örtü: sahnenin bulanık hali, kenarları maskeyle erir. */
+body.glass.frosted #shade {
+  border-radius: 26px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-transform: scale(1.12, 1.4); transform: scale(1.12, 1.4);
+}
+
+/* ── Düğme simgeleri ve vurgu ─────────────────────────────────────────── */
+.key {
+  display: inline-block; box-sizing: border-box; min-width: 1.3em; height: 1.3em; padding: 0 0.15em; margin: 0 0.18em;
+  border: 0.06em solid rgba(255, 255, 255, 0.32); border-radius: 50%;
+  font-size: 0.82em; line-height: 1.08em; text-align: center; vertical-align: middle; font-weight: 800; letter-spacing: 0.02em;
+  color: #f4f5f8; text-shadow: none;
+  background: #1c1d23; background-image: linear-gradient(180deg, #41444e 0%, #24252c 48%, #111216 100%);
+  box-shadow: inset 0 0.07em 0 rgba(255, 255, 255, 0.28), inset 0 -0.06em 0 rgba(0, 0, 0, 0.5), 0 0.08em 0.22em rgba(0, 0, 0, 0.45);
+}
+.key.pill { border-radius: 0.42em; font-size: 0.62em; min-width: 1.9em; height: 1.6em; line-height: 1.36em; }
+.key.stick { font-size: 0.6em; min-width: 2em; height: 2em; line-height: 1.76em; border-width: 0.07em; }
+.key.dpad { border-radius: 0.3em; }
+.key.marker { color: #2a2205; border-color: rgba(255, 255, 255, 0.5); font-size: 0.7em; line-height: 1.2em;
+  background: #e8c84a; background-image: linear-gradient(180deg, #fbe58a 0%, #e8c84a 55%, #c9a52c 100%); }
+.key.pad { min-width: 2.4em; height: 1.4em; border-radius: 0.42em; font-size: 0.62em;
+  background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.75) 0 0.1em, transparent 0.1em 0.38em), linear-gradient(180deg, #41444e 0%, #24252c 48%, #111216 100%); }
+.key.face { min-width: 0; width: 1.38em; height: 1.38em; padding: 0; border: 0; line-height: 0;
+  background: transparent; background-image: none; box-shadow: 0 0.08em 0.24em rgba(0, 0, 0, 0.5); }
+.key.face svg { display: block; width: 100%; height: 100%; }
+/* Göndericinin yolladığı tuş resmi (oyundaki simgenin kendisi): yazı yüksekliğinde, dikey ortalı, zeminsiz. */
+.key.shot { min-width: 0; height: 1.1em; padding: 0; border: 0; border-radius: 0; background: none; background-image: none;
+  box-shadow: none; line-height: 0; }
+.key.shot img { display: block; height: 100%; width: auto; }
+#board .accent { color: #ff5fb2; }
+/* Konuşanın adı (show.speaker ya da yazının başındaki "AD:"): sarı, yazının geri kalanından ayrılsın. */
+#caption .speaker { color: #FFE135; }
+
+/* ── Ekran çevirisi ───────────────────────────────────────────────────── */
+#board { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 8; }
+#board.leaving { opacity: 0; -webkit-transition: opacity 0.3s ease-in; transition: opacity 0.3s ease-in; }
+#board .piece {
+  position: absolute; box-sizing: border-box; padding: 2px 6px; border-radius: 6px; overflow: hidden;
+  background: #000; box-shadow: 0 0 6px 6px #000; /* arkadaki İngilizce hiç görünmesin */
+  color: #fff; font-weight: 600; line-height: 1.15; text-align: center; text-shadow: 0 1px 2px #000; word-wrap: break-word;
+}
+#board .piece.lines { text-align: left; text-align: start; white-space: pre-line; }
+/* Opak zemin: oyundaki İngilizce görev yazısı hiç görünmesin (canlı oyun, 22 Kasım; önceden %38 saydamdı). */
+#board .piece.plain { background: rgba(0, 0, 0, 0.92); box-shadow: 0 0 10px 6px rgba(0, 0, 0, 0.92); padding: 2px 8px;
+  border-radius: 8px; text-align: left; line-height: 1.3; text-shadow: 0 0 3px #000, 0 2px 3px #000;
+  overflow: visible; width: auto !important; max-width: 46%; }
+#board .piece.italic { font-style: italic; font-weight: 500; }
+/* Opak: kartın altındaki İngilizce satırlar görünmesin (Mac, canlı oyun 17:18). */
+#board .piece.map { background: rgb(38, 38, 50); border-top: 4px solid transparent; border-radius: 3px;
+  border-image: linear-gradient(to right, #e30a17 0 50%, #ffffff 50% 100%) 1 / 4px 0 0 0;
+  padding: 8px 16px 10px; text-align: left !important; white-space: pre-line; direction: ltr; text-shadow: none;
+  font-weight: 500; color: #f2f2f5; box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35); line-height: 1.32; }
+#board .piece.map::first-line { font-weight: 700; letter-spacing: 0.02em; }
+/* Telefon balonu: oyunun kutusunun tam üstü. */
+#board .piece.bubble { box-shadow: none; border-radius: 4px; padding: 0 2px; font-weight: 500; line-height: 1.12;
+  text-align: left; text-align: start; white-space: normal; letter-spacing: 0; text-shadow: none;
+  font-family: "Nino Modern", Roboto, Arial, sans-serif;
+  -webkit-transition: left 0.25s ease-out, top 0.25s ease-out; transition: left 0.25s ease-out, top 0.25s ease-out; }
+#board .piece.bubble.side { border-radius: 12px; padding: 3px 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28); line-height: 1.18;
+  -webkit-animation: n-bubble 0.32s ease-out both; animation: n-bubble 0.32s ease-out both; }
+#board .piece.bubble.frost { -webkit-backdrop-filter: blur(16px) saturate(150%); backdrop-filter: blur(16px) saturate(150%);
+  border-radius: 14px; padding: 6px 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25); line-height: 1.22; }
+/* Telefonun yanındaki mesaj paneli. */
+#board .piece.panel { padding: 0; border-radius: 22px; box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35);
+  -webkit-animation: n-pop 0.35s ease-out both; animation: n-pop 0.35s ease-out both;
+  -webkit-transition: left 0.25s ease-out, top 0.25s ease-out; transition: left 0.25s ease-out, top 0.25s ease-out; }
+#board.steady .piece.panel { -webkit-animation: none; animation: none; }
+#board .piece.panel img { position: absolute; right: 7%; bottom: 2.2%; width: 34%; height: auto; opacity: 0.85; pointer-events: none;
+  -webkit-filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.95)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.85));
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.95)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.85)); }
+#board .piece.panel .from { position: absolute; left: 0; right: 0; top: 2.2%; padding: 0 12%; text-align: center; font-weight: 700;
+  color: #1c1c1e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: none; }
+@-webkit-keyframes n-bubble { from { opacity: 0; -webkit-transform: translateY(8px) scale(0.96); } to { opacity: 1; -webkit-transform: none; } }
+@keyframes n-bubble { from { opacity: 0; transform: translateY(8px) scale(0.96); } to { opacity: 1; transform: none; } }
+
+/* ── Köşe yazıları ────────────────────────────────────────────────────── */
+#areas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 7; pointer-events: none; }
+#areas .area { position: absolute; box-sizing: border-box; padding: 4px 10px; border-radius: 6px; background: rgba(0, 0, 0, 0.9);
+  color: #fff; font-weight: 600; line-height: 1.2; text-align: left; white-space: pre-line; text-shadow: 0 1px 2px #000; word-wrap: break-word; }
+#areas .area.above { background: rgba(0, 0, 0, 0.5); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  text-shadow: 0 1px 3px #000, 0 0 6px rgba(0, 0, 0, 0.9); }
+
+/* ── Filigran ve "çeviri başladı" ─────────────────────────────────────── */
+#watermark { position: fixed; left: 3.2%; bottom: 0; width: 12.5%; height: auto; z-index: 7; pointer-events: none; opacity: 0.05;
+  -webkit-filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.95)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.85));
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.95)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.85)); }
+body.no-watermark #watermark { display: none; }
+#hello { position: fixed; left: 3.5%; top: 6%; z-index: 50; display: -webkit-box; display: -webkit-flex; display: flex;
+  -webkit-align-items: center; align-items: center; opacity: 0; pointer-events: none;
+  -webkit-transform: translateY(-12px); transform: translateY(-12px);
+  -webkit-transition: opacity 0.35s ease, -webkit-transform 0.35s ease; transition: opacity 0.35s ease, transform 0.35s ease; }
+#hello.on { opacity: 1; -webkit-transform: none; transform: none; }
+#hello .face { width: 8.5vh; height: 8.5vh; margin-right: 1.4vh; border-radius: 50%; background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35); display: -webkit-box; display: -webkit-flex; display: flex;
+  -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; }
+#hello .face img { width: 78%; height: 78%; object-fit: contain; }
+#hello .say { padding: 0.75em 1.4em; border-radius: 999px; background: rgba(0, 0, 0, 0.72); color: #fff;
+  font-size: 2.6vh; font-weight: 700; letter-spacing: 0.01em; white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.16); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35); }
+
+/* ── Cam kartlar (sağ üst notlar) ─────────────────────────────────────── */
+.note { position: absolute; top: 54px; right: 96px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 18, 42, 0.78); -webkit-backdrop-filter: blur(36px) saturate(160%); backdrop-filter: blur(36px) saturate(160%);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  -webkit-animation: n-fade 0.5s cubic-bezier(.2, .8, .2, 1) both; animation: n-fade 0.5s cubic-bezier(.2, .8, .2, 1) both; }
+.note b { display: block; color: #2D8CFF; }
+#demo-note { z-index: 20; max-width: 760px; padding: 18px 26px; color: #9DA9C6; font-size: 24px; line-height: 1.4; }
+#demo-note b { font-size: 26px; margin-bottom: 4px; }
+#source-note { z-index: 21; max-width: 820px; padding: 22px 30px; color: #F2F5FB; font-size: 26px; line-height: 1.45; border-color: rgba(45, 140, 255, 0.7); }
+#source-note b { font-size: 30px; margin-bottom: 8px; }
+#source-note small { display: block; margin-top: 12px; font-size: 22px; color: #9DA9C6; }
+
+/* ── HDMI görüntüsü yok ───────────────────────────────────────────────── */
+#no-signal { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 22;
+  display: -webkit-box; display: -webkit-flex; display: flex;
+  -webkit-box-align: center; -webkit-align-items: center; align-items: center;
+  -webkit-box-pack: center; -webkit-justify-content: center; justify-content: center; }
+#no-signal .box { width: 1300px; box-sizing: border-box; padding: 36px 48px; border-radius: 32px; border: 2px solid #2D8CFF;
+  background: rgba(10, 18, 42, 0.94); color: #F2F5FB; font-size: 28px; line-height: 1.45; }
+#no-signal b { display: block; color: #2D8CFF; font-size: 36px; margin-bottom: 12px; }
+#no-signal p { margin: 0; white-space: pre-line; }
+#no-signal .choices { margin-top: 26px; }
+#no-signal .choice { display: inline-block; margin: 0 14px 10px 0; padding: 14px 30px; border-radius: 24px; border: 3px solid #24335A;
+  background: #0E1733; color: #F2F5FB; font-size: 28px; font-weight: 600; }
+#no-signal .choice.current { border-color: #9DA9C6; }
+#no-signal .choice.focused { background: #2D8CFF; border-color: #FFFFFF; color: #FFFFFF; }
+#no-signal .help { margin-top: 14px; font-size: 24px; color: #9DA9C6; }
+
+/* ── Bilgi paneli ─────────────────────────────────────────────────────── */
+#status { position: absolute; top: 54px; right: 96px; z-index: 20; width: 480px; box-sizing: border-box; padding: 28px;
+  border-radius: 36px; overflow: hidden; font-size: 20px; line-height: 1.3; color: #F2F5FB;
+  background: rgba(10, 15, 32, 0.92);
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 160px);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 160px);
+  border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 24px 64px rgba(0, 0, 0, 0.32);
+  -webkit-transform-origin: 100% 0; transform-origin: 100% 0;
+  -webkit-animation: n-pop 0.35s cubic-bezier(.2, .8, .2, 1) both; animation: n-pop 0.35s cubic-bezier(.2, .8, .2, 1) both; }
+#status .top { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-align: center; -webkit-align-items: center; align-items: center; }
+#status .words { -webkit-box-flex: 1; -webkit-flex: 1; flex: 1; min-width: 0; }
+#status .swing-art { -webkit-flex: none; flex: none; position: relative; width: 116px; height: 152px; margin-right: 16px; }
+#status .letter { position: absolute; top: 0; left: 16px; width: 84px; height: 60px; fill: none; stroke: #F2F5FB; stroke-width: 10;
+  stroke-linecap: round; stroke-linejoin: round; }
+#status .swing { position: absolute; top: 46px; left: 2px; width: 112px; height: 106px; -webkit-transform-origin: 50% 0; transform-origin: 50% 0;
+  -webkit-animation: n-sway 5s ease-in-out -2.5s infinite alternate; animation: n-sway 5s ease-in-out -2.5s infinite alternate; }
+#status .ropes { position: absolute; left: 0; top: 0; width: 112px; height: 104px; stroke: rgba(242, 245, 251, 0.55); stroke-width: 2; stroke-linecap: round; }
+#status .robot { position: absolute; top: 14px; left: 4px; width: 104px; height: 87px; overflow: hidden; }
+#status .robot img { display: block; width: 104px; height: 104px; }
+#status .seat { position: absolute; left: 2px; top: 100px; width: 108px; height: 4px; border-radius: 2px; background: #F5AE62; }
+#status .name { font-size: 18px; font-weight: 500; letter-spacing: 0.4px; color: #8490AC; text-align: left; }
+#status .state { position: relative; margin-top: 4px; padding-left: 22px; font-size: 34px; line-height: 1.2; font-weight: 600; letter-spacing: -0.3px; color: #fff; }
+#status .state span { -webkit-animation: n-appear 0.3s ease-out both; animation: n-appear 0.3s ease-out both; }
+#status .dot { position: absolute; left: 0; top: 15px; width: 10px; height: 10px; border-radius: 50%; background: #F5AE62;
+  -webkit-animation: n-breathe 1.2s ease-in-out infinite alternate; animation: n-breathe 1.2s ease-in-out infinite alternate; }
+#status .when-ok, #status .when-bad { display: none; }
+#status [data-link="ok"] .when-wait, #status [data-link="bad"] .when-wait { display: none; }
+#status [data-link="ok"] .when-ok, #status [data-link="bad"] .when-bad { display: inline; }
+#status [data-link="ok"] .swing { -webkit-animation: n-swing 3s ease-in-out -1.5s infinite alternate; animation: n-swing 3s ease-in-out -1.5s infinite alternate; }
+#status [data-link="ok"] .seat, #status [data-link="ok"] .dot { background: #5FD39A; }
+#status [data-link="bad"] .seat, #status [data-link="bad"] .dot { background: #FF8A80; }
+#status [data-link="ok"] .dot, #status [data-link="bad"] .dot, #status [data-link="bad"] .swing { -webkit-animation: none; animation: none; }
+#status [data-link="bad"] .robot { opacity: 0.45; }
+#status .input { margin-top: 8px; font-size: 20px; color: #9DA9C6; word-wrap: break-word; }
+#status .input .bad { color: #FF8A80; }
+#status-picture:before { content: ' · '; color: #9DA9C6; }
+#status-picture:empty { display: none; }
+#status .last { margin-top: 24px; padding: 12px 20px 16px; border-radius: 20px; background: rgba(255, 255, 255, 0.06);
+  -webkit-animation: n-appear 0.3s ease-out both; animation: n-appear 0.3s ease-out both; }
+#status .last .label { font-size: 18px; color: #8490AC; text-align: left; }
+#status .last .text { margin-top: 4px; font-size: 22px; line-height: 1.3; font-weight: 600; color: #F2F5FB; text-align: left; word-wrap: break-word; }
+@-webkit-keyframes n-swing { from { -webkit-transform: rotate(-6deg); } to { -webkit-transform: rotate(6deg); } }
+@keyframes n-swing { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+@-webkit-keyframes n-sway { from { -webkit-transform: rotate(-2.5deg); } to { -webkit-transform: rotate(2.5deg); } }
+@keyframes n-sway { from { transform: rotate(-2.5deg); } to { transform: rotate(2.5deg); } }
+@-webkit-keyframes n-breathe { from { opacity: 1; } to { opacity: 0.35; } }
+@keyframes n-breathe { from { opacity: 1; } to { opacity: 0.35; } }
+
+/* ── Bekleme sahnesi ──────────────────────────────────────────────────── */
+#lobby { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 5; overflow: hidden; background: #050a1a; }
+#lobby-scene { position: absolute; left: -4%; top: -4%; width: 108%; height: 108%;
+  -webkit-animation: n-pan 40s ease-in-out infinite alternate; animation: n-pan 40s ease-in-out infinite alternate; }
+#lobby-scene > * { position: absolute; }
+#lobby-scene .sky { left: 0; top: 0; width: 100%; height: 100%; background: linear-gradient(180deg, #02040b 0%, #0a1426 40%, #142338 70%, #0b1220 100%); }
+#lobby-scene .moon { left: 72%; top: 14%; width: 210px; height: 210px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #f4f1e4 0%, #d9d6c8 55%, #b9b6a8 100%);
+  box-shadow: 0 0 80px 30px rgba(220, 230, 255, 0.25), 0 0 200px 80px rgba(150, 180, 230, 0.12); }
+#lobby-scene .cloud { height: 180px; border-radius: 60px; background: radial-gradient(ellipse at center, rgba(28, 40, 66, 0.9) 0%, rgba(28, 40, 66, 0) 70%); }
+#lobby-scene .cloud.one { left: 60%; top: 20%; width: 520px; -webkit-animation: n-drift 40s linear infinite alternate; animation: n-drift 40s linear infinite alternate; }
+#lobby-scene .cloud.two { left: 10%; top: 12%; width: 700px; opacity: 0.7; -webkit-animation: n-drift 55s linear infinite alternate-reverse; animation: n-drift 55s linear infinite alternate-reverse; }
+#lobby-scene .glow { left: -10%; bottom: 8%; width: 120%; height: 55%;
+  background: radial-gradient(ellipse at 50% 100%, rgba(255, 160, 80, 0.22) 0%, rgba(120, 140, 200, 0.12) 40%, rgba(0, 0, 0, 0) 70%); }
+#lobby-scene .light { left: 30%; bottom: 30%; width: 320px; height: 1200px; margin-left: -160px;
+  background: linear-gradient(0deg, rgba(230, 240, 255, 0.45), rgba(230, 240, 255, 0) 85%);
+  -webkit-transform-origin: 50% 100%; transform-origin: 50% 100%;
+  -webkit-clip-path: polygon(45% 100%, 55% 100%, 100% 0, 0 0); clip-path: polygon(45% 100%, 55% 100%, 100% 0, 0 0);
+  -webkit-animation: n-sweep 9s ease-in-out infinite alternate; animation: n-sweep 9s ease-in-out infinite alternate; }
+#lobby-scene .light.two { left: 58%; opacity: 0.6; -webkit-animation-duration: 13s; animation-duration: 13s;
+  -webkit-animation-direction: alternate-reverse; animation-direction: alternate-reverse; }
+#lobby-scene .skyline { left: 0; width: 100%; }
+#lobby-scene .skyline.far { bottom: 18%; height: 62%; fill: #1a2846; }
+#lobby-scene .skyline.near { bottom: 0; height: 48%; fill: #0b1426; }
+#lobby-scene .skyline rect { shape-rendering: crispEdges; }
+#lobby-scene .rooftop { left: 0; top: 0; width: 100%; height: 100%; fill: #020308; }
+#lobby-scene .rooftop .cloak { -webkit-transform-origin: 1350px 760px; transform-origin: 1350px 760px;
+  -webkit-animation: n-cloak 3s ease-in-out infinite; animation: n-cloak 3s ease-in-out infinite; }
+#lobby-scene .shadow { left: 0; top: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.75) 100%); }
+
+#lobby-english { position: absolute; left: 8%; right: 8%; bottom: 7%; z-index: 9; text-align: center;
+  font-size: 44px; line-height: 1.3; font-weight: 500; color: #f4f1e8; letter-spacing: 0.3px;
+  text-shadow: 0 2px 3px #000, 0 0 10px rgba(0, 0, 0, 0.8); opacity: 0;
+  -webkit-transition: opacity 0.35s ease; transition: opacity 0.35s ease; }
+#lobby-english.on { opacity: 1; }
+
+#lobby-card { position: absolute; top: 54px; left: 96px; z-index: 12; min-width: 620px; max-width: 760px;
+  padding: 28px 36px 26px; border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(10, 18, 42, 0.62);
+  -webkit-backdrop-filter: blur(30px) saturate(160%); backdrop-filter: blur(30px) saturate(160%);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  -webkit-animation: n-fade 0.8s cubic-bezier(.2, .8, .2, 1) both; animation: n-fade 0.8s cubic-bezier(.2, .8, .2, 1) both; }
+#lobby-card .title { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; margin-bottom: 18px; }
+#lobby-card .title img { width: 76px; height: 76px; margin-right: 18px; -webkit-animation: n-float 4s ease-in-out infinite; animation: n-float 4s ease-in-out infinite; }
+.wordmark { font-size: 46px; font-weight: 800; letter-spacing: 0.5px;
+  background: linear-gradient(180deg, #FFFFFF, #9FC2FF); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+#lobby-card ol { list-style: none; margin: 0; padding: 0; }
+#lobby-card li { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center;
+  padding: 9px 0; font-size: 28px; line-height: 1.3; color: #eef3ff; }
+#lobby-card li i { -webkit-flex: none; flex: none; display: inline-block; width: 42px; height: 42px; line-height: 42px; margin-right: 18px;
+  border-radius: 50%; text-align: center; font-size: 22px; font-style: normal; font-weight: 700; color: #fff;
+  background: linear-gradient(180deg, #2D8CFF, #00308A); box-shadow: 0 6px 18px rgba(45, 140, 255, 0.45); }
+#lobby-card .wait { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.12); font-size: 22px; color: #b9c6e4; }
+#lobby-card .dots { display: inline-block; margin-right: 12px; vertical-align: middle; }
+#lobby-card .dots i { display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; background: #2D8CFF;
+  -webkit-animation: n-dot 1.2s ease-in-out infinite; animation: n-dot 1.2s ease-in-out infinite; }
+#lobby-card .dots i:nth-child(2) { -webkit-animation-delay: 0.2s; animation-delay: 0.2s; }
+#lobby-card .dots i:nth-child(3) { -webkit-animation-delay: 0.4s; animation-delay: 0.4s; }
+#lobby-where { margin-top: 8px; font-size: 22px; color: #8d9bbd; }
+#lobby-where:empty { display: none; }
+
+#lobby-tag { position: absolute; top: 54px; right: 96px; z-index: 12; padding: 10px 22px; border-radius: 999px;
+  font-size: 22px; font-weight: 700; letter-spacing: 3px; color: #fff;
+  background: linear-gradient(180deg, #2D8CFF, #00308A); box-shadow: 0 10px 30px rgba(45, 140, 255, 0.45); }
+
+#lobby-pointer { position: absolute; left: 13%; bottom: 17%; z-index: 12; width: 420px;
+  -webkit-animation: n-bob 2.2s ease-in-out infinite; animation: n-bob 2.2s ease-in-out infinite; }
+#lobby-pointer span { display: inline-block; padding: 12px 24px; border-radius: 999px; font-size: 26px; font-weight: 700; color: #fff; white-space: nowrap;
+  background: rgba(10, 18, 42, 0.72); border: 1px solid rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+#lobby-pointer svg { display: block; width: 180px; height: 140px; margin: -4px 0 0 160px; overflow: visible;
+  fill: none; stroke: #5AA6FF; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round;
+  -webkit-filter: drop-shadow(0 0 8px rgba(45, 140, 255, 0.8)); filter: drop-shadow(0 0 8px rgba(45, 140, 255, 0.8)); }
+
+@-webkit-keyframes n-pan { from { -webkit-transform: none; } to { -webkit-transform: scale(1.06) translateX(-2%); } }
+@keyframes n-pan { from { transform: none; } to { transform: scale(1.06) translateX(-2%); } }
+@-webkit-keyframes n-drift { from { -webkit-transform: translateX(-80px); } to { -webkit-transform: translateX(80px); } }
+@keyframes n-drift { from { transform: translateX(-80px); } to { transform: translateX(80px); } }
+@-webkit-keyframes n-sweep { from { -webkit-transform: rotate(-24deg); } to { -webkit-transform: rotate(18deg); } }
+@keyframes n-sweep { from { transform: rotate(-24deg); } to { transform: rotate(18deg); } }
+@-webkit-keyframes n-cloak { 0%, 100% { -webkit-transform: none; } 50% { -webkit-transform: skewX(-6deg) scaleX(1.04); } }
+@keyframes n-cloak { 0%, 100% { transform: none; } 50% { transform: skewX(-6deg) scaleX(1.04); } }
+@-webkit-keyframes n-dot { 0%, 100% { opacity: 0.25; -webkit-transform: scale(0.8); } 50% { opacity: 1; -webkit-transform: scale(1.15); } }
+@keyframes n-dot { 0%, 100% { opacity: 0.25; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.15); } }
+@-webkit-keyframes n-bob { 0%, 100% { -webkit-transform: none; } 50% { -webkit-transform: translateY(10px); } }
+@keyframes n-bob { 0%, 100% { transform: none; } 50% { transform: translateY(10px); } }

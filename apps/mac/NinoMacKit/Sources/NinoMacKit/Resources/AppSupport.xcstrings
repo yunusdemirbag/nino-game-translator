@@ -1,0 +1,314 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "support.screen.noPicture": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّرت قراءة الشاشة: لم يرسل PS5 أي صورة بعد."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "পর্দার লেখা ধরা গেল না: PS5 এখনো ছবি পাঠায়নি।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't read the screen: the PS5 hasn't sent a picture yet."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi nabasa ang screen: wala pa ring larawang dumarating mula sa PS5."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "परदा पढ़ना संभव न हुआ: PS5 से अब तक चित्र नहीं आया।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak dapat membaca layar: PS5 belum mengirim gambar."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak dapat membaca skrin: PS5 belum menghantar gambar."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schermtekst onleesbaar: de PS5 stuurt nog geen beeld."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "อ่านหน้าจอไม่ได้: PS5 ยังไม่ได้ส่งภาพมา"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran okunamadı: PS5 görüntüsü daha ulaşmadı."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اسکرین نہیں پڑھی جا سکی: PS5 نے ابھی تک تصویر نہیں بھیجی۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể đọc màn hình: PS5 chưa gửi hình ảnh."
+          }
+        }
+      }
+    },
+    "support.screen.translating": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ ترجمة ما على الشاشة…"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "পর্দায় যা আছে, তা ভাষান্তর হচ্ছে…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Translating what's on the screen…"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isinasalin ang nasa screen…"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "परदे पर लिखी बातें हिंदी में बदल रहे हैं…"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menerjemahkan isi layar…"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menterjemah kandungan skrin…"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wat er in beeld staat wordt vertaald…"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กำลังแปลสิ่งที่อยู่บนหน้าจอ…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekrandaki yazılar çevriliyor…"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اسکرین کی تحریر کو ترجمے میں ڈھالا جا رہا ہے…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang dịch nội dung trên màn hình…"
+          }
+        }
+      }
+    },
+    "support.screen.noText": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يوجد نص على الشاشة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "পর্দায় পড়ার মতো কিছু নেই।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing to read on screen."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walang text sa screen."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "परदे पर पढ़ने लायक कुछ भी नहीं।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Layar tak memuat tulisan apa pun."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiada teks pada skrin."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen tekst in beeld gevonden."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่มีข้อความบนหน้าจอ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekranda yazı yok."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اسکرین پر پڑھنے کو کچھ نہیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có chữ nào trên màn hình."
+          }
+        }
+      }
+    },
+    "support.screen.failed %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فشلت ترجمة الشاشة: %@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "পর্দা ভাষান্তরে ব্যর্থতা: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen translation failed: %@"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi naisalin ang screen: %@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "परदे का भाषांतर विफल रहा: %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Penerjemahan layar gagal: %@"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terjemahan skrin gagal: %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scherm vertalen mislukt: %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แปลหน้าจอไม่สำเร็จ: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekran çevirisi olmadı: %@"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اسکرین کا ترجمہ ناکام رہا: %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dịch màn hình không thành công: %@"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

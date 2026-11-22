@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<resources>
+    <!-- Asıl tema Compose'ta; burada yalnız çizilmeden önceki pencere zemini. -->
+    <color name="nino_window">#EEF3FB</color>
+    <style name="Theme.Nino" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/nino_window</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<resources>
+    <string name="app_name" translatable="false">Nino Game Translator</string>
+    <string name="overlay_notice">Subtitles are drawn over the TV\'s HDMI picture</string>
+    <string name="to_overlay_dark">No picture came through inside Nino, so Nino now draws subtitles over the TV\'s own HDMI screen.</string>
+    <string name="to_overlay_chosen">Subtitles will now appear over the TV\'s own HDMI screen.</string>
+    <string name="press_input_again">Press the input button once more to pick your PS5.</string>
+    <string name="permission_settings_missing">Open Settings › Apps › Special app access › Display over other apps on the TV and turn Nino on. If your TV has no such setting, choose “Continue without permission”.</string>
+    <string name="permission_how">Nino on your computer grants this permission itself while installing the TV app (USB debugging must be on). You can also allow it on the TV: Settings › Apps › Special app access › Display over other apps › Nino.</string>
+    <string name="chooser_dark">HDMI %1$d is not sending a picture.</string>
+    <string name="chooser_empty">Nothing seems to be plugged into HDMI %1$d.</string>
+    <string name="chooser_pick">Pick the input your PS5 is on (arrows and OK, or number keys 1–4):</string>
+    <string name="chooser_still_dark">Still black on the right input? This TV may not hand its HDMI picture to apps, or HDCP may be blocking it. Try turning off Settings › System › HDMI › Enable HDCP on the PS5. Otherwise switch the TV to the PS5 input yourself and read the subtitles on your phone.</string>
+    <string name="chooser_no_access">This TV does not let apps open its HDMI inputs, so the PS5 picture cannot be shown inside Nino. Switch the TV to the PS5 input yourself and read the subtitles on your phone.</string>
+    <string name="chooser_overlay">Or let the TV show the PS5 on its own HDMI screen, with subtitles drawn on top.</string>
+    <string name="chooser_overlay_button">Draw over the TV\'s screen</string>
+    <string name="chooser_play_build">The Google Play version cannot draw over other screens. The version that Nino on your computer installs can.</string>
+    <string name="chooser_plugged">plugged in</string>
+    <string name="chooser_close">Close</string>
+</resources>

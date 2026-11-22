@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- SPDX-License-Identifier: AGPL-3.0-only -->
+  <!-- Copyright (C) 2026 Nino contributors -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <UseWPF>true</UseWPF>
+    <!-- Kimlik değişmez: Velopack, güvenlik duvarı kuralı ve kısayollar Nino.exe adına bağlı. -->
+    <AssemblyName>Nino</AssemblyName>
+    <RootNamespace>Nino.App</RootNamespace>
+    <ApplicationIcon>Assets\Nino.ico</ApplicationIcon>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <!-- Giriş noktası Program.Main: Velopack kancaları WPF'ten önce çalışmalı. -->
+    <StartupObject>Nino.App.Program</StartupObject>
+    <!-- App.xaml sıradan sayfa olarak derlenir (kendi Main'i üretilmez). -->
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <AssemblyTitle>Nino</AssemblyTitle>
+    <Product>Nino</Product>
+    <Company>Nino</Company>
+    <Copyright>AGPL-3.0. Uses chiaki-ng (AGPL-3.0).</Copyright>
+    <!-- Paket sunucusu adresi derlemede verilir (-p:NinoPacksUrl=...); boşsa paket indirme kapalı. -->
+    <NinoPacksUrl Condition="'$(NinoPacksUrl)' == ''"></NinoPacksUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="NinoPacksUrl" Value="$(NinoPacksUrl)" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Nino.ico" />
+    <Resource Include="Assets\*.png" />
+    <Resource Include="Assets\Bot\*.png" />
+    <Resource Include="Fonts\*.ttf" />
+    <None Include="Fonts\OFL-*.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!-- Lisans ve telif bildirimi uygulamanın yanında durur; Hakkında penceresi NOTICE'u buradan okur. -->
+    <None Include="..\..\..\..\NOTICE" Link="NOTICE" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="..\..\..\..\LICENSE" Link="LICENSE" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <PropertyGroup>
+    <!-- TV uygulaması paketleri (LG .ipk, Samsung .wgt, Android TV .apk) depo kökündeki dist/tv-app'ten gelir;
+         -p:NinoTvAppSource=... ile başka klasör verilebilir. Klasör ya da dosya yoksa derleme yine geçer. -->
+    <NinoTvAppSource Condition="'$(NinoTvAppSource)' == ''">$(MSBuildThisFileDirectory)..\..\..\..\dist\tv-app</NinoTvAppSource>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(NinoTvAppSource)\*.ipk;$(NinoTvAppSource)\*.wgt;$(NinoTvAppSource)\*.apk"
+          Link="tv-app\%(Filename)%(Extension)" Visible="false"
+          CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3537.50" />
+    <PackageReference Include="Velopack" Version="1.2.161" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nino.Core\Nino.Core.csproj" />
+    <ProjectReference Include="..\Nino.Translation\Nino.Translation.csproj" />
+    <ProjectReference Include="..\Nino.RemotePlay\Nino.RemotePlay.csproj" />
+    <ProjectReference Include="..\Nino.Shell\Nino.Shell.csproj" />
+    <ProjectReference Include="..\Nino.TvInstall\Nino.TvInstall.csproj" />
+  </ItemGroup>
+</Project>

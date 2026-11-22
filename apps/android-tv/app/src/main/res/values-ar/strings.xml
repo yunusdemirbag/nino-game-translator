@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<resources>
+    <string name="overlay_notice">يرسم التطبيق الترجمات على صورة HDMI الظاهرة على الشاشة</string>
+    <string name="to_overlay_dark">لم تصل الصورة إلى Nino، لذا ستظهر الترجمة الآن فوق شاشة HDMI الخاصة بالتلفاز.</string>
+    <string name="to_overlay_chosen">ستظهر الترجمة الآن فوق شاشة HDMI الخاصة بالتلفاز.</string>
+    <string name="press_input_again">اضغط زر المصدر مرة أخرى لاختيار PS5.</string>
+    <string name="permission_settings_missing">افتح في التلفاز: الإعدادات › التطبيقات › وصول خاص › العرض فوق التطبيقات الأخرى، ثم فعّل Nino. إن لم يوجد هذا الإعداد فاختر «المتابعة بدون إذن».</string>
+    <string name="permission_how">يمنح Nino على الكمبيوتر هذا الإذن بنفسه أثناء تثبيت تطبيق التلفاز (يجب تفعيل تصحيح USB). ويمكنك منحه من التلفاز: الإعدادات › التطبيقات › وصول خاص › العرض فوق التطبيقات الأخرى › Nino.</string>
+    <string name="chooser_dark">لا يرسل HDMI %1$d أي صورة.</string>
+    <string name="chooser_empty">لا يبدو أن شيئًا موصول بمنفذ HDMI %1$d.</string>
+    <string name="chooser_pick">اختر المنفذ الموصول به PS5 (الأسهم وموافق، أو الأرقام 1–4):</string>
+    <string name="chooser_still_dark">ما زالت الشاشة سوداء على المنفذ الصحيح؟ قد لا يمنح هذا التلفاز صورة HDMI للتطبيقات، أو قد يمنعها HDCP. جرّب إيقاف الإعدادات › النظام › HDMI › تمكين HDCP في PS5. وإلا فانتقل بالتلفاز إلى منفذ PS5 بنفسك واقرأ الترجمة على الهاتف.</string>
+    <string name="chooser_no_access">لا يسمح هذا التلفاز للتطبيقات بفتح منافذ HDMI، لذا لا يمكن عرض صورة PS5 داخل Nino. انتقل إلى منفذ PS5 بنفسك واقرأ الترجمة على الهاتف.</string>
+    <string name="chooser_overlay">أو دع التلفاز يعرض PS5 على شاشة HDMI الخاصة به، مع رسم الترجمة فوقها.</string>
+    <string name="chooser_overlay_button">الرسم فوق شاشة التلفاز</string>
+    <string name="chooser_play_build">لا يستطيع إصدار Google Play الرسم فوق الشاشات الأخرى، أما الإصدار الذي يثبّته Nino على الكمبيوتر فيستطيع.</string>
+    <string name="chooser_plugged">موصول</string>
+    <string name="chooser_close">إغلاق</string>
+</resources>

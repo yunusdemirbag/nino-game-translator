@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!-- required_version 2.4: 2016 Samsung TV'ler de kurabilsin. Sayfa ES5 olduğu için eski tarayıcıda çalışır.
+     İzinlerin hepsi "public" düzeyde; Samsung'un herkese verdiği geliştirici sertifikası yeter. -->
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets"
+        id="https://github.com/yunusdemirbag/nino-game-translator" version="@VERSION@" viewmodes="maximized">
+    <tizen:application id="NinoTVApps.Nino" package="NinoTVApps" required_version="2.4"/>
+    <content src="index.html"/>
+    <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
+    <icon src="icon.png"/>
+    <name>Nino Game Translator</name>
+    <author>Nino contributors</author>
+    <license>AGPL-3.0-only</license>
+    <access origin="*" subdomains="true"/>
+    <tizen:allow-navigation>*</tizen:allow-navigation>
+    <tizen:privilege name="http://tizen.org/privilege/tv.window"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
+    <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+    <tizen:privilege name="http://tizen.org/privilege/internet"/>
+    <tizen:privilege name="http://tizen.org/privilege/network.get"/>
+    <tizen:privilege name="http://tizen.org/privilege/power"/>
+    <tizen:profile name="tv-samsung"/>
+    <tizen:setting screen-orientation="landscape" context-menu="disable" background-support="disable"
+                   encryption="disable" install-location="auto" hwkey-event="enable"/>
+</widget>

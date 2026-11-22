@@ -1,0 +1,149 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Android telefon uygulaması (apps/android): JVM birim testleri ve hata ayıklama (debug) derlemesi.
+# İmza anahtarı kullanılmaz, Play Store'a yükleme yok.
+name: android
+
+on:
+  push:
+    paths:
+      - "apps/android/**"
+      - "apps/tv-web/src/fonts/**"
+      - "apps/windows/src/Nino.TvInstall/Samsung/ca/**"
+      - "core/NinoRemotePlay/scripts/**"
+      - "testdata/**"
+      - "NOTICE"
+      - ".github/workflows/android.yml"
+  pull_request:
+    paths:
+      - "apps/android/**"
+      - "apps/tv-web/src/fonts/**"
+      - "apps/windows/src/Nino.TvInstall/Samsung/ca/**"
+      - "core/NinoRemotePlay/scripts/**"
+      - "testdata/**"
+      - "NOTICE"
+      - ".github/workflows/android.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Depoda Gradle sarmalayıcısı yok; yerelde kullanılan sürüm sabitlenir.
+  GRADLE_VERSION: "9.9.1"
+
+jobs:
+  # PS5 kütüphanesi olmadan (yalnız Kotlin ve arayüz): testler ve debug APK.
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: apps/android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Gradle önbelleği
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-android-${{ runner.os }}-${{ env.GRADLE_VERSION }}-${{ hashFiles('apps/android/**/*.gradle', 'apps/android/gradle.properties') }}
+          restore-keys: gradle-android-${{ runner.os }}-${{ env.GRADLE_VERSION }}-
+      - name: Gradle kur
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl -fsSLo gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
+          echo "$(curl -fsSL "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip.sha256")  gradle.zip" | sha256sum -c -
+          unzip -q gradle.zip
+          echo "$RUNNER_TEMP/gradle-${GRADLE_VERSION}/bin" >> "$GITHUB_PATH"
+      - name: Testler ve debug derlemesi
+        run: gradle --no-daemon -Pnino.skipNative=true :core:test :app:testDebugUnitTest :app:assembleDebug
+      - name: Test raporları
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-test-raporlari
+          path: |
+            apps/android/core/build/reports/tests
+            apps/android/app/build/reports/tests
+          if-no-files-found: ignore
+
+  # PS5 Remote Play kütüphanesiyle tam debug derlemesi. build-remoteplay.sh macOS'a özgü
+  # (zsh, sysctl, NDK'nın darwin-x86_64 araçları), bu yüzden macOS'ta koşar.
+  native-debug:
+    runs-on: macos-26
+    timeout-minutes: 90
+    env:
+      NDK_VERSION: "27.0.12077973"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Araçlar (pkg-config, protoc)
+        run: |
+          command -v pkg-config || brew install pkgconf
+          command -v protoc     || brew install protobuf
+          command -v cmake      || brew install cmake
+      - name: NDK ve CMake (Android SDK)
+        run: |
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses >/dev/null || true
+          "$SDKM" --install "ndk;${NDK_VERSION}" "cmake;3.22.1" >/dev/null
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/${NDK_VERSION}" >> "$GITHUB_ENV"
+      - name: Gradle önbelleği
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-android-${{ runner.os }}-${{ env.GRADLE_VERSION }}-${{ hashFiles('apps/android/**/*.gradle', 'apps/android/gradle.properties') }}
+          restore-keys: gradle-android-${{ runner.os }}-${{ env.GRADLE_VERSION }}-
+      - name: Gradle kur
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl -fsSLo gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
+          echo "$(curl -fsSL "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip.sha256")  gradle.zip" | shasum -a 256 -c -
+          unzip -q gradle.zip
+          echo "$RUNNER_TEMP/gradle-${GRADLE_VERSION}/bin" >> "$GITHUB_PATH"
+
+      # Derlenmiş Remote Play kütüphanesi (arm64-v8a); kaynak sürümleri ve betik değişmedikçe önbellekten.
+      # restore/save ayrı: Gradle adımı başarısız olsa da derlenen kütüphane önbelleğe yazılır.
+      - name: Remote Play (Android) önbelleği
+        id: rp
+        uses: actions/cache/restore@v4
+        with:
+          path: apps/android/.remoteplay/arm64-v8a
+          key: remoteplay-android-arm64-${{ env.NDK_VERSION }}-${{ hashFiles('core/NinoRemotePlay/scripts/fetch-deps.sh', 'apps/android/scripts/build-remoteplay.sh') }}
+      - name: Remote Play kaynakları ve derleme
+        if: steps.rp.outputs.cache-hit != 'true'
+        run: |
+          core/NinoRemotePlay/scripts/fetch-deps.sh
+          python3 -m venv core/NinoRemotePlay/.tools/venv
+          core/NinoRemotePlay/.tools/venv/bin/python -m pip install -q protobuf
+          NINO_PYTHON="$PWD/core/NinoRemotePlay/.tools/venv/bin/python" apps/android/scripts/build-remoteplay.sh arm64-v8a
+      - name: Remote Play (Android) önbelleğe yaz
+        if: steps.rp.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: apps/android/.remoteplay/arm64-v8a
+          key: ${{ steps.rp.outputs.cache-primary-key }}
+
+      - name: Debug derlemesi (yerel kütüphaneyle)
+        working-directory: apps/android
+        run: gradle --no-daemon :app:assembleDebug
+      - name: Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: nino-android-debug
+          path: apps/android/app/build/outputs/apk/debug/*.apk
+          retention-days: 7

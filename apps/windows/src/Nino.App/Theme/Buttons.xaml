@@ -1,0 +1,103 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!--
+  Düğmeler. Tür verilmeyen her düğme ikincildir. Adlı stiller: Button.Primary, Button.Secondary, Button.Danger,
+  Button.Ghost, Button.Icon. Büyük düğme için MinHeight="{DynamicResource size.buttonLarge}" verin.
+  Durumlar animasyonsuz: üstüne gelince çerçeve opaklığı 0,92; basılıyken 0,8 (birincilde zemin accentHi);
+  devre dışı bütün düğme 0,4; odak halkası yalnız klavye odağında (FocusVisual.Control).
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="Base.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <!-- Ortak çerçeve: köşeli zemin, ortalı içerik. Basılı tetikleyici sonra gelir (üstüne gelmeyi ezer). -->
+  <ControlTemplate x:Key="Button.Chrome" TargetType="ButtonBase">
+    <Border x:Name="Chrome" SnapsToDevicePixels="True" CornerRadius="{DynamicResource radius.control}"
+            Padding="{TemplateBinding Padding}" BorderThickness="{TemplateBinding BorderThickness}"
+            BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+      <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+        <ContentPresenter.Resources>
+          <Style TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}" />
+        </ContentPresenter.Resources>
+      </ContentPresenter>
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter TargetName="Chrome" Property="Opacity" Value="0.92" />
+      </Trigger>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter TargetName="Chrome" Property="Opacity" Value="0.8" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <Style x:Key="Button.Base" TargetType="ButtonBase">
+    <Setter Property="Template" Value="{StaticResource Button.Chrome}" />
+    <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual.Control}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="20,0" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="MinHeight" Value="{DynamicResource size.buttonHeight}" />
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Style.Triggers>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Opacity" Value="0.4" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="Button.Secondary" TargetType="Button" BasedOn="{StaticResource Button.Base}">
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="BorderBrush" Value="{DynamicResource borderBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+    <Setter Property="Background" Value="{DynamicResource surface2Brush}" />
+  </Style>
+
+  <!-- Her düğmenin varsayılanı ikincil düğmedir. -->
+  <Style TargetType="Button" BasedOn="{StaticResource Button.Secondary}" />
+
+  <!-- Birincil: basılıyken zemin accentHi. -->
+  <Style x:Key="Button.Primary" TargetType="Button" BasedOn="{StaticResource Button.Base}">
+    <Style.Triggers>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="Background" Value="{DynamicResource accentHiBrush}" />
+      </Trigger>
+    </Style.Triggers>
+    <Setter Property="Foreground" Value="{DynamicResource onAccentBrush}" />
+    <Setter Property="Background" Value="{DynamicResource accentBrush}" />
+  </Style>
+
+  <Style x:Key="Button.Danger" TargetType="Button" BasedOn="{StaticResource Button.Base}">
+    <Setter Property="Foreground" Value="{DynamicResource dangerBrush}" />
+    <Setter Property="Background" Value="{DynamicResource dangerSoftBrush}" />
+  </Style>
+
+  <Style x:Key="Button.Ghost" TargetType="Button" BasedOn="{StaticResource Button.Base}">
+    <Setter Property="Padding" Value="12,0" />
+    <Setter Property="Foreground" Value="{DynamicResource accentTextBrush}" />
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+
+  <!-- Simge düğmesi: 40 × 40, içerik bir simge karakteri (ör. "&#xE713;"). -->
+  <Style x:Key="Button.Icon" TargetType="Button" BasedOn="{StaticResource Button.Secondary}">
+    <Setter Property="Height" Value="40" />
+    <Setter Property="Width" Value="40" />
+    <Setter Property="MinHeight" Value="0" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="FontSize" Value="16" />
+    <Setter Property="FontWeight" Value="Normal" />
+    <Setter Property="FontFamily" Value="{DynamicResource font.icon}" />
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+  </Style>
+</ResourceDictionary>

@@ -1,0 +1,15 @@
+{
+  "id": "com.ninotranslator.tv",
+  "version": "@VERSION@",
+  "vendor": "Nino",
+  "type": "web",
+  "main": "index.html",
+  "title": "Nino Game Translator",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgColor": "#000000",
+  "resolution": "1920x1080",
+  "requiredACG": [],
+  "disableBackHistoryAPI": true,
+  "screenSaverProperties": { "preferredType": 2 }
+}

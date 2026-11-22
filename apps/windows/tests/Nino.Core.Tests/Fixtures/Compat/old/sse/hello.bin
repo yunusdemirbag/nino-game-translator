@@ -1,0 +1,6 @@
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Content-Length: 14
+Connection: close
+
+{"app":"nino"}

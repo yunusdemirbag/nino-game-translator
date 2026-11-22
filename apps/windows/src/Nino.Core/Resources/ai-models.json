@@ -1,0 +1,15 @@
+{
+  "_about": "Yapay zekâ çevirisinin model listesi (gömülü kaynak). Hizmet başına dizi; ilk model varsayılandır. text: arayüz kataloğundaki metin anahtarı. effort ve thinking: hizmetin akıl yürütme ayarına giden değer. freeTier: ücretsiz anahtarla kullanılabilir. requestsPerMinute: Nino'nun bu modele dakikada en çok kaç istek gönderdiği (temkinli seçilmiş sınır).",
+  "gemini": [
+    { "id": "gemini-3.5-flash-lite", "text": "ai.model.fast", "freeTier": true, "requestsPerMinute": 15 },
+    { "id": "gemini-3.6-flash", "text": "ai.model.better", "thinking": "LOW", "freeTier": true, "requestsPerMinute": 10 }
+  ],
+  "openai": [
+    { "id": "gpt-6-luna", "text": "ai.model.fast", "effort": "none" },
+    { "id": "gpt-6.1-terra", "text": "ai.model.better", "effort": "none" }
+  ],
+  "claude": [
+    { "id": "claude-haiku-5-5", "text": "ai.model.fast", "effort": "low", "thinking": "disabled" },
+    { "id": "claude-sonnet-5-5", "text": "ai.model.better", "effort": "low", "thinking": "between_tools" }
+  ]
+}

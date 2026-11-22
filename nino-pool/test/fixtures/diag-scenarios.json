@@ -1,0 +1,318 @@
+{
+  "about": "Otomatik teşhis senaryoları (tarif: NinoCore docs/tarif/otomatik-teshis.md; tarif esastır). Her senaryo: saniye cinsinden zaman çizelgesi [t, iz kodu, sayı?] ve bekçinin göndermesi beklenen bildirimler. Varsayılan eşikler geçerli. `at`: kuralın koşulunun İLK sağlandığı saniye (tetik anı; gönderim kuyrukla sonra olabilir). `dropCodes`: zaman çizelgesindeki tv.drop adımlarının sırayla kopma nedeni. `state`: bekçinin o oturumda gördüğü sabit durum. Uygulamalar bunu birim testi olarak çalıştırır.",
+  "scenarios": [
+    {
+      "name": "PS5 ağ gidince koptu, 3 dakikada gelmedi",
+      "timeline": [
+        [
+          0,
+          "session.start"
+        ],
+        [
+          600,
+          "net.down"
+        ],
+        [
+          601,
+          "ps5.drop"
+        ],
+        [
+          640,
+          "ps5.retry",
+          1
+        ],
+        [
+          700,
+          "ps5.retry",
+          2
+        ],
+        [
+          800,
+          "ps5.retry",
+          3
+        ]
+      ],
+      "expect": [
+        {
+          "at": 781,
+          "rule": "ps5.no_return",
+          "cause": "network_lost",
+          "sev": "error"
+        }
+      ]
+    },
+    {
+      "name": "PS5 koptu ama 2 dakikada geri geldi",
+      "timeline": [
+        [
+          0,
+          "session.start"
+        ],
+        [
+          600,
+          "ps5.drop"
+        ],
+        [
+          720,
+          "ps5.connect"
+        ]
+      ],
+      "expect": []
+    },
+    {
+      "name": "Kullanıcı durdurdu: kopma bildirilmez",
+      "timeline": [
+        [
+          0,
+          "session.start"
+        ],
+        [
+          300,
+          "session.stop"
+        ],
+        [
+          301,
+          "ps5.drop"
+        ]
+      ],
+      "expect": []
+    },
+    {
+      "name": "Bilgisayar uyudu, uyanınca PS5 yok: susturulur",
+      "timeline": [
+        [
+          0,
+          "session.start"
+        ],
+        [
+          500,
+          "sys.sleep"
+        ],
+        [
+          4000,
+          "sys.wake"
+        ],
+        [
+          4001,
+          "ps5.drop"
+        ],
+        [
+          4100,
+          "ps5.connect"
+        ]
+      ],
+      "expect": [],
+      "note": "Kopma uyanıştan sonraki 2 dk içinde: susturulur (ayrıca 99 sn'de geri geldi)."
+    },
+    {
+      "name": "TV 10 dakikada 3 kez koptu (yazma hatası)",
+      "timeline": [
+        [
+          0,
+          "session.start"
+        ],
+        [
+          100,
+          "tv.connect"
+        ],
+        [
+          200,
+          "tv.drop",
+          0
+        ],
+        [
+          205,
+          "tv.connect"
+        ],
+        [
+          400,
+          "tv.drop",
+          0
+        ],
+        [
+          405,
+          "tv.connect"
+        ],
+        [
+          600,
+          "tv.drop",
+          0
+        ]
+      ],
+      "dropCodes": [
+        "write_error",
+        "write_error",
+        "timeout"
+      ],
+      "expect": [
+        {
+          "at": 600,
+          "rule": "tv.flapping",
+          "cause": "write_error",
+          "sev": "warn"
+        }
+      ]
+    },
+    {
+      "name": "Kareler geliyor, 15 dakika hiç yazı yok, kareler kararık",
+      "timeline": [
+        [
+          0,
+          "session.start"
+        ],
+        [
+          0,
+          "ps5.frame",
+          30
+        ],
+        [
+          900,
+          "ocr.empty"
+        ]
+      ],
+      "state": {
+        "frameLuma": 4
+      },
+      "expect": [
+        {
+          "at": 900,
+          "rule": "ocr.silent",
+          "cause": "video_black",
+          "sev": "info"
+        }
+      ],
+      "note": "frameLuma ≤ 16 → video_black."
+    },
+    {
+      "name": "Diyalogsuz oynanış: 14. dakikada tek satır okundu, bildirim yok",
+      "timeline": [
+        [
+          0,
+          "session.start"
+        ],
+        [
+          0,
+          "ps5.frame",
+          30
+        ],
+        [
+          840,
+          "ocr.text"
+        ],
+        [
+          1500,
+          "ocr.empty"
+        ]
+      ],
+      "expect": []
+    },
+    {
+      "name": "Çeviri hakkı doldu: 12 isteğin 8'i 429",
+      "timeline": [
+        [
+          0,
+          "session.start"
+        ],
+        [
+          60,
+          "tr.error",
+          429
+        ],
+        [
+          61,
+          "tr.error",
+          429
+        ],
+        [
+          62,
+          "tr.error",
+          429
+        ],
+        [
+          63,
+          "tr.error",
+          429
+        ],
+        [
+          64,
+          "tr.error",
+          429
+        ],
+        [
+          65,
+          "tr.error",
+          429
+        ],
+        [
+          66,
+          "tr.error",
+          429
+        ],
+        [
+          67,
+          "tr.error",
+          429
+        ],
+        [
+          68,
+          "tr.ok"
+        ],
+        [
+          69,
+          "tr.ok"
+        ],
+        [
+          70,
+          "tr.ok"
+        ],
+        [
+          71,
+          "tr.ok"
+        ]
+      ],
+      "expect": [
+        {
+          "at": 69,
+          "rule": "tr.errors",
+          "cause": "quota",
+          "sev": "warn"
+        }
+      ],
+      "note": "t=69'da 10. istek: son 10 istekte 8 hata (%80 > %30), en az 10 istek şartı ilk kez sağlanıyor."
+    },
+    {
+      "name": "Aynı oturumda ikinci kez: aynı kural bir kez gider",
+      "timeline": [
+        [
+          0,
+          "session.start"
+        ],
+        [
+          100,
+          "ps5.drop"
+        ],
+        [
+          400,
+          "ps5.connect"
+        ],
+        [
+          500,
+          "ps5.drop"
+        ],
+        [
+          900,
+          "ps5.connect"
+        ]
+      ],
+      "expect": [
+        {
+          "at": 280,
+          "rule": "ps5.no_return",
+          "cause": "timeout",
+          "sev": "error"
+        }
+      ],
+      "note": "İkinci kopma (500, 400 sn dönmedi) da eşiği aşar ama aynı kural oturumda bir kez gider. Sebep işareti yok → timeout."
+    }
+  ]
+}

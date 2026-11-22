@@ -1,0 +1,93 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Her TV'de 1920 piksel genişlikte düzenlenir. -->
+  <meta name="viewport" content="width=1920">
+  <title>Nino</title>
+  <link rel="stylesheet" href="nino.css">
+</head>
+<body>
+  <div id="hdmi"></div>
+
+  <!-- Bağlı değilken oynayan sinematik bekleme sahnesi; sahnenin çizimi js/scene.js'te. -->
+  <section id="lobby" class="off">
+    <div id="lobby-scene"></div>
+    <div id="lobby-english"></div>
+    <div id="lobby-card" class="glass-card">
+      <div class="title"><img src="img/logo.png" alt=""><span class="wordmark">Nino</span></div>
+      <ol>
+        <li><i>1</i><span data-say="step1"></span></li>
+        <li><i>2</i><span data-say="step2"></span></li>
+        <li><i>3</i><span data-say="step3"></span></li>
+      </ol>
+      <div class="wait"><span class="dots"><i></i><i></i><i></i></span><span data-say="awaiting"></span></div>
+      <div id="lobby-where"></div>
+    </div>
+    <div id="lobby-pointer">
+      <span data-say="pointer"></span>
+      <svg viewBox="0 0 220 170"><path d="M20,20 Q180,22 196,150"/><polyline points="178,128 196,154 212,126"/></svg>
+    </div>
+    <div id="lobby-tag" data-say="previewTag"></div>
+  </section>
+
+  <div id="areas" class="off"></div>
+  <div id="board" class="off"></div>
+  <img id="watermark" class="off" src="img/nino-badge.png" alt="">
+  <div id="shade" class="off"></div>
+  <div id="caption" class="off">
+    <div class="line older off"><span></span></div>
+    <div class="line old off"><span></span></div>
+    <span class="current"></span>
+  </div>
+
+  <div id="demo-note" class="note off"><b data-say="previewTag"></b><span data-say="previewNote"></span></div>
+  <div id="source-note" class="note off"><b data-say="autoInputTitle"></b><span data-say="autoInputHow"></span><small data-say="autoInputClose"></small></div>
+
+  <div id="no-signal" class="off">
+    <div class="box">
+      <b data-say="signalTitle"></b>
+      <p class="why"></p>
+      <div class="choices"></div>
+      <p class="help" data-say="signalHelp"></p>
+    </div>
+  </div>
+
+  <aside id="status" class="off">
+    <div class="top" data-link="wait">
+      <div class="swing-art">
+        <div class="swing">
+          <svg class="ropes" viewBox="0 0 112 104"><line x1="19" y1="0" x2="5" y2="101"/><line x1="93" y1="0" x2="107" y2="101"/></svg>
+          <span class="robot"><img src="img/nino-bot.png" alt="" onerror="this.style.display='none'"></span>
+          <i class="seat"></i>
+        </div>
+        <svg class="letter" viewBox="0 0 84 60"><polyline points="5,55 5,5 79,55 79,5"/></svg>
+      </div>
+      <div class="words">
+        <div class="name" data-say="brandName"></div>
+        <div class="state"><i class="dot"></i><span class="when-ok" data-say="stateOk"></span><span class="when-wait" data-say="stateWait"></span><span class="when-bad" data-say="stateBad"></span></div>
+        <div class="input"><span data-say="hdmi"></span> <span id="status-port">-</span><span id="status-picture"></span></div>
+      </div>
+    </div>
+    <div id="status-last" class="last off">
+      <div class="label" data-say="lastLabel"></div>
+      <div class="text" dir="auto"></div>
+    </div>
+  </aside>
+
+  <script src="config.js"></script>
+  <script src="platform.js"></script>
+  <script src="js/strings.js"></script>
+  <script src="js/protocol.js"></script>
+  <script src="js/text.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/caption.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/telemetry.js"></script>
+  <script src="js/diag.js"></script>
+  <script src="js/link.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

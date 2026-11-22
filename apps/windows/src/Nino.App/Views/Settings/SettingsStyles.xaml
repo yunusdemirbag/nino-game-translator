@@ -1,0 +1,58 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!-- Ayarlar penceresinin kenar çubuğu satırı (ayarlar tarifi §1). Şablonlar ayrı kaynak, stiller onları kullanır. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Liste: yalnız kaydırılan öğeler; çerçeve ve zemin yok. -->
+  <ControlTemplate x:Key="Settings.SidebarListTemplate" TargetType="ListBox">
+    <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False">
+      <ItemsPresenter />
+    </ScrollViewer>
+  </ControlTemplate>
+
+  <!-- Satır: üstüne gelince ve seçiliyken surface2; seçili satır textPrimary ve yarı kalın; klavye odağında halka. -->
+  <ControlTemplate x:Key="Settings.SidebarItemTemplate" TargetType="ListBoxItem">
+    <Border x:Name="Box" SnapsToDevicePixels="True" Padding="{TemplateBinding Padding}"
+            CornerRadius="{DynamicResource radius.control}" BorderThickness="1" BorderBrush="Transparent"
+            Background="Transparent">
+      <ContentPresenter VerticalAlignment="Center" />
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsKeyboardFocused" Value="True">
+        <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource accentTextBrush}" />
+      </Trigger>
+      <Trigger Property="IsSelected" Value="True">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+        <Setter TargetName="Box" Property="Background" Value="{DynamicResource surface2Brush}" />
+      </Trigger>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter TargetName="Box" Property="Background" Value="{DynamicResource surface2Brush}" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <Style x:Key="Settings.SidebarList" TargetType="ListBox">
+    <Setter Property="Template" Value="{StaticResource Settings.SidebarListTemplate}" />
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle" />
+    <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+
+  <Style x:Key="Settings.SidebarItem" TargetType="ListBoxItem">
+    <Setter Property="Template" Value="{StaticResource Settings.SidebarItemTemplate}" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+    <Setter Property="Margin" Value="0,0,0,4" />
+    <Setter Property="MinHeight" Value="40" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="Padding" Value="12,0" />
+  </Style>
+</ResourceDictionary>

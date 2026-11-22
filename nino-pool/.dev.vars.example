@@ -1,0 +1,3 @@
+# Yerelde denemek için: bu dosyayı .dev.vars olarak kopyala.
+EXPORT_TOKEN=yerel-deneme-anahtari
+INSTALL_SALT=yerel-tuz

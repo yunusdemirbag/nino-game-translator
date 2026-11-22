@@ -1,0 +1,87 @@
+[
+ {
+  "input": "Hello there.",
+  "canon": "hello there",
+  "key": "12998c017066eb0d"
+ },
+ {
+  "input": "Run.",
+  "canon": "run",
+  "key": "acba25512100f80b"
+ },
+ {
+  "input": "Run?",
+  "canon": "run",
+  "key": "acba25512100f80b"
+ },
+ {
+  "input": "  RUN!!  ",
+  "canon": "run",
+  "key": "acba25512100f80b"
+ },
+ {
+  "input": "Don’t move — I mean it.",
+  "canon": "don t move i mean it",
+  "key": "93fc917167e9fd44"
+ },
+ {
+  "input": "<i>Stay</i> <b>close</b>, kid.",
+  "canon": "stay close kid",
+  "key": "f4d879fc9459216d"
+ },
+ {
+  "input": "Café au lait, s'il vous plaît.",
+  "canon": "cafe au lait s il vous plait",
+  "key": "8ca20544acf5ff80"
+ },
+ {
+  "input": "İSTANBUL'a gidiyoruz, ışıklar sönük.",
+  "canon": "istanbul a gidiyoruz ısıklar sonuk",
+  "key": "045e433b17c32b57"
+ },
+ {
+  "input": "ﬁnal ＡＲＥＮＡ 2049",
+  "canon": "final arena 2049",
+  "key": "eeb0965527024ec8"
+ },
+ {
+  "input": "Level 3: The Docks",
+  "canon": "level 3 the docks",
+  "key": "a2ad9f31635030a9"
+ },
+ {
+  "input": "...",
+  "canon": "",
+  "key": ""
+ },
+ {
+  "input": "<br>",
+  "canon": "",
+  "key": ""
+ },
+ {
+  "input": "",
+  "canon": "",
+  "key": ""
+ },
+ {
+  "input": "Tab\there\nnew line",
+  "canon": "tab here new line",
+  "key": "60d0380b422ab06d"
+ },
+ {
+  "input": "Ağaç, çiçek, şehir, göl, üzüm.",
+  "canon": "agac cicek sehir gol uzum",
+  "key": "526ebde6c686f000"
+ },
+ {
+  "input": "Naïve résumé, déjà vu.",
+  "canon": "naive resume deja vu",
+  "key": "e0e93b9933882f59"
+ },
+ {
+  "input": "a < b and c > d",
+  "canon": "a d",
+  "key": "f6a835b61e0d9fbb"
+ }
+]

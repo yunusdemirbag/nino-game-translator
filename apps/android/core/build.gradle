@@ -1,0 +1,23 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Nino contributors
+// Nino çekirdeği: okuma hattı, çeviri, paketler, bağlantı protokolü. Saf Kotlin, Android'e bağlı değil.
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'com.android.lint'
+}
+
+java { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+kotlin { jvmToolchain(17) }
+
+dependencies {
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+// Paket deneme verisi Nino'nun kendisi (src/test/resources/packs, make_fixtures.py). Sözlük ve model listesi uygulamanın
+// varlıklarından okunur. nino.fixtures yalnız kullanıcının GTA 6 ekran karelerini (gta6-*.jpg) bulmak için.
+test {
+    systemProperty 'nino.assets', file('../app/src/main/assets').absolutePath
+    systemProperty 'nino.fixtures', file('../../../testdata/gta6').absolutePath
+    maxHeapSize = '1g'
+}

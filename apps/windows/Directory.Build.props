@@ -1,0 +1,32 @@
+<Project>
+  <!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Yeni Windows (ve Linux) sürümü; eski kurulumun üstüne Velopack güncellemesi olarak kurulur. -->
+    <Version>4.5.0</Version>
+    <Company>Nino</Company>
+    <Product>Nino</Product>
+    <Copyright>Copyright (C) 2026 Nino contributors. AGPL-3.0-only.</Copyright>
+    <!-- WPF projesi Mac'te de derlensin (çalıştırmak için Windows gerekir). -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <!-- Derleme çıktısına (pdb, sourcelink.json, derleme öznitelikleri) git uzak depo adresi ya da işlem kimliği girmesin:
+         SourceLink kapalı, depo adresi yayımlanmaz, git'e sorulmaz. -->
+    <EnableSourceLink>false</EnableSourceLink>
+    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+    <PublishRepositoryUrl>false</PublishRepositoryUrl>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and !$(MSBuildProjectName.EndsWith('.Tests'))">
+    <!-- Yayın derlemesinde pdb'deki yollar /_/ köküne eşlenir (bilgisayarın klasör adları çıktıya girmez).
+         Debug ve testlerde kapalı: testler örnek dosyalarını [CallerFilePath] ile gerçek yoldan bulur. -->
+    <DeterministicSourcePaths>true</DeterministicSourcePaths>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- git sorulmadığı için kaynak kökü elle verilir (belirlenimci yollar bunu ister). -->
+    <SourceRoot Include="$(MSBuildThisFileDirectory)" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,106 @@
+{
+ "signatures": [
+  {
+   "input": "We meet at the old lighthouse.",
+   "folded": "wemeetattheoidiighthouse",
+   "length": 24,
+   "bits": 128,
+   "bloom": "80105304e0081000080040104800001c"
+  },
+  {
+   "input": "Stay low, keep quiet.",
+   "folded": "stayiowkeepquiet",
+   "length": 16,
+   "bits": 64,
+   "bloom": "40000c2361210424"
+  },
+  {
+   "input": "The harbor lights went out right after midnight, and nobody saw the boat leave.",
+   "folded": "theharboriightswentoutrightaftermidnightandnobodysawtheboatieave",
+   "length": 64,
+   "bits": 256,
+   "bloom": "0100618038140104a1838024002100584000c344024c08400a000001224008dd"
+  },
+  {
+   "input": "Wh0 left the 1antern by the d00r?",
+   "folded": "whoiefttheianternbythedoor",
+   "length": 26,
+   "bits": 128,
+   "bloom": "0380410388e040400001040201000812"
+  },
+  {
+   "input": "Çok güzel bir gün, değil mi?",
+   "folded": "cokguzeibirgundegiimi",
+   "length": 21,
+   "bits": 64,
+   "bloom": "78480003460200d4"
+  },
+  {
+   "input": "Short line",
+   "folded": "shortiine",
+   "length": null
+  },
+  {
+   "input": "Straße, Æsir, Øresund, Œuvre — all folded letters here.",
+   "folded": "straseasiroresundouvreaiifoidediettershere",
+   "length": 42,
+   "bits": 128,
+   "bloom": "0d180302431014820b5298a020100b85"
+  },
+  {
+   "input": "<i>Whisper</i> softly, the guards are sleeping now.",
+   "folded": "whispersoftiytheguardsaresieepingnow",
+   "length": 36,
+   "bits": 128,
+   "bloom": "0000830d200a100b092018a09c022094"
+  },
+  {
+   "input": "ﬁve ﬁsh ﬂoat in the ﬁord tonight",
+   "folded": "fivefishfioatinthefiordtonight",
+   "length": 30,
+   "bits": 128,
+   "bloom": "42012006800209420920046000002158"
+  },
+  {
+   "input": "GAETANO: Pass me the rope.",
+   "folded": "gaetanopassmetherope",
+   "length": 20,
+   "bits": 64,
+   "bloom": "0117023d80280058"
+  },
+  {
+   "input": "x1y2z3 mixed readings everywhere",
+   "folded": "xiyzmixedreadingseverywhere",
+   "length": 27,
+   "bits": 128,
+   "bloom": "4c2200002c02200c2b12000088080060"
+  }
+ ],
+ "similarities": [
+  {
+   "query": "We meet at the old lighthouse tonight.",
+   "entry": "We meet at the old lighthouse tonight.",
+   "similarity": 100.0
+  },
+  {
+   "query": "We meet at the old lighthouse tonight.",
+   "entry": "We rneet at the oId Iighthouse tonight.",
+   "similarity": 84.61538461538461
+  },
+  {
+   "query": "The harbor lights went out right after midnight, and nobody saw the boat leave.",
+   "entry": "The harb0r lights went out rigbt after midnigt, and nobudy saw the boat leave",
+   "similarity": 88.59180035650624
+  },
+  {
+   "query": "The harbor lights went out right after midnight, and nobody saw the boat leave.",
+   "entry": "Purple elephants keep dancing in the warm summer rain.",
+   "similarity": -6.666666666666667
+  },
+  {
+   "query": "Stay low, keep quiet and follow me.",
+   "entry": "Stay low, keep quiet.",
+   "similarity": 61.6
+  }
+ ]
+}

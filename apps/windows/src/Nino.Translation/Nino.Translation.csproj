@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.31.1" />
+    <PackageReference Include="Microsoft.ML.Tokenizers" Version="2.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="ct2\worker.py" CopyToOutputDirectory="PreserveNewest" />
+    <ProjectReference Include="..\Nino.Core\Nino.Core.csproj" />
+    <InternalsVisibleTo Include="Nino.Translation.Tests" />
+  </ItemGroup>
+</Project>

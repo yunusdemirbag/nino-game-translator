@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# LG webOS ve Samsung Tizen TV sayfası (apps/tv-web): testler ve imzasız paketlerin (.ipk/.wgt) üretimi.
+# Paketler yalnız iş çıktısı olarak saklanır; mağazaya ya da TV'ye gönderilmez.
+name: tv-web
+
+on:
+  push:
+    paths:
+      - "apps/tv-web/**"
+      - ".github/workflows/tv-web.yml"
+  pull_request:
+    paths:
+      - "apps/tv-web/**"
+      - ".github/workflows/tv-web.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tv-web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "26"
+      # package.py yalnız Python'un kendi kütüphanesini kullanır; çalıştırıcıdaki python3 yeter.
+      # Testler (package.test.js paketleri kendisi de üretip yapısını denetler).
+      - name: Testler
+        run: node --test apps/tv-web/test/
+      - name: Paketleri üret
+        run: python3 apps/tv-web/tools/package.py
+      - name: Paketler
+        uses: actions/upload-artifact@v4
+        with:
+          name: nino-tv-web-paketleri
+          path: |
+            apps/tv-web/dist/*.ipk
+            apps/tv-web/dist/*.wgt
+          retention-days: 7

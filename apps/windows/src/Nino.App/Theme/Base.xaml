@@ -1,0 +1,24 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!-- Öbür sözlüklerin StaticResource ile kullandığı ortak parçalar; her biri bunu kendi içine katar. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Şablon içindeki yazılar için: kaydırır, boyu ezmez (boy ve renk denetimden kalıtılır). -->
+  <Style x:Key="Text.Inherit" TargetType="TextBlock">
+    <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+  </Style>
+
+  <!-- Klavye odağı: denetimin üstünde aynı köşeli (14) 2 px accentText halka. Yalnız klavyeyle gelinince görünür. -->
+  <Style x:Key="FocusVisual.Control">
+    <Setter Property="Control.Template">
+      <Setter.Value>
+        <ControlTemplate>
+          <Border BorderBrush="{DynamicResource accentTextBrush}" BorderThickness="2"
+                  CornerRadius="{DynamicResource radius.control}" SnapsToDevicePixels="True" />
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

@@ -1,0 +1,2393 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "tv.helper.didNotExit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يُنهِ عمله"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "বন্ধ হয়নি"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "did not exit"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hindi nag-exit"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बंद नहीं हुआ"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tidak keluar"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tidak keluar"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "niet afgesloten"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่ได้ปิดตัว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kapanmadı"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بند نہیں ہوا"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "không thoát"
+          }
+        }
+      }
+    },
+    "tv.helper.endedWithoutResult": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "توقف nino-tv-helper دون نتيجة (رمز الخروج %1$@): %2$@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper কোনো ফল ছাড়াই থেমে গেছে (এক্সিট কোড %1$@): %2$@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper stopped without a result (exit code %1$@): %2$@"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Huminto ang nino-tv-helper nang walang resulta (exit code %1$@): %2$@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper बिना नतीजे के रुक गया (एग्ज़िट कोड %1$@): %2$@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper berhenti tanpa hasil (kode keluar %1$@): %2$@"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper berhenti tanpa hasil (kod keluar %1$@): %2$@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper is gestopt zonder resultaat (afsluitcode %1$@): %2$@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper หยุดทำงานโดยไม่มีผลลัพธ์ (รหัสออก %1$@): %2$@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper sonuç vermeden durdu (çıkış kodu %1$@): %2$@"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper بغیر نتیجے کے رک گیا (ایگزٹ کوڈ %1$@): %2$@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper đã dừng mà không có kết quả (mã thoát %1$@): %2$@"
+          }
+        }
+      }
+    },
+    "tv.helper.missing": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا نجد ملف nino-tv-helper التابع لـ Nino. نزّل Nino مرة أخرى وثبّته من جديد."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino-র nino-tv-helper ফাইলটি পাওয়া যাচ্ছে না। Nino আবার নামিয়ে নতুন করে ইনস্টল করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino's nino-tv-helper file can't be found. Download Nino again and reinstall it."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi mahanap ang nino-tv-helper file ni Nino. I-download ulit si Nino at i-install muli."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ऐप में nino-tv-helper नहीं है। Nino को फिर से डाउनलोड करके इंस्टॉल करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper tidak ada di dalam aplikasi. Unduh dan instal Nino lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fail nino-tv-helper milik Nino tidak dijumpai. Dapatkan Nino sekali lagi dan pasang semula."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het bestand nino-tv-helper van Nino ontbreekt. Download Nino opnieuw en installeer het nog een keer."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่พบ nino-tv-helper ในแอป ดาวน์โหลดและติดตั้ง Nino ใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nino-tv-helper uygulamanın içinde yok. Nino'yu yeniden indirip kurun."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ایپ میں nino-tv-helper موجود نہیں۔ Nino کو دوبارہ ڈاؤن لوڈ اور انسٹال کریں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng thiếu nino-tv-helper. Hãy tải về và cài lại Nino."
+          }
+        }
+      }
+    },
+    "tv.install.detailsLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التفاصيل:"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "বিস্তারিত:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details:"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ilang detalye:"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "विवरण:"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detail:"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butiran:"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details:"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รายละเอียด:"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayrıntılar:"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تفصیلات:"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chi tiết:"
+          }
+        }
+      }
+    },
+    "tv.install.error.appStoreHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نسخة Nino المأخوذة من App Store لا تقدر على إعداد تطبيق التلفاز؟ أجرِ الإعداد الأول بنسخة GitHub (DMG)؛ وبعده تكفيك هذه النسخة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store-এর Nino কি TV অ্যাপ বসাতে পারছে না? প্রথমবারের সেটআপটি GitHub (DMG) থেকে পাওয়া Nino দিয়ে সারুন; তারপর এই কপিই যথেষ্ট।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Is the App Store copy of Nino unable to set up the TV app? Do the first setup with Nino's GitHub (DMG) build; after that, this copy is enough."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi ma-set up ng App Store na bersyon ni Nino ang app ng TV mo? Gawin ang unang setup sa GitHub (DMG) build ni Nino; pagkatapos niyon, kasya na ang kopyang ito."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store वाला Nino टीवी ऐप सेट नहीं कर पा रहा? पहला सेटअप GitHub (DMG) से मिले Nino से करें; उसके बाद App Store वाली कॉपी ही काफ़ी रहेगी।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino versi App Store tidak bisa memasang aplikasi TV? Lakukan penyiapan pertama memakai build GitHub (DMG) dari Nino; setelahnya, versi App Store pun cukup."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino dari App Store gagal memasang aplikasi TV? Gunakan binaan GitHub (DMG) Nino untuk persediaan kali pertama; kemudian, salinan ini sudah cukup."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Krijgt de App Store-versie van Nino het niet voor elkaar om Nino op je tv te zetten? Doe de eerste installatie met de GitHub (DMG)-versie van Nino; daarna volstaat deze versie."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino รุ่นจาก App Store ลงแอปทีวีไม่ได้ใช่ไหม? ให้ใช้ Nino รุ่น GitHub (DMG) ตั้งค่าครั้งแรก หลังจากนั้นรุ่นนี้ก็ใช้ได้พอ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store'dan indirilen Nino TV uygulamasını kuramıyorsa ilk kurulumu GitHub (DMG) yapısıyla yapın. Sonrasında bu kopya tek başına yeter."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store سے لیا گیا Nino ٹی وی ایپ نہیں لگا پا رہا؟ پہلی بار کا سیٹ اپ GitHub (DMG) والے Nino سے کر لیں؛ بعد میں یہی والا کافی رہے گا۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bản Nino tải về từ App Store mà không cài nổi app TV? Hãy dùng bản GitHub (DMG) của Nino cho lần thiết lập đầu; về sau chỉ cần bản này là ổn."
+          }
+        }
+      }
+    },
+    "tv.install.error.certificateFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم ترسل Samsung شهادة التوقيع. انتظر قليلًا وحاول مجددًا."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung সাইনিং সার্টিফিকেট পাঠায়নি। খানিক পরে ফের চেষ্টা করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung didn't send the signing certificate. Wait a little and retry."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi ipinadala ng Samsung ang signing certificate. Maghintay sandali at subukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung से साइनिंग सर्टिफ़िकेट नहीं आया। थोड़ी देर रुककर फिर कोशिश करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung tidak mengirim sertifikat penandatanganan. Tunggu sebentar lalu coba lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung tidak menghantar sijil tandatangan. Tunggu sebentar dan cuba lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het ondertekeningscertificaat van Samsung is niet binnengekomen. Wacht even en doe dan nog een poging."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung ไม่ได้ส่งใบรับรองสำหรับเซ็นมาให้ รอสักครู่แล้วลองใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung imza sertifikasını göndermedi. Biraz bekleyip bir daha deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung کی طرف سے دستخطی سرٹیفکیٹ نہیں آیا۔ ذرا ٹھہر کر ایک بار اور آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung chưa gửi chứng chỉ ký. Chờ một lát rồi thử lại."
+          }
+        }
+      }
+    },
+    "tv.install.error.certificateMismatch": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحمل التلفاز نسخة قديمة من Nino موقّعة من حاسوب آخر، وتعذّر على Nino إزالتها. افتح Apps في التلفاز، وحدّد Nino وأزله، وبعدها كرّر المحاولة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV-তে এখনো Nino-র একটি পুরোনো কপি আছে, যা অন্য কম্পিউটার দিয়ে সই করা, আর Nino সেটি সরাতে পারেনি। TV-র Apps পাতায় Nino বেছে মুছে দিন, এরপর ফের চেষ্টা করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV still has an older copy of Nino, signed by a different computer, and Nino couldn't remove it. Open Apps on the TV, select Nino, remove it, then retry."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "May lumang kopya pa ni Nino sa TV na pinirmahan ng ibang computer, at nabigo si Nino na tanggalin iyon. Buksan ang Apps sa TV, piliin si Nino, alisin ito, saka subukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी पर Nino की एक पुरानी कॉपी है, जिसे किसी दूसरे कंप्यूटर ने साइन किया था, और Nino उसे हटा नहीं पाया। टीवी में Apps खोलकर Nino को चुनें और हटा दें, फिर से प्रयास करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV masih menyimpan Nino versi lama yang ditandatangani komputer lain, dan Nino gagal menghapusnya. Buka Apps di TV, pilih Nino, hapus aplikasinya, kemudian ulangi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV masih ada salinan lama Nino yang ditandatangani oleh komputer lain, dan Nino tidak dapat membuangnya. Buka Apps pada TV, pilih Nino, buang, kemudian cuba lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Op je tv staat nog een oudere Nino, ondertekend door een andere computer, en Nino kreeg die niet weg. Ga op je tv naar Apps, kies Nino, wis het en doe dan nog een poging."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "บนทีวียังมี Nino รุ่นเก่าที่เซ็นจากคอมเครื่องอื่น และ Nino ลบออกเองไม่ได้ เปิด Apps บนทีวี เลือก Nino ลบทิ้ง แล้วลองใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV'de, farklı bir bilgisayarın imzaladığı eski bir Nino uygulaması duruyor ve silinemedi. TV'de Uygulamalar menüsüne girin, Nino'yu bulup kaldırın, sonra yeniden deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی میں Nino کی ایک پرانی کاپی پڑی ہے جس پر کسی اور کمپیوٹر نے دستخط کیے تھے، اور Nino اسے ہٹا نہیں پایا۔ ٹی وی میں Apps کھولیں، Nino چن کر ہٹا دیں، پھر ایک بار اور آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV vẫn còn giữ bản Nino cũ do máy tính khác ký, và Nino không gỡ được. Mở Apps trên TV, chọn Nino, gỡ nó ra rồi làm lại."
+          }
+        }
+      }
+    },
+    "tv.install.error.certificateRejected": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رفض التلفاز شهادة التوقيع. قبل أن تكرّر المحاولة تحقق من وجود إنترنت على التلفاز (لأنه يتحقق من الشهادة عن طريق Samsung) ومن صحة ساعته (Settings › General › System Manager › Time). سيطلب Nino شهادة جديدة، ما يعني دخولًا آخر بحساب Samsung."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV সাইনিং সার্টিফিকেটটি মানেনি। আবার চেষ্টার আগে নিশ্চিত হোন যে TV অনলাইনে আছে (সার্টিফিকেট যাচাইয়ের কাজটা সে Samsung-এর সাহায্যে করে) আর তার ঘড়ির সময় সঠিক (Settings › General › System Manager › Time)। Nino নতুন সার্টিফিকেট চাইবে, ফলে Samsung অ্যাকাউন্টে আরও একবার ঢুকতে হবে।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The signing certificate was rejected by the TV. Confirm the TV is online (it verifies the certificate through Samsung) and its clock is correct (Settings › General › System Manager › Time) before retrying. Nino will request a fresh certificate, which means one more Samsung sign-in."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayaw tanggapin ng TV itong signing certificate. Tiyaking online ang TV (sa Samsung nito sinusuri ang certificate) at tama ang orasan nito (makikita sa Settings › General › System Manager › Time) bago subukan ulit. Hihiling si Nino ng panibagong certificate, kaya kakailanganin ang isa pang pagpasok sa Samsung account."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी ने साइनिंग सर्टिफ़िकेट अस्वीकार कर दिया। दोबारा प्रयास से पहले जाँच लें कि टीवी ऑनलाइन है (सर्टिफ़िकेट की पुष्टि Samsung के ज़रिए होती है) और उसकी घड़ी ठीक समय दिखा रही है (Settings › General › System Manager › Time)। Nino एक नया सर्टिफ़िकेट माँगेगा, इसलिए Samsung लॉगिन एक बार और करना पड़ेगा।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV menolak sertifikat penandatanganan. Sebelum mencoba lagi, cek apakah TV sedang online (TV memverifikasi sertifikat lewat Samsung) dan jamnya tepat (Settings › General › System Manager › Time). Nino akan meminta sertifikat baru, artinya Anda perlu login Samsung satu kali lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV menolak sijil tandatangan. Sahkan TV disambung ke internet (sijil itu disemak melalui Samsung) dan jamnya tepat (lihat Settings › General › System Manager › Time) sebelum mengulang. Nino akan memohon sijil baru, yang bermakna satu lagi proses masuk ke akaun Samsung."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het ondertekeningscertificaat is door je tv afgewezen. Kijk of je tv online is (die controle loopt via Samsung) en of zijn klok klopt (Settings › General › System Manager › Time) voordat je het nog eens probeert. Nino vraagt een nieuw certificaat aan, dus je meldt je nog één keer bij Samsung aan."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทีวีไม่รับใบรับรองสำหรับเซ็น ก่อนลองใหม่ให้เช็กว่าทีวีออนไลน์อยู่ (ทีวีตรวจใบรับรองผ่าน Samsung) และนาฬิกาตรง (Settings › General › System Manager › Time) Nino จะขอใบรับรองใบใหม่ ซึ่งต้องล็อกอิน Samsung อีกรอบ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV imza sertifikasını reddetti. TV'nin internette olduğunu (sertifikayı Samsung üzerinden doğrular) ve saatinin doğru ayarlandığını kontrol edin (Ayarlar › Genel › Sistem Yöneticisi › Saat); ardından yeniden deneyin. Nino yeni sertifika isteyeceğinden Samsung hesabınıza bir kez daha girmeniz istenecek."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی نے دستخطی سرٹیفکیٹ ماننے سے انکار کر دیا۔ دوبارہ آزمانے سے پہلے جانچ لیں کہ ٹی وی انٹرنیٹ سے جڑا ہو (سرٹیفکیٹ کی تصدیق Samsung سے ہوتی ہے) اور ٹی وی کا وقت درست ہو (Settings › General › System Manager › Time)۔ Nino نیا سرٹیفکیٹ منگوائے گا، یعنی Samsung میں ایک بار اور لاگ ان کرنا ہوگا۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chứng chỉ dùng để ký đã bị TV từ chối. Trước khi thử lại, hãy kiểm tra TV đang có mạng (TV xác minh chứng chỉ qua Samsung) và giờ trên TV đúng (Settings › General › System Manager › Time). Nino sẽ xin chứng chỉ mới, nghĩa là phải đăng nhập Samsung lại lần nữa."
+          }
+        }
+      }
+    },
+    "tv.install.error.connectionLost": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انقطع اتصال التلفاز في منتصف التثبيت. أبقِ التلفاز مشغَّلًا وعلى شبكة هذا الحاسوب، وبعدها كرّر المحاولة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ইনস্টলের মাঝপথে TV-র সংযোগ কেটে গেছে। TV অন রেখে এই কম্পিউটারের নেটওয়ার্কেই যুক্ত রাখুন, এরপর ফের চেষ্টা করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV connection dropped while installing. Leave the TV switched on and connected to this computer's network, then retry."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nawala ang koneksyon ng TV sa gitna ng pag-install. Hayaang nakabukas ang TV at konektado sa network ng computer mo, saka subukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इंस्टॉल होते समय टीवी से संपर्क टूट गया। टीवी ऑन रखें और उसे इस कंप्यूटर के ही नेटवर्क से जोड़े रखें, फिर प्रयास दोहराएँ।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koneksi dengan TV putus di tengah pemasangan. Biarkan TV tetap hidup dan memakai jaringan komputer ini, kemudian ulangi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hubungan dengan TV terputus ketika memasang. Biarkan TV hidup dan kekal di rangkaian komputer ini, lalu ulang semula."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tijdens de installatie viel de tv-verbinding weg. Laat je tv aanstaan en verbonden met het netwerk van deze computer, en doe dan nog een poging."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สายสัญญาณกับทีวีหลุดระหว่างลงแอป เปิดทีวีค้างไว้และให้อยู่ในวงเน็ตเดียวกับคอมเครื่องนี้ แล้วลองใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurulum sürerken TV ile bağlantı koptu. TV açık kalsın ve bu bilgisayarın ağına bağlı olsun; sonra yeniden deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انسٹالیشن کے بیچ میں ٹی وی سے رابطہ ٹوٹ گیا۔ ٹی وی چالو رہنے دیں، اور وہ اسی راؤٹر سے جڑا رہے جس سے یہ کمپیوٹر جڑا ہے؛ پھر ایک بار اور آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mất liên lạc với TV trong lúc cài. Để TV mở và chung mạng với chiếc máy này, sau đó làm lại."
+          }
+        }
+      }
+    },
+    "tv.install.error.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم ينجح تثبيت تطبيق التلفاز. جرّب مرة ثانية من فضلك."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV-তে অ্যাপটি বসানো গেল না। অনুগ্রহ করে আরেকবার চেষ্টা করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV app couldn't be installed. Please try again."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi nai-install sa TV ang app. Pakisubukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी ऐप का इंस्टॉलेशन असफल रहा। कृपया एक बार और प्रयास करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikasi TV gagal dipasang. Silakan coba lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikasi TV gagal dipasang. Sila cuba lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De installatie op je tv mislukte. Probeer het nog eens."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลงแอปทีวีไม่สำเร็จ ลองอีกทีนะ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV uygulaması kurulamadı. Lütfen tekrar deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی ایپ انسٹال نہ ہو سکی۔ مہربانی کر کے ایک بار اور آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cài app TV không thành công. Mời bạn thử lại."
+          }
+        }
+      }
+    },
+    "tv.install.error.failedWithReason": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم ينجح تثبيت تطبيق التلفاز. كرّر المحاولة من فضلك، وإن تكرّر الخطأ فأرسل لنا السبب المكتوب في الأسفل."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV-তে অ্যাপটি বসানো গেল না। আরেকবার চেষ্টা করুন; তাতেও না হলে নিচে লেখা কারণটি আমাদের পাঠান।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV app couldn't be installed. Please retry; if that doesn't work, share the reason below with us."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi nai-install sa TV ang app. Pakisubukan ulit; kung ayaw pa rin, ibahagi sa amin ang dahilang nasa ibaba."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी ऐप का इंस्टॉलेशन असफल रहा। फिर प्रयास करें; बात न बने, तो नीचे दिया कारण हमें भेज दें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikasi TV gagal dipasang. Silakan coba lagi; kalau tetap gagal, kirimkan kepada kami alasan yang tertera di bawah."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikasi TV gagal dipasang. Sila cuba lagi; jika masih gagal, kongsikan sebab di bawah dengan kami."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De installatie op je tv mislukte. Probeer het nog eens; blijft het misgaan, deel dan met ons wat hieronder als reden staat."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลงแอปทีวีไม่สำเร็จ ลองอีกที ถ้ายังไม่ได้ ช่วยส่งสาเหตุข้างล่างนี้มาให้เราด้วย"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV uygulaması kurulamadı. Lütfen yeniden deneyin; olmazsa aşağıdaki nedeni bizimle paylaşın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی ایپ انسٹال نہ ہو سکی۔ ایک بار اور آزمائیں؛ پھر بھی بات نہ بنے تو نیچے لکھی وجہ ہمیں بھیج دیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cài app TV không thành công. Hãy làm lại; nếu vẫn hỏng, chuyển phần lý do phía dưới cho chúng tôi."
+          }
+        }
+      }
+    },
+    "tv.install.error.keyRejected": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رفض التلفاز المفتاح. اكتب عبارة المرور في Key Server مرة أخرى."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV কী-টি নাকচ করেছে। Key Server-এ passphrase আরেকবার লিখুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The key was refused by the TV. Enter the passphrase in Key Server one more time."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayaw tanggapin ng TV itong key. Ilagay ulit ang passphrase sa Key Server."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी ने कुंजी नहीं मानी। Key Server में passphrase फिर से डालें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV menolak kuncinya. Ketik ulang passphrase di Key Server."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV menolak kunci itu. Masukkan passphrase dalam Key Server sekali lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je tv heeft de sleutel geweigerd. Voer de passphrase van Key Server opnieuw in."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทีวีไม่รับคีย์ กรอก passphrase ใน Key Server ใหม่อีกหน"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV anahtarı reddetti. Key Server'da passphrase'i bir daha girin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی نے key ماننے سے انکار کر دیا۔ Key Server میں passphrase ایک بار اور لکھیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV không nhận khóa. Gõ lại passphrase trong Key Server."
+          }
+        }
+      }
+    },
+    "tv.install.error.keyServerOff": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server لا يعمل. فعّله داخل Developer Mode وأبقِ Developer Mode مفتوحًا على التلفاز."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server চলছে না। Developer Mode-এ গিয়ে এটি অন করুন, আর TV-র পর্দায় Developer Mode খোলা রাখুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server isn't running. Switch it on in Developer Mode and keep Developer Mode running on the TV."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi tumatakbo ang Key Server. Gawin itong On sa Developer Mode at panatilihing bukas sa TV ang Developer Mode."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server चल नहीं रहा। Developer Mode में उसे ऑन करें और टीवी पर Developer Mode चलता रहने दें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server tidak berjalan. Nyalakan di Developer Mode, lalu biarkan Developer Mode tetap terbuka pada TV."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server tidak berjalan. Aktifkannya dalam Developer Mode, dan pastikan Developer Mode kekal berjalan di TV."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server draait niet. Schakel hem in binnen Developer Mode en laat Developer Mode op de tv openstaan."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server ไม่ได้ทำงานอยู่ ให้เปิดใน Developer Mode และเปิด Developer Mode ค้างไว้บนทีวี"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server kapalı durumda. Developer Mode uygulamasında açın ve bu uygulamayı TV'de açık tutun."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server بند پڑا ہے۔ Developer Mode میں اسے چالو کریں، اور ٹی وی پر Developer Mode کھلا رہنے دیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key Server chưa chạy. Bật nó trong Developer Mode và để Developer Mode mở trên TV."
+          }
+        }
+      }
+    },
+    "tv.install.error.loginFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم ينتهِ الدخول بحساب Samsung. كرّر المحاولة وأتمّه في الصفحة الجديدة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung অ্যাকাউন্টে লগইন শেষ হয়নি। ফের চেষ্টা করে নতুন পেজে কাজটি শেষ করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Samsung sign-in didn't finish. Retry and complete it on the new page."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi natuloy ang pagpasok sa Samsung account. Subukan ulit at tapusin ito sa bagong page."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung लॉगिन अधूरा रह गया। दोबारा प्रयास करें और नए पेज पर लॉगिन पूरा करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proses masuk ke Samsung belum tuntas. Ulangi, lalu selesaikan di halaman baru."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proses masuk ke akaun Samsung belum lengkap. Ulang semula dan selesaikannya di halaman baru."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je Samsung-aanmelding is niet afgerond. Doe nog een poging en maak het af op de nieuwe pagina."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การล็อกอิน Samsung ยังไม่จบ ลองใหม่และทำให้เสร็จในหน้าใหม่ที่ขึ้นมา"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung'a giriş yarıda kaldı. Yeniden deneyin ve yeni açılan sayfada oturumu tamamlayın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung کا لاگ ان پورا نہیں ہوا۔ ایک بار اور آزمائیں اور نئے صفحے پر اسے مکمل کریں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa đăng nhập Samsung xong. Thử lại và hoàn tất trên trang mới."
+          }
+        }
+      }
+    },
+    "tv.install.error.noSpace": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "امتلأت ذاكرة التلفاز. أزل تطبيقًا لم تعد تحتاجه، وبعدها كرّر المحاولة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV-তে আর জায়গা খালি নেই। দরকার নেই এমন কোনো অ্যাপ সরিয়ে ফের চেষ্টা করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There's no storage left on the TV. Uninstall an app you no longer use, then retry."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puno na ang storage ng TV. Mag-uninstall ng isang app na hindi na ginagamit, saka subukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी में जगह नहीं बची। जो ऐप अब काम का नहीं, उसे हटाएँ, फिर दोबारा कोशिश करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Penyimpanan TV sudah penuh. Copot aplikasi yang sudah tidak dipakai, kemudian ulangi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storan TV sudah penuh. Nyahpasang aplikasi yang tidak digunakan lagi, kemudian cuba lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je tv heeft geen opslagruimte meer over. Gooi een app weg die je niet meer gebruikt, en doe dan nog een poging."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "พื้นที่ในทีวีเต็มแล้ว ลบแอปที่ไม่ได้ใช้ออกสักตัว แล้วลองใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV'nin depolama alanı doldu. TV'den gerekmeyen bir uygulamayı silip yeniden deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی کی میموری بھر چکی ہے۔ کوئی غیر ضروری ایپ ہٹائیں، پھر ایک بار اور آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV đã hết bộ nhớ. Gỡ bớt app nào bạn không còn dùng, rồi thử lại."
+          }
+        }
+      }
+    },
+    "tv.install.error.notApproved": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يمنح التلفاز إذن تصحيح الأخطاء. كرّر المحاولة واضغط Allow حين يسألك التلفاز."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ডিবাগিংয়ের জন্য TV সম্মতি দেয়নি। আবার চালান এবং TV-র প্রশ্নে Allow নির্বাচন করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV didn't permit debugging. Retry and choose Allow when the TV prompts you."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi pinayagan ng TV ang debugging. Subukan ulit at pindutin ang Allow kapag nagtanong ang TV."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी ने डीबगिंग की इजाज़त नहीं दी। फिर कोशिश करें और टीवी के पूछने पर Allow चुनें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV tidak mengizinkan debugging. Ulangi, lalu pilih Allow saat TV bertanya."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV tidak memberi izin penyahpepijatan. Ulang semula, kemudian pilih Allow apabila TV bertanya."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je tv gaf geen toestemming voor foutopsporing. Doe nog een poging en kies Toestaan zodra de tv erom vraagt."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทีวีไม่ได้ให้สิทธิ์ดีบัก ลองใหม่และกด Allow ตอนที่ทีวีถาม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV hata ayıklamaya izin vermedi. Yeniden deneyin ve TV sorduğunda İzin ver düğmesine basın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی نے ڈی بگنگ کی منظوری نہیں دی۔ ایک بار اور آزمائیں، اور ٹی وی پر سوال آئے تو Allow چنیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV chưa cho phép debug. Hãy làm lại rồi chọn Allow khi TV hỏi."
+          }
+        }
+      }
+    },
+    "tv.install.error.packageBlocked": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يرفض التلفاز Nino لوجود نسخة قديمة مسجّلة فيه (رمز Tizen 118 / -22)، وقد لا تظهر أحيانًا في قائمة التطبيقات. فتّش عن Nino في تطبيقات التلفاز؛ فإن وجدته فأزله وكرّر المحاولة. وإن لم تجده فافتح Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub (تتفاوت الأسماء قليلًا من طراز لآخر)، وأعد الضبط، وكرّر المحاولة. علمًا بأن تصفير Smart Hub يمحو كذلك أي تطبيقات أخرى ثبّتها."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV Nino-কে নিচ্ছে না: আগের একটি কপি এখনো সেখানে নথিভুক্ত (Tizen কোড 118 / -22), কখনো কখনো অ্যাপ তালিকায় না দেখিয়েই। TV-তে ইনস্টল করা অ্যাপের ভিড়ে Nino খুঁজুন; পেলে সরিয়ে দিয়ে ফের চেষ্টা করুন। না পেলে Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub-এ যান (মডেলভেদে নাম সামান্য আলাদা), রিসেট সেরে আরেকবার চেষ্টা করুন। মনে রাখবেন, Smart Hub রিসেটে আপনার বসানো বাকি অ্যাপগুলোও মুছে যাবে।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV won't accept Nino: a previous copy is still registered there (Tizen code 118 / -22), sometimes without showing in the app list. Look for Nino among the apps on the TV; if it's there, remove it and retry. If it isn't, go to Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub (names differ slightly between models), reset, and retry. A Smart Hub reset also deletes any other apps you've installed."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayaw tanggapin ng TV si Nino: may lumang kopya pang naka-rehistro doon (Tizen code 118 / -22), minsan kahit hindi lumalabas sa listahan ng app. Hanapin si Nino sa listahan ng app sa TV; kung nandoon, alisin ito tapos subukan ulit. Kung wala, pumunta sa Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub (bahagyang iba ang pangalan depende sa modelo), i-reset, at subukan ulit. Kapag ni-reset itong Smart Hub, mabubura rin ang lahat ng iba pang in-install mong app."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी Nino को नहीं ले रहा: पुरानी कॉपी अब भी वहाँ दर्ज है (Tizen कोड 118 / -22), कभी-कभी ऐप सूची में दिखे बिना भी। टीवी के ऐप्स में Nino खोजें; मिल जाए तो उसे हटाएँ और दोबारा प्रयास करें। न मिले तो Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub पर जाएँ (हर मॉडल में नाम में थोड़ा फ़र्क हो सकता है), रीसेट करें और एक बार फिर प्रयास करें। ध्यान दें: Smart Hub रीसेट होने पर आपके इंस्टॉल किए बाकी ऐप भी मिट जाएँगे।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV tidak mau menerima Nino: salinan lama masih tercatat di TV (kode Tizen 118 / -22), kadang tanpa terlihat di daftar aplikasi. Cari Nino di antara aplikasi TV; kalau ada, copot lalu ulangi. Kalau tidak ada, buka Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub (namanya agak berbeda di tiap model), lakukan reset, kemudian ulangi. Reset Smart Hub ikut menghapus semua aplikasi lain yang pernah Anda pasang."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV enggan menerima Nino: salinan sebelumnya masih berdaftar di situ (kod Tizen 118 / -22), kadangkala tanpa kelihatan dalam senarai aplikasi. Cari Nino di kalangan aplikasi TV; kalau ada, buang dan ulang semula. Kalau tiada, pergi ke Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub (namanya berbeza sedikit mengikut model), lakukan tetapan semula, kemudian ulang. Tetapan semula Smart Hub turut memadamkan aplikasi lain yang telah dipasang."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je tv accepteert Nino niet: een eerdere versie is er nog geregistreerd (Tizen-code 118 / -22), soms zonder dat die in de app-lijst te zien is. Zoek op je tv tussen je apps naar Nino; vind je het, verwijder het dan en doe nog een poging. Vind je het niet, open dan Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub (de namen verschillen wat per model), reset en doe nog een poging. Let op: een Smart Hub-reset wist ook alle andere apps die je hebt geïnstalleerd."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทีวีไม่รับ Nino: ยังมี Nino ตัวเก่าลงทะเบียนค้างอยู่ (Tizen code 118 / -22) บางทีก็ไม่โชว์ในรายการแอป ลองหา Nino ในแอปบนทีวี ถ้าเจอให้ลบแล้วลองใหม่ ถ้าไม่เจอ ให้ไปที่ Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub (แต่ละรุ่นอาจเรียกชื่อไม่เหมือนกันนัก) กดยืนยันแล้วลองใหม่ ข้อควรรู้: Smart Hub ที่ถูกล้างจะลบแอปอื่นที่คุณลงไว้ไปด้วย"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eski bir Nino kopyası TV'de hâlâ kayıtlı olduğu için TV yeni Nino'yu almıyor (Tizen kodu 118 / -22); uygulama listesinde görünmeyebilir. Nino'yu TV'nin uygulamalarında görüyorsanız kaldırıp yeniden deneyin. Görmüyorsanız Ayarlar › Destek › Cihaz Bakımı › Kendi Kendine Tanılama › Smart Hub'ı Sıfırla yolunu izleyin (adlar modelden modele biraz farklı olabilir), sıfırlayıp yeniden deneyin. Bu sıfırlama, sonradan yüklediğiniz başka uygulamaları da siler."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی Nino کو لینے سے انکاری ہے: ایک پرانی کاپی ابھی تک وہاں درج ہے (Tizen کوڈ 118 / -22)، کبھی کبھی ایپس کی فہرست میں دکھے بغیر۔ ٹی وی کی ایپس میں Nino تلاش کریں؛ مل جائے تو ہٹا کر ایک بار اور آزمائیں۔ نہ ملے تو Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub پر جائیں (ماڈل کے حساب سے نام ذرا مختلف ہو سکتے ہیں)، ری سیٹ کر کے پھر آزمائیں۔ دھیان رہے: Smart Hub کو ری سیٹ کیا تو جو دوسری ایپس آپ نے خود لگائی تھیں، وہ بھی مٹ جائیں گی۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV không nhận Nino: một bản trước đó vẫn đang đăng ký ở đó (mã Tizen 118 / -22), có khi không thấy trong danh mục app. Tìm Nino trong các app trên TV; nếu thấy thì gỡ đi rồi làm lại. Nếu không thấy, vào Settings › Support › Device Care › Self Diagnosis › Reset Smart Hub (tên mục có thể hơi khác tùy đời máy), reset rồi làm lại. Lưu ý: reset Smart Hub thì mọi app khác mà bạn từng cài cũng bị xóa."
+          }
+        }
+      }
+    },
+    "tv.install.error.tooOld": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تطبيق Nino للتلفاز لا يعمل على تلفزيونات Samsung بهذا القِدم. يدعم طرازات 2017 وما بعدها."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "এত পুরোনো Samsung মডেলে Nino-র TV অ্যাপ চলে না। এটি ২০১৭ সালের ও তার পরের মডেল সমর্থন করে।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino's TV app doesn't run on Samsung TVs this old. It supports 2017 models and newer."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi gumagana ang TV app ni Nino sa ganito kalumang Samsung TV. Suportado ang mga modelong 2017 pataas."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इतने पुराने Samsung टीवी पर Nino का टीवी ऐप नहीं चल पाता। 2017 के मॉडल से लेकर नए मॉडल तक इसका सपोर्ट है।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikasi TV Nino tidak bisa berjalan di TV Samsung setua ini. Yang didukung adalah model 2017 dan sesudahnya."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikasi TV Nino tidak berjalan pada TV Samsung yang setua ini. Model tahun 2017 ke atas disokong."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De tv-app van Nino werkt niet op zulke oude Samsung-tv's. Hij ondersteunt modellen vanaf 2017."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอปทีวีของ Nino ใช้กับทีวี Samsung ที่เก่าขนาดนี้ไม่ได้ ใช้ได้กับรุ่นตั้งแต่ปี 2017 เป็นต้นมา"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino'nun TV uygulaması bu kadar eski Samsung TV'lerde çalışmıyor. 2017 ve sonraki modelleri destekler."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino کی ٹی وی ایپ اتنے پرانے Samsung ٹی وی پر نہیں چلتی۔ یہ 2017 یا بعد میں بنے ماڈلز کے لیے ہے۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Nino cho TV không chạy trên TV Samsung đời cũ như vậy. Chỉ hỗ trợ đời 2017 hoặc mới hơn."
+          }
+        }
+      }
+    },
+    "tv.install.error.tvClockWrong": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التلفاز متأخر في الوقت، فلا يعتبر الشهادة الجديدة صالحة حتى الآن. انتظر بضع دقائق، أو اضبط التاريخ والوقت (المسار: Settings › General › System Manager › Time)، وبعدها كرّر المحاولة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV-র ঘড়ির সময় পিছিয়ে, তাই নতুন সার্টিফিকেটটি সে এখনো বৈধ ধরছে না। কিছুক্ষণ সবুর করুন, অথবা তারিখ-সময় সংশোধন করুন (পথ: Settings › General › System Manager › Time), এরপর ফের চেষ্টা করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV's time is behind, so it doesn't consider the new certificate valid yet. Wait several minutes, or correct the date and time (path: Settings › General › System Manager › Time), and retry."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atrasado ang orasan sa TV, kaya para rito ay hindi pa valid ang bagong certificate. Maghintay nang ilang minuto, o itama ang oras at petsa (daan: Settings › General › System Manager › Time), tapos subukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी का समय पीछे चल रहा है, इस वजह से वह नए सर्टिफ़िकेट को अभी वैध नहीं मानता। कुछ मिनट इंतज़ार करें, या तारीख और समय सही करें (रास्ता: Settings › General › System Manager › Time); इसके बाद दोबारा प्रयास करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jam TV tertinggal, jadi TV belum menganggap sertifikat baru itu sah. Tunggu beberapa menit, atau betulkan tanggal dan jamnya (jalur: Settings › General › System Manager › Time), lalu coba lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jam TV lewat, maka sijil yang baru belum diterima sebagai sah. Tunggu beberapa minit, atau betulkan tarikh dan waktu (laluan: Settings › General › System Manager › Time), lalu ulang semula."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De tv-klok loopt achter, en daarom vindt de tv het nieuwe certificaat nog niet geldig. Wacht enkele minuten of corrigeer datum en tijd (via Settings › General › System Manager › Time), en doe dan nog een poging."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เวลาบนทีวีช้ากว่าจริง ทีวีเลยยังมองว่าใบรับรองใหม่ใช้ไม่ได้ รอสักหลายนาที หรือแก้วันที่และเวลา (เส้นทาง: Settings › General › System Manager › Time) แล้วลองใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV'nin saati geri kaldığından yeni sertifikayı henüz geçerli saymıyor. TV'de tarih ve saati doğru ayarlayın (Ayarlar › Genel › Sistem Yöneticisi › Saat) veya birkaç dakika geçmesini bekleyin; sonra yeniden deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی کا وقت پیچھے چل رہا ہے، چنانچہ وہ نئے سرٹیفکیٹ کو ابھی درست نہیں سمجھتا۔ چند منٹ رکیں، یا تاریخ اور وقت ٹھیک کریں (راستہ: Settings › General › System Manager › Time)؛ اس کے بعد ایک بار اور آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giờ trên TV đang chậm, nên TV chưa coi chứng chỉ mới là hợp lệ. Chờ vài phút, hoặc chỉnh lại ngày giờ (đường dẫn: Settings › General › System Manager › Time), rồi thử lại."
+          }
+        }
+      }
+    },
+    "tv.install.error.unreachable": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التلفاز لا يستجيب. تأكد أنه قيد التشغيل ومتصل بالشبكة نفسها."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV সাড়া দিচ্ছে না। এটি চালু এবং একই নেটওয়ার্কে যুক্ত কিনা দেখে নিন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV isn't answering. Check that it's on and connected to the same network."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi sumasagot ang TV. Tiyaking nakabukas ito at konektado sa iisang network."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी से कोई जवाब नहीं मिल रहा। जाँचें कि टीवी ऑन है, साथ ही उसी नेटवर्क से कनेक्टेड है जिससे यह कंप्यूटर।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV tidak memberi respons. Cek apakah TV hidup dan memakai jaringan yang sama."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV tidak memberi respons. Semak sama ada TV dihidupkan dan menggunakan rangkaian yang serupa."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De tv reageert niet. Kijk of hij aanstaat en met hetzelfde netwerk verbonden is."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทีวีไม่ตอบ เช็กว่าทีวีเปิดอยู่และใช้วงเน็ตวงเดียวกัน"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV yanıt vermiyor. Açık olduğunu ve aynı ağa bağlı olduğunu kontrol edin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی جواب نہیں دے رہا۔ دیکھیں کہ وہ چالو ہو، اور یہ کمپیوٹر جس نیٹ ورک سے جڑا ہے، ٹی وی بھی وہیں ہو۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV không trả lời. Xem TV có đang mở, có dùng chung mạng chưa."
+          }
+        }
+      }
+    },
+    "tv.install.error.unreachableSamsung": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حجب التلفاز هذا الـ Mac. يجب أن تطابق قيمة Host PC IP، المعروضة في شاشة Developer Mode، عنوان IP لهذا الـ Mac؛ صحّحها إن اختلفت، ثم أطفئ التلفاز وأعد تشغيله."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV এই Mac-কে আটকে দিয়েছে। Developer Mode পাতায় TV যে Host PC IP দেখায়, তা অবশ্যই এই Mac-এর IP ঠিকানার সঙ্গে মিলতে হবে; না মিললে ঠিক করুন, তারপর TV বন্ধ করে আবার চালু করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV blocked this Mac. Host PC IP, which Developer Mode lists on the TV, must match this Mac's IP address; fix it if not, then turn the TV off and on."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinarangan ng TV ang Mac mo. Dapat tugma ang value ng Host PC IP na nakalista sa Developer Mode ng iyong TV sa mismong IP address ng Mac mo; ayusin kung hindi, saka patayin at buksan ulit ang TV."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी इस Mac को रोक रहा है। टीवी के Developer Mode में लिखा Host PC IP और इस Mac का IP पता एक ही होना चाहिए; अलग हो, तो सुधारें, फिर टीवी ऑफ़-ऑन करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV memblokir Mac ini. Nilai Host PC IP yang tertera di Developer Mode TV harus sama dengan alamat IP Mac ini; jika berbeda, betulkan, lalu matikan dan nyalakan lagi TV."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV menyekat Mac ini. Nilai Host PC IP yang ditunjukkan oleh skrin Developer Mode TV mestilah sepadan dengan alamat IP Mac ini; betulkan jika tidak, kemudian matikan dan hidupkan semula TV."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je tv heeft deze Mac geblokkeerd. Host PC IP, dat Developer Mode op de tv toont, moet gelijk zijn aan het IP-adres dat deze Mac heeft; pas het aan als dat niet zo is en zet de tv daarna uit en weer aan."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทีวีบล็อก Mac เครื่องนี้ไว้ Host PC IP ที่ Developer Mode แสดงบนทีวีต้องตรงกับ IP ของ Mac นี้ ถ้าไม่ตรงให้แก้ จากนั้นปิดทีวีแล้วเปิดใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV bu bilgisayarı engelledi. TV'deki Developer Mode ekranında Host PC IP alanı bu bilgisayarın adresini göstermeli; göstermiyorsa düzeltin, ardından TV'yi kapatıp açın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی نے اس Mac کا راستہ روک دیا۔ ٹی وی پر Developer Mode میں جو Host PC IP لکھا ہے، اسے اس Mac کے IP ایڈریس جیسا ہونا چاہیے؛ نہ ہو تو درست کریں، پھر ٹی وی بند کر کے دوبارہ چلائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV đã chặn Mac này. Giá trị Host PC IP mà Developer Mode ghi trên TV phải trùng với IP của Mac này; nếu chưa đúng thì sửa lại, sau đó tắt TV và bật lại."
+          }
+        }
+      }
+    },
+    "tv.install.error.wrongPassphrase": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عبارة المرور هذه غير صحيحة. قارنها بالعبارة الظاهرة على شاشة التلفاز."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "পাসফ্রেজটি সঠিক নয়। TV স্ক্রিনে থাকা পাসফ্রেজের সাথে মিলিয়ে দেখুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wrong passphrase. Check it against what the TV shows."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maling passphrase. Ikumpara ito sa ipinapakita ng TV."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह पासफ़्रेज़ सही नहीं है। इसे टीवी स्क्रीन पर दिख रहे पासफ़्रेज़ से मिलाएँ।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frasa sandi itu salah. Bandingkan dengan yang ada di layar TV."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frasa laluan itu tidak betul. Bandingkan dengan yang tertera pada skrin TV."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verkeerde passphrase. Vergelijk hem met wat de tv laat zien."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "passphrase ไม่ถูก ลองเทียบกับที่ขึ้นบนทีวีอีกที"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passphrase hatalı. TV ekranında görünenle karşılaştırın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "یہ پاس فریز درست نہیں۔ اسے ٹی وی اسکرین والے سے ملائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sai passphrase. Đối chiếu với nội dung TV đang hiển thị."
+          }
+        }
+      }
+    },
+    "tv.install.samsung.anynetHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هل ينتقل التلفاز باستمرار إلى مدخل آخر، مثل HDMI 1، أثناء عمل Nino؟ افتح Settings › All Settings › Connection › External Device Manager وأوقف Auto Source Switching وكذلك Anynet+ (HDMI-CEC)."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino চলার সময় TV কি বারবার HDMI 1-এর মতো অন্য ইনপুটে চলে যায়? Settings › All Settings › Connection › External Device Manager-এ গিয়ে Auto Source Switching আর Anynet+ (HDMI-CEC) দুটোই বন্ধ করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Does the TV keep jumping to another input, such as HDMI 1, while Nino runs? Go to Settings › All Settings › Connection › External Device Manager and switch off Auto Source Switching as well as Anynet+ (HDMI-CEC)."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palipat-lipat ba ang TV sa ibang input, gaya ng HDMI 1, habang tumatakbo si Nino? Magtungo sa Settings › All Settings › Connection › External Device Manager at patayin ang Auto Source Switching pati itong Anynet+ (HDMI-CEC)."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino चलते वक़्त क्या टीवी बार-बार किसी दूसरे इनपुट (जैसे HDMI 1) पर स्विच कर जाता है? Settings › All Settings › Connection › External Device Manager खोलकर Auto Source Switching तथा Anynet+ (HDMI-CEC) को बंद करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apakah TV terus pindah ke input lain, misalnya HDMI 1, selagi Nino berjalan? Buka Settings › All Settings › Connection › External Device Manager, lalu matikan Auto Source Switching dan juga Anynet+ (HDMI-CEC)."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV asyik bertukar ke input lain, seperti HDMI 1, semasa Nino berjalan? Buka Settings › All Settings › Connection › External Device Manager dan matikan Auto Source Switching serta Anynet+ (HDMI-CEC)."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schakelt je tv steeds over naar een andere ingang, zoals HDMI 1, terwijl Nino draait? Ga naar Settings › All Settings › Connection › External Device Manager en zet zowel Auto Source Switching als Anynet+ (HDMI-CEC) uit."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ตอนที่ Nino ทำงาน ทีวีชอบเด้งไปช่องอื่นอย่าง HDMI 1 ใช่ไหม? ไปที่ Settings › All Settings › Connection › External Device Manager แล้วปิด Auto Source Switching กับ Anynet+ (HDMI-CEC) ทั้งคู่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino TV'de çalışırken TV kendi kendine başka bir girişe (örneğin HDMI 1) geçiyorsa Ayarlar › Tüm Ayarlar › Bağlantı › Harici Cihaz Yöneticisi altında Otomatik Kaynak Değiştirme ile Anynet+ (HDMI-CEC) seçeneklerini kapatın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino چلتے وقت ٹی وی بار بار کسی دوسرے ان پٹ، جیسے HDMI 1، پر چلا جاتا ہے؟ Settings › All Settings › Connection › External Device Manager کھولیں؛ وہاں Auto Source Switching کا سوئچ آف کریں، ساتھ میں Anynet+ (HDMI-CEC) بھی۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV cứ tự nhảy sang nguồn khác, như HDMI 1, khi Nino đang chạy? Vào Settings › All Settings › Connection › External Device Manager rồi tắt cả Auto Source Switching và Anynet+ (HDMI-CEC)."
+          }
+        }
+      }
+    },
+    "tv.install.samsung.droppedSettingsRight": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قطع التلفاز الاتصال رغم أن إعداداته تبدو سليمة. انزع قابس التلفاز، وانتظر قرابة دقيقة، ثم أعده؛ وبعد أن يشتغل امنحه دقيقة أخرى. يعاود Nino المحاولة وحده فور جاهزية التلفاز."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "সেটিংস ঠিক মনে হলেও TV সংযোগ বন্ধ করে দিয়েছে। TV-র পাওয়ার প্লাগ খুলে মিনিটখানেক থামুন, এরপর আবার লাগান; চালু হওয়ার পর আরও এক মিনিট সময় দিন। TV তৈরি হলেই Nino নিজে থেকে আবার চেষ্টা করবে।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV closed the connection, yet its settings seem fine. Pull the TV's power cord, wait about a minute, and reconnect it; then give it another minute after it starts. Nino retries automatically as soon as the TV is ready."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isinara ng TV ang pagkakakonekta, kahit mukhang ayos naman ang settings nito. Hugutin sa saksakan ang power cord ng TV, maghintay nang mga isang minuto, at isaksak ulit; tapos bigyan pa ito ng isang minuto pagka-on. Kusang susubok ulit si Nino kapag handa na ulit ang TV."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सेटिंग्स सही लगने के बावजूद टीवी ने कनेक्शन बंद कर दिया। टीवी का प्लग निकालें, करीब एक मिनट बाद वापस लगाएँ, और चालू होने पर एक मिनट और रुकें। टीवी के तैयार होते ही Nino खुद दोबारा कोशिश करेगा।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV menutup sambungan, padahal pengaturannya tampak benar. Cabut kabel daya TV, tunggu kira-kira semenit, lalu colokkan lagi; setelah menyala, beri waktu semenit lagi. Nino otomatis mencoba lagi begitu TV siap."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV menutup sambungan, walhal tetapannya nampak tiada masalah. Cabut kord kuasa TV, tunggu kira-kira seminit, dan pasang semula; kemudian tunggu seminit lagi selepas ia bermula. Nino mencuba semula secara automatik sebaik TV sedia."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De tv sloot de verbinding, al lijken de instellingen in orde. Trek de stroomkabel van de tv los, wacht zo'n minuut en sluit hem weer aan; gun de tv na het opstarten nog een minuut. Nino doet zelf een nieuwe poging zodra de tv klaar is."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทีวีตัดสายสัญญาณ ทั้งที่ค่าต่าง ๆ ดูไม่มีปัญหา ถอดปลั๊กทีวี รอราวหนึ่งนาทีแล้วเสียบคืน พอทีวีติดแล้วรออีกหนึ่งนาที ทันทีที่ทีวีพร้อม Nino จะลองใหม่เอง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar doğru görünüyor ama TV bağlantıyı kapattı. TV'yi prizden çekin, yaklaşık bir dakika sonra geri takın; açıldıktan sonra da bir dakika geçmesini bekleyin. TV hazır olunca Nino kendisi yeniden dener."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سیٹنگز درست لگتی ہیں، مگر ٹی وی نے رابطہ بند کر دیا۔ ٹی وی کا پلگ نکالیں، تقریباً ایک منٹ رکیں اور واپس لگائیں؛ چالو ہونے کے بعد اسے ایک منٹ اور دیں۔ ٹی وی تیار ہوتے ہی Nino اپنے آپ پھر سے جڑنے کی کوشش کر لے گا۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV đã đóng kết nối, dù cài đặt có vẻ ổn. Rút dây nguồn TV, chờ khoảng một phút rồi cắm lại; sau khi TV lên thì đợi thêm một phút. Nino sẽ tự kết nối lại ngay khi TV sẵn sàng."
+          }
+        }
+      }
+    },
+    "tv.install.samsung.holdPowerHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كي يُعاد تشغيل تلفاز Samsung كليًا، أبقِ زر الطاقة في الريموت مضغوطًا قرابة ثانيتين — حتى تسودّ الشاشة. أما النقرة السريعة فلا تفعل سوى إدخاله في الاستعداد."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung-এর TV সম্পূর্ণ রিস্টার্ট দিতে হলে রিমোটের পাওয়ার কী মোটামুটি ২ সেকেন্ড টিপে রাখুন — স্ক্রিন অন্ধকার হয়ে যাওয়া উচিত। হালকা চাপে TV কেবল স্ট্যান্ডবাইতে যায়।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For a full restart of a Samsung TV, press and hold the remote's power key for roughly 2 seconds — the screen should go dark. A quick press just sends it to standby."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para sa buong restart ng Samsung TV, diinan ang power key ng remote nang humigit-kumulang 2 segundo — dapat dumilim ang screen. Standby lang ang mangyayari kapag mabilis na pinindot."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung टीवी का पूरा रीस्टार्ट करना हो, तो रिमोट की पावर की को करीब 2 सेकंड तक दबाकर रखें — स्क्रीन काली हो जानी चाहिए। बस हल्के से दबाने पर टीवी केवल स्टैंडबाय मोड में पहुँचता है।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untuk restart penuh TV Samsung, tekan dan tahan tombol power di remote kira-kira 2 detik — layar akan menjadi gelap. Kalau ditekan singkat, TV cuma masuk mode siaga."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bagi mula semula sepenuhnya sebuah TV Samsung, tekan lama kekunci kuasa remote lebih kurang dua saat — skrin sepatutnya menjadi gelap. Tekan sekejap hanya membuatkan TV tidur (siap sedia)."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wil je een Samsung-tv helemaal herstarten, druk de powerknop op de afstandsbediening dan zo'n 2 seconden in — het scherm hoort zwart te worden. Even kort drukken laat de tv alleen sluimeren."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ถ้าจะรีสตาร์ตทีวี Samsung จริง ๆ ให้กดปุ่มเปิดปิดบนรีโมตแช่ไว้สัก 2 วิ — จอควรดับลง ถ้ากดแป๊บเดียวทีวีจะแค่สแตนด์บาย"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung TV'yi baştan başlatmak için ekran kararana dek kumandadaki güç düğmesine 2 saniye kadar basılı tutun. Kısa bir basış TV'yi yalnızca beklemeye alır."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samsung ٹی وی کو پوری طرح ری اسٹارٹ کرنے کو ریموٹ کی پاور key تقریباً 2 سیکنڈ دبا کر رکھیں — اسکرین اندھیری ہو جانی چاہیے۔ فوراً چھوڑ دیں تو وہ بس سو جاتا ہے (اسٹینڈ بائی)۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muốn tắt hẳn rồi mở lại TV Samsung, bạn giữ chặt phím nguồn của remote chừng 2 giây — màn hình sẽ tối đi. Bấm thoáng qua thì TV chỉ chuyển sang standby."
+          }
+        }
+      }
+    },
+    "tv.install.samsung.maintenanceHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تظهر على التلفاز عبارة «Server under maintenance»؟ معناها أنه لا يبلغ خوادم Samsung. تحقق من اتصاله بالإنترنت ومن صحة ساعته، ثم أطفئه وأعد تشغيله، وكرّر المحاولة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV-র পর্দায় “Server under maintenance” লেখা? মানে TV Samsung-এর নাগাল পাচ্ছে না। TV অনলাইনে আছে আর ঘড়ি ঠিক আছে কিনা দেখুন, TV একবার বন্ধ করে চালু করুন, এরপর ফের চেষ্টা করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seeing “Server under maintenance” on the TV? It can't get through to Samsung. Check the TV is online and its clock is right, turn the TV off and on, and retry."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "May lumalabas bang “Server under maintenance” sa TV? Hindi nito makontak ang Samsung. Tiyaking online ang TV at tama ang orasan, patayin at buksan ulit ang TV, saka subukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "क्या टीवी की स्क्रीन में “Server under maintenance” लिखा आ रहा है? इसका मतलब टीवी Samsung से संपर्क नहीं कर पा रहा। देखें कि टीवी ऑनलाइन है और घड़ी सही है, टीवी ऑफ़-ऑन करें, फिर दोबारा प्रयास करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muncul “Server under maintenance” di TV? Artinya TV tidak bisa menjangkau Samsung. Cek apakah TV sedang online dan jamnya tepat, matikan lalu hidupkan TV, kemudian ulangi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nampak “Server under maintenance” pada TV? TV tidak dapat menghubungi Samsung. Pastikan TV dalam talian dan jamnya tepat, matikan dan hidupkan TV, kemudian cuba lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zie je “Server under maintenance” op de tv? Dan komt hij niet bij Samsung. Kijk of je tv online is en de klok klopt, zet de tv uit en weer aan, en doe nog een poging."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทีวีขึ้นว่า “Server under maintenance” ใช่ไหม? แปลว่าทีวีติดต่อ Samsung ไม่ได้ เช็กว่าทีวีออนไลน์อยู่และนาฬิกาตรง ปิดเปิดทีวีหนึ่งรอบ แล้วลองอีกที"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV ekranında “Sunucu bakım altında” görüyorsanız Samsung'a bağlanamıyor demektir. İnternet bağlantısını ve TV saatini gözden geçirin; ardından TV'yi kapatıp açıp yeniden deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی کی اسکرین پیغام دے رہی ہے “Server under maintenance”؟ اس کا مطلب ہے Samsung سے ٹی وی کا رابطہ نہیں بن رہا۔ دیکھ لیں کہ ٹی وی انٹرنیٹ سے جڑا ہو اور گھڑی ٹھیک ہو، ٹی وی بند کر کے دوبارہ چلائیں، پھر ایک بار اور آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trên TV có dòng “Server under maintenance”? Như vậy là TV chưa liên lạc được tới Samsung. Xem TV có mạng và giờ đúng không, tắt TV rồi mở lại, xong thì thử lại."
+          }
+        }
+      }
+    },
+    "tv.install.samsung.thisAddress": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قيمة Host PC IP لهذا الحاسوب: %@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "এই কম্পিউটারের Host PC IP: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host PC IP for this computer: %@"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host PC IP para sa computer mo: %@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इस कंप्यूटर का पता (Host PC IP): %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host PC IP untuk komputer ini: %@"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host PC IP untuk komputer ini: %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host PC IP voor deze computer: %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host PC IP ของคอมเครื่องนี้: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bilgisayarın Host PC IP değeri: %@"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اس کمپیوٹر کا پتہ (Host PC IP): %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Host PC IP dành cho máy này: %@"
+          }
+        }
+      }
+    },
+    "tv.install.sendLog": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إذا تكرر ذلك، أرسل إلينا هذا الملف: %@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "বারবার এমন হলে এই ফাইলটি আমাদের পাঠান: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Still happening? Share this file with us: %@"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nangyayari pa rin? Ibahagi mo sa amin itong file: %@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अब भी हो रहा है? यह फ़ाइल हमें भेजें: %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masih terjadi? Kirimkan berkas ini kepada kami: %@"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masih berlaku? Kongsikan fail ini dengan kami: %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gebeurt het nog steeds? Stuur ons dit bestand: %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยังเป็นอยู่? แชร์ไฟล์นี้ให้ทีมเรา: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sorun sürerse bize bu dosyayı gönderin: %@"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مسئلہ اب بھی ہے؟ یہ فائل ہمیں بھیج دیں: %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vẫn bị lỗi? Gửi tệp sau đây để chúng tôi xem giúp: %@"
+          }
+        }
+      }
+    },
+    "tv.install.tvSaysLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ردّ التلفاز:"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV-র উত্তর:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV replied:"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sagot ng TV:"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टीवी का जवाब:"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Balasan TV:"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Balasan TV:"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De tv antwoordde:"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทีวีตอบกลับว่า:"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV'nin cevabı:"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ٹی وی کا جواب:"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV trả lời:"
+          }
+        }
+      }
+    },
+    "tv.lg.versionNotVisible": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يظهر الإصدار %1$@ على التلفاز؛ ردّ التثبيت: %2$@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "সংস্করণ %1$@ TV-তে দেখা যায়নি; ইনস্টলের উত্তর: %2$@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The TV doesn't list version %1$@; installer replied: %2$@"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi lumabas sa TV ang version %1$@; sagot ng install: %2$@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "वर्ज़न %1$@ टीवी पर नहीं दिखा; इंस्टॉल का जवाब: %2$@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versi %1$@ tidak muncul di TV; balasan instalasi: %2$@"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versi %1$@ tidak muncul pada TV; balasan pemasangan: %2$@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De tv toont versie %1$@ niet; antwoord van het installatieprogramma: %2$@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เวอร์ชัน %1$@ ไม่ปรากฏบนทีวี คำตอบจากการติดตั้ง: %2$@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV'de %1$@ sürümü görünmedi; kurulum yanıtı: %2$@"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ورژن %1$@ ٹی وی پر نظر نہیں آیا؛ انسٹال کا جواب: %2$@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV không có phiên bản %1$@ trong danh sách; trình cài đặt trả lời: %2$@"
+          }
+        }
+      }
+    },
+    "tv.test.line": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ترجمة للتجربة. هل تظهر لك فوق اللعبة؟"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "এটি একটি পরীক্ষার সাবটাইটেল। গেমের উপর কি দেখা যাচ্ছে?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test subtitle here. Is it visible over your game?"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test subtitle ito. Kita mo ba habang naglalaro?"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टेस्ट सबटाइटल। क्या गेम पर यह नज़र आ रहा है?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ini subtitle uji. Apakah terlihat di atas game?"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ini sari kata ujian. Nampak di atas permainan?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hier een proefondertitel. Zie je deze tekst boven je spel?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ซับทดสอบอยู่ตรงนี้ มองเห็นบนเกมไหม?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bir test altyazısı. Oyunun üzerinde görünüyor mu?"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "یہ آزمائشی سطر ہے۔ کیا گیم کے اوپر صاف دکھ رہی ہے؟"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một dòng phụ đề để thử. Nó có hiện trên trò chơi không?"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

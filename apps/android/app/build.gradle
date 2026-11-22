@@ -1,0 +1,201 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Nino contributors
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.compose'
+}
+
+// Depo kökü: gömülü oyun paketleri, sözlük, model listesi ve altyazı yazı tipleri buradan alınır (masaüstüyle ortak).
+def repoRoot = rootProject.projectDir.parentFile.parentFile
+def abis = (findProperty('nino.abis') ?: 'arm64-v8a').toString().split(',')*.trim()
+// PS5 kütüphanesi olmadan (yalnız Kotlin ve arayüz) derlemek için: -Pnino.skipNative=true
+def skipNative = (findProperty('nino.skipNative') ?: 'false').toString().toBoolean()
+
+// Sürüm imzası depo dışındaki dosyadan (eskisiyle aynı anahtar ki yeni sürüm eskinin üstüne kurulabilsin).
+def releaseSigning = null
+def signingFile = file(System.getenv('NINO_ANDROID_SIGNING') ?: "${System.getProperty('user.home')}/.config/nino/android-signing.properties")
+if (signingFile.exists()) {
+    def p = new Properties()
+    signingFile.withInputStream { p.load(it) }
+    releaseSigning = p
+}
+
+android {
+    namespace 'com.ninotranslator.mobile'
+    compileSdk 36
+    ndkVersion '27.0.12077973'
+
+    defaultConfig {
+        applicationId 'com.ninotranslator.mobile'
+        minSdk 26
+        targetSdk 36
+        // Öntanımlı değerler yayındaki Android sürümünden (kod 60) büyük (kullanıcı kararı: 4.5.0); böylece düz bir derleme
+        // de eskisinin üstüne kurulur. Yayında -Pnino.versionCode / -Pnino.versionName ile verilir.
+        versionCode((findProperty('nino.versionCode') ?: '61').toString().toInteger())
+        versionName((findProperty('nino.versionName') ?: '4.5.0').toString())
+        ndk { abiFilters(*abis) }
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        if (!skipNative) {
+            externalNativeBuild {
+                cmake {
+                    arguments '-DANDROID_STL=c++_static', '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON',
+                        "-DNINO_REMOTEPLAY_DIR=${rootProject.file('.remoteplay').absolutePath}"
+                }
+            }
+        }
+    }
+    if (!skipNative) {
+        externalNativeBuild { cmake { path 'src/main/cpp/CMakeLists.txt'; version '3.22.1' } }
+    }
+    signingConfigs {
+        release {
+            if (releaseSigning) {
+                storeFile file(releaseSigning.getProperty('storeFile'))
+                storePassword releaseSigning.getProperty('storePassword')
+                keyAlias releaseSigning.getProperty('keyAlias', 'nino')
+                keyPassword releaseSigning.getProperty('keyPassword')
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig releaseSigning ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions { jvmTarget = '17' }
+    buildFeatures { compose true; buildConfig true }
+    sourceSets.main.assets.srcDirs += layout.buildDirectory.dir('generated/nino-assets')
+    sourceSets.main.assets.srcDirs += layout.buildDirectory.dir('generated/nino-tv-packages')
+    // BouncyCastle kavanozlarındaki çoklu sürüm bildirimleri çakışır.
+    packaging { resources { excludes += ['META-INF/versions/*/OSGI-INF/MANIFEST.MF', 'META-INF/DEPENDENCIES'] } }
+    testOptions { unitTests.returnDefaultValues = true }
+    // :core da uygulamanın minSdk'sına (26) göre denetlenir: Java 9+ çağrısı eski telefonda çöker.
+    lint { checkDependencies true; abortOnError true }
+}
+
+// Üretilen varlıklar: altyazı yazı tipleri (OFL) ve NOTICE. Oyun paketleri gömülmez (havuzdan iner); sözlük ve model
+// listesi Nino'nun kendi dosyaları olarak src/main/assets içinde. Sync: klasörde eski dosya kalmaz.
+tasks.register('copyNinoAssets', Sync) {
+    into layout.buildDirectory.dir('generated/nino-assets')
+    from("$repoRoot/apps/tv-web/src/fonts") { include '*.ttf', 'OFL-*.txt'; into 'fonts' }
+    // Lisans atfı: Ayarlar'daki telif satırı NOTICE'tan okunur (metin tek yerde durur).
+    from(repoRoot) { include 'NOTICE' }
+}
+preBuild.dependsOn 'copyNinoAssets'
+
+// TV paketleri (telefondan TV'ye kurulum, tv.md 3.5): Android TV APK, LG IPK, Samsung WGT ve Samsung ara sertifikaları.
+// Her türden en yüksek sürümlü dosya alınır; paket yoksa uyarı verilir, derleme bozulmaz (uygulama "paket yok" der).
+// Aranan klasörler: -Pnino.tvPackages=a:b, depo kökünde dist/tv-app (Mac/Windows'un kurduğu klasör) ve apps/tv-web/dist.
+def tvPackageDirs = { ->
+    def dirs = []
+    def extra = findProperty('nino.tvPackages')
+    if (extra) extra.toString().split(File.pathSeparator).each { dirs << file(it.trim()) }
+    dirs << new File(repoRoot, 'dist/tv-app')
+    dirs << new File(repoRoot, 'apps/tv-web/dist')
+    dirs.findAll { it.isDirectory() }
+}
+def versionParts = { String v -> v.split(/[.\-]/).collect { it.isInteger() ? it.toInteger() : 0 } }
+def versionCompare = { String a, String b ->
+    def x = versionParts(a), y = versionParts(b)
+    for (int i = 0; i < Math.max(x.size(), y.size()); i++) {
+        int p = i < x.size() ? x[i] : 0, q = i < y.size() ? y[i] : 0
+        if (p != q) return p <=> q
+    }
+    0
+}
+def pickNewest = { List<File> dirs, java.util.regex.Pattern pattern ->
+    File best = null; String bestVersion = null
+    dirs.each { d -> d.listFiles()?.each { f ->
+        def m = pattern.matcher(f.name)
+        if (f.isFile() && m.matches()) {
+            def v = m.group(1)
+            if (best == null || versionCompare(v, bestVersion) > 0) { best = f; bestVersion = v }
+        }
+    } }
+    best ? [best, bestVersion] : null
+}
+tasks.register('copyTvPackages') {
+    def out = layout.buildDirectory.dir('generated/nino-tv-packages/tv')
+    def caDir = new File(repoRoot, 'apps/windows/src/Nino.TvInstall/Samsung/ca')
+    outputs.dir(out)
+    outputs.upToDateWhen { false }
+    doLast {
+        def target = out.get().asFile
+        project.delete(target)
+        target.mkdirs()
+        def dirs = tvPackageDirs()
+        def lines = ['# Telefonla gelen TV paketleri (derlemede yazılır)']
+        def apk = pickNewest(dirs, ~/nino-androidtv_(.+)\.apk/)
+        def ipk = pickNewest(dirs, ~/com\.ninotranslator\.tv_(.+)_all\.ipk/)
+        def wgt = pickNewest(dirs, ~/nino-samsung_(.+)\.wgt/)
+        [['apk', apk], ['ipk', ipk], ['wgt', wgt]].each { kind, hit ->
+            if (hit == null) {
+                logger.warn("Nino: ${kind} TV paketi bulunamadı (${dirs*.path.join(', ') ?: 'klasör yok'}); telefon bu marka için 'paket yok' diyecek.")
+                return
+            }
+            File f = hit[0]; String v = hit[1]
+            if (kind == 'wgt') {
+                // Sürüm config.xml'deki widget version değeri.
+                def zip = new java.util.zip.ZipFile(f)
+                try {
+                    def entry = zip.getEntry('config.xml')
+                    if (entry) {
+                        def m = zip.getInputStream(entry).getText('UTF-8') =~ /<widget[^>]*\sversion="([^"]+)"/
+                        if (m.find()) v = m.group(1)
+                    }
+                } finally { zip.close() }
+            }
+            project.copy { from f; into target }
+            lines << "${kind}=${f.name}"
+            lines << "${kind}.version=${v}"
+        }
+        if (caDir.isDirectory()) {
+            project.copy { from(caDir) { include '*.pem' }; into new File(target, 'samsung-ca') }
+        } else {
+            logger.warn("Nino: Samsung ara sertifikaları bulunamadı (${caDir}); Samsung imzası kurulamaz.")
+        }
+        new File(target, 'index.txt').text = lines.join('\n') + '\n'
+    }
+}
+preBuild.dependsOn 'copyTvPackages'
+
+tasks.withType(Test).configureEach {
+    // İsteğe bağlı: gerçek `adb pair` ile eşleme denemesi (-Pnino.realAdb=<adb yolu>).
+    if (findProperty('nino.realAdb')) systemProperty 'nino.realAdb', findProperty('nino.realAdb').toString()
+}
+
+dependencies {
+    implementation project(':core')
+    implementation platform('androidx.compose:compose-bom:2024.12.01')
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.compose.material:material-icons-core'
+    implementation 'androidx.compose.material:material-icons-extended'
+    implementation 'androidx.activity:activity-compose:1.9.3'
+    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.navigation:navigation-compose:2.8.5'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0'
+    // Cihaz üstü yazı tanıma (Latin modeli uygulamayla gelir) ve ücretsiz çeviri (dil modeli ilk kullanımda iner).
+    implementation 'com.google.mlkit:text-recognition:16.0.1'
+    implementation 'com.google.mlkit:translate:17.0.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0'
+    // Xbox ev yayını: Google libwebrtc derlemesi (BSD-3); görüntü donanım çözücüyle alınır.
+    implementation 'io.github.webrtc-sdk:android:144.7559.15'
+    // TV'ye kurulum: Android TV kablosuz hata ayıklama (TLS 1.3, SPAKE2), sertifikalar ve Samsung imzası (MIT);
+    // LG geliştirici modu SSH'si (BSD).
+    implementation 'org.bouncycastle:bctls-jdk18on:1.79'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.79'
+    implementation 'com.github.mwiede:jsch:0.2.25'
+
+    testImplementation 'junit:junit:4.13.2'
+    // Android'in org.json'u testte gövdesiz gelir; JVM testleri için asıl kütüphane eklenir.
+    testImplementation 'org.json:json:20240303'
+}
+

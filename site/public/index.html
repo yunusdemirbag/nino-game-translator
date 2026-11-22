@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nino Game Translator · PS5 ve Xbox oyunlarına anında Türkçe altyazı</title>
+<meta name="description" content="Nino, PS5 ve Xbox oyunlarındaki İngilizce yazıyı anında Türkçeye çevirir ve TV'de, oyunun üstünde gösterir. Ücretsiz, açık kaynak, reklamsız, hesapsız.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="alternate" hreflang="tr" href="https://yunusdemirbag.github.io/nino-game-translator/">
+<link rel="alternate" hreflang="en" href="https://yunusdemirbag.github.io/nino-game-translator/#english">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nino Game Translator">
+<meta property="og:description" content="PS5 ve Xbox oyunlarına anında Türkçe altyazı, TV'de oyunun üstünde. Ücretsiz ve açık kaynak.">
+<meta property="og:image" content="https://yunusdemirbag.github.io/nino-game-translator/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{
+  --bg:#ffffff; --bg2:#f5f5f7; --card:#ffffff; --text:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7;
+  --accent:#0071e3; --accent-text:#ffffff; --tr:#e30a17; --radius:22px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#000000; --bg2:#101012; --card:#161618; --text:#f5f5f7; --muted:#a1a1a6; --line:#2c2c2e; --accent:#2997ff; }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.5 var(--font);letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--accent);color:#fff;padding:8px 14px;border-radius:10px;z-index:10}
+.skip:focus{left:8px}
+
+/* Üst çubuk */
+header.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 80%,transparent);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:20px;height:52px}
+.brand{display:flex;align-items:center;gap:9px;color:var(--text);font-weight:600}
+.brand img{width:28px;height:28px;border-radius:7px}
+.bar nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+.bar nav a{color:var(--muted)}
+.bar nav a:hover{color:var(--text);text-decoration:none}
+@media (max-width:640px){.bar nav a.opt{display:none}}
+
+/* Bölümler */
+section{padding:96px 0}
+section.alt{background:var(--bg2)}
+.eyebrow{font-size:15px;font-weight:600;color:var(--tr);margin:0 0 8px}
+h1,h2,h3{margin:0;letter-spacing:-.025em;line-height:1.08}
+h1{font-size:clamp(40px,7vw,76px);font-weight:700}
+h2{font-size:clamp(30px,4.6vw,48px);font-weight:700}
+h3{font-size:21px;font-weight:600;line-height:1.25}
+.lead{font-size:clamp(19px,2.2vw,24px);color:var(--muted);max-width:760px;margin:18px auto 0;line-height:1.4}
+.center{text-align:center}
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:24px 0 0;padding:0;list-style:none}
+.pills li{font-size:14px;padding:6px 14px;border-radius:999px;background:var(--bg2);color:var(--text)}
+section.alt .pills li{background:var(--card)}
+.cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:32px}
+.btn{display:inline-block;padding:12px 24px;border-radius:999px;background:var(--accent);color:var(--accent-text);font-weight:500}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+
+/* Kahraman */
+.hero{padding:88px 0 0;text-align:center;overflow:hidden}
+.hero .logo{width:112px;height:112px;margin:0 auto 26px;border-radius:26px}
+.hero figure{margin:56px auto 0;max-width:1200px}
+.hero figure img{border-radius:var(--radius) var(--radius) 0 0;box-shadow:0 30px 80px -30px rgba(0,0,0,.45)}
+
+/* Izgara ve kartlar */
+.grid{display:grid;gap:22px;margin-top:48px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}}
+@media (max-width:640px){.g2,.g4{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:var(--radius);padding:28px;overflow:hidden}
+section:not(.alt) .card{background:var(--bg2)}
+.card p{color:var(--muted);margin:8px 0 0;font-size:16px}
+.shot{padding:0}
+.shot img{aspect-ratio:16/9;object-fit:cover;width:100%}
+.shot div{padding:20px 24px 24px}
+
+/* Adımlar */
+.steps{counter-reset:s;list-style:none;padding:0;margin:48px 0 0}
+.steps li{counter-increment:s;position:relative;padding:28px 28px 28px 92px;background:var(--card);border-radius:var(--radius);margin-bottom:14px}
+.steps li::before{content:counter(s);position:absolute;left:28px;top:26px;width:42px;height:42px;border-radius:50%;
+  background:var(--accent);color:#fff;font-weight:700;font-size:19px;display:grid;place-items:center}
+.steps p{color:var(--muted);margin:6px 0 0}
+.note{margin-top:22px;padding:18px 22px;border-radius:16px;background:color-mix(in srgb,var(--tr) 9%,var(--card));font-size:15px}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+@media (max-width:640px){.figs{grid-template-columns:1fr}}
+.figs figure{margin:0}
+.figs img{border-radius:16px}
+.figs figcaption{font-size:14px;color:var(--muted);margin-top:8px;text-align:center}
+
+/* İndir */
+.dl h3{display:flex;align-items:center;gap:10px}
+.dl .req{font-size:14px;color:var(--muted);margin:4px 0 16px}
+.dl a.more{font-weight:500}
+.small{font-size:14px;color:var(--muted)}
+
+/* TV tablosu */
+.tvs{width:100%;border-collapse:collapse;margin-top:40px;font-size:16px}
+.tvs th,.tvs td{text-align:left;padding:16px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.tvs th{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.tvs td:first-child{font-weight:600}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.tag.ok{background:color-mix(in srgb,#34c759 18%,transparent);color:#1f8a3a}
+.tag.beta{background:color-mix(in srgb,#ff9f0a 20%,transparent);color:#a35f00}
+.tag.no{background:color-mix(in srgb,#ff3b30 16%,transparent);color:#c4271d}
+@media (prefers-color-scheme: dark){.tag.ok{color:#5fdc7c}.tag.beta{color:#ffb84d}.tag.no{color:#ff7a70}}
+.tvs caption{caption-side:top;text-align:left;font-size:21px;font-weight:600;padding:0 0 4px}
+.tvs + .tvs{margin-top:56px}
+
+/* Kurulum */
+.video{margin:40px auto 0;max-width:860px;aspect-ratio:16/9;border-radius:var(--radius);background:var(--card);display:grid;place-items:center;
+  text-align:center;padding:24px;box-shadow:inset 0 0 0 1px var(--line)}
+.video p{margin:6px 0 0;color:var(--muted)}
+.video .play{width:64px;height:64px;border-radius:50%;background:var(--accent);margin:0 auto 14px;position:relative}
+.video .play::after{content:"";position:absolute;left:26px;top:20px;border-left:18px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
+@media (max-width:640px){.tvs thead{display:none}.tvs tr{display:block;border-bottom:1px solid var(--line);padding:12px 0}
+  .tvs td{display:block;border:0;padding:4px 0}}
+
+/* İngilizce */
+#english .card{max-width:820px;margin:40px auto 0}
+#english ol{padding-left:20px;margin:10px 0 0}
+#english li{margin:6px 0}
+
+/* Alt bilgi */
+footer{padding:40px 0 56px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+footer .links{display:flex;flex-wrap:wrap;gap:8px 22px;margin-bottom:16px}
+footer .links a{color:var(--text)}
+footer p{margin:6px 0;max-width:900px}
+</style>
+</head>
+<body>
+<a class="skip" href="#icerik">İçeriğe geç</a>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Nino ana sayfa"><img src="img/logo.webp" alt="" width="28" height="28">Nino</a>
+    <nav aria-label="Sayfa bölümleri">
+      <a class="opt" href="#nasil">Nasıl çalışır</a>
+      <a class="opt" href="#kurulum">Kurulum</a>
+      <a class="opt" href="#tv">TV'ler</a>
+      <a href="#indir">İndir</a>
+      <a href="#english" lang="en">English</a>
+    </nav>
+  </div>
+</header>
+
+<main id="icerik">
+
+<section class="hero">
+  <div class="wrap">
+    <img class="logo" src="img/logo.webp" alt="Nino Game Translator logosu" width="112" height="112">
+    <p class="eyebrow">Nino Game Translator</p>
+    <h1>Oyun İngilizce.<br>Altyazı Türkçe.</h1>
+    <p class="lead">Nino, PS5 ve Xbox oyunlarındaki İngilizce yazıyı anında çevirir ve TV'nizde, oyunun tam üstünde gösterir. Oyunu her zamanki gibi kendi kolunuzla oynarsınız.</p>
+    <ul class="pills" aria-label="Öne çıkanlar">
+      <li>Ücretsiz</li><li>Açık kaynak</li><li>Reklam yok</li><li>Abonelik yok</li><li>Hesap yok</li>
+    </ul>
+    <div class="cta">
+      <a class="btn" href="#indir">Nino'yu indir</a>
+      <a class="btn ghost" href="#nasil">Nasıl çalışır?</a>
+    </div>
+  </div>
+  <figure>
+    <img src="img/altyazi.webp" width="1600" height="900" alt="Oyunda bir telefon konuşması; TV'de, oyunun üstünde Türkçe altyazı görünüyor">
+  </figure>
+</section>
+
+<section class="alt" aria-labelledby="ceviri-baslik">
+  <div class="wrap center">
+    <h2 id="ceviri-baslik">Yalnız altyazı değil.</h2>
+    <p class="lead">Konuşmalar, oyundaki telefon, haritadaki görevler ve menüler. Türkçesi her yazının kendi yerinde çıkar. Uygulama, Türkçe başta olmak üzere 12 dilde kullanılabilir.</p>
+  </div>
+  <div class="wrap">
+    <div class="grid g2">
+      <article class="card shot">
+        <img src="img/mesajlar.webp" width="1000" height="563" loading="lazy" alt="Oyundaki telefonda mesajlaşma, Türkçesi kendi balonlarında">
+        <div><h3>Telefon mesajları</h3><p>Gelen ve giden mesajlar, gönderenin adıyla, kendi balonlarında.</p></div>
+      </article>
+      <article class="card shot">
+        <img src="img/harita.webp" width="1000" height="563" loading="lazy" alt="Haritadaki görev kartının altında Türkçesi">
+        <div><h3>Harita görevleri</h3><p>Görev kartının Türkçesi kartın hemen altında; İngilizcenin üstünü örtmez.</p></div>
+      </article>
+      <article class="card shot">
+        <img src="img/haber.webp" width="1000" height="563" loading="lazy" alt="Oyundaki haber uygulaması Türkçe">
+        <div><h3>Haberler ve uygulamalar</h3><p>Başlıklar ve yazılar, uygulamanın kendi renkleriyle.</p></div>
+      </article>
+      <article class="card shot">
+        <img src="img/banka.webp" width="1000" height="563" loading="lazy" alt="Oyundaki banka uygulaması Türkçe">
+        <div><h3>Menüler</h3><p>Hesap adları, düğmeler ve seçenekler Türkçe; tutarlar olduğu gibi kalır.</p></div>
+      </article>
+    </div>
+    <p class="small center" style="margin-top:22px">Telefon ve harita çevirisi şimdilik seçili oyunlarda (ör. GTA 6) çalışır.</p>
+  </div>
+</section>
+
+<section id="nasil" aria-labelledby="nasil-baslik">
+  <div class="wrap">
+    <div class="center">
+      <h2 id="nasil-baslik">Üç adımda hazır.</h2>
+      <p class="lead">Nino'yu bir cihaza kurmanız yeter: Mac, Windows ya da telefon. TV uygulamasını o cihaz TV'ye kendisi kurar.</p>
+    </div>
+    <ol class="steps">
+      <li><h3>Nino'yu indirip açın</h3><p>İlk açılışta konsolunuzu seçin: PS5 ya da Xbox.</p></li>
+      <li><h3>Nino'nun söylediklerini yapın</h3><p>PS5'te ikinci, ücretsiz bir PSN hesabıyla giriş yapıp PS5'teki 8 haneli kodu yazarsınız. Sonra TV'nizi seçersiniz; Nino TV uygulamasını kurar.</p></li>
+      <li><h3>Oyunu açın, fişi takın</h3><p>Nino'nun ekranındaki çizilmiş fişe dokunun ya da onu prize sürükleyin. Türkçe altyazı TV'de, oyunun üstünde belirir. Sonraki seferlerde yalnız bu adım yeter.</p></li>
+    </ol>
+    <p class="note"><strong>Dikkat:</strong> "Fiş", Nino uygulamasının ekranındaki çeviriyi başlatan düğmedir. PS5'in ya da TV'nin gerçek elektrik fişine dokunmayın.</p>
+    <div class="figs">
+      <figure><img src="img/uygulama-ana.webp" width="1200" height="868" loading="lazy" alt="Nino'nun ana ekranı: TV, PS5 ve prize takılacak fiş"><figcaption>Nino'nun ana ekranı</figcaption></figure>
+      <figure><img src="img/fis.webp" width="1200" height="675" loading="lazy" alt="Fişi takın: uygulamadaki çizilmiş fiş çeviriyi başlatır"><figcaption>Fiş takılı: çeviri açık</figcaption></figure>
+    </div>
+    <div class="grid g3">
+      <div class="card"><h3>Neden ikinci PSN hesabı?</h3><p>Nino oyunu Remote Play ile izler. PS5, oynadığınız hesapla aynı anda Remote Play açtırmaz. Oyunu yine kendi hesabınızla oynarsınız; PS Plus gerekmez.</p></div>
+      <div class="card"><h3>Capture Card ile</h3><p>Mac ya da Windows görüntüyü karttan alır. Remote Play ve ikinci hesap gerekmez.</p></div>
+      <div class="card"><h3>Xbox'ta</h3><p>Kendi Microsoft hesabınız yeter; ikinci hesap gerekmez. Xbox desteği deneyseldir.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="indir" class="alt" aria-labelledby="indir-baslik">
+  <div class="wrap">
+    <div class="center">
+      <h2 id="indir-baslik">İndir.</h2>
+      <p class="lead">Hepsi ücretsiz. Mac, Windows ve Android'deki Nino sonraki güncellemeleri kendisi yükler.</p>
+    </div>
+    <div class="grid g4 dl">
+      <div class="card"><h3>Mac</h3><p class="req">macOS 14 ve sonrası (Apple Silicon ve Intel)</p><a class="more" href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest">Sürümler sayfasından indir ›</a></div>
+      <div class="card"><h3>Windows</h3><p class="req">Windows 10 ve 11, 64 bit</p><a class="more" href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest">Sürümler sayfasından indir ›</a></div>
+      <div class="card"><h3>Android telefon</h3><p class="req">Android 8 ve sonrası</p><a class="more" href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest">APK'yı indir ›</a><p class="small">Google Play testine katılmak için Kurulum bölümüne bakın.</p></div>
+      <div class="card"><h3>iPhone ve iPad</h3><p class="req">iOS 17 ve sonrası</p><a class="more" href="https://testflight.apple.com/join/1K3Q1KXp">TestFlight'tan yükle ›</a><p class="small">Davet kodu gerekmez; ayrıntı Kurulum bölümünde.</p></div>
+    </div>
+    <p class="small center" style="margin-top:28px">Bütün dosyalar ve sürüm notları: <a href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest">GitHub › Sürümler</a></p>
+  </div>
+</section>
+
+<section id="kurulum" aria-labelledby="kurulum-baslik">
+  <div class="wrap">
+    <div class="center">
+      <h2 id="kurulum-baslik">Kurulum.</h2>
+      <p class="lead">Bir kez yapılır; birkaç dakika sürer. Sonrası yalnız oyunu açıp fişi takmak.</p>
+      <p class="small" style="margin-top:14px" lang="ar" dir="rtl"><a href="ar/kurulum">دليل التثبيت بالعربية ›</a></p>
+    </div>
+
+    <!-- KURULUM VİDEOSU: video hazır olunca bu kutunun yerine <video controls src="video/kurulum.mp4" ...> ya da
+         gömülü oynatıcı konur. Şimdilik yer tutucu. -->
+    <div class="video" role="img" aria-label="Kurulum videosu için yer">
+      <div><div class="play" aria-hidden="true"></div><h3>Kurulum videosu</h3><p>Adım adım anlatan kısa video çok yakında burada.</p></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card"><h3>iPhone ve iPad: TestFlight</h3>
+        <p>Nino şimdilik Apple'ın test uygulaması TestFlight üzerinden dağıtılıyor. <a href="https://testflight.apple.com/join/1K3Q1KXp">Bu bağlantıyı</a> iPhone'da açın: önce TestFlight'ı App Store'dan yükleyin, sonra bağlantıdaki "Kabul et" ve "Yükle"ye dokunun.</p>
+        <p><strong>Davet kodu ya da e-posta daveti gerekmez.</strong> Bağlantı herkese açıktır; kod soran bir ekran çıkmaz.</p></div>
+      <div class="card"><h3>Android: Google Play testi</h3>
+        <p>Play sürümü şimdilik kapalı testte. Önce <a href="https://groups.google.com/g/nino-test">nino-test grubuna</a> katılın, sonra <a href="https://play.google.com/apps/testing/com.ninotranslator.mobile">test sayfasından</a> "Test kullanıcısı ol"a dokunun.</p>
+        <p><strong>Katıldıktan sonra Nino'nun Play'de görünmesi 1–2 saat sürebilir.</strong> Hemen çıkmazsa bekleyip Play Store'da yeniden arayın. Beklemek istemezseniz APK'yı Sürümler sayfasından indirebilirsiniz.</p></div>
+    </div>
+
+    <div class="note" id="android-tv-elle">
+      <h3 style="font-size:17px">Android TV'ye elle kurarken "Paket geçersiz" ya da "Uygulama yüklenmedi" çıkarsa</h3>
+      <p style="margin:6px 0 0">Sebebi, TV'deki eski Nino'nun başka bir imzayla kurulmuş olması. Android, farklı imzalı bir uygulamanın üstüne kurulum yapmaz. Çözüm: TV'de <strong>Ayarlar › Uygulamalar › Nino › Kaldır</strong>, sonra yeni dosyayı yeniden kurun.</p>
+      <p style="margin:6px 0 0">TV uygulamasını Mac ya da Windows'taki Nino kuruyorsa bununla uğraşmazsınız: eski kopyayı kurmadan önce kendisi kaldırır. Telefondaki ve iPhone'daki Nino bu durumu fark eder ve eski kopyayı kaldırmanızı ister.</p>
+    </div>
+  </div>
+</section>
+
+<section id="tv" aria-labelledby="tv-baslik">
+  <div class="wrap">
+    <div class="center">
+      <h2 id="tv-baslik">TV'nizde çalışır.</h2>
+      <p class="lead">TV uygulamasını bilgisayardaki ya da telefondaki Nino kurar. Sizin işiniz TV'de bir kez geliştirici modunu açmak.</p>
+    </div>
+    <table class="tvs">
+      <caption>Çalışanlar</caption>
+      <thead><tr><th scope="col">Ekran</th><th scope="col">Durum</th><th scope="col">Kurulum için</th></tr></thead>
+      <tbody>
+        <tr><td>Android TV / Google TV<br><span class="small">TCL, iFFALCON, Sony, Xiaomi, Toshiba, Grundig, Arçelik, Beko ve diğerleri; Hisense, Philips ve Vestel'in yalnız Android TV / Google TV modelleri; Android TV kutuları (ör. Google TV'li Chromecast)</span></td><td><span class="tag ok">Denendi</span></td><td>USB hata ayıklamayı bir kez açın</td></tr>
+        <tr><td>Samsung TV ve akıllı monitör<br><span class="small">Tizen, 2016 ve sonrası</span></td><td><span class="tag beta">Deneysel</span></td><td>Geliştirici modunu bir kez açın</td></tr>
+        <tr><td>LG TV<br><span class="small">webOS</span></td><td><span class="tag beta">Deneysel</span></td><td>Geliştirici modunu bir kez açın</td></tr>
+        <tr><td>Mac ya da PC ekranı</td><td><span class="tag ok">Çalışır</span></td><td>Altyazı Nino'nun penceresinde, oyunun üstünde görünür</td></tr>
+        <tr><td>Monitör<br><span class="small">akıllı olmayan TV dahil</span></td><td><span class="tag ok">Çalışır</span></td><td>PS5'i HDMI kartla bilgisayara bağlayın ya da oyunu bilgisayar ekranında oynayın</td></tr>
+      </tbody>
+    </table>
+    <table class="tvs">
+      <caption>Çalışmayanlar</caption>
+      <thead><tr><th scope="col">Sistem</th><th scope="col">Durum</th><th scope="col">Ne yapabilirsiniz</th></tr></thead>
+      <tbody>
+        <tr><td>Vidaa<br><span class="small">çoğu Hisense TV</span></td><td><span class="tag no">Çalışmaz</span></td><td rowspan="6">Bu sistemlere başka uygulama kurulamıyor, Nino'nun TV uygulaması da kurulamaz. TV'ye bir Android TV kutusu takın ya da altyazıyı Mac/PC ekranında gösterin.</td></tr>
+        <tr><td>TiVo OS</td><td><span class="tag no">Çalışmaz</span></td></tr>
+        <tr><td>Titan OS<br><span class="small">yeni Philips TV'ler</span></td><td><span class="tag no">Çalışmaz</span></td></tr>
+        <tr><td>Axen</td><td><span class="tag no">Çalışmaz</span></td></tr>
+        <tr><td>Eski Vestel<br><span class="small">Android olmayan modeller</span></td><td><span class="tag no">Çalışmaz</span></td></tr>
+        <tr><td>Android olmayan TV kutuları</td><td><span class="tag no">Çalışmaz</span></td></tr>
+      </tbody>
+    </table>
+    <p class="small" style="margin-top:18px">Konsol, Nino'nun çalıştığı cihaz ve TV aynı Wi-Fi ağında olmalı.</p>
+  </div>
+</section>
+
+<section class="alt" aria-labelledby="gizlilik-baslik">
+  <div class="wrap">
+    <div class="grid g2" style="margin-top:0">
+      <div class="card">
+        <h2 id="gizlilik-baslik" style="font-size:32px">Gizlilik</h2>
+        <p>Nino hesap açtırmaz, reklam göstermez, sizi izlemez. Yazı tanıma ve ücretsiz çeviri cihazınızda yapılır; oyun görüntüsü kaydedilmez. Sunucuya ne gittiğini tek tek yazdık.</p>
+        <p style="margin-top:16px"><a href="gizlilik">Gizlilik politikasını okuyun ›</a></p>
+      </div>
+      <div class="card">
+        <h2 style="font-size:32px">Açık kaynak</h2>
+        <p>Nino'nun bütün kaynak kodu GNU AGPL-3.0 lisansıyla herkese açık. Hata bildirimi ve öneriler GitHub'da.</p>
+        <p style="margin-top:16px"><a href="https://github.com/yunusdemirbag/nino-game-translator">Kaynak kod ›</a> &nbsp; <a href="https://github.com/yunusdemirbag/nino-game-translator/issues">Sorun bildir ›</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="english" lang="en" aria-labelledby="en-baslik">
+  <div class="wrap">
+    <div class="center">
+      <h2 id="en-baslik">In English</h2>
+      <p class="lead">Nino reads the English text of PS5 and Xbox games and shows a translation on your TV, right on top of the game. The app comes in 12 languages, Turkish first.</p>
+    </div>
+    <div class="card">
+      <h3>How it works</h3>
+      <p>A Mac, Windows PC or phone watches the game through Remote Play (PS5, with a second free PSN account) or the Xbox home stream, reads the text, translates it and sends it to the Nino app on your TV. You keep playing on your TV with your own controller.</p>
+      <ol>
+        <li>Download Nino and pick your console.</li>
+        <li>Follow the steps: sign in, pair the PS5 with its 8-digit code, choose your TV. Nino installs the TV app itself.</li>
+        <li>Start the game and plug in the drawn plug on Nino's screen. Subtitles appear on the TV.</li>
+      </ol>
+      <p style="margin-top:14px"><strong>TVs:</strong> works on Android TV / Google TV (including Android TV boxes), Samsung Tizen, LG webOS, a Mac or PC screen, and any monitor (through an HDMI capture card or the computer screen). It does not work on Vidaa (most Hisense TVs), TiVo OS, Titan OS (newer Philips TVs), Axen, older non-Android Vestel TVs or non-Android TV boxes, because they cannot install other apps.</p>
+      <p style="margin-top:14px"><strong>Android TV, manual install:</strong> if the TV says "Package invalid" or "App not installed", an older Nino on the TV was signed with a different key. Remove it (Settings › Apps › Nino › Uninstall) and install again. Nino on Mac or Windows does this for you; the phone apps detect it and ask you to remove the old copy.</p>
+      <p style="margin-top:14px"><strong>iPhone:</strong> the <a href="https://testflight.apple.com/join/1K3Q1KXp">TestFlight link</a> opens without an invite code. <strong>Android:</strong> after joining the Google Play test, Nino can take 1–2 hours to show up in Play.</p>
+      <p style="margin-top:14px">Open source under AGPL-3.0, and free. No ads, no subscription, no account.</p>
+      <p style="margin-top:16px"><a href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest">Download from GitHub Releases ›</a> &nbsp; <a href="gizlilik#english">Privacy policy ›</a> &nbsp; <a href="https://github.com/yunusdemirbag/nino-game-translator">Source code ›</a></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="#indir">İndir</a>
+      <a href="gizlilik">Gizlilik</a>
+      <a href="https://github.com/yunusdemirbag/nino-game-translator">Kaynak kod</a>
+      <a href="https://github.com/yunusdemirbag/nino-game-translator/issues">Destek</a>
+      <a href="https://github.com/yunusdemirbag/nino-game-translator/blob/main/LICENSE">Lisans</a>
+    </div>
+    <p>Nino © 2026 Yunus Demirbağ · AGPL-3.0</p>
+    <p>Nino; Sony Interactive Entertainment, Microsoft, LG Electronics ve Samsung Electronics ile bağlantılı değildir ve onlar tarafından desteklenmez. PlayStation ve PS5, Sony Interactive Entertainment Inc.'in; Xbox, Microsoft Corporation'ın; LG ve webOS, LG Electronics Inc.'in; Samsung ve Tizen, Samsung Electronics Co., Ltd.'nin ticari markalarıdır. Görsellerdeki oyun görüntüleri sahiplerine aittir.</p>
+    <p lang="en">Nino has no affiliation with, and no endorsement from, Sony Interactive Entertainment, Microsoft, LG Electronics or Samsung Electronics. All trademarks belong to their owners.</p>
+  </div>
+</footer>
+</body>
+</html>

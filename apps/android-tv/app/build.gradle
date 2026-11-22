@@ -1,0 +1,141 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Nino contributors
+plugins {
+    id 'com.android.application'
+}
+
+// İmza: anahtar ortam değişkenlerinden gelir, depoda durmaz. Yoksa geliştirme anahtarı kullanılır.
+//   TV_KEYSTORE_FILE, TV_KEYSTORE_PASSWORD, TV_KEY_ALIAS (varsayılan nino-tv): sürüm anahtarı.
+//   TV_UPLOAD_KEYSTORE_FILE, TV_UPLOAD_KEYSTORE_PASSWORD, TV_UPLOAD_KEY_ALIAS (varsayılan upload): Play yükleme anahtarı.
+def env = System.getenv()
+
+// Yayın derlemesi: -PninoPublish. Sahadaki TV'lerde kurulu APK sürüm anahtarıyla imzalı; hata ayıklama anahtarıyla imzalı
+// bir APK onların üstüne kurulmaz ("Paket geçersiz" / INSTALL_FAILED_UPDATE_INCOMPATIBLE). Bu yüzden yayın derlemesi
+// anahtar yoksa sessizce hata ayıklama anahtarına düşmez, açık bir hatayla durur. Anahtar kullanıcıdadır, depoda durmaz.
+def publish = project.hasProperty('ninoPublish')
+if (publish) {
+    def missing = []
+    if (!env.TV_KEYSTORE_FILE) missing << 'TV_KEYSTORE_FILE'
+    else if (!new File(env.TV_KEYSTORE_FILE).isFile()) missing << "TV_KEYSTORE_FILE (dosya yok: ${env.TV_KEYSTORE_FILE})"
+    if (!env.TV_KEYSTORE_PASSWORD) missing << 'TV_KEYSTORE_PASSWORD'
+    if (env.TV_UPLOAD_KEYSTORE_FILE && !new File(env.TV_UPLOAD_KEYSTORE_FILE).isFile()) {
+        missing << "TV_UPLOAD_KEYSTORE_FILE (dosya yok: ${env.TV_UPLOAD_KEYSTORE_FILE})"
+    }
+    if (!missing.isEmpty()) {
+        throw new GradleException("Nino yayın derlemesi (-PninoPublish): sürüm anahtarı eksik: ${missing.join(', ')}. " +
+                "Hata ayıklama anahtarıyla imzalı APK sahadaki TV'lerde eski sürümün üstüne kurulmaz. " +
+                "Bkz. docs/yeni/android-tv/ilerleme.md, \"Yayın imzası\".")
+    }
+}
+
+// Görünüm LG ve Samsung'la ortaktır: sayfa apps/tv-web/src'den alınır, Android TV'nin platform katmanı (web/) eklenir.
+// Başka bir yerdeki kopyayı kullanmak için: -PninoTvWeb=/yol/apps/tv-web. Ortak sayfa olmadan uygulama derlenmez.
+def tvWeb = file(project.findProperty('ninoTvWeb') ?: '../../tv-web')
+
+android {
+    namespace 'com.ninotranslator.tv'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.ninotranslator.tv'
+        minSdk 24
+        targetSdk 35
+        // Kullanıcının kararı: 4.5.0. Kurulu 4.0.3'ün (40) üstüne güncelleme olarak kurulur.
+        versionCode 45
+        versionName '4.5.0'
+    }
+
+    buildFeatures { buildConfig true }
+    sourceSets.main.assets.srcDirs += layout.buildDirectory.dir('generated/tv-page')
+
+    signingConfigs {
+        release {
+            if (env.TV_KEYSTORE_FILE) {
+                storeFile file(env.TV_KEYSTORE_FILE)
+                storePassword env.TV_KEYSTORE_PASSWORD
+                keyAlias env.TV_KEY_ALIAS ?: 'nino-tv'
+                keyPassword env.TV_KEYSTORE_PASSWORD
+            }
+        }
+        upload {
+            if (env.TV_UPLOAD_KEYSTORE_FILE) {
+                storeFile file(env.TV_UPLOAD_KEYSTORE_FILE)
+                storePassword env.TV_UPLOAD_KEYSTORE_PASSWORD
+                keyAlias env.TV_UPLOAD_KEY_ALIAS ?: 'upload'
+                keyPassword env.TV_UPLOAD_KEYSTORE_PASSWORD
+            }
+        }
+    }
+
+    // sideload: masaüstünün ADB ile kurduğu APK, katman modu var. play: Google Play paketi, katman yok.
+    flavorDimensions = ['channel']
+    productFlavors {
+        sideload {
+            dimension 'channel'
+            buildConfigField 'boolean', 'CAN_OVERLAY', 'true'
+            signingConfig env.TV_KEYSTORE_FILE ? signingConfigs.release : signingConfigs.debug
+        }
+        play {
+            dimension 'channel'
+            buildConfigField 'boolean', 'CAN_OVERLAY', 'false'
+            signingConfig env.TV_UPLOAD_KEYSTORE_FILE ? signingConfigs.upload
+                    : (env.TV_KEYSTORE_FILE ? signingConfigs.release : signingConfigs.debug)
+        }
+    }
+
+    // Ölçüm adresi: sürüm derlemesi Nino havuzuna gönderir. Hata ayıklama derlemesi hiçbir yere göndermez (deneme
+    // verisi istatistiğe karışmasın); denemek için -PninoMetricsUrl=http://10.0.2.2:<port> verilir.
+    def metricsUrl = project.findProperty('ninoMetricsUrl') ?: ''
+    buildTypes {
+        release {
+            minifyEnabled false
+            buildConfigField 'String', 'METRICS_URL', '"https://nino-pool.y-demirbag2506.workers.dev"'
+        }
+        debug {
+            buildConfigField 'String', 'METRICS_URL', "\"${metricsUrl}\""
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    testOptions { unitTests.returnDefaultValues = true }
+}
+
+// Ortak sayfa assets/tv'ye konur; platform.js = ortak TV işleri (common.js) + Android TV katmanı (web/androidtv.js).
+def pageOut = layout.buildDirectory.dir('generated/tv-page/tv')
+tasks.register('assembleTvPage') {
+    inputs.dir(file('../web'))
+    inputs.dir(new File(tvWeb, 'src'))
+    inputs.file(new File(tvWeb, 'platform/common.js'))
+    outputs.dir(pageOut)
+    doFirst {
+        if (!new File(tvWeb, 'src/index.html').exists() || !new File(tvWeb, 'platform/common.js').exists()) {
+            throw new GradleException("Nino: ortak TV sayfası bulunamadı (${tvWeb}). Dallar birleşmeden önce " +
+                    "-PninoTvWeb=<yeni-tv-web worktree>/apps/tv-web verin.")
+        }
+    }
+    doLast {
+        def out = pageOut.get().asFile
+        project.delete(out)
+        project.copy {
+            from new File(tvWeb, 'src')
+            into out
+            exclude 'platform.js'
+        }
+        project.copy {
+            from file('../web')
+            into out
+            include '*.css'
+        }
+        new File(out, 'platform.js').text = new File(tvWeb, 'platform/common.js').getText('UTF-8') + '\n' +
+                file('../web/androidtv.js').getText('UTF-8')
+    }
+}
+preBuild.dependsOn 'assembleTvPage'
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}

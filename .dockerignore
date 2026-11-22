@@ -1,0 +1,18 @@
+# Linux imajı (apps/linux/Dockerfile) depo kökünden derlenir; gerekmeyen büyük klasörler bağlama girmesin.
+.git
+docs
+design
+nino
+testdata
+dist
+apps/mac
+apps/ios
+apps/android
+apps/android-tv
+**/bin
+**/obj
+**/node_modules
+!apps/windows/native/bin
+core/NinoRemotePlay/Frameworks
+core/NinoRemotePlay/.build-c
+core/NinoRemotePlay/.build-deps

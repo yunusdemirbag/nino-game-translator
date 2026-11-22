@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Nino contributors
+pluginManagement {
+    repositories { google(); mavenCentral(); gradlePluginPortal() }
+}
+dependencyResolutionManagement {
+    repositories { google(); mavenCentral() }
+}
+rootProject.name = 'nino-android-tv'
+include ':app'

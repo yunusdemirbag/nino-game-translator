@@ -1,0 +1,20 @@
+{
+  "full": {
+    "AreaPreset": "Custom",
+    "MatchesGameSize": false,
+    "Engine": "Claude",
+    "HotkeyCount": 4
+  },
+  "oldversion": {
+    "AreaPreset": "Top",
+    "MatchesGameSize": true,
+    "Engine": "Claude",
+    "HotkeyCount": 0
+  },
+  "extra": {
+    "AreaPreset": "Custom",
+    "MatchesGameSize": false,
+    "Engine": "OpenAi",
+    "HotkeyCount": 4
+  }
+}

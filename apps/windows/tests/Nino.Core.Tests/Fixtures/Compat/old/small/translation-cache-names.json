@@ -1,0 +1,9 @@
+{
+  "opus-mt|en|tr": "v1-opus_mt-en-tr.jsonl",
+  "opus-mt|en|ar": "v1-opus_mt-en-ar.jsonl",
+  "deepl|en|tr": "v1-deepl-en-tr.jsonl",
+  "local:model.a|en|tr": "v1h-6b5f11ab62999719865a030d1fb7f93bbcf1184290b58d4d603d1bee6c03249c.jsonl",
+  "gemini:gemini-3.5-flash-lite|en|tr": "v1h-1aa82a53a8896bbdf8841c6a44e31bc0ec2a382935938bda14071a3444e0ca98.jsonl",
+  "local:localhost:11434/qwen2.5:7b|en|tr": "v1h-6ebaf5c6bbad91fd8fb6b7c93aea0e1322d55389e3055143fdfb39500f373f98.jsonl",
+  "Opus|en|tr": "v1h-55e138d9a406244c2f800225ac9199bc7f97c9a7948464e8d4928cee519152ca.jsonl"
+}

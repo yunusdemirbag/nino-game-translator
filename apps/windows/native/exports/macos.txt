@@ -1,0 +1,8 @@
+_nino_rp_init
+_nino_rp_discover
+_nino_rp_discover_ex
+_nino_rp_wake
+_nino_rp_register
+_nino_rp_session_start
+_nino_rp_session_set_login_pin
+_nino_rp_session_stop

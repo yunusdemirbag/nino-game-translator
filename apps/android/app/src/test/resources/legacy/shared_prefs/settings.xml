@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!-- Eski sürümün yazdığı biçimde örnek `settings` dosyası (Android shared_prefs XML). -->
+<map>
+    <boolean name="welcomeSeen" value="true" />
+    <boolean name="onboarded" value="true" />
+    <string name="platform">PLAYSTATION</string>
+    <string name="homeStyle">TOGGLE</string>
+    <string name="videoSource">REMOTE_PLAY</string>
+    <string name="target">PHONE</string>
+    <string name="tvName">Salon TV</string>
+    <string name="engine">DEEPL</string>
+    <set name="disabledPacks">
+        <string>pool-genel</string>
+        <string>rdr2</string>
+    </set>
+    <boolean name="sharePool" value="false" />
+    <int name="subtitleScale" value="250" />
+    <int name="tvFontSize" value="46" />
+    <string name="subtitleFont">CONDENSED</string>
+    <string name="textColor">YELLOW</string>
+    <int name="tvBackground" value="40" />
+    <string name="tvPlacement">COVER</string>
+    <int name="tvBottomPercent" value="99" />
+    <string name="region">{&quot;top&quot;:0.03,&quot;bottom&quot;:0.38,&quot;left&quot;:0.14,&quot;right&quot;:0.86}</string>
+    <string name="extraAreas">[{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;Görev&quot;,&quot;enabled&quot;:false},{&quot;id&quot;:&quot;a1&quot;,&quot;name&quot;:&quot;Telefon&quot;,&quot;region&quot;:{&quot;top&quot;:0.5,&quot;bottom&quot;:0.95,&quot;left&quot;:0.72,&quot;right&quot;:0.98}},{&quot;id&quot;:&quot;a2&quot;,&quot;name&quot;:&quot;3&quot;},{&quot;id&quot;:&quot;a3&quot;,&quot;name&quot;:&quot;4&quot;}]</string>
+    <string name="xboxConsole">{&quot;id&quot;:&quot;F4000&quot;,&quot;name&quot;:&quot;Xbox Salon&quot;,&quot;model&quot;:&quot;XboxSeriesX&quot;,&quot;streamingEnabled&quot;:true,&quot;powerState&quot;:&quot;On&quot;}</string>
+    <string name="lastGame.PS5-Salon">Red Dead Redemption 2</string>
+    <string name="tvApp.brand">ANDROID_TV</string>
+    <string name="tvApp.host">192.168.0.110</string>
+    <int name="tvApp.port" value="5555" />
+    <string name="tvApp.version">0.2.6</string>
+    <long name="tvApp.lgSessionRenewed.192.168.0.50" value="1763800000000" />
+    <boolean name="translating" value="true" />
+    <long name="lastSessionMs" value="3600000" />
+    <int name="ninoDownloadTotal" value="1234" />
+    <long name="lastExitReportAt" value="1763800000123" />
+</map>

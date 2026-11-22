@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<resources>
+    <string name="overlay_notice">Altyazılar TV\'nin HDMI görüntüsünün üstüne çiziliyor</string>
+    <string name="to_overlay_dark">Görüntü Nino\'nun içine gelmedi; altyazılar artık TV\'nin kendi HDMI ekranının üstünde görünecek.</string>
+    <string name="to_overlay_chosen">Altyazılar artık TV\'nin kendi HDMI ekranının üstünde görünecek.</string>
+    <string name="press_input_again">PS5\'i seçmek için kaynak tuşuna bir kez daha basın.</string>
+    <string name="permission_settings_missing">TV\'de Ayarlar › Uygulamalar › Özel uygulama erişimi › Diğer uygulamaların üzerinde göster bölümünden Nino\'yu açın. Bu ayar TV\'nizde yoksa “İzin vermeden devam et”i seçin.</string>
+    <string name="permission_how">Bilgisayardaki Nino, TV uygulamasını kurarken bu izni kendisi verir (USB hata ayıklama açık olmalı). İzni TV\'den de verebilirsiniz: Ayarlar › Uygulamalar › Özel uygulama erişimi › Diğer uygulamaların üzerinde göster › Nino.</string>
+    <string name="chooser_dark">HDMI %1$d görüntü göndermiyor.</string>
+    <string name="chooser_empty">HDMI %1$d girişine bir şey takılı görünmüyor.</string>
+    <string name="chooser_pick">PS5\'in takılı olduğu girişi seçin (oklar ve Tamam ya da 1–4 tuşları):</string>
+    <string name="chooser_still_dark">Doğru girişte de siyah mı? Bu TV HDMI görüntüsünü uygulamalara vermiyor ya da HDCP engelliyor olabilir. PS5\'te Ayarlar › Sistem › HDMI › HDCP\'yi Etkinleştir\'i kapatmayı deneyin. Olmazsa TV\'yi kendiniz PS5 girişine alın, altyazıları telefondan okuyun.</string>
+    <string name="chooser_no_access">Bu TV, uygulamaların HDMI girişlerini açmasına izin vermiyor; PS5 görüntüsü Nino\'nun içinde gösterilemez. TV\'yi kendiniz PS5 girişine alın, altyazıları telefondan okuyun.</string>
+    <string name="chooser_overlay">Ya da PS5\'i TV kendi HDMI ekranında göstersin, altyazılar üstüne çizilsin.</string>
+    <string name="chooser_overlay_button">TV ekranının üstüne çiz</string>
+    <string name="chooser_play_build">Google Play sürümü başka ekranların üstüne çizemez. Bilgisayardaki Nino\'nun kurduğu sürüm çizebilir.</string>
+    <string name="chooser_plugged">takılı</string>
+    <string name="chooser_close">Kapat</string>
+</resources>

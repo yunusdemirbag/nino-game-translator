@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دليل تثبيت Nino · ترجمة عربية فورية لألعاب PS5 و Xbox</title>
+<meta name="description" content="خطوات قصيرة لتثبيت Nino: ترجمة عربية فورية لنصوص ألعاب PS5 و Xbox تظهر على التلفاز فوق اللعبة. مجاني ومفتوح المصدر.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/png" href="../img/favicon.png">
+<link rel="alternate" hreflang="tr" href="https://yunusdemirbag.github.io/nino-game-translator/#kurulum">
+<link rel="alternate" hreflang="ar" href="https://yunusdemirbag.github.io/nino-game-translator/ar/kurulum">
+<style>
+:root{
+  --bg:#ffffff; --bg2:#f5f5f7; --card:#ffffff; --text:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7;
+  --accent:#0071e3; --accent-text:#ffffff; --tr:#e30a17; --radius:22px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#000000; --bg2:#101012; --card:#161618; --text:#f5f5f7; --muted:#a1a1a6; --line:#2c2c2e; --accent:#2997ff; }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.5 var(--font);letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--accent);color:#fff;padding:8px 14px;border-radius:10px;z-index:10}
+.skip:focus{left:8px}
+
+/* Üst çubuk */
+header.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 80%,transparent);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:20px;height:52px}
+.brand{display:flex;align-items:center;gap:9px;color:var(--text);font-weight:600}
+.brand img{width:28px;height:28px;border-radius:7px}
+.bar nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+.bar nav a{color:var(--muted)}
+.bar nav a:hover{color:var(--text);text-decoration:none}
+@media (max-width:640px){.bar nav a.opt{display:none}}
+
+/* Bölümler */
+section{padding:96px 0}
+section.alt{background:var(--bg2)}
+.eyebrow{font-size:15px;font-weight:600;color:var(--tr);margin:0 0 8px}
+h1,h2,h3{margin:0;letter-spacing:-.025em;line-height:1.08}
+h1{font-size:clamp(40px,7vw,76px);font-weight:700}
+h2{font-size:clamp(30px,4.6vw,48px);font-weight:700}
+h3{font-size:21px;font-weight:600;line-height:1.25}
+.lead{font-size:clamp(19px,2.2vw,24px);color:var(--muted);max-width:760px;margin:18px auto 0;line-height:1.4}
+.center{text-align:center}
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:24px 0 0;padding:0;list-style:none}
+.pills li{font-size:14px;padding:6px 14px;border-radius:999px;background:var(--bg2);color:var(--text)}
+section.alt .pills li{background:var(--card)}
+.cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:32px}
+.btn{display:inline-block;padding:12px 24px;border-radius:999px;background:var(--accent);color:var(--accent-text);font-weight:500}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+
+/* Kahraman */
+.hero{padding:88px 0 0;text-align:center;overflow:hidden}
+.hero .logo{width:112px;height:112px;margin:0 auto 26px;border-radius:26px}
+.hero figure{margin:56px auto 0;max-width:1200px}
+.hero figure img{border-radius:var(--radius) var(--radius) 0 0;box-shadow:0 30px 80px -30px rgba(0,0,0,.45)}
+
+/* Izgara ve kartlar */
+.grid{display:grid;gap:22px;margin-top:48px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}}
+@media (max-width:640px){.g2,.g4{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:var(--radius);padding:28px;overflow:hidden}
+section:not(.alt) .card{background:var(--bg2)}
+.card p{color:var(--muted);margin:8px 0 0;font-size:16px}
+.shot{padding:0}
+.shot img{aspect-ratio:16/9;object-fit:cover;width:100%}
+.shot div{padding:20px 24px 24px}
+
+/* Adımlar */
+.steps{counter-reset:s;list-style:none;padding:0;margin:48px 0 0}
+.steps li{counter-increment:s;position:relative;padding:28px 28px 28px 92px;background:var(--card);border-radius:var(--radius);margin-bottom:14px}
+.steps li::before{content:counter(s);position:absolute;left:28px;top:26px;width:42px;height:42px;border-radius:50%;
+  background:var(--accent);color:#fff;font-weight:700;font-size:19px;display:grid;place-items:center}
+.steps p{color:var(--muted);margin:6px 0 0}
+.note{margin-top:22px;padding:18px 22px;border-radius:16px;background:color-mix(in srgb,var(--tr) 9%,var(--card));font-size:15px}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+@media (max-width:640px){.figs{grid-template-columns:1fr}}
+.figs figure{margin:0}
+.figs img{border-radius:16px}
+.figs figcaption{font-size:14px;color:var(--muted);margin-top:8px;text-align:center}
+
+/* İndir */
+.dl h3{display:flex;align-items:center;gap:10px}
+.dl .req{font-size:14px;color:var(--muted);margin:4px 0 16px}
+.dl a.more{font-weight:500}
+.small{font-size:14px;color:var(--muted)}
+
+/* TV tablosu */
+.tvs{width:100%;border-collapse:collapse;margin-top:40px;font-size:16px}
+.tvs th,.tvs td{text-align:left;padding:16px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.tvs th{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.tvs td:first-child{font-weight:600}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.tag.ok{background:color-mix(in srgb,#34c759 18%,transparent);color:#1f8a3a}
+.tag.beta{background:color-mix(in srgb,#ff9f0a 20%,transparent);color:#a35f00}
+.tag.no{background:color-mix(in srgb,#ff3b30 16%,transparent);color:#c4271d}
+@media (prefers-color-scheme: dark){.tag.ok{color:#5fdc7c}.tag.beta{color:#ffb84d}.tag.no{color:#ff7a70}}
+.tvs caption{caption-side:top;text-align:left;font-size:21px;font-weight:600;padding:0 0 4px}
+.tvs + .tvs{margin-top:56px}
+
+/* Kurulum */
+.video{margin:40px auto 0;max-width:860px;aspect-ratio:16/9;border-radius:var(--radius);background:var(--card);display:grid;place-items:center;
+  text-align:center;padding:24px;box-shadow:inset 0 0 0 1px var(--line)}
+.video p{margin:6px 0 0;color:var(--muted)}
+.video .play{width:64px;height:64px;border-radius:50%;background:var(--accent);margin:0 auto 14px;position:relative}
+.video .play::after{content:"";position:absolute;left:26px;top:20px;border-left:18px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
+@media (max-width:640px){.tvs thead{display:none}.tvs tr{display:block;border-bottom:1px solid var(--line);padding:12px 0}
+  .tvs td{display:block;border:0;padding:4px 0}}
+
+/* İngilizce */
+#english .card{max-width:820px;margin:40px auto 0}
+#english ol{padding-left:20px;margin:10px 0 0}
+#english li{margin:6px 0}
+
+/* Alt bilgi */
+footer{padding:40px 0 56px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+footer .links{display:flex;flex-wrap:wrap;gap:8px 22px;margin-bottom:16px}
+footer .links a{color:var(--text)}
+footer p{margin:6px 0;max-width:900px}
+
+/* Sağdan sola */
+.steps li{padding:28px 92px 28px 28px}
+.steps li::before{left:auto;right:28px}
+.tvs th,.tvs td{text-align:right}
+.steps img{border-radius:16px;margin-top:16px}
+.steps img.phone{max-width:280px;border-radius:28px;box-shadow:0 0 0 1px var(--line)}
+body{font-family:var(--font-ar, -apple-system, "SF Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif)}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../" aria-label="الصفحة الرئيسية لـ Nino"><img src="../img/logo.webp" alt="" width="28" height="28">Nino</a>
+    <nav aria-label="أقسام الصفحة">
+      <a href="#خطوات">الخطوات</a>
+      <a class="opt" href="#الشاشات">الشاشات</a>
+      <a href="../" lang="tr">Türkçe</a>
+    </nav>
+  </div>
+</header>
+
+<main id="icerik">
+<section class="hero" style="padding-bottom:48px">
+  <div class="wrap">
+    <img class="logo" src="../img/logo.webp" alt="شعار Nino" width="112" height="112">
+    <p class="eyebrow">Nino Game Translator</p>
+    <h1>اللعبة بالإنجليزية.<br>والترجمة بالعربية.</h1>
+    <p class="lead">يقرأ Nino نصوص ألعاب PS5 و Xbox الإنجليزية ويعرض ترجمتها العربية على التلفاز فوق اللعبة مباشرةً. تلعب كعادتك بيدك، و Nino يتكفّل بالباقي. مجاني بالكامل، بلا إعلانات ولا اشتراك ولا حساب.</p>
+  </div>
+</section>
+
+<section class="alt" id="فيديو" aria-labelledby="فيديو-عنوان">
+  <div class="wrap">
+    <div class="center"><h2 id="فيديو-عنوان">شاهد طريقة التثبيت.</h2></div>
+    <!-- فيديو التثبيت: يوضع هنا عند جاهزيته -->
+    <div class="video" role="img" aria-label="مكان فيديو التثبيت">
+      <div><div class="play" aria-hidden="true"></div><h3>فيديو التثبيت</h3><p>فيديو قصير يشرح الخطوات سيكون هنا قريبًا.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="خطوات" aria-labelledby="خطوات-عنوان">
+  <div class="wrap">
+    <div class="center">
+      <h2 id="خطوات-عنوان">خمس خطوات، مرة واحدة فقط.</h2>
+      <p class="lead">تحتاج إلى جهاز PS5 أو Xbox، وتلفاز، وجهاز يشغّل Nino: Mac أو Windows أو هاتف. يجب أن تكون كلها على شبكة الواي فاي نفسها.</p>
+    </div>
+    <ol class="steps">
+      <li><h3>نزّل Nino</h3>
+        <p><strong>Mac و Windows و Android:</strong> من <a href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest">صفحة الإصدارات</a>.</p>
+        <p><strong>iPhone و iPad:</strong> افتح <a href="https://testflight.apple.com/join/1K3Q1KXp">رابط TestFlight</a> على هاتفك، ثبّت تطبيق TestFlight من App Store، ثم اضغط «قبول» و«تثبيت». <strong>لا تحتاج إلى رمز دعوة</strong>؛ الرابط مفتوح للجميع.</p>
+        <p><strong>Google Play:</strong> انضم إلى <a href="https://groups.google.com/g/nino-test">مجموعة الاختبار nino-test</a> ثم إلى <a href="https://play.google.com/apps/testing/com.ninotranslator.mobile">صفحة الاختبار</a>. <strong>قد يستغرق ظهور Nino في Play من ساعة إلى ساعتين</strong> بعد الانضمام، فلا تقلق إن لم يظهر فورًا.</p>
+</li>
+      <li><h3>اختر العربية وجهاز الألعاب</h3>
+        <p>عند أول تشغيل اضغط على العلم في الأعلى واختر العلم السعودي لتكون الترجمة بالعربية، ثم اختر PS5 أو Xbox.</p>
+        <img class="phone" src="../img/ar-karsilama.webp" alt="شاشة الترحيب في Nino بالعربية مع اختيار العلم السعودي" loading="lazy" width="600" height="1305"></li>
+      <li><h3>اربط جهاز الألعاب</h3>
+        <p><strong>PS5:</strong> سجّل الدخول في Nino بحساب PSN ثانٍ مجاني، ثم اكتب الرمز المكوّن من 8 أرقام الذي يظهر على PS5 في «الإعدادات › النظام › التشغيل عن بُعد» (Settings › System › Remote Play › Pair Device).</p>
+        <p>لماذا حساب ثانٍ؟ لأن PS5 لا يسمح بالتشغيل عن بُعد بالحساب نفسه الذي تلعب به في الوقت ذاته.</p>
+        <p><strong>Xbox:</strong> يكفي حساب Microsoft الخاص بك، ولا تحتاج إلى حساب ثانٍ. دعم Xbox تجريبي.</p></li>
+      <li><h3>اختر التلفاز</h3>
+        <p>يثبّت Nino تطبيق التلفاز بنفسه. المطلوب منك مرة واحدة فقط: تفعيل «تصحيح أخطاء USB» في Android TV، أو «وضع المطوّر» في Samsung و LG. يرشدك Nino خطوة بخطوة.</p>
+        <div class="note">
+          <p style="margin:0"><strong>عند التثبيت اليدوي على Android TV:</strong> إذا ظهرت رسالة «الحزمة غير صالحة» أو «لم يتم تثبيت التطبيق»، فالسبب أن نسخة Nino القديمة على التلفاز مثبّتة بتوقيع مختلف، ولا يقبل Android التثبيت فوقها. الحل: على التلفاز افتح <strong>الإعدادات › التطبيقات › Nino › إلغاء التثبيت</strong>، ثم ثبّت الملف الجديد مرة أخرى.</p>
+          <p style="margin:6px 0 0">إذا كان Nino على Mac أو Windows هو من يثبّت تطبيق التلفاز، فلن تحتاج إلى ذلك؛ فهو يزيل النسخة القديمة بنفسه قبل التثبيت. أما Nino على الهاتف و iPhone فيكتشف الحالة ويطلب منك إزالة النسخة القديمة.</p>
+        </div></li>
+      <li><h3>شغّل اللعبة وصِل القابس</h3>
+        <p>اضغط على القابس المرسوم في شاشة Nino أو اسحبه إلى المقبس. تظهر الترجمة العربية على التلفاز فوق اللعبة.</p>
+        <img class="phone" src="../img/ar-ana.webp" alt="شاشة Nino الرئيسية بالعربية" loading="lazy" width="600" height="1305"></li>
+    </ol>
+  </div>
+</section>
+
+<section class="alt" id="الشاشات" aria-labelledby="شاشات-عنوان">
+  <div class="wrap">
+    <div class="center"><h2 id="شاشات-عنوان">هل يعمل على تلفازي؟</h2></div>
+    <table class="tvs">
+      <caption>يعمل</caption>
+      <tbody>
+        <tr><td>Android TV / Google TV</td><td><span class="tag ok">يعمل</span></td><td>ومنها أجهزة Android TV الخارجية (مثل Chromecast مع Google TV)، وطرازات Hisense و Philips و Vestel التي تعمل بنظام Android فقط.</td></tr>
+        <tr><td>Samsung (Tizen)</td><td><span class="tag beta">تجريبي</span></td><td>من 2016 فما بعد، وكذلك شاشات Samsung الذكية.</td></tr>
+        <tr><td>LG (webOS)</td><td><span class="tag beta">تجريبي</span></td><td>—</td></tr>
+        <tr><td>شاشة Mac أو الكمبيوتر</td><td><span class="tag ok">يعمل</span></td><td>تظهر الترجمة في نافذة Nino فوق اللعبة.</td></tr>
+        <tr><td>شاشة عادية (مونيتور)</td><td><span class="tag ok">يعمل</span></td><td>عبر بطاقة التقاط HDMI أو بتشغيل اللعبة على شاشة الكمبيوتر.</td></tr>
+      </tbody>
+    </table>
+    <table class="tvs">
+      <caption>لا يعمل</caption>
+      <tbody>
+        <tr><td>Vidaa (معظم أجهزة Hisense)</td><td><span class="tag no">لا يعمل</span></td><td rowspan="6">هذه الأنظمة لا تسمح بتثبيت تطبيقات أخرى، لذا لا يمكن تثبيت تطبيق Nino عليها. الحل: وصّل جهاز Android TV خارجيًا بالتلفاز، أو اعرض الترجمة على شاشة الكمبيوتر.</td></tr>
+        <tr><td>TiVo OS</td><td><span class="tag no">لا يعمل</span></td></tr>
+        <tr><td>Titan OS (أجهزة Philips الجديدة)</td><td><span class="tag no">لا يعمل</span></td></tr>
+        <tr><td>Axen</td><td><span class="tag no">لا يعمل</span></td></tr>
+        <tr><td>Vestel القديمة (غير Android)</td><td><span class="tag no">لا يعمل</span></td></tr>
+        <tr><td>أجهزة التلفاز الخارجية غير العاملة بنظام Android</td><td><span class="tag no">لا يعمل</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a href="../" lang="tr">Ana sayfa</a>
+      <a href="../gizlilik">سياسة الخصوصية</a>
+      <a href="https://github.com/yunusdemirbag/nino-game-translator">الشيفرة المصدرية</a>
+      <a href="https://github.com/yunusdemirbag/nino-game-translator/issues">الدعم</a>
+    </div>
+    <p>Nino © 2026 Yunus Demirbağ · AGPL-3.0</p>
+    <p>لا يرتبط Nino بشركات Sony Interactive Entertainment أو Microsoft أو LG Electronics أو Samsung Electronics ولا تدعمه أيٌّ منها. جميع العلامات التجارية مملوكة لأصحابها.</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "v": 1,
+  "batch": "2f6c1c8e-8a43-4b9b-9a3e-1e5f0c7d9a10",
+  "install": "8d0f5c9e-3b1a-4c2d-9e8f-7a6b5c4d3e2f",
+  "ctx": {
+    "platform": "mac",
+    "app": "4.0.0",
+    "os": "macOS 27.0",
+    "device": "Mac16,1",
+    "tv": "androidtv",
+    "channel": "release"
+  },
+  "events": [
+    { "k": "launch", "t": 1763300000, "ms": 640 },
+    { "k": "crash", "t": 1763300000, "code": "SIGSEGV", "where": "ReadingPipeline.process", "ver": "3.9.0", "up": 1820 },
+    { "k": "ps5_connect", "t": 1763300012, "r": "ps5.session.timeout", "ms": 15000, "via": "lan" },
+    { "k": "ps5_connect", "t": 1763300040, "r": "ok", "ms": 2840, "via": "lan" },
+    { "k": "tv_connect", "t": 1763300045, "r": "ok", "ms": 420, "brand": "androidtv", "proto": "nino" },
+    { "k": "error", "t": 1763300300, "code": "tr.provider.http", "http": 429, "n": 3 },
+    { "k": "ps5_drop", "t": 1763303000, "code": "network_lost", "after": 2950 },
+    { "k": "tv_drop", "t": 1763303100, "code": "timeout", "brand": "androidtv", "after": 3050 },
+    { "k": "session", "t": 1763303600, "dur": 3580, "game": "gta-6", "src": "remoteplay", "lines": 412,
+      "h": {
+        "ocr": { "n": 6, "sum": 410, "max": 140, "h": [0, 0, 0, 1, 2, 2, 0, 1] },
+        "tr.cache": { "n": 3, "sum": 3, "max": 2, "h": [3] },
+        "tr.provider:deepl": { "n": 2, "sum": 980, "max": 600, "h": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1] },
+        "tr.total": { "n": 4, "sum": 2100, "max": 900, "h": [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1] },
+        "first_frame": { "n": 1, "sum": 1900, "max": 1900, "h": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] }
+      } }
+  ]
+}

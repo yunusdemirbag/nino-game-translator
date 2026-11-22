@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Nino havuzu (nino-pool, Cloudflare Worker): bağımlılıklar ve testler.
+# Cloudflare'e dağıtım (wrangler deploy) yok.
+name: nino-pool
+
+on:
+  push:
+    paths:
+      - "nino-pool/**"
+      - ".github/workflows/nino-pool.yml"
+  pull_request:
+    paths:
+      - "nino-pool/**"
+      - ".github/workflows/nino-pool.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: nino-pool
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "26"
+          cache: npm
+          cache-dependency-path: nino-pool/package-lock.json
+      - name: Bağımlılıklar
+        run: npm ci
+      - name: Testler
+        run: npm test

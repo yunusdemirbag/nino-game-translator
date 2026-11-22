@@ -1,0 +1,30 @@
+# Derleme çıktıları ve yayın paketleri
+dist/
+build/
+.build/
+.DS_Store
+*.xcodeproj/xcuserdata/
+node_modules/
+
+# Claude Code kişisel ayarları
+.claude/settings.local.json
+
+# NinoCore: indirilen Remote Play kaynakları ve derlenmiş çerçeve (core/NinoRemotePlay/scripts ile üretilir)
+core/NinoRemotePlay/Vendor
+core/NinoRemotePlay/Frameworks
+core/NinoRemotePlay/.tools
+core/NinoRemotePlay/.build-c
+core/NinoRemotePlay/.build-deps
+
+# Mac uygulaması (xcodegen üretir)
+apps/mac/Nino.xcodeproj/
+apps/mac/NinoMacKit/.swiftpm/
+apps/mac/NinoMacKit/Package.resolved
+
+# Windows ve Linux
+apps/windows/**/bin/
+apps/windows/**/obj/
+apps/windows/native/build/
+
+# Kotlin derleyicisinin yerel günlükleri
+**/.kotlin/

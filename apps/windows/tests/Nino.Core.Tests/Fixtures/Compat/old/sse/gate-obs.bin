@@ -1,0 +1,15 @@
+event: subtitle
+data: {"at":0,"duration":2000,"text":"Yalnız OBS görür"}
+
+event: region
+data: {"id":"area1","text":"x"}
+
+event: clear
+data: {}
+
+event: style
+data: {"autoSize":false,"background":0,"backgroundShape":"fit","bold":false,"bottomPercent":7,"displayMode":"inApp","font":"modern","fontSize":36,"placement":"above","stackPrevious":true,"textColor":"white","watermark":true}
+
+event: started
+data: {}
+

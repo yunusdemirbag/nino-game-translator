@@ -1,0 +1,209 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!--
+  Ortak bileşenlerin görünüşü (Nino.App.Controls): Card, WizardStep, NumberedRow, StatusDot, StatusTile, Pill,
+  GameMonogram. Gölge, degrade, cam yok.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ui="clr-namespace:Nino.App.Controls"
+                    xmlns:d="clr-namespace:Nino.Core.Design;assembly=Nino.Core">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="Text.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <Style TargetType="ui:Card">
+    <Setter Property="Background" Value="{DynamicResource surfaceBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource tileBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ui:Card">
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{DynamicResource radius.card}"
+                  Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+            <DockPanel LastChildFill="True">
+              <ContentPresenter x:Name="Header" DockPanel.Dock="Top" ContentSource="Header" Margin="0,0,0,12">
+                <ContentPresenter.Resources>
+                  <Style TargetType="TextBlock" BasedOn="{StaticResource Text.Headline}" />
+                </ContentPresenter.Resources>
+              </ContentPresenter>
+              <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </DockPanel>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="Header" Value="{x:Null}">
+              <Setter TargetName="Header" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="IsActive" Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource accentBrush}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style TargetType="ui:WizardStep">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ui:WizardStep">
+          <DockPanel LastChildFill="True">
+            <TextBlock DockPanel.Dock="Top" Style="{StaticResource Text.Display}" Text="{TemplateBinding Title}" />
+            <TextBlock x:Name="Description" DockPanel.Dock="Top" Style="{StaticResource Text.Secondary}"
+                       Margin="0,12,0,0" MaxWidth="620" HorizontalAlignment="Left"
+                       Text="{TemplateBinding Description}" />
+            <ContentPresenter Margin="0,20,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+          </DockPanel>
+          <ControlTemplate.Triggers>
+            <Trigger Property="Description" Value="{x:Null}">
+              <Setter TargetName="Description" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="Description" Value="">
+              <Setter TargetName="Description" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="ui:NumberedRow">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Margin" Value="0,0,0,16" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ui:NumberedRow">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="28" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Width="28" Height="28" CornerRadius="14" Background="{DynamicResource surface2Brush}"
+                    VerticalAlignment="Top">
+              <TextBlock Text="{TemplateBinding Number}" FontSize="13" FontWeight="SemiBold" TextWrapping="NoWrap"
+                         Foreground="{DynamicResource textPrimaryBrush}" HorizontalAlignment="Center"
+                         VerticalAlignment="Center" />
+            </Border>
+            <TextBlock x:Name="Body" Grid.Column="1" Margin="12,4,0,0" Style="{StaticResource Text.Body}"
+                       Text="{TemplateBinding Text}" />
+            <ContentPresenter x:Name="Custom" Grid.Column="1" Margin="12,4,0,0" Visibility="Collapsed" />
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger Property="HasContent" Value="True">
+              <Setter TargetName="Body" Property="Visibility" Value="Collapsed" />
+              <Setter TargetName="Custom" Property="Visibility" Value="Visible" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="ui:StatusDot">
+    <Setter Property="Width" Value="8" />
+    <Setter Property="Height" Value="8" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ui:StatusDot">
+          <Ellipse Fill="{TemplateBinding Foreground}" />
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="Tone" Value="{x:Static d:StatusTone.Good}">
+        <Setter Property="Foreground" Value="{DynamicResource successBrush}" />
+      </Trigger>
+      <Trigger Property="Tone" Value="{x:Static d:StatusTone.Warning}">
+        <Setter Property="Foreground" Value="{DynamicResource warningBrush}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style TargetType="ui:StatusTile">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ui:StatusTile">
+          <StackPanel>
+            <DockPanel Margin="0,0,0,8" LastChildFill="True">
+              <TextBlock DockPanel.Dock="Left" Style="{StaticResource Text.TileIcon}" Margin="0,0,8,0"
+                         Text="{TemplateBinding Icon}" />
+              <ui:StatusDot DockPanel.Dock="Right" Margin="8,0,0,0" Tone="{TemplateBinding Tone}" />
+              <TextBlock Style="{StaticResource Text.Caption}" VerticalAlignment="Center" Text="{TemplateBinding Label}" />
+            </DockPanel>
+            <TextBlock Style="{StaticResource Text.Headline}" Foreground="{TemplateBinding Foreground}"
+                       Text="{TemplateBinding Value}" />
+          </StackPanel>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="Tone" Value="{x:Static d:StatusTone.Good}">
+        <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style TargetType="ui:Pill">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="Height" Value="24" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Padding" Value="8,0" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="Background" Value="{DynamicResource surface2Brush}" />
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ui:Pill">
+          <Border Background="{TemplateBinding Background}" CornerRadius="{DynamicResource radius.tag}"
+                  Padding="{TemplateBinding Padding}">
+            <TextBlock Text="{TemplateBinding Text}" TextWrapping="NoWrap" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="IsPack" Value="True">
+        <Setter Property="Background" Value="{DynamicResource proSoftBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource proBrush}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style TargetType="ui:GameMonogram">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="Width" Value="52" />
+    <Setter Property="Height" Value="52" />
+    <Setter Property="FontSize" Value="17" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ui:GameMonogram">
+          <Border Background="{DynamicResource surface2Brush}" CornerRadius="{DynamicResource radius.inner}">
+            <TextBlock Text="{TemplateBinding Text}" TextWrapping="NoWrap" HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <!-- SPDX-License-Identifier: AGPL-3.0-only -->
+  <!-- Copyright (C) 2026 Nino contributors -->
+  <!-- Nino'nun ekransız Linux sunucusu: tarayıcı paneli, Tesseract ile okuma, dosyada anahtar saklama.
+       Akışın kendisi ortak C# çekirdeğinden gelir (bkz. docs/yeni/linux/ilerleme.md). -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>nino</AssemblyName>
+    <RootNamespace>Nino.Linux</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Panel\page.html" LogicalName="nino.panel.html" />
+    <EmbeddedResource Include="..\..\..\windows\src\Nino.App\Assets\logo.png" LogicalName="nino.logo.png" />
+  </ItemGroup>
+
+  <!-- TV uygulaması paketleri; sunucu bunları geliştirici modu açık TV'ye kurar. -->
+  <ItemGroup>
+    <Content Include="..\..\..\..\dist\tv-app\*.ipk;..\..\..\..\dist\tv-app\*.wgt;..\..\..\..\dist\tv-app\*.apk"
+             Link="tv-app\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- Ortak C# çekirdeği (Windows uygulamasıyla aynı; düz net10.0). -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\windows\src\Nino.Core\Nino.Core.csproj" />
+    <ProjectReference Include="..\..\..\windows\src\Nino.RemotePlay\Nino.RemotePlay.csproj" />
+    <ProjectReference Include="..\..\..\windows\src\Nino.Translation\Nino.Translation.csproj" />
+    <ProjectReference Include="..\..\..\windows\src\Nino.TvInstall\Nino.TvInstall.csproj" />
+    <ProjectReference Include="..\..\..\windows\src\Nino.Shell\Nino.Shell.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Nino.Linux.Tests" />
+  </ItemGroup>
+</Project>

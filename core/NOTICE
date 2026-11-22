@@ -1,0 +1,24 @@
+Nino
+Copyright (C) 2026 Nino contributors
+AGPL-3.0-only
+
+Bu yazılım GNU Affero Genel Kamu Lisansı sürüm 3 (yalnız bu sürüm) ile
+dağıtılır. Tam metin LICENSE dosyasındadır.
+
+Bu kodu değiştirip dağıtan ya da ağ üzerinden sunan herkes, kaynak kodunu
+aynı lisansla açmak zorundadır. Kapalı ya da lisanssız kopya yapılamaz.
+
+----------------------------------------------------------------------
+Üçüncü taraf (yalnız NinoRemotePlay paketi)
+
+NinoRemotePlay, Remote Play bağlantısı için şu açık kaynak yazılımlarla
+birlikte derlenir. Kaynakları NinoRemotePlay/Vendor/ altına ayrıca indirilir;
+kendi telif ve lisans dosyaları orada olduğu gibi durur.
+
+- chiaki-ng v1.10.1 — AGPL-3.0-only (OpenSSL ek izniyle)
+  https://github.com/streetpea/chiaki-ng
+  ve onunla gelen: jerasure, gf-complete (BSD-3), nanopb (zlib), curl (curl lisansı)
+- OpenSSL 3 — Apache-2.0
+- json-c — MIT
+- libevent — BSD-3
+- miniupnpc — BSD-3

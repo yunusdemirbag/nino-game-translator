@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Nino contributors
+pluginManagement {
+    repositories { google(); mavenCentral(); gradlePluginPortal() }
+    resolutionStrategy {
+        eachPlugin {
+            // Kotlin JVM eklentisi, Android eklentisiyle aynı Kotlin paketinden gelir.
+            if (requested.id.id == 'org.jetbrains.kotlin.jvm') useModule('org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21')
+        }
+    }
+}
+dependencyResolutionManagement { repositories { google(); mavenCentral() } }
+rootProject.name = 'nino-android'
+include ':core', ':app'

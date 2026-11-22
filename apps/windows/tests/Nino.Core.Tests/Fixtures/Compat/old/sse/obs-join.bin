@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Content-Type: text/event-stream; charset=utf-8
+Cache-Control: no-cache
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+
+retry: 2000
+
+event: style
+data: {"autoSize":true,"background":100,"backgroundShape":"band","bold":true,"bottomPercent":12,"displayMode":"overlay","font":"rounded","fontSize":46,"placement":"cover","stackPrevious":false,"textColor":"yellow","watermark":false}
+

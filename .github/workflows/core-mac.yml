@@ -1,0 +1,96 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Çekirdek (core/, NinoCore + NinoRemotePlay) ve Mac uygulaması (apps/mac): derleme ve testler.
+# Yalnız derler ve sınar; imzalama, yayın, yükleme yok.
+name: core-mac
+
+on:
+  push:
+    paths:
+      - "core/**"
+      - "apps/mac/**"
+      - "apps/tv-web/src/**"
+      - "testdata/**"
+      - ".github/workflows/core-mac.yml"
+  pull_request:
+    paths:
+      - "core/**"
+      - "apps/mac/**"
+      - "apps/tv-web/src/**"
+      - "testdata/**"
+      - ".github/workflows/core-mac.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # NinoCore saf Swift; Remote Play C çekirdeğine gerek yok, ilk o sınanır.
+  ninocore:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode sürümü
+        run: xcodebuild -version && swift --version
+      - name: NinoCore testleri
+        working-directory: core
+        run: swift test
+
+  mac:
+    needs: ninocore
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode sürümü
+        run: xcodebuild -version
+      - name: Araçlar (xcodegen, protoc, pkg-config)
+        run: |
+          command -v xcodegen  || brew install xcodegen
+          command -v protoc    || brew install protobuf
+          command -v pkg-config || brew install pkgconf
+          command -v cmake     || brew install cmake
+
+      # Remote Play C çekirdeği (CRemotePlay.xcframework) uzun sürer; betikler değişmedikçe önbellekten gelir.
+      # Aynı anahtar ios.yml'de de kullanılır.
+      # restore/save ayrı: sonraki adımlar başarısız olsa da derlenen çerçeve önbelleğe yazılır.
+      - name: Remote Play çerçevesi önbelleği
+        id: cremoteplay
+        uses: actions/cache/restore@v4
+        with:
+          path: core/NinoRemotePlay/Frameworks/CRemotePlay.xcframework
+          key: cremoteplay-xcf-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('core/NinoRemotePlay/scripts/fetch-deps.sh', 'core/NinoRemotePlay/scripts/build-deps.sh', 'core/NinoRemotePlay/scripts/build-c.sh') }}
+      - name: Remote Play C çekirdeğini derle
+        if: steps.cremoteplay.outputs.cache-hit != 'true'
+        working-directory: core/NinoRemotePlay
+        run: |
+          ./scripts/fetch-deps.sh
+          ./scripts/build-deps.sh
+          ./scripts/build-c.sh
+      - name: Remote Play çerçevesini önbelleğe yaz
+        if: steps.cremoteplay.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: core/NinoRemotePlay/Frameworks/CRemotePlay.xcframework
+          key: ${{ steps.cremoteplay.outputs.cache-primary-key }}
+
+      - name: NinoRemotePlay testleri
+        working-directory: core/NinoRemotePlay
+        run: swift test
+
+      - name: NinoMacKit testleri
+        working-directory: apps/mac/NinoMacKit
+        run: swift test
+
+      - name: Mac uygulamasını derle (Debug, imzasız)
+        working-directory: apps/mac
+        run: |
+          xcodegen generate
+          xcodebuild -project Nino.xcodeproj -scheme Nino -configuration Debug \
+            -derivedDataPath "$RUNNER_TEMP/mac-dd" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build

@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Nino contributors
+plugins {
+    id 'com.android.application' version '8.7.3' apply false
+    id 'org.jetbrains.kotlin.android' version '2.0.21' apply false
+    id 'org.jetbrains.kotlin.plugin.compose' version '2.0.21' apply false
+    id 'org.jetbrains.kotlin.jvm' version '2.0.21' apply false
+    // Saf Kotlin çekirdeği de Android lint'inden geçsin (API 26 denetimi :app üzerinden checkDependencies ile).
+    id 'com.android.lint' version '8.7.3' apply false
+}

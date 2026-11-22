@@ -1,0 +1,149 @@
+{
+  "secure": {
+    "accountId": "0102030405060708",
+    "console": {
+      "Host": "192.0.2.5",
+      "Name": "PS5-123",
+      "RegistKey": "31613262336334640000000000000000",
+      "Morning": "101112131415161718191A1B1C1D1E1F",
+      "WakeCredential": 439041101
+    },
+    "consoleKind": "Xbox",
+    "consoleKindLocked": true,
+    "xboxToken": "fake-xbox-token",
+    "xboxConsole": {
+      "Id": "FAKE0123",
+      "Name": "Salon Xbox",
+      "Model": "XboxSeriesX",
+      "StreamingEnabled": true
+    },
+    "tv": {
+      "Name": "Samsung QE65 \"Salon\"",
+      "Host": "192.0.2.110",
+      "Brand": "Samsung"
+    },
+    "tvKey": "fake-tv-key-ğ",
+    "tvDevKey": "fake-dev-key",
+    "tvAppVersion": "0.9.40",
+    "devSessionRenewed": "2026-11-22T10:00:00.0000000+00:00",
+    "lastGames": {
+      "PS5-123": "GTA 6",
+      "PS5-Oda": "Ghost of Yōtei"
+    },
+    "captureCardId": "\\\\?\\usb#vid_fake&pid_0001#0#{65e8773d}\\global",
+    "streamBackground": "magenta",
+    "setupComplete": true,
+    "loginPasscode": "0420",
+    "deepLKey": "fake-deepl:fx",
+    "geminiKey": "fake-gemini",
+    "openAIKey": "fake-openai",
+    "claudeKey": "fake-claude",
+    "localAIKey": "fake-local",
+    "samsungClientName": "Nino"
+  },
+  "history": [
+    {
+      "Id": 2,
+      "Date": "2026-11-12T10:01:05.0000000Z",
+      "Kind": "Utc",
+      "Source": "Get down!",
+      "Translation": "Yere yat!",
+      "Origin": "Engine"
+    },
+    {
+      "Id": 1,
+      "Date": "2026-11-12T10:00:07.0000000Z",
+      "Kind": "Utc",
+      "Source": "Say \"hi\" <b> & go\\now",
+      "Translation": "\"Selam\" de <b> & çık\\şimdi ğüşıİ \uD83D\uDE00",
+      "Origin": "Engine"
+    },
+    {
+      "Id": 0,
+      "Date": "2026-11-12T10:00:00.0000000Z",
+      "Kind": "Utc",
+      "Source": "Hold the gate",
+      "Translation": "Kapıyı tut",
+      "Origin": "Pack"
+    }
+  ],
+  "cache": {
+    "Count": 4,
+    "Run!": "Kaç!",
+    "Say \"hi\" <b>&": "\"Selam\" de <b>&",
+    "Line one\nLine two": "Satır bir\nSatır iki",
+    "Ghost of Yōtei \uD83D\uDE00": "Yōtei'nin Hayaleti \uD83D\uDE00 ğüşıöç",
+    "missing": null
+  },
+  "sorunlar": [
+    {
+      "Id": "11111111-2222-3333-4444-555555555555",
+      "Date": "2026-11-22T18:04:05.1230000Z",
+      "DateKind": "Utc",
+      "Kind": "Ps5Dropped",
+      "Reason": "NotFound",
+      "StreamedMinutes": 31.5,
+      "LossPerMinute": 12,
+      "StallsPerMinute": 0.4,
+      "Network": "wifi",
+      "Game": "GTA 6 \"Vice\" ğ"
+    },
+    {
+      "Id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "Date": "2026-11-22T18:10:00.0000000Z",
+      "DateKind": "Utc",
+      "Kind": "NetworkLost",
+      "Reason": null,
+      "StreamedMinutes": null,
+      "LossPerMinute": null,
+      "StallsPerMinute": null,
+      "Network": "wired",
+      "Game": null
+    },
+    {
+      "Id": "00000000-0000-0000-0000-000000000003",
+      "Date": "2026-11-22T18:11:00.0000000Z",
+      "DateKind": "Utc",
+      "Kind": "TvDropped",
+      "Reason": null,
+      "StreamedMinutes": 0,
+      "LossPerMinute": null,
+      "StallsPerMinute": null,
+      "Network": "unknown",
+      "Game": null
+    },
+    {
+      "Id": "00000000-0000-0000-0000-000000000004",
+      "Date": "2026-11-22T18:12:00.0000000Z",
+      "DateKind": "Utc",
+      "Kind": "Ps5Unreachable",
+      "Reason": "ConsoleAsleep",
+      "StreamedMinutes": null,
+      "LossPerMinute": null,
+      "StallsPerMinute": null,
+      "Network": "wifi",
+      "Game": null
+    }
+  ],
+  "otomatik-bildirim": {
+    "HasPending": true,
+    "CanSendToday": true,
+    "PendingJson": "{\"v\":1,\"install\":\"0123456789abcdef0123456789abcdef\",\"app\":\"3.5.0\",\"platform\":\"windows\",\"language\":\"tr\",\"text\":\"[Otomatik] PS5 bağlantısı koptu \\\"x\\\" <y> & ğ\",\"images\":[],\"device\":\"app: 3.5.0 | device: Windows PC | system: Windows 11 (26100)\",\"kind\":\"auto\"}"
+  },
+  "downloads": 3502,
+  "auto-update-tried": 2,
+  "pool": {
+    "InstallId": "00000000-0000-4000-8000-000000000001",
+    "PendingLines": 1,
+    "OutboxBatches": 1,
+    "ParkedBatches": 0,
+    "Dropped": 0
+  },
+  "pool-translations": {
+    "Count": 3,
+    "Install": "5e1f0000-0000-4000-8000-00000000abcd",
+    "Get down!": "Yere yat!",
+    "Hold the gate, Lucía": "Kapıyı tut, Lucía",
+    "Say \"hi\" to the <crew> & go \uD83D\uDE00": "Ekibe \"selam\" de <x> & çık \uD83D\uDE00 ğüşıöç"
+  }
+}

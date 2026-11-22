@@ -1,0 +1,415 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!-- Nino Linux paneli: kurulum sihirbazı ve çeviri denetimi. Bağımlılığı yok; durum /api/state'ten okunur. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nino</title>
+<link rel="icon" href="/logo.png" type="image/png">
+<style>
+  :root {
+    --bg: #F6F4EF; --card: #FFFFFF; --line: #E2DED4; --ink: #17181B; --ink-2: #5B5954;
+    --gold: #F5B83D; --on-gold: #17181B; --gold-soft: #FBEBC8;
+    --good: #256B43; --warn: #9A4A08; --bad: #B3261E; --on-bad: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141518; --card: #1E2024; --line: #30333A; --ink: #F3EEE4; --ink-2: #A9A59C;
+      --gold-soft: #3A3020; --good: #62C990; --warn: #F2A55A; --bad: #F28B82; --on-bad: #17181B;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0; color: var(--ink); background: var(--bg); font: 15px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .page { max-width: 640px; margin: 0 auto; padding: 20px 16px 56px; }
+  .top { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .top img { width: 40px; height: 40px; border-radius: 10px; }
+  .top strong { font-size: 17px; }
+  .top small { margin-left: auto; color: var(--ink-2); }
+  h1 { font-size: 28px; line-height: 1.15; font-weight: 600; margin: 0 0 8px; }
+  h2 { margin: 0 0 8px; font-size: 17px; font-weight: 600; }
+  p { margin: 0 0 12px; }
+  .soft { color: var(--ink-2); font-size: 14px; }
+  .box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 16px 0; }
+  .bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; margin: 4px 0 20px; }
+  .bar > i { display: block; height: 100%; background: var(--gold); transition: width .3s; }
+  button, a.btn { font: inherit; font-weight: 600; min-height: 40px; padding: 0 16px; border-radius: 10px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+  .main { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+  .stop { background: var(--bad); border-color: var(--bad); color: var(--on-bad); }
+  .wide { width: 100%; min-height: 52px; font-size: 17px; }
+  button[disabled] { opacity: .5; cursor: default; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+  .nav { justify-content: space-between; margin-top: 24px; }
+  label { display: block; color: var(--ink-2); font-size: 14px; margin: 12px 0 4px; }
+  input[type=text], input[type=password], select { width: 100%; min-height: 40px; padding: 0 12px; font: inherit; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 10px; }
+  input.code { font-size: 22px; font-weight: 600; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--gold); }
+  ol { margin: 0 0 12px; padding-left: 20px; } li { margin-bottom: 6px; }
+  .fail { color: var(--bad); margin-top: 12px; }
+  .yes { color: var(--good); font-weight: 600; }
+  .careful { color: var(--warn); }
+  .pick button { width: 100%; justify-content: space-between; font-weight: 400; margin-bottom: 8px; }
+  .state { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+  .state b { min-width: 48px; }
+  .dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--ink-2); }
+  .dot.Good { background: var(--good); } .dot.Warning { background: var(--warn); }
+  .gap { margin-top: 8px; }
+  .said { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .shot { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: 10px; overflow: hidden; }
+  .shot img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .shot .area { position: absolute; border: 2px solid var(--gold); background: rgba(245, 184, 61, .15); pointer-events: none; }
+  pre { margin: 8px 0 0; max-height: 320px; overflow: auto; white-space: pre-wrap; word-break: break-word; color: var(--ink-2);
+    font: 12px/1.4 ui-monospace, Menlo, Consolas, monospace; }
+  summary { cursor: pointer; font-weight: 600; min-height: 40px; display: flex; align-items: center; }
+  .spin::after { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent;
+    animation: turn .8s linear infinite; }
+  @keyframes turn { to { transform: rotate(1turn); } }
+  @media (prefers-reduced-motion: reduce) { .spin::after { animation: none; } .bar > i { transition: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top"><img src="/logo.png" alt=""><strong>Nino</strong><small id="ver"></small></div>
+  <div id="app" aria-live="polite"></div>
+</div>
+<script>
+'use strict';
+const TR = (navigator.language || 'en').toLowerCase().startsWith('tr');
+document.documentElement.setAttribute('lang', TR ? 'tr' : 'en');
+const L = (tr, en) => TR ? tr : en;
+const ENTITY = new Map([['&', '&amp;'], ['<', '&lt;'], ['>', '&gt;'], ['"', '&quot;'], ["'", '&#39;']]);
+const h = value => String(value ?? '').replace(/[&<>"']/g, c => ENTITY.get(c));
+
+const ui = { state: null, drawn: '', typed: {}, found: {}, working: {}, problems: {}, results: {}, logOpen: false, log: [], shotTime: 0 };
+const SAMPLE = 'Stay close to me and keep your voice down.';
+
+async function call(method, url, body) {
+  const response = await fetch(url, { method, headers: body ? { 'Content-Type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined });
+  const json = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(json.error || 'HTTP ' + response.status);
+  return json;
+}
+// Eylem: düğme dönerken kilitli, hata eylemin altında, bitince durum yeniden okunur.
+async function act(name, method, url, body, after) {
+  if (ui.working[name]) return;
+  ui.working[name] = true; delete ui.problems[name]; draw(true);
+  try { const result = await call(method, url, body); if (after) after(result); }
+  catch (error) { ui.problems[name] = error.message; }
+  delete ui.working[name];
+  await load(true);
+}
+async function load(force) {
+  try { ui.state = await call('GET', '/api/state'); draw(force); }
+  catch { document.getElementById('ver').innerText = L('Sunucu yanıt vermiyor', 'Server isn\'t answering'); }
+}
+
+const button = (name, text, kind = '', extra = '') =>
+  `<button data-do="${name}" class="${kind}${ui.working[name] ? ' spin' : ''}"${ui.working[name] ? ' disabled' : ''} ${extra}>${h(text)}</button>`;
+const problem = (...names) => names.map(n => ui.problems[n] ? `<p class="fail" role="alert">${h(ui.problems[n])}</p>` : '').join('');
+const field = (id, text, extra = '', type = 'text') =>
+  `<label for="${id}">${h(text)}</label><input type="${type}" id="${id}" value="${h(ui.typed[id] || '')}" ${extra}>`;
+const light = (name, s) => `<div class="state"><span class="dot ${h(s.tone)}"></span><b>${h(name)}</b><span>${h(s.text)}</span></div>`;
+
+// ---- Sihirbaz adımları ----
+const STEPS = {
+  Welcome: s => `<h1>${L('Oyunlar Türkçe konuşsun', 'Play in Turkish')}</h1>
+    <p>${L('Nino, oyunda beliren İngilizce satırları okuyup Türkçesini TV\'nde, oyunun hemen üstünde gösterir. Hazırlık birkaç dakikalık iş.', 'Nino picks up the English lines a game shows and puts the Turkish version right over the picture on your TV. Getting ready is a matter of minutes.')}</p>
+    <div class="box"><p>${L('Hazırlaman gerekenler: PS5, bu sunucuyla aynı evde ağa bağlı bir TV ve yedek bir PSN hesabı.', 'Have ready: your PS5, a TV on this home network and a spare PSN account.')}</p></div>
+    ${health(s)}`,
+  SecondAccount: () => `<h1>${L('Yedek PSN hesabı', 'Spare PSN account')}</h1>
+    <p>${L('Nino senin hesabınla girerse PS5 elindeki kolu düşürür. Bunun yerine yedek hesapla izler, sen oynamaya devam edersin.', 'If Nino logged in as you, the PS5 would drop your controller. It watches with the spare account instead, so you keep playing.')}</p>
+    <div class="box"><ol>
+      <li>${L('Konsolda ikinci bir kullanıcı aç ve ona bedava bir PSN hesabı tanımla.', 'Create a second PS5 user and attach a free PSN account to it.')}</li>
+      <li>${L('O profile geçip Ayarlar › Sistem › Uzaktan Oynatma altındaki özelliği aç.', 'Switch to that profile, then turn the feature on under Settings › System › Remote Play.')}</li>
+      <li>${L('Bu kullanıcının girişini parolasız bırak.', 'Leave that user without a login passcode.')}</li></ol></div>`,
+  PsnLogin: s => `<h1>${L('Sony hesabıyla giriş', 'Sony account sign-in')}</h1>
+    <p>${L('Yedek hesabın bilgilerini Sony\'nin kendi sitesine gir; parolayı Nino hiç görmez.', 'Enter the spare account on Sony\'s own site; Nino never sees the password.')}</p>
+    <div class="box"><ol>
+      <li><a class="btn main" target="_blank" rel="noopener" href="${h(s.psnLoginUrl)}">${L('Sony sayfasını aç', 'Open Sony\'s page')}</a></li>
+      <li>${L('İşlem bitince boş görünen ya da "redirect" diyen bir sayfa gelir. Tarayıcının üstündeki adresi baştan sona kopyala.', 'Afterwards a blank or "redirect" page shows up. Copy everything in the browser\'s address field.')}</li>
+      <li>${L('Sonra o adresi aşağıdaki kutuya bırak.', 'Then drop that address into the box below.')}</li></ol>
+      ${field('redirect', L('Vardığın sayfanın adresi', 'Address you landed on'), `placeholder="${h(s.redirectPrefix)}?code=…" autocomplete="off" autocapitalize="off" spellcheck="false"`)}
+      <div class="row">${button('psn', L('Hesabı al', 'Use this account'), 'main')}${s.hasAccount ? `<span class="yes">${L('Hesap hazır', 'Account ready')}</span>` : ''}</div>
+      ${problem('psn')}</div>`,
+  Console: s => `<h1>${L('PS5 eşleme', 'PS5 pairing')}</h1>
+    <p>${L('Yedek kullanıcıyla PS5\'te Ayarlar › Sistem › Uzaktan Oynatma › Cihaz Bağla\'ya gir; ekrana gelen sekiz rakamı buraya yaz.', 'With the spare user signed in, open Settings › System › Remote Play › Link Device on the console, then enter the eight digits shown.')}</p>
+    <div class="box">${s.console ? `<p class="yes">${L('Eşli: ', 'Paired: ')}${h(s.console.name)} (${h(s.console.host)})</p>` : ''}
+      ${button('consoles', L('PS5\'i bul', 'Look for the PS5'))}${problem('consoles')}
+      <div class="pick row">${(ui.found.consoles || []).map(c => `<button data-console="${h(c.host)}"><span>${h(c.name)}</span><span class="soft">${h(c.host)}${c.isAwake ? '' : ' · ' + L('uykuda', 'asleep')}</span></button>`).join('')}
+      ${ui.found.consoles && !ui.found.consoles.length ? `<p class="careful">${L('Hiçbir PS5 cevap vermedi. Konsolun uyanık olduğundan emin ol ya da IP\'yi kendin gir.', 'No PS5 answered. Make sure the console is awake, or type the IP yourself.')}</p>` : ''}</div>
+      ${field('consoleHost', L('PS5\'in IP adresi', 'PS5 IP address'), 'autocomplete="off" inputmode="decimal" placeholder="örn. 192.168.0.50"')}
+      ${field('pin', L('Sekiz rakamlı kod', 'Eight-digit code'), 'autocomplete="off" class="code" maxlength="9" inputmode="numeric"')}
+      <div class="row">${button('register', L('Eşle', 'Pair'), 'main')}</div>${problem('register')}</div>`,
+  Tv: s => `<h1>${L('TV seçimi', 'Choose the TV')}</h1>
+    <p>${L('TV açık olmalı ve bu sunucuyla aynı ağda durmalı. Seçtiğinde TV bir onay isteyecek; evet de.', 'The TV should be powered up and share this server\'s network. Once you choose it, the TV asks for approval; say yes.')}</p>
+    <div class="box">${s.tv ? `<p class="yes">${L('Eşli: ', 'Paired: ')}${h(s.tv.name)} (${h(s.tv.host)})</p>` : ''}
+      ${button('tvs', L('TV\'leri tara', 'Scan for TVs'))}${problem('tvs')}
+      <div class="pick row">${(ui.found.tvs || []).map((tv, i) => `<button data-tv="${i}"${ui.working.pair ? ' disabled' : ''}><span>${h(tv.name)}</span><span class="soft">${h(tv.brand)} · ${h(tv.host)}</span></button>`).join('')}
+      ${ui.found.tvs && !ui.found.tvs.length ? `<p class="careful">${L('Hiç TV yakalanmadı. IP adresini elle girebilirsin.', 'No TV turned up. You can enter its IP by hand.')}</p>` : ''}</div>
+      ${field('tvHost', L('LG TV için IP', 'IP of the LG TV'), 'autocomplete="off" inputmode="decimal" placeholder="örn. 192.168.0.60"')}
+      <div class="row">${button('pair', L('Bu IP\'ye bağlan', 'Use this IP'))}</div>${problem('pair')}</div>
+    ${s.tv ? tvAppBox(s) : ''}`,
+  Translation: s => `<h1>${L('Çevirmen', 'Translator')}</h1>
+    <p>${L('Çeviriyi bu sunucu kendisi yapar; satırlar evden çıkmaz. Gereken model bir kerelik iner (530 MB kadar).', 'This server does the translating itself; lines never leave home. The model it needs comes down once (around 530 MB).')}</p>
+    <div class="box">${modelBox(s)}</div>`,
+  Test: s => `<h1>${L('Bir deneme', 'A quick check')}</h1>
+    <p>${L('Nino TV\'de açıkken örnek bir satır yolla; oyun görüntüsünün üstünde belirmeli.', 'With Nino running on the TV, push a sample line; it should pop up over the game picture.')}</p>
+    <div class="box">${light('TV', s.tvStatus)}<div class="row">${button('test', L('Örnek satır yolla', 'Push a sample line'), 'main')}</div>${problem('test')}</div>`,
+  BetterTranslation: s => `<h1>${L('Daha doğal çeviri (seçmeli)', 'More natural translation (optional)')}</h1>
+    <p>${L('Claude ya da DeepL anahtarın varsa çeviriyi ona yaptırabilirsin. İstemezsen bu adımı atla.', 'If you have a Claude or DeepL key, you can let it translate. Otherwise just skip this step.')}</p>
+    ${onlineBox(s)}`,
+};
+const ORDER = ['Welcome', 'SecondAccount', 'PsnLogin', 'Console', 'Tv', 'Translation', 'Test', 'BetterTranslation'];
+
+function wizard(s) {
+  const step = STEPS[s.step] || (() => '');
+  const count = s.stepCount || ORDER.length, number = s.stepNumber || 1;
+  const last = number >= count;
+  return `<div class="bar" role="progressbar" aria-valuemin="1" aria-valuemax="${count}" aria-valuenow="${number}"><i style="width:${number / count * 100}%"></i></div>
+    ${step(s)}
+    <div class="row nav">${number > 1 ? button('back', L('Geri', 'Back')) : '<i></i>'}
+    ${button('advance', nextLabel(s.step, last), 'main', s.canAdvance === true ? '' : 'disabled')}</div>
+    ${problem('advance', 'back')}`;
+}
+
+function nextLabel(step, last) {
+  if (last) return L('Bitir', 'Finish');
+  return step === 'Welcome' ? L('Başla', 'Start') : L('Devam', 'Continue');
+}
+
+function health(s) {
+  const issues = [];
+  if (!s.nativeAvailable) issues.push(L('PS5\'e bağlanan kütüphane (nino_native) açılamadı.', 'The library Nino uses to reach the PS5 (nino_native) couldn\'t be opened.'));
+  if (s.ocrMissing) issues.push(L('Tesseract (metin okuyucu) bu sunucuya kurulmamış.', 'This server has no Tesseract (the text reader).'));
+  if (!s.bundledTvApp) issues.push(L('Bu sürümde LG paketi bulunmuyor; uygulamayı TV\'ye buradan atamazsın.', 'This build carries no LG package; the TV app can\'t be pushed from here.'));
+  return issues.length ? `<div class="box"><h2 class="careful">${L('Bilgin olsun', 'Note')}</h2>${issues.map(i => `<p>${h(i)}</p>`).join('')}</div>` : '';
+}
+
+function tvAppBox(s) {
+  const app = s.tvApp;
+  const hours = s.devModeHoursLeft != null ? `<p class="soft">${L('Geliştirici kipinin süresi: ', 'Developer time remaining: ')}${s.devModeHoursLeft} ${L('saat', 'h')}</p>` : '';
+  const views = {
+    Working: () => `<p class="spin">${L('Uygulama TV\'ye gönderiliyor…', 'Sending the app to the TV…')}</p>`,
+    UpToDate: () => `<p class="yes">${L('Nino\'nun TV uygulaması güncel', 'Nino\'s TV app is up to date')}${app.version ? ' (' + h(app.version) + ')' : ''}</p>${hours}`,
+    DevModeOff: () => `<p class="careful">${L('TV\'nin geliştirici kipi kapalı.', 'The TV has developer mode switched off.')}</p>${devSteps(s)}${button('tvRefresh', L('Tekrar dene', 'Try again'))}`,
+    NeedsPassphrase: () => `${app.error ? `<p class="fail">${h(passphraseProblem(app.error))}</p>` : ''}${devSteps(s)}
+      ${field('passphrase', L('TV ekranındaki 6 karakter (Passphrase)', 'The 6 characters on the TV (Passphrase)'), 'autocapitalize="characters" autocomplete="off" class="code" maxlength="6" spellcheck="false"')}
+      <div class="row">${button('tvInstall', L('Uygulamayı TV\'ye gönder', 'Send Nino to the TV'), 'main')}</div>`,
+    Failed: () => `<p class="fail">${L('Uygulama TV\'ye gitmedi', 'The app didn\'t reach the TV')}${app.error ? ': ' + h(app.error) : ''}</p>${app.reason ? `<p class="soft">${h(app.reason)}</p>` : ''}${button('tvRefresh', L('Tekrar dene', 'Try again'))}`,
+    SignIn: () => `<p>${L('Samsung hesabıyla oturum aç:', 'Log into your Samsung account:')}</p><a class="btn main" target="_blank" rel="noopener" href="${h(app.url)}">${L('Samsung sayfasını aç', 'Open Samsung\'s page')}</a>`,
+    ApproveOnTv: () => `<p class="careful">${L('TV, hata ayıklama izni istiyor; ekrandan onay ver.', 'The TV wants permission for debugging; approve it on screen.')}</p>`,
+  };
+  const body = (views[app.kind] || (() => `<p class="soft">${L('TV uygulamasının durumuna daha bakılmadı.', 'The TV app hasn\'t been looked at yet.')}</p>${button('tvRefresh', L('Bak', 'Look'))}`))();
+  return `<div class="box"><h2>${L('TV tarafındaki Nino', 'TV-side Nino')}</h2>${body}${problem('tvInstall', 'tvRefresh')}</div>`;
+}
+function passphraseProblem(code) {
+  return ({
+    WrongPassphrase: L('Parola uymadı. TV\'deki altı karakteri büyük-küçük farkıyla birebir gir.', 'The passphrase didn\'t fit. Enter the six characters with matching upper and lower case.'),
+    KeyServerOff: L('Developer Mode uygulamasını aç ve "Key Server" anahtarını çevir.', 'Launch Developer Mode and flip "Key Server" on.'),
+    Unreachable: L('TV\'den ses çıkmadı.', 'No reply from the TV.'),
+    ToolMissing: L('ssh-keygen bu sunucuda yok; openssh-client paketini kur.', 'ssh-keygen is missing here; install the openssh-client package.'),
+  })[code] || code;
+}
+function devSteps(s) {
+  if (s.tv && s.tv.brand === 'Samsung')
+    return s.computerAddress ? `<p class="soft">${L('Samsung\'da geliştirici ayarlarındaki "Host PC IP" kutusuna şunu gir: ', 'On the Samsung, type this into the developer "Host PC IP" field: ')}<b>${h(s.computerAddress)}</b></p>` : '';
+  if (!s.tv || s.tv.brand !== 'Lg') return '';
+  return `<ol class="soft">
+    <li>${L('LG Content Store\'dan "Developer Mode" uygulamasını indir ve LG geliştirici hesabınla oturum aç.', 'Get "Developer Mode" from the LG Content Store and log in with an LG developer account.')}</li>
+    <li>${L('"Dev Mode Status" anahtarını çevir; TV kendini yeniden başlatır.', 'Flip "Dev Mode Status"; the TV reboots itself.')}</li>
+    <li>${L('Uygulamaya geri dön, "Key Server"ı da çevir; ekranda altı karakterlik bir parola belirir.', 'Go back into the app and flip "Key Server" too; a six-character passphrase shows up.')}</li></ol>`;
+}
+function modelBox(s) {
+  const m = s.model;
+  if (m.installed) return `<p class="yes">${L('Model yerinde', 'Model in place')}</p>`;
+  if (m.downloading) return `<p>${L('İndiriliyor ', 'Downloading ')}${Math.round(m.progress * 100)}%</p><div class="bar"><i style="width:${m.progress * 100}%"></i></div>`;
+  return `${m.error ? `<p class="fail">${h(m.error)}</p>` : ''}${button('model', L('Modeli getir', 'Get the model'), 'main')}${problem('model')}`;
+}
+
+// ---- İnternetten çeviri (Claude ya da DeepL) ----
+function onlineBox(s) {
+  const on = s.settings.onlineTranslation, engine = s.onlineEngine;
+  const body = engine
+    ? `<p class="${on ? 'yes' : 'soft'}">${on ? L('Açık: ', 'On: ') : L('Kapalı: ', 'Off: ')}${engine === 'Claude' ? 'Claude Haiku' : 'DeepL'}</p>
+       <div class="row">${button('flipOnline', on ? L('Kapat', 'Turn off') : L('Aç', 'Turn on'))}${button('dropKey', L('Anahtarı unut', 'Forget the key'))}</div>`
+    : `${field('onlineKey', L('Claude anahtarını (sk-ant- ile başlar) ya da DeepL\'inkini yapıştır', 'Paste a Claude key (starts with sk-ant-) or a DeepL key'), 'autocomplete="off"', 'password')}
+       <div class="row">${button('saveKey', L('Kaydet ve sına', 'Store and test'), 'main')}</div>`;
+  return `<div class="box"><h2>${L('İnternet üzerinden çeviri', 'Online translator')}</h2>
+    <p class="soft">${L('Satırlar daha akıcı çevrilir. Bunun için metin Anthropic\'e ya da DeepL\'e yollanır; 3 saniye içinde cevap yoksa ya da bağlantı kopuksa satırı buradaki model üstlenir.', 'Lines read more smoothly. The text goes to Anthropic or DeepL for this; when no reply arrives within 3 seconds or the link is down, the local model takes the line.')}</p>
+    ${body}${problem('saveKey', 'flipOnline', 'dropKey')}${ui.results.keyNote ? `<p class="fail" role="alert">${h(ui.results.keyNote)}</p>` : ''}</div>`;
+}
+function keyNote(state) {
+  return ({
+    Invalid: L('Bu anahtar kabul edilmedi.', 'This key was refused.'),
+    QuotaExceeded: L('Kullanım hakkı ya da istek sınırı tükendi.', 'Usage allowance or request limit ran out.'),
+    Unreachable: L('Hizmete varılamadı; internet bağlantısını gözden geçir.', 'The service is out of reach; look at the internet link.'),
+  })[state] || '';
+}
+
+// ---- Ana ekran ----
+function slider(side, text, value) {
+  const percent = Math.round(value * 100);
+  return `<label for="side-${side}">${h(text)} <span id="show-${side}">${percent}%</span></label><input type="range" id="side-${side}" data-side="${side}" min="0" max="100" step="1" value="${percent}">`;
+}
+function choice(id, key, options, current) {
+  return `<select id="${id}" data-style="${key}">${options.map(([value, text]) => `<option value="${value}"${current === value ? ' selected' : ''}>${h(text)}</option>`).join('')}</select>`;
+}
+function home(s) {
+  const r = s.settings.region, style = s.settings.style || {};
+  const read = ui.results.read;
+  const sample = ui.results.sample;
+  return `<div class="box">${light('PS5', s.ps5)}${s.ps5.detail ? `<p class="soft">${h(s.ps5.detail)}</p>` : ''}${light('TV', s.tvStatus)}
+      ${s.translator !== 'Ready' ? `<p class="careful">${L('Çevirmen modeli şimdilik çalışmıyor.', 'The translator model isn\'t working right now.')}</p>${modelBox(s)}` : ''}
+      ${s.ocrMissing ? `<p class="fail">${L('Tesseract (metin okuyucu) bu sunucuya kurulmamış.', 'This server has no Tesseract (the text reader).')}</p>` : ''}</div>
+    ${s.running ? button('stop', L('Çeviriyi kapat', 'Turn translation off'), 'stop wide')
+                : button('start', s.starting ? L('Açılıyor…', 'Opening…') : L('Çeviriyi aç', 'Turn translation on'), 'main wide')}
+    ${problem('start', 'stop')}
+    ${s.running ? `<div class="row">${button('pause', s.paused ? L('Altyazıları geri getir', 'Bring subtitles back') : L('Altyazıları gizle', 'Hide subtitles'))}${button('test', L('Örnek satır', 'Sample line'))}</div>${problem('pause', 'test')}` : ''}
+
+    <div class="box"><h2>${L('En son satır', 'Most recent line')}</h2>
+      ${s.lastTranslation ? `<p class="said">${h(s.lastTranslation)}</p><p class="soft">${h(s.lastSource)}</p>` : `<p class="soft">${L('Şimdiye dek okunan satır yok.', 'No line has been read so far.')}</p>`}</div>
+
+    <div class="box"><h2>${L('Okuma alanı', 'Reading area')}</h2>
+      <p class="soft">${L('Oyunun kendi altyazısını yazdığı bölge. Görüntü çeviri açıkken gelir.', 'The part of the screen where the game writes its own subtitles. The picture shows up while translating.')}</p>
+      <div class="shot">${s.hasFrame ? `<img alt="${L('PS5\'ten gelen kare', 'Frame from the PS5')}" src="/api/frame.png?width=640&amp;t=${ui.shotTime}">` : ''}
+        <div class="area" style="left:${r.left * 100}%;top:${r.top * 100}%;width:${(r.right - r.left) * 100}%;height:${(r.bottom - r.top) * 100}%"></div></div>
+      <div class="row">${button('shot', L('Kareyi tazele', 'Refresh the frame'))}${button('readTest', L('Alanı şimdi tara', 'Scan the area now'))}</div>${problem('readTest')}
+      ${read ? `<p class="soft gap">${read.ms} ms · ${read.width}×${read.height}</p><pre>${h((read.lines || []).join('\n') || L('(metin çıkmadı)', '(nothing found)'))}</pre>` : ''}
+      ${slider('top', L('Üst', 'Top'), r.top)}${slider('bottom', L('Alt', 'Bottom'), r.bottom)}${slider('left', L('Sol', 'Left'), r.left)}${slider('right', L('Sağ', 'Right'), r.right)}
+      ${problem('settings')}</div>
+
+    <div class="box"><h2>${L('TV\'deki yazı', 'Text on the TV')}</h2>
+      <label for="fontSize">${L('Yazı boyu', 'Letter size')}</label>
+      ${choice('fontSize', 'fontSize', [[36, L('Küçük', 'Small')], [46, L('Orta', 'Medium')], [58, L('Büyük', 'Large')], [72, L('Kocaman', 'Huge')]], style.fontSize)}
+      <label for="placement">${L('Çeviri konumu', 'Translation spot')}</label>
+      ${choice('placement', 'placement', [['Cover', L('İngilizcenin yerine geçer', 'Replaces the English')], ['Above', L('İngilizcenin hemen üstü', 'Just above the English')], ['Below', L('İngilizcenin hemen altı', 'Just below the English')], ['Fixed', L('Sabit, ekranın dibinde', 'Pinned to the screen\'s lower edge')]], style.placement)}</div>
+
+    ${onlineBox(s)}
+
+    <div class="box"><h2>${L('Cümle sına', 'Test a sentence')}</h2>
+      ${field('sample', L('Bir İngilizce satır yaz', 'Type an English line'), `placeholder="${h(SAMPLE)}"`)}
+      <div class="row">${button('trySample', L('Çevir', 'Translate'))}</div>${problem('trySample')}
+      ${sample ? `<p class="gap"><b>${h(sample.text)}</b> <span class="soft">${sample.ms} ms · ${h(sample.engine)}</span></p>` : ''}</div>
+
+    <div class="box"><h2>${L('Hazırlık', 'Setup')}</h2>
+      <p class="soft">PS5: ${s.console ? `${h(s.console.name)} (${h(s.console.host)})` : '–'} · TV: ${s.tv ? `${h(s.tv.name)} (${h(s.tv.host)})` : '–'}</p>
+      ${s.tv ? tvAppLine(s) : ''}
+      <div class="row">${button('tvRefresh', L('TV uygulamasını yokla', 'Recheck the TV app'))}${button('reset', L('Baştan kur', 'Start over'))}</div>${problem('tvRefresh', 'reset')}</div>
+
+    <div class="box"><details id="logs"${ui.logOpen ? ' open' : ''}><summary>${L('Kayıtlar', 'Records')}</summary><pre id="logText"></pre></details></div>`;
+}
+function tvAppLine(s) {
+  const kind = s.tvApp.kind;
+  if (kind === 'UpToDate')
+    return `<p class="soft">${L('TV tarafındaki Nino', 'TV-side Nino')} ${h(s.tvApp.version || '')}${s.devModeHoursLeft != null ? ` · ${L('geliştirici kipi', 'developer time')} ${s.devModeHoursLeft} ${L('saat', 'h')}` : ''}</p>`;
+  return kind === 'Unknown' ? '' : tvAppBox(s);
+}
+
+// ---- Çizim ----
+function draw(force) {
+  const s = ui.state;
+  if (!s) return;
+  document.getElementById('ver').innerText = `v${s.version}`;
+  const html = (s.notice ? `<div class="box"><p class="careful">${h(s.notice)}</p></div>` : '') + (s.step === 'Done' ? home(s) : wizard(s));
+  if (!force && html === ui.drawn) return;
+  const focused = document.activeElement, id = focused && focused.id;
+  if (id && focused.type === 'range') return; // sürgü tutulurken dokunma
+  const caret = id && 'selectionStart' in focused ? focused.selectionStart : null;
+  ui.drawn = html;
+  document.getElementById('app').innerHTML = html;
+  const logText = document.getElementById('logText');
+  if (logText) logText.textContent = ui.log.join('\n');
+  if (id) {
+    const again = document.getElementById(id);
+    if (again) { again.focus(); try { if (caret != null) again.setSelectionRange(caret, caret); } catch { } }
+  }
+}
+
+document.addEventListener('input', event => {
+  const el = event.target;
+  if (['text', 'password'].includes(el.type)) ui.typed[el.id] = el.value;
+  if (el.dataset.side) document.getElementById(`show-${el.dataset.side}`).innerText = `${el.value}%`;
+});
+document.addEventListener('change', event => {
+  const el = event.target;
+  if (el.dataset.side) {
+    const region = { ...ui.state.settings.region, [el.dataset.side]: Number(el.value) / 100 };
+    el.blur();
+    act('settings', 'POST', '/api/settings', { region });
+    return;
+  }
+  if (el.dataset.style) {
+    const style = { ...ui.state.settings.style, [el.dataset.style]: el.dataset.style === 'fontSize' ? Number(el.value) : el.value };
+    act('settings', 'POST', '/api/settings', { style });
+  }
+});
+document.addEventListener('toggle', event => {
+  if (event.target.id !== 'logs') return;
+  ui.logOpen = event.target.open;
+  if (ui.logOpen) loadLog();
+}, true);
+
+const ACTIONS = {
+  advance: () => act('advance', 'POST', '/api/advance'),
+  back: () => act('back', 'POST', '/api/back'),
+  psn: () => act('psn', 'POST', '/api/psn', { redirect: ui.typed.redirect || '' }, () => { ui.typed.redirect = ''; }),
+  consoles: () => act('consoles', 'GET', '/api/consoles', null, list => { ui.found.consoles = list; if (list.length === 1) ui.typed.consoleHost = list[0].host; }),
+  register: () => act('register', 'POST', '/api/register', { host: ui.typed.consoleHost || '', pin: ui.typed.pin || '' }, () => { ui.typed.pin = ''; }),
+  tvs: () => act('tvs', 'GET', '/api/tvs', null, list => { ui.found.tvs = list; }),
+  pair: () => act('pair', 'POST', '/api/pair', { name: 'LG TV', host: ui.typed.tvHost || '', brand: 'Lg' }),
+  tvInstall: () => act('tvInstall', 'POST', '/api/tv-app/install', { passphrase: ui.typed.passphrase || '' }),
+  tvRefresh: () => act('tvRefresh', 'POST', '/api/tv-app/refresh'),
+  model: () => act('model', 'POST', '/api/model/download'),
+  test: () => act('test', 'POST', '/api/test-subtitle'),
+  start: () => act('start', 'POST', '/api/start'),
+  stop: () => act('stop', 'POST', '/api/stop'),
+  pause: () => act('pause', 'POST', '/api/pause'),
+  shot: () => { ui.shotTime = Date.now(); draw(true); },
+  readTest: () => { ui.shotTime = Date.now(); act('readTest', 'POST', '/api/read-test', null, result => { ui.results.read = result; }); },
+  trySample: () => act('trySample', 'POST', '/api/translate-test', { text: ui.typed.sample || SAMPLE }, result => { ui.results.sample = result; }),
+  saveKey: () => {
+    delete ui.results.keyNote;
+    act('saveKey', 'POST', '/api/deepl', { key: ui.typed.onlineKey || '' }, result => {
+      if (result.state === 'Valid' || result.state === 'QuotaExceeded') ui.typed.onlineKey = '';
+      ui.results.keyNote = keyNote(result.state);
+    });
+  },
+  flipOnline: () => act('flipOnline', 'POST', '/api/settings', { onlineTranslation: !ui.state.settings.onlineTranslation }),
+  dropKey: () => { delete ui.results.keyNote; act('dropKey', 'DELETE', '/api/deepl'); },
+  reset: () => { if (confirm(L('Kayıtlı hesap, konsol ve TV bu sunucudan düşürülsün mü?', 'Should this server drop the saved account, console and TV?'))) act('reset', 'POST', '/api/reset'); },
+};
+document.addEventListener('click', event => {
+  const el = event.target.closest('button');
+  if (!el) return;
+  if (el.dataset.console) {
+    ui.typed.consoleHost = el.dataset.console; draw(true);
+    document.getElementById('pin')?.focus();
+    return;
+  }
+  if (el.dataset.tv) {
+    const tv = ui.found.tvs[Number(el.dataset.tv)];
+    act('pair', 'POST', '/api/pair', { name: tv.name, host: tv.host, brand: tv.brand });
+    return;
+  }
+  ACTIONS[el.dataset.do]?.();
+});
+
+async function loadLog() {
+  try {
+    const { lines } = await call('GET', '/api/log');
+    ui.log = lines;
+    const box = document.getElementById('logText');
+    if (box) { box.textContent = lines.join('\n'); box.scrollTop = box.scrollHeight; }
+  } catch { }
+}
+
+load(true);
+setInterval(() => { load(false); if (ui.logOpen) loadLog(); }, 1500);
+</script>
+</body>
+</html>

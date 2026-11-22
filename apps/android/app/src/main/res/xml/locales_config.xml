@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!-- Arayüz dilleri; arayüz dili çeviri dilini izler. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="tr" />
+    <locale android:name="en" />
+    <locale android:name="ar" />
+    <locale android:name="hi" />
+    <locale android:name="id" />
+    <locale android:name="th" />
+    <locale android:name="vi" />
+    <locale android:name="ur" />
+    <locale android:name="bn" />
+    <locale android:name="ms" />
+    <locale android:name="fil" />
+    <locale android:name="nl" />
+</locale-config>

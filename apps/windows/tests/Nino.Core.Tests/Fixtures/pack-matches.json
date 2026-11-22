@@ -1,0 +1,238 @@
+{
+  "pack": "pack-sample.json.gz",
+  "warmUp": "Light the lantern, quickly.",
+  "cases": [
+    {
+      "screen": "BRING ME THE MAP!!",
+      "turkish": "Haritayı bana getir."
+    },
+    {
+      "screen": "  Hold   the\nline!  ",
+      "turkish": "Hattı tutun!"
+    },
+    {
+      "screen": "MARISOL: Bring me the map.",
+      "turkish": "MARISOL: Haritayı bana getir."
+    },
+    {
+      "screen": "- Bring me the map.\n- Who left the lantern on?",
+      "turkish": "- Haritayı bana getir.\n- Feneri kim açık bıraktı?"
+    },
+    {
+      "screen": "Buon viaggio.",
+      "turkish": "Buon viaggio."
+    },
+    {
+      "screen": "Run! Get to the boats!",
+      "turkish": "Kaç! Teknelere koşun!"
+    },
+    {
+      "screen": "TOMAS: Run! Get to the boats!",
+      "turkish": "TOMAS: Kaç! Teknelere koşun!"
+    },
+    {
+      "screen": "Bring rne the map.",
+      "turkish": "Haritayı bana getir."
+    },
+    {
+      "screen": "I cant feel my hands.",
+      "turkish": "Ellerimi hissedemiyorum."
+    },
+    {
+      "screen": "Who left thee lantern on?",
+      "turkish": "Feneri kim açık bıraktı?"
+    },
+    {
+      "screen": "Who 1eft the lantern on?",
+      "turkish": "Feneri kim açık bıraktı?"
+    },
+    {
+      "screen": "Hand me the brasscompass.",
+      "turkish": "Pirinç pusulayı bana uzat."
+    },
+    {
+      "screen": "Get to the boatz!",
+      "turkish": null
+    },
+    {
+      "screen": "The lighthouse keeper sald the st0rm wouId pass beföre the mornlng tide.",
+      "turkish": "Fener bekçisi fırtınanın sabah gelgitinden önce geçeceğini söyledi."
+    },
+    {
+      "screen": "MARISOL: The lighthouse keeper sald the st0rm wouId pass beföre the mornlng tide.",
+      "turkish": "MARISOL: Fener bekçisi fırtınanın sabah gelgitinden önce geçeceğini söyledi."
+    },
+    {
+      "screen": "Every smugg1er on thls coast owes the harb0r master a fav0r.",
+      "turkish": "Bu kıyıdaki her kaçakçının liman başkanına bir borcu var."
+    },
+    {
+      "screen": "If the guards f1nd the crates, were all go1ng to hang.",
+      "turkish": "Muhafızlar sandıkları bulursa hepimiz asılırız."
+    },
+    {
+      "screen": "Keep yovr voice d0wn, the walIs have ears in thls town.",
+      "turkish": "Sesini alçalt, bu kasabada duvarların kulağı var."
+    },
+    {
+      "screen": "I so1d my grandfathers watch to pay f0r this voyage.",
+      "turkish": "Bu yolculuğun parasını ödemek için dedemin saatini sattım."
+    },
+    {
+      "screen": "The flsh market opens at dawn, so we sleep 0n the boat tonlght.",
+      "turkish": "Balık pazarı şafakta açılıyor, bu gece teknede uyuyoruz."
+    },
+    {
+      "screen": "We trade sa1t for medicine with the mountaln vi1lages.",
+      "turkish": "Dağ köyleriyle tuz karşılığında ilaç takas ediyoruz."
+    },
+    {
+      "screen": "Marisol, take the whee1 whi1e I check the saiIs.",
+      "turkish": "Marisol, ben yelkenlere bakarken dümene geç."
+    },
+    {
+      "screen": "You promlsed me a shlp, not a rowlng boat.",
+      "turkish": "Bana bir gemi söz vermiştin, kayık değil."
+    },
+    {
+      "screen": "The harb0r master wants to see y0u in hls office.",
+      "turkish": "Liman başkanı seni ofisinde görmek istiyor."
+    },
+    {
+      "screen": "Bring the w0unded below deck and keep them wam.",
+      "turkish": "Yaralıları güverte altına indirin ve sıcak tutun."
+    },
+    {
+      "screen": "I thlnk the cook is hidlng somethlng in the pantry.",
+      "turkish": "Bence aşçı kilerde bir şey saklıyor."
+    },
+    {
+      "screen": "The map shows a sec0nd entrance under the chape1.",
+      "turkish": "Harita şapelin altında ikinci bir giriş gösteriyor."
+    },
+    {
+      "screen": "-ODALYS: Every smugg1er on thls coast owes the harb0r master a fav0r.",
+      "turkish": "- ODALYS: Bu kıyıdaki her kaçakçının liman başkanına bir borcu var."
+    },
+    {
+      "screen": "K]: Nobody crosses the reef after dark.",
+      "turkish": "K]: Karanlıktan sonra kimse resifi geçmez."
+    },
+    {
+      "screen": "ii TOMAS: Wake up, the harbor is on fire!",
+      "turkish": "ii TOMAS: Uyan, liman yanıyor!"
+    },
+    {
+      "screen": "BARTOLO Tell the crew we leave at sunrise.",
+      "turkish": "BARTOLO Mürettebata gün doğarken çıkacağımızı söyle."
+    },
+    {
+      "screen": "The lighthouse keeper said the storm would pass",
+      "turkish": "Fener bekçisi fırtınanın sabah gelgitinden önce geçeceğini söyledi."
+    },
+    {
+      "screen": "Every smuggler on this coast owes the harbor",
+      "turkish": "Bu kıyıdaki her kaçakçının liman başkanına bir borcu var."
+    },
+    {
+      "screen": "Saltmarsh Docks Somebody cut the ropes on purpose.",
+      "turkish": "Biri halatları bilerek kesmiş."
+    },
+    {
+      "screen": "Saltmarsh Docks\nSomebody cut the ropes on purpose.",
+      "turkish": "Biri halatları bilerek kesmiş."
+    },
+    {
+      "screen": "Saltmarsh Docks\nBring me the map.",
+      "turkish": "Haritayı bana getir."
+    },
+    {
+      "screen": "Bring me the map.\nFirst Mate • Tomas",
+      "turkish": "Haritayı bana getir."
+    },
+    {
+      "screen": "Old Quarter West Gate Nobody remembers who built the sea wall.",
+      "turkish": "Dalgakıranı kimin yaptığını kimse hatırlamıyor."
+    },
+    {
+      "screen": "Somebody cut the ropes on purpose. Saltmarsh Docks",
+      "turkish": "Biri halatları bilerek kesmiş."
+    },
+    {
+      "screen": "The storm took three boats last winter. North Pier",
+      "turkish": "Fırtına geçen kış üç tekneyi aldı."
+    },
+    {
+      "screen": "Tomas Vera Run! Somebody cut the ropes on purpose.",
+      "turkish": "Biri halatları bilerek kesmiş."
+    },
+    {
+      "screen": "Somebody cut the ropes on purpose. Go now, Tomas.",
+      "turkish": null
+    },
+    {
+      "screen": "Nobody remembers who built the sea wall, Tomas said.",
+      "turkish": null
+    },
+    {
+      "screen": "The harbor master wants to see you in his office. Bring wine.",
+      "turkish": null
+    },
+    {
+      "screen": "Take the n0uth road to the old mill.",
+      "turkish": null
+    },
+    {
+      "screen": "Take the road to the old mill.",
+      "turkish": null
+    },
+    {
+      "screen": "Somebody cut the ropes on purpose. Tell the crew we leave at sunrise.",
+      "turkish": "Biri halatları bilerek kesmiş. Mürettebata gün doğarken çıkacağımızı söyle."
+    },
+    {
+      "screen": "Watch your step, the planks are rotten. I've never seen the sea this calm.",
+      "turkish": "Adımına dikkat et, tahtalar çürük. Denizi hiç bu kadar sakin görmemiştim."
+    },
+    {
+      "screen": "The storm took three boats last winter. Your brother owes me ten silver coins.",
+      "turkish": null
+    },
+    {
+      "screen": "Pack my box with five dozen jugs near the old pier.",
+      "turkish": null
+    },
+    {
+      "screen": "Somewhere beyond the hills a wolf howls at the moon.",
+      "turkish": null
+    },
+    {
+      "screen": "Bring me the sword.",
+      "turkish": null
+    },
+    {
+      "screen": "The cannon is broken and ready to sink.",
+      "turkish": null
+    },
+    {
+      "screen": "I can feel my hands.",
+      "turkish": null
+    },
+    {
+      "screen": "Saltmarsh Docks",
+      "turkish": null
+    },
+    {
+      "screen": "Bring me the map.\nWhere is the cook",
+      "turkish": null
+    },
+    {
+      "screen": "...",
+      "turkish": null
+    },
+    {
+      "screen": "",
+      "turkish": null
+    }
+  ]
+}

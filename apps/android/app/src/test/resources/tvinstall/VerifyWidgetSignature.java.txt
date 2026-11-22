@@ -1,0 +1,47 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (C) 2026 Nino contributors
+// JDK'nin kendi XML imza doğrulayıcısıyla .wgt imzasını denetler (SamsungTest çalıştırır).
+// Kullanım: java VerifyWidgetSignature.java <açılmış paket klasörü> <imza dosyası> <açık anahtar DER dosyası>
+import java.io.*;
+import java.nio.file.*;
+import java.security.*;
+import java.security.spec.X509EncodedKeySpec;
+import javax.xml.crypto.*;
+import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.*;
+
+public class VerifyWidgetSignature {
+    public static void main(String[] a) throws Exception {
+        Path dir = Paths.get(a[0]);
+        PublicKey key = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Files.readAllBytes(Paths.get(a[2]))));
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        Document doc = dbf.newDocumentBuilder().parse(dir.resolve(a[1]).toFile());
+        Element sigEl = doc.getDocumentElement();
+        sigEl.setIdAttribute("Id", true);
+        ((Element) doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Object").item(0)).setIdAttribute("Id", true);
+        XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+        DOMValidateContext ctx = new DOMValidateContext(key, sigEl);
+        ctx.setProperty("org.jcp.xml.dsig.secureValidation", Boolean.FALSE);
+        URIDereferencer def = fac.getURIDereferencer();
+        ctx.setURIDereferencer((ref, c) -> {
+            String uri = ref.getURI();
+            if (uri.startsWith("#")) return def.dereference(ref, c);
+            try {
+                return new OctetStreamData(new ByteArrayInputStream(Files.readAllBytes(dir.resolve(java.net.URLDecoder.decode(uri, "UTF-8")))));
+            } catch (IOException e) { throw new URIReferenceException(e); }
+        });
+        XMLSignature sig = fac.unmarshalXMLSignature(ctx);
+        boolean ok = sig.getSignatureValue().validate(ctx);
+        StringBuilder sb = new StringBuilder();
+        for (Object o : sig.getSignedInfo().getReferences()) {
+            Reference r = (Reference) o;
+            if (!r.validate(ctx)) { ok = false; sb.append(" kötü:").append(r.getURI()); }
+        }
+        if (!sig.getSignedInfo().getSignatureMethod().getAlgorithm().equals("http://www.w3.org/2001/04/xmldsig-more#rsa-sha512")) ok = false;
+        if (!sig.getSignedInfo().getCanonicalizationMethod().getAlgorithm().equals("http://www.w3.org/2001/10/xml-exc-c14n#")) ok = false;
+        System.out.println((ok && sig.validate(ctx) ? "OK " : "HATA ") + sig.getSignedInfo().getReferences().size() + sb);
+    }
+}

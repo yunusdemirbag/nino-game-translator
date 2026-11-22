@@ -1,0 +1,15 @@
+{
+ "_about": "Nino, AGPL-3.0-only. Kullanıcının kendi anahtarıyla seçebildiği yapay zekâ modelleri; ilk model varsayılan. Biçim: docs/yeni/android/ceviri.md 12.",
+ "gemini": [
+  { "id": "gemini-2.5-flash-lite", "label": "model_gemini_flash_lite", "freeTier": true, "requestsPerMinute": 15 },
+  { "id": "gemini-3-flash-preview", "label": "model_gemini_flash", "thinking": "LOW", "freeTier": true, "requestsPerMinute": 10 }
+ ],
+ "openai": [
+  { "id": "gpt-5-mini", "label": "model_openai_mini", "effort": "minimal" },
+  { "id": "gpt-5-nano", "label": "model_openai_nano", "effort": "minimal" }
+ ],
+ "claude": [
+  { "id": "claude-haiku-5-5", "label": "model_claude_haiku", "effort": "low", "thinking": "disabled" },
+  { "id": "claude-sonnet-5-5", "label": "model_claude_sonnet", "effort": "low", "thinking": "between_tools" }
+ ]
+}

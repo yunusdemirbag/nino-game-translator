@@ -1,0 +1,20 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Nino.App/Nino.App.csproj" />
+    <Project Path="src/Nino.Core/Nino.Core.csproj" />
+    <Project Path="src/Nino.RemotePlay/Nino.RemotePlay.csproj" />
+    <Project Path="src/Nino.Shell/Nino.Shell.csproj" />
+    <Project Path="src/Nino.Translation/Nino.Translation.csproj" />
+    <Project Path="src/Nino.TvHelper/Nino.TvHelper.csproj" />
+    <Project Path="src/Nino.TvInstall/Nino.TvInstall.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Nino.Core.Tests/Nino.Core.Tests.csproj" />
+    <Project Path="tests/Nino.RemotePlay.Tests/Nino.RemotePlay.Tests.csproj" />
+    <Project Path="tests/Nino.Shell.Tests/Nino.Shell.Tests.csproj" />
+    <Project Path="tests/Nino.Translation.Tests/Nino.Translation.Tests.csproj" />
+    <Project Path="tests/Nino.TvInstall.Tests/Nino.TvInstall.Tests.csproj" />
+  </Folder>
+</Solution>

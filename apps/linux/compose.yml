@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Nino contributors
+# Nino Linux sunucusu. Depo kökünde: ./apps/linux/build.sh && docker compose -f apps/linux/compose.yml up -d
+# Panel: http://<sunucu adresi>:8788
+services:
+  nino:
+    image: nino-linux
+    build:
+      context: ../..
+      dockerfile: apps/linux/Dockerfile
+    # PS5 araması (UDP yayını), TV araması (SSDP) ve Remote Play için ev ağına doğrudan bağlı.
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      # Sunucunun kendi iletilerinin dili; panel tarayıcının dilini izler.
+      NINO_LANG: tr
+    volumes:
+      # Hesap kimliği, PS5 ve TV anahtarları, çeviri modeli (~530 MB), günlükler. Eski sürümün birimiyle aynı ad.
+      - nino-data:/data
+
+volumes:
+  nino-data:

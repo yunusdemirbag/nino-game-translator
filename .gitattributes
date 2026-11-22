@@ -1,0 +1,8 @@
+# TV uygulamaları ile betiklerde satır sonu hangi sistemde olursa olsun LF kalır; böylece LG/Samsung paketi
+# Windows CI'da da Linux'ta üretilenle bayt bayt aynı çıkar.
+apps/tv-web/** text=auto eol=lf
+apps/android-tv/web/** text=auto eol=lf
+*.sh text eol=lf
+
+# Uyum fikstürleri (eski uygulamanın baytları; CRLF ve sondaki satır sonu dahil): hiç dönüştürülmez.
+apps/windows/tests/Nino.Core.Tests/Fixtures/Compat/** -text

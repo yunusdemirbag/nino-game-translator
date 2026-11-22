@@ -1,0 +1,15 @@
+/* SPDX-License-Identifier: AGPL-3.0-only */
+/* Copyright (C) 2026 Nino contributors */
+{
+  global:
+    nino_rp_init;
+    nino_rp_discover;
+    nino_rp_discover_ex;
+    nino_rp_wake;
+    nino_rp_register;
+    nino_rp_session_start;
+    nino_rp_session_set_login_pin;
+    nino_rp_session_stop;
+  local:
+    *;
+};

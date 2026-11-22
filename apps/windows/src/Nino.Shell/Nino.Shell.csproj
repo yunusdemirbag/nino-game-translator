@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nino.Core\Nino.Core.csproj" />
+    <ProjectReference Include="..\Nino.Translation\Nino.Translation.csproj" />
+    <ProjectReference Include="..\Nino.RemotePlay\Nino.RemotePlay.csproj" />
+    <ProjectReference Include="..\Nino.TvInstall\Nino.TvInstall.csproj" />
+    <InternalsVisibleTo Include="Nino.Shell.Tests" />
+  </ItemGroup>
+</Project>

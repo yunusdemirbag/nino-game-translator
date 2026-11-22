@@ -1,0 +1,104 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!--
+  Yazı stilleri. Genel TextBlock stili yalnız satır kaydırma ve "blok" satır yüksekliği verir; yazı tipi ve boy
+  pencereden kalıtılır (metin yazısı, 15), ana yazı rengi pencere düzeyinde verilir (Window.Nino).
+  Adlı stiller: Text.Display, Text.Title, Text.Headline, Text.Body, Text.Secondary, Text.Callout, Text.Caption,
+  Text.Error, Text.Success, Text.Live, Text.Icon, Text.TileIcon, Text.Inherit (şablon içi, boy ezmez).
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="Base.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <Style TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}" />
+
+  <Style x:Key="Text.Body" TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}">
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="FontWeight" Value="Normal" />
+    <Setter Property="LineHeight" Value="20" />
+  </Style>
+
+  <Style x:Key="Text.Display" TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}">
+    <Setter Property="FontFamily" Value="{DynamicResource font.display}" />
+    <Setter Property="FontSize" Value="28" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="LineHeight" Value="34" />
+  </Style>
+
+  <Style x:Key="Text.Title" TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}">
+    <Setter Property="FontFamily" Value="{DynamicResource font.display}" />
+    <Setter Property="FontSize" Value="22" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="LineHeight" Value="28" />
+  </Style>
+
+  <Style x:Key="Text.Headline" TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}">
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Setter Property="FontSize" Value="17" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="LineHeight" Value="22" />
+  </Style>
+
+  <Style x:Key="Text.Secondary" TargetType="TextBlock" BasedOn="{StaticResource Text.Body}">
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+  </Style>
+
+  <Style x:Key="Text.Callout" TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}">
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="LineHeight" Value="17" />
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+  </Style>
+
+  <Style x:Key="Text.Caption" TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}">
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="LineHeight" Value="16" />
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+  </Style>
+
+  <Style x:Key="Text.Error" TargetType="TextBlock" BasedOn="{StaticResource Text.Callout}">
+    <Setter Property="Foreground" Value="{DynamicResource warningBrush}" />
+  </Style>
+
+  <Style x:Key="Text.Success" TargetType="TextBlock" BasedOn="{StaticResource Text.Body}">
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{DynamicResource successBrush}" />
+  </Style>
+
+  <!-- Canlı satır: arayüz ölçeğinin dışında, sabit 28. -->
+  <Style x:Key="Text.Live" TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}">
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Setter Property="FontSize" Value="28" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="LineHeight" Value="36" />
+  </Style>
+
+  <Style x:Key="Text.Icon" TargetType="TextBlock">
+    <Setter Property="FontFamily" Value="{DynamicResource font.icon}" />
+    <Setter Property="TextWrapping" Value="NoWrap" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="LineStackingStrategy" Value="MaxHeight" />
+  </Style>
+
+  <!-- Karo simgesi: kutusuz, sola yaslı, textSecondary (paket simgesinde Foreground=proBrush verilir). -->
+  <Style x:Key="Text.TileIcon" TargetType="TextBlock" BasedOn="{StaticResource Text.Icon}">
+    <Setter Property="FontSize" Value="18" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Foreground" Value="{DynamicResource textSecondaryBrush}" />
+  </Style>
+
+  <!-- Bağlantı: accentText, altı çizgisiz. -->
+  <Style TargetType="Hyperlink">
+    <Setter Property="Foreground" Value="{DynamicResource accentTextBrush}" />
+    <Setter Property="TextDecorations" Value="{x:Null}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+  </Style>
+</ResourceDictionary>

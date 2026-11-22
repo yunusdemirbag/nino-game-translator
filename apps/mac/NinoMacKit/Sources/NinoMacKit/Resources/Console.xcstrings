@@ -1,0 +1,1830 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "console.error.sendLog": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إذا استمرت المشكلة، أرسل إلينا هذا الملف: %@"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "এখনো কাজ হচ্ছে না? এই ফাইলটা আমাদেরকে দিন: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Still not working? Share this file with us: %@"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayaw pa rin? Ipadala mo sa amin itong file: %@"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अब भी हल नहीं हुआ? यह फ़ाइल हमें भेजें: %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masih belum berhasil? Kirimkan berkas ini kepada kami: %@"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masih tidak berfungsi? Kongsi fail ini dengan kami: %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werkt het nog steeds niet? Stuur ons dit bestand: %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยังใช้ไม่ได้อยู่หรือ? ส่งไฟล์นี้ให้เรา: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzelmezse bu dosyayı bizimle paylaşın: %@"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اب بھی مسئلہ ہے؟ یہ فائل ہمیں بھیج دیں: %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vẫn chưa được? Gửi tệp này cho chúng tôi: %@"
+          }
+        }
+      }
+    },
+    "console.pair.error.accountNotRecognised": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هذا الحساب غير معروف لدى PS5. اقرن الجهاز من ملف PS5 الشخصي الذي يضم حساب PSN المستخدم في Nino، أو بدل حساب Nino إلى حساب ذلك الملف."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "এই account PS5-এর কাছে অচেনা। যে PS5 profile-এ Nino-র PSN account আছে, ওটা দিয়েই pair করুন, নয়তো Nino-তে ওই profile-এর account বসান।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This account is new to the PS5. Pair using the PS5 profile that has Nino's PSN account, or switch Nino to that profile's account."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi pa kilala ng console ang account. Mag-pair gamit ang PS5 profile na may PSN account ng Nino, o ilipat ang Nino sa account ng profile na iyon."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 के लिए यह खाता अनजाना है। PS5 की वह profile चुनकर pair करें जिसमें Nino वाला PSN खाता है, या Nino में उसी profile का खाता लगा दें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 belum mengenal akun ini. Pasangkan memakai profil PS5 yang berisi akun PSN Nino, atau ganti akun Nino ke akun profil tersebut."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akaun ini baharu bagi PS5. Gandingkan menggunakan profil PS5 yang memegang akaun PSN Nino, atau tukar Nino kepada akaun profil itu."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De PS5 kent dit account nog niet. Koppel via het PS5-profiel met het PSN-account van Nino, of zet Nino op het account van dat profiel."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "บัญชีนี้ยังใหม่สำหรับ PS5 จับคู่ด้วยโปรไฟล์ PS5 ที่มีบัญชี PSN ของ Nino หรือเปลี่ยน Nino ไปใช้บัญชีของโปรไฟล์นั้น"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu hesap PS5'e yabancı. Kodu, Nino'daki PSN hesabının açık olduğu PS5 profilinden alın ya da Nino'da o profilin hesabına geçin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "یہ اکاؤنٹ PS5 کے لیے نیا ہے۔ اس PS5 پروفائل سے جوڑیں جس میں Nino والا PSN اکاؤنٹ ہے، یا Nino میں اسی پروفائل کا اکاؤنٹ لگائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 chưa từng thấy tài khoản này. Ghép nối từ hồ sơ PS5 có tài khoản PSN mà Nino dùng, hoặc chuyển Nino sang tài khoản của hồ sơ ấy."
+          }
+        }
+      }
+    },
+    "console.pair.error.badAddress": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا يوجد PS5 يرد على هذا العنوان. لمعرفة عنوان IP للجهاز، افتح عليه الإعدادات › الشبكة › حالة الاتصال."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "এই address-এ কোনো PS5 মিলছে না। console-এর IP জানতে ওতে Settings › Network › Connection Status খুলুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No PS5 answers at this address. To see the console's IP address, open Settings › Network › Connection Status on it."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walang PS5 na tumutugon sa address. Para makita ang IP ng console, buksan dito ang Settings › Network › Connection Status."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इस पते से किसी PS5 ने उत्तर नहीं दिया। उसका IP पता जानने को उसी पर Settings › Network › Connection Status खोलें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tak ada PS5 yang menjawab di alamat ini. Untuk melihat alamat IP konsol, buka Pengaturan › Jaringan › Status Koneksi di konsol itu."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiada PS5 yang menjawab di alamat ini. Untuk melihat alamat IP konsol, buka Settings › Network › Connection Status padanya."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Er reageert geen PS5 op dit adres. Je ziet het IP van de console op de console zelf via Instellingen › Netwerk › Verbindingsstatus."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่มี PS5 ตอบที่ที่อยู่นี้ ดู IP ของคอนโซลได้ที่ Settings › Network › Connection Status บนเครื่อง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu adreste bir PS5 yanıt vermiyor. PS5'te Ayarlar › Ağ › Bağlantı Durumu, konsolun IP adresini gösterir."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اس پتے پر کوئی PS5 جواب نہیں دیتا۔ کنسول کا IP دیکھنا ہو تو کنسول میں Settings › Network › Connection Status کھولیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không PS5 nào trả lời tại địa chỉ ấy. Muốn biết IP của máy, trên PS5 hãy mở Cài đặt › Mạng › Trạng thái kết nối."
+          }
+        }
+      }
+    },
+    "console.pair.error.badCode": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يجب أن يكون الرمز 8 أرقام بالضبط."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "code-এ ঠিক ৮টা অঙ্ক চাই।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The code needs exactly 8 digits."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kailangang 8 digit eksakto ang code."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "code में पूरे 8 अंक हों।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kode harus tepat 8 digit."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod mesti tepat 8 digit."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De code moet precies 8 cijfers hebben."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ต้องใส่รหัสให้ครบ 8 หลักพอดี"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kodun tam 8 rakamdan oluşması gerekiyor."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "کوڈ میں ٹھیک 8 ہندسے درکار ہیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã phải có đúng 8 chữ số."
+          }
+        }
+      }
+    },
+    "console.pair.error.crashed": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "توقف Remote Play فجأة على PS5. أعد تشغيل الجهاز، ثم اكتب رمزا جديدا."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5-এ চলতে চলতে Remote Play হঠাৎ থেমে গেল। console restart দিয়ে নতুন একটি code টাইপ করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play quit unexpectedly on the PS5. Restart the console, then type a fresh code."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biglang nag-crash sa PS5 ang Remote Play. Paandarin muli ang console, pagkatapos ay mag-type ng panibagong code."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 में Remote Play यकायक रुक गया। PS5 को बंद करके चालू करें, इसके बाद ताज़ा code भरें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play di PS5 berhenti tiba-tiba. Mulai ulang konsol, lalu ketik kode baru."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play terhenti secara tiba-tiba pada PS5. Mulakan semula konsol, kemudian taip kod baharu."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play is onverwacht gestopt op de PS5. Herstart de console en typ daarna een verse code."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 ปิด Remote Play ไปเองกะทันหัน รีสตาร์ทคอนโซล จากนั้นกรอกรหัสใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5'te Remote Play beklenmedik şekilde kapandı. PS5'i kapatıp açın, sonra taze bir kod yazın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play کنسول پر اچانک بند ہو گیا۔ PS5 دوبارہ چالو کر کے تازہ کوڈ لکھیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play trên PS5 bị tắt đột ngột. Bật lại PS5, sau đó gõ một mã mới."
+          }
+        }
+      }
+    },
+    "console.pair.error.inUse": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play مشغول على جهاز آخر. أنهه هناك، ثم اكتب رمزا جديدا."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play এখন অন্য একটা device-এ চলছে। ওখানে থামিয়ে নতুন একটি code টাইপ করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play is busy on another device. End it there, then type a fresh code."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "May ibang device na gumagamit ng Remote Play. Ihinto ito doon, pagkatapos ay mag-type ng panibagong code."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play अभी किसी अन्य उपकरण पर खुला है। उसे वहाँ रोककर ताज़ा code भरें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play sedang dipakai perangkat lain. Akhiri di sana, lalu ketik kode baru."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play sedang aktif pada peranti lain. Tamatkannya di sana, kemudian taip kod baharu."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play is bezet op een ander toestel. Beëindig het daar en typ daarna een verse code."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "อุปกรณ์อื่นกำลังใช้ Remote Play อยู่ ออกจากที่นั่นก่อน จากนั้นกรอกรหัสใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play'i başka bir cihaz kullanıyor. Orada kapatın, sonra yeni bir kod girin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remote Play ابھی ایک دوسری ڈیوائس پر مصروف ہے۔ اسے وہاں ختم کر کے تازہ کوڈ لکھیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một thiết bị khác đang chiếm Remote Play. Kết thúc phiên ở đó, sau đó gõ một mã mới."
+          }
+        }
+      }
+    },
+    "console.pair.error.lateAnswer": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وصل الطلب إلى PS5 لكن رده جاء متأخرا. افتح «إقران الجهاز» مجددا على PS5 واكتب الرمز الجديد."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 অনুরোধটা পেয়েছিল, কিন্তু জবাব দিতে বড্ড দেরি করল। PS5-এ Pair Device ফের খুলে তার নতুন code টাইপ করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The PS5 heard the request but answered too late. Reopen Pair Device on your PS5 and type its new code."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nakuha ng console ang hiling pero naantala ang sagot nito. Sa PS5, muling pumasok sa Pair Device at itipa ang panibagong code doon."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 तक माँग पहुँची, पर उत्तर बहुत देर से आया। Pair Device को PS5 में फिर खोलें और उसका ताज़ा code भरें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 menerima permintaan, tapi jawabannya terlambat. Buka lagi Pasangkan Perangkat di PS5, lalu ketik kode barunya."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 mendengar permintaan tetapi lambat membalas. Buka semula Pair Device pada PS5 anda dan taip kod barunya."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De PS5 kreeg het verzoek, maar antwoordde te laat. Ga op je PS5 weer naar Apparaat koppelen en vul de code in die er nu staat."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 รับคำขอแล้วแต่ตอบช้าไป เปิด Pair Device ใหม่ที่ PS5 แล้วกรอกรหัสใหม่ที่ขึ้นมา"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 isteği duydu ama geç yanıtladı. Cihazı Eşleştir ekranına PS5'te yeniden girip yeni kodu yazın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 نے درخواست سن لی مگر جواب دیر سے آیا۔ کنسول میں Pair Device پھر کھولیں اور جو نیا کوڈ دکھے وہ لکھیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 có nhận được lời gọi nhưng phản hồi quá trễ. Trên PS5, mở lại mục Ghép nối thiết bị rồi gõ mã mới hiện ra."
+          }
+        }
+      }
+    },
+    "console.pair.error.localNetworkBlocked": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحجب macOS عن Nino الشبكة المحلية. اسمح له عبر: إعدادات النظام › الخصوصية والأمن › الشبكة المحلية. بعدها اكتب رمزا جديدا."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS, Nino-কে local network-এ ঢুকতে দিচ্ছে না। Mac-এ System Settings › Privacy & Security › Local Network খুলে Nino-কে access দিন। এরপর নতুন একটি code টাইপ করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS is keeping Nino off the local network. Grant access here: System Settings › Privacy & Security › Local Network. After that, type a fresh code."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinaharangan ng macOS ang Nino sa lokal na network. Magbigay ng access dito: System Settings › Privacy & Security › Local Network. Pagkatapos, mag-type ng panibagong code."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS ने Nino को local network से रोक रखा है। इजाज़त यहाँ दें: System Settings › Privacy & Security › Local Network। फिर ताज़ा code भरें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS menghalangi Nino mengakses jaringan lokal. Beri izin di sini: Pengaturan Sistem › Privasi & Keamanan › Jaringan Lokal. Setelah itu, ketik kode baru."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS menghalang Nino daripada rangkaian setempat. Benarkan akses di sini: Tetapan Sistem › Privasi & Keselamatan › Rangkaian Setempat. Selepas itu, taip kod baharu."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS houdt Nino weg van het lokale netwerk. Sta het hier toe: Systeeminstellingen › Privacy en beveiliging › Lokaal netwerk. Typ daarna een verse code."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS กัน Nino ไว้จากเครือข่ายภายใน เปิดสิทธิ์ได้ที่ การตั้งค่าระบบ › ความเป็นส่วนตัวและความปลอดภัย › เครือข่ายเฉพาะที่ จากนั้นพิมพ์รหัสใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS, Nino'yu yerel ağdan uzak tutuyor. Sistem Ayarları › Gizlilik ve Güvenlik › Yerel Ağ bölümünde Nino'yu açın, ardından taze bir kod yazın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS، Nino کو مقامی نیٹ ورک تک جانے نہیں دے رہا۔ یہاں اجازت دیں: System Settings › Privacy & Security › Local Network۔ اس کے بعد نیا کوڈ لکھیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS đang chặn Nino khỏi mạng nội bộ. Cấp quyền tại: Cài đặt hệ thống › Quyền riêng tư & Bảo mật › Mạng cục bộ. Xong thì gõ một mã mới."
+          }
+        }
+      }
+    },
+    "console.pair.error.noAccount": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحتاج Nino إلى حساب PSN الثاني قبل الاقتران. أضفه بتسجيل دخولك إلى PlayStation Network."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pair করার আগে Nino-তে বাড়তি একটা PSN account চাই। PlayStation Network-এ লগ ইন সেরে সেটা জুড়ুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino needs the second PSN account before it can pair. Use the PlayStation Network sign-in to add it."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kailangan muna ng Nino ang ikalawang PSN account bago mag-pair. Idagdag ito sa pamamagitan ng sign-in ng PlayStation Network."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pair करने से पहले Nino को दूसरा PSN खाता चाहिए। PlayStation Network लॉगिन से उसे जोड़ें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino memerlukan akun PSN kedua sebelum bisa memasangkan. Tambahkan lewat login PlayStation Network."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino perlukan akaun PSN kedua sebelum boleh bergandingan. Tambahkannya melalui log masuk PlayStation Network."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Om te koppelen heeft Nino het tweede PSN-account nodig. Voeg het toe via de aanmelding bij PlayStation Network."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino ต้องการบัญชี PSN ที่สองก่อนจับคู่ เพิ่มบัญชีด้วยการลงชื่อ PlayStation Network"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino'nun önce ikinci PSN hesabınıza ihtiyacı var. PlayStation Network'te oturum açın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جوڑنے سے پہلے Nino کو دوسرا PSN اکاؤنٹ درکار ہے۔ PlayStation Network سائن ان سے اسے شامل کریں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muốn ghép nối, Nino cần thêm tài khoản PSN số hai. Thêm nó qua nút đăng nhập vào PlayStation Network."
+          }
+        }
+      }
+    },
+    "console.pair.error.noAddress": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يعثر Nino على PS5. تأكد أن الجهاز يعمل وأنه على الشبكة ذاتها التي يتصل بها Mac، أو أدخل عنوانه يدويا."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino কোথাও PS5 পেল না। console অন আছে কি না আর এই Mac-এর network-এই আছে কি না পরখ করুন, নয়তো address-টা হাতে লিখে দিন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino didn't find a PS5. Check that the console is powered on and is on the network this Mac uses, or enter its address by hand."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walang PS5 na nahanap ang Nino. Siguraduhing bukas ang console at kapareho ng network nitong Mac, o i-type mo mismo ang address nito."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino को कोई PS5 मिला नहीं। कंसोल ऑन हो और ठीक उसी network पर हो जिस पर यह Mac है, यह परखें, या उसका पता हाथ से भरें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino tidak menemukan PS5. Pastikan konsol menyala dan memakai jaringan yang juga dipakai Mac ini, atau isi alamatnya secara manual."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino tidak menemui PS5. Pastikan konsol hidup dan menyertai rangkaian yang turut digunakan oleh Mac ini, atau taip alamatnya secara manual."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino vond geen PS5. Kijk of de console aanstaat en met hetzelfde netwerk verbonden is als deze Mac, of vul het adres zelf in."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino หา PS5 ไม่เจอ ตรวจว่าคอนโซลเปิดอยู่และใช้เน็ตวงเดียวกับ Mac นี้ หรือกรอกที่อยู่เอง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino bir PS5 bulamadı. Konsol açık mı ve bu Mac'in ağına bağlı mı, kontrol edin. Adresi elle de girebilirsiniz."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino کو PS5 نظر نہیں آیا۔ دیکھیں کہ کنسول آن ہے، نیز اسی نیٹ ورک سے جڑا ہے جس سے یہ Mac جڑا ہے؛ ورنہ پتا خود لکھ دیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino chưa thấy PS5 nào. Xem máy đã bật và dùng chung mạng với Mac này chưa, hoặc tự gõ địa chỉ PS5."
+          }
+        }
+      }
+    },
+    "console.pair.error.noAnswer": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 لا يرد. تأكد أنه مستيقظ تماما لا في وضع الراحة، ومن أنه موصول بنفس شبكة جهاز Mac، وأن خاصية Remote Play مفعلة. ثم حاول مجددا."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 কোনো জবাব দিচ্ছে না। console বিশ্রামে নয়, পুরো জেগে আছে, এই Mac-এর network-এই আছে, আর Remote Play অন আছে কি না পরখ করুন। এরপর ফের করে দেখুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No reply from the PS5. Make sure it's fully awake rather than resting, is on the network this Mac uses, and has Remote Play enabled. Then retry."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi sumasagot ang PS5. Siguraduhing ganap itong gising (wala sa rest mode), kapareho ng network nitong Mac, at bukas ang Remote Play. Pagkatapos, subukang muli."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 ने उत्तर नहीं दिया। वह आराम वाली हालत में न हो, बल्कि पूरा जगा हो, ठीक उसी network पर हो जिस पर यह Mac है, और उस पर Remote Play ऑन हो। इसके बाद दोबारा आज़माएँ।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tak ada balasan dari PS5. Pastikan konsol sudah benar-benar bangun (tidak sedang beristirahat), memakai jaringan yang juga dipakai Mac ini, serta Remote Play-nya menyala. Setelah itu, coba lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiada balasan daripada PS5. Pastikan ia benar-benar terjaga (bukan berehat), menyertai rangkaian yang turut digunakan oleh Mac ini, serta Remote Play telah didayakan. Kemudian cuba semula."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen reactie van de PS5. Zorg dat hij echt wakker is (niet in rustmodus), met hetzelfde netwerk verbonden is als deze Mac en Remote Play heeft ingeschakeld. Probeer het daarna opnieuw."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 ไม่ตอบกลับ ดูให้แน่ใจว่าเครื่องตื่นเต็มที่ ไม่ใช่พักเครื่อง ใช้เน็ตวงเดียวกับ Mac นี้ และเปิดใช้ Remote Play ไว้ จากนั้นลองอีกที"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5'ten yanıt gelmedi. Konsol dinlenmede değil tam açık olmalı, bu Mac'in ağına bağlı olmalı ve Remote Play etkin olmalı. Sonra bir kez daha deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 کی طرف سے جواب نہیں آیا۔ کنسول آرام موڈ میں نہ ہو بلکہ پوری طرح جاگا ہوا ہو، اسی نیٹ ورک سے جڑا ہو جس سے یہ Mac جڑا ہے، اور اس میں Remote Play چالو ہو۔ پھر دوبارہ آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 không trả lời. Hãy chắc máy đã thức hẳn chứ không đang nghỉ, dùng chung mạng với Mac này và đã bật Remote Play. Sau đó thử lại."
+          }
+        }
+      }
+    },
+    "console.pair.error.refused": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رفض PS5 الرمز. أعد فتح «إقران الجهاز» على PS5 واكتب الرمز الجديد الذي يظهر."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ওই code মানা হয়নি। PS5-এ Pair Device ফের খুলে তার নতুন code টাইপ করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That code wasn't accepted. Reopen Pair Device on your PS5 and type its new code."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi tinanggap ang code na iyon. Sa PS5, muling pumasok sa Pair Device at itipa ang panibagong code doon."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह code नहीं माना गया। Pair Device को PS5 में फिर खोलें और उसका ताज़ा code भरें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 menolak kode tersebut. Buka lagi Pasangkan Perangkat di PS5 dan ketik kode baru yang ditampilkannya."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 menolak kod itu. Buka semula Pair Device pada PS5 dan taipkan kod baharu yang dipaparkan."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die code is niet geaccepteerd. Ga op je PS5 weer naar Apparaat koppelen en vul de code in die er nu staat."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รหัสนั้นไม่ผ่าน เปิด Pair Device ใหม่ที่ PS5 แล้วกรอกรหัสใหม่ที่ขึ้นมา"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 bu kodu geri çevirdi. Cihazı Eşleştir ekranına PS5'te yeniden girip yeni kodu yazın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "یہ کوڈ قبول نہیں ہوا۔ کنسول میں Pair Device پھر کھولیں اور جو نیا کوڈ دکھے وہ لکھیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã đó bị từ chối. Trên PS5, mở lại mục Ghép nối thiết bị rồi gõ mã mới hiện ra."
+          }
+        }
+      }
+    },
+    "console.pair.error.unsupportedVersion": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "برنامج نظام PS5 هذا لا يدعمه Nino بعد. ثبت أحدث إصدار من Nino ثم أعد المحاولة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5-এর এই system software Nino এখনো চেনে না। সবচেয়ে নতুন Nino নিয়ে ফের করে দেখুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This PS5 system software isn't supported by Nino yet. Get the latest Nino, then retry."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wala pang suporta ang Nino para sa system software ng PS5 na ito. Mag-update sa pinakahuling Nino, tapos subukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PS5 का यह system software Nino में अभी नहीं चलता। Nino का ताज़ा संस्करण लें, उसके बाद दोबारा आज़माएँ।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino belum mendukung perangkat lunak sistem PS5 ini. Perbarui Nino ke versi terbaru, lalu coba lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino belum menyokong perisian sistem PS5 ini. Dapatkan Nino terkini, kemudian cuba semula."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino ondersteunt deze systeemsoftware van de PS5 nog niet. Installeer de nieuwste Nino en probeer het nog eens."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino ยังใช้กับเฟิร์มแวร์ PS5 รุ่นนี้ไม่ได้ อัปเดต Nino เป็นรุ่นล่าสุด แล้วลองอีกที"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu PS5 sistem yazılımı Nino'da henüz desteklenmiyor. Nino'nun son sürümünü kurup bir daha deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اس PS5 کا سسٹم سافٹ ویئر ابھی Nino کے ساتھ نہیں چلتا۔ Nino کا تازہ ورژن لیں، پھر دوبارہ آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino chưa hỗ trợ phiên bản phần mềm này của PS5. Cập nhật Nino lên bản mới nhất rồi thử lại."
+          }
+        }
+      }
+    },
+    "console.pair.error.wrongCode": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هذا الرمز خاطئ أو منتهي الصلاحية. افتح «إقران الجهاز» مجددا على PS5 واكتب الرمز الجديد."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ওই code ভুল, নয়তো সেটা আর চালু নেই। PS5-এ Pair Device ফের খুলে তার নতুন code টাইপ করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That code is incorrect or has expired. Reopen Pair Device on your PS5 and type its new code."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maling code, o lipas na. Sa PS5, muling pumasok sa Pair Device at itipa ang panibagong code doon."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह code सही नहीं, या इसकी मियाद बीत चुकी। Pair Device को PS5 में फिर खोलें और उसका ताज़ा code भरें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kode itu keliru atau masa berlakunya habis. Buka lagi Pasangkan Perangkat di PS5, lalu ketik kode barunya."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod itu salah atau sudah luput. Buka semula Pair Device pada PS5 anda dan taip kod barunya."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die code klopt niet of is niet meer geldig. Ga op je PS5 weer naar Apparaat koppelen en vul de code in die er nu staat."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รหัสนั้นผิดหรือหมดอายุ เปิด Pair Device ใหม่ที่ PS5 แล้วกรอกรหัสใหม่ที่ขึ้นมา"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu kod hatalı ya da geçersiz hâle gelmiş. Cihazı Eşleştir ekranına PS5'te yeniden girip yeni kodu yazın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "یہ کوڈ درست نہیں یا پرانا ہو چکا۔ کنسول میں Pair Device پھر کھولیں اور جو نیا کوڈ دکھے وہ لکھیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã đó không đúng hoặc đã quá hạn. Trên PS5, mở lại mục Ghép nối thiết bị rồi gõ mã mới hiện ra."
+          }
+        }
+      }
+    },
+    "console.psn.cancel": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إلغاء"
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "বাতিল"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kanselahin"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "रद्द करें"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batal"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batal"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuleer"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยกเลิก"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vazgeç"
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "منسوخ کریں"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hủy"
+          }
+        }
+      }
+    },
+    "console.psn.error.incomplete": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تسجيل الدخول لم يتم. حاول مرة أخرى من فضلك."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "লগ ইন পুরো হয়নি। দয়া করে আরেকবার করে দেখুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in didn't finish. Please try once more."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naudlot ang pag-log in. Pakisubukan ulit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लॉगिन अधूरा रह गया। एक दफ़ा और आज़माएँ।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proses login belum selesai. Silakan coba sekali lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proses log masuk belum selesai. Cuba sekali lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het aanmelden is niet afgerond. Probeer het nog een keer."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การลงชื่อไม่เสร็จสิ้น ลองอีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giriş tamamlanamadı. Lütfen bir kez daha deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سائن ان پورا نہ ہو سکا۔ ایک بار اور آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng nhập chưa xong. Hãy thử thêm lần nữa."
+          }
+        }
+      }
+    },
+    "console.psn.error.manualInvalid": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "معرف الحساب هذا لا يبدو صحيحا. يجب أن يتكون من 12 حرفا بترميز base64، مثل AbCdEfGhIjk=."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "account ID-টা ঠিক লাগছে না। এতে ১২টা base64 অক্ষর থাকার কথা, যেমন AbCdEfGhIjk=।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That account ID doesn't look right. It should be 12 base64 characters, like AbCdEfGhIjk=."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mukhang mali ang account ID na iyan. Dapat 12 base64 na karakter ito, gaya ng AbCdEfGhIjk=."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह account ID सही नहीं लगती। इसमें 12 base64 अक्षर हों, मसलन AbCdEfGhIjk=।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ini tidak tampak seperti ID akun yang valid. ID terdiri dari 12 karakter base64 (misalnya AbCdEfGhIjk=)."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID akaun itu nampaknya tidak betul. Ia sepatutnya 12 aksara base64, seperti AbCdEfGhIjk=."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die account-ID lijkt niet te kloppen. Hij hoort uit 12 base64-tekens te bestaan, zoals AbCdEfGhIjk=."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID ของบัญชีดูผิดรูปแบบ ควรเป็นอักขระ base64 ยาว 12 ตัว เช่น AbCdEfGhIjk="
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu kimlik geçerli görünmüyor. Hesap kimliği base64 ile yazılmış 12 karakterdir (örnek: AbCdEfGhIjk=)."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "یہ اکاؤنٹ ID ٹھیک نہیں لگتی۔ اس میں base64 کے 12 حروف ہونے چاہییں، مثلاً AbCdEfGhIjk=۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID tài khoản đó trông không đúng. Cần đúng 12 ký tự dạng base64, chẳng hạn AbCdEfGhIjk=."
+          }
+        }
+      }
+    },
+    "console.psn.error.network": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يتمكن Nino من بلوغ صفحة الدخول في PlayStation. تأكد أنك متصل بالإنترنت، ثم أعد تسجيل الدخول."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino, PlayStation-এর লগ ইন পাতা অবধি যেতে পারল না। নেট কানেকশন মিলিয়ে দেখে ফের লগ ইন করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino couldn't get through to the PlayStation sign-in page. Make sure you're online, then sign in once more."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi makakonekta ang Nino sa login page ng PlayStation. Siguraduhing online ka, at mag-log in muli."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino, PlayStation वाला लॉगिन पन्ना खोल न सका। नेट चालू है, यह जाँचकर एक दफ़ा और लॉगिन करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino tidak bisa menjangkau halaman login PlayStation. Pastikan Anda online, lalu login sekali lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino tidak dapat mencapai halaman log masuk PlayStation. Pastikan anda dalam talian, kemudian log masuk sekali lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino kreeg geen verbinding met de aanmeldpagina van PlayStation. Kijk of je online bent en meld je opnieuw aan."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino ติดต่อหน้าลงชื่อของ PlayStation ไม่ได้ ตรวจว่าออนไลน์อยู่ แล้วลงชื่ออีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino, PlayStation giriş sayfasına bağlanamadı. Çevrimiçi olduğunuzdan emin olup bir kez daha oturum açın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino، PlayStation کے سائن ان صفحے سے رابطہ نہ کر سکا۔ انٹرنیٹ چلتا ہو تو ایک بار اور سائن ان ہوں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino không kết nối tới trang đăng nhập PlayStation được. Kiểm tra mạng rồi thử đăng nhập lần nữa."
+          }
+        }
+      }
+    },
+    "console.psn.error.pageFailed": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذر فتح صفحة الدخول في PlayStation. تأكد أنك متصل بالإنترنت، ثم أعد تسجيل الدخول."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation-এর লগ ইন পাতা খুলল না। নেট কানেকশন মিলিয়ে দেখে ফের লগ ইন করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The PlayStation sign-in page didn't open. Make sure you're online, then sign in once more."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi nagbukas ang login page ng PlayStation. Siguraduhing online ka, at mag-log in muli."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation वाला लॉगिन पन्ना खुल न सका। नेट चालू है, यह जाँचकर एक दफ़ा और लॉगिन करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman login PlayStation gagal terbuka. Pastikan Anda online, lalu login sekali lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman log masuk PlayStation tidak terbuka. Pastikan anda dalam talian, kemudian log masuk sekali lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De aanmeldpagina van PlayStation ging niet open. Kijk of je online bent en meld je opnieuw aan."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หน้าลงชื่อของ PlayStation ไม่เปิด ตรวจว่าออนไลน์อยู่ แล้วลงชื่ออีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation giriş sayfası yüklenmedi. Çevrimiçi olduğunuzdan emin olup bir kez daha oturum açın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation کا لاگ ان صفحہ نہیں کھلا۔ انٹرنیٹ چلتا ہو تو ایک بار اور سائن ان ہوں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trang đăng nhập PlayStation không mở ra. Kiểm tra mạng rồi thử đăng nhập lần nữa."
+          }
+        }
+      }
+    },
+    "console.psn.error.rejected": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "توقف تسجيل الدخول إلى PlayStation في منتصفه. انتظر لحظة، ثم اضغط زر تسجيل الدخول مرة أخرى باستخدام حسابك الثاني."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation-এ লগ ইন মাঝপথে থেমে গেল। খানিক সবুর করে বাড়তি account-টি দিয়ে ফের Sign in টিপুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The PlayStation sign-in stopped halfway. Wait a moment, then tap Sign in once more using your second account."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naudlot sa gitna ang pag-log in sa PlayStation. Maghintay nang sandali, at i-tap muli ang Sign in, sa pangalawa mong account."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation लॉगिन आधे में थम गया। ज़रा ठहरें, फिर दूसरे खाते के साथ Sign in एक दफ़ा और दबाएँ।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Login PlayStation terhenti di tengah jalan. Tunggu sebentar, lalu ketuk Masuk lagi memakai akun kedua Anda."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sony tidak menyelesaikan daftar masuk. Tunggu seminit, tekan Daftar masuk sekali lagi dan gunakan akaun kedua."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het aanmelden bij PlayStation is halverwege gestopt. Wacht even en tik dan nogmaals op Aanmelden, nu met het tweede PSN-account."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การลงชื่อ PlayStation หยุดกลางทาง รอสักครู่ แล้วแตะ Sign in อีกรอบโดยใช้บัญชีที่สองของคุณ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sony girişi bitirmedi. Bir dakika bekleyin, Giriş Yap'a yeniden basın ve ikinci hesabı kullanın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation سائن ان آدھے راستے میں رک گیا۔ ذرا ٹھہریں، پھر دوسرا اکاؤنٹ استعمال کرتے ہوئے ایک بار اور Sign in پر ٹیپ کریں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng nhập PlayStation bị ngắt giữa chừng. Đợi một lát, rồi chạm Đăng nhập lần nữa với tài khoản phụ."
+          }
+        }
+      }
+    },
+    "console.psn.error.server": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وقع خطأ في صفحة الدخول إلى PlayStation. انتظر قليلا ثم أعد تسجيل الدخول."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation-এর লগ ইন পাতায় কিছু একটা গড়বড় হয়েছে। খানিক পরে ফের লগ ইন করুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something went wrong on the PlayStation sign-in page. Wait a little, then sign in once more."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nagka-error sa login page ng PlayStation. Maghintay nang kaunti, at mag-log in muli."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation वाले लॉगिन पन्ने पर कुछ बिगड़ गया। ज़रा ठहरें, फिर एक दफ़ा और लॉगिन करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ada masalah di halaman login PlayStation. Tunggu sebentar, lalu login sekali lagi."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berlaku masalah pada halaman log masuk PlayStation. Tunggu sebentar, kemudian log masuk sekali lagi."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Op de aanmeldpagina van PlayStation liep iets fout. Wacht even en meld je opnieuw aan."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หน้าลงชื่อของ PlayStation มีปัญหา รอสักพัก แล้วลงชื่ออีกครั้ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation giriş sayfasında bir hata oluştu. Biraz bekleyip bir kez daha oturum açın."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation کے سائن ان صفحے پر کوئی خرابی ہوئی۔ تھوڑا انتظار کریں، پھر ایک بار اور سائن ان ہوں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trang đăng nhập PlayStation gặp sự cố. Đợi chút rồi thử đăng nhập lần nữa."
+          }
+        }
+      }
+    },
+    "console.psn.error.tooManyAttempts": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تجاوزت عدد محاولات الدخول المسموح. أعد المحاولة بعد نحو 15 دقيقة."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "অনেকবার লগ ইন করতে গিয়ে আটকে গেছেন। মোটামুটি পনেরো মিনিট পেরোলে আরেকবার করে দেখুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Too many attempts to sign in. Try once more after roughly 15 minutes."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sobrang dami ng pagtatangkang mag-log in. Subukang muli makalipas ang mga 15 minuto."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लॉगिन के प्रयास हद से पार हो गए। करीब पंद्रह मिनट ठहरकर एक दफ़ा और आज़माएँ।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terlalu banyak percobaan login. Coba lagi setelah kira-kira 15 menit."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Percubaan log masuk terlalu banyak. Cuba sekali lagi selepas lebih kurang 15 minit."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te veel aanmeldpogingen. Probeer het over ongeveer 15 minuten nog eens."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "พยายามลงชื่อหลายครั้งเกินไป ลองใหม่ในอีกราว 15 นาที"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şimdilik çok fazla oturum açma denemesi yapıldı. Yaklaşık 15 dakika geçince yeniden deneyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سائن ان کی کوششیں حد سے بڑھ گئیں۔ لگ بھگ 15 منٹ ٹھہر کر پھر آزمائیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã thử đăng nhập quá nhiều lần. Khoảng 15 phút nữa hãy thử lại."
+          }
+        }
+      }
+    },
+    "console.psn.error.unreadable": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لم يفهم Nino رد PlayStation. سجل الدخول مجددا، وإن تكرر الأمر فثبت أحدث إصدار من Nino."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation-এর জবাব Nino বুঝতে পারল না। ফের লগ ইন করুন, আর একই সমস্যা ফিরে এলে সবচেয়ে নতুন Nino নিন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino didn't understand the reply from PlayStation. Sign in once more; if it happens again, get the latest Nino."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hindi naintindihan ng Nino ang sagot mula sa PlayStation. Mag-log in muli; kapag naulit, mag-update sa pinakahuling Nino."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PlayStation का जवाब Nino समझ न सका। एक दफ़ा और लॉगिन करें; ऐसा फिर हुआ, तो Nino का ताज़ा संस्करण लें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino tidak memahami balasan dari PlayStation. Login sekali lagi; jika terulang, perbarui Nino ke versi terbaru."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino tidak memahami balasan daripada PlayStation. Log masuk sekali lagi; jika berulang, dapatkan Nino terkini."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino begreep het antwoord van PlayStation niet. Meld je opnieuw aan; gebeurt het weer, installeer dan de nieuwste Nino."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino ไม่เข้าใจคำตอบจาก PlayStation ลงชื่ออีกครั้ง ถ้ายังเป็นอีก ให้อัปเดต Nino เป็นรุ่นล่าสุด"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino, Sony'nin cevabını anlayamadı. Yeniden giriş yapın; tekrarlarsa Nino'yu güncelleyin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino کو PlayStation کا جواب سمجھ نہیں آیا۔ ایک بار اور سائن ان ہوں؛ دوبارہ ایسا ہو تو Nino کا تازہ ورژن لیں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nino không hiểu phản hồi từ PlayStation. Thử đăng nhập lần nữa; nếu lỗi lặp lại, nâng Nino lên bản mới nhất."
+          }
+        }
+      }
+    },
+    "console.psn.error.windowClosed": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أُغلقت النافذة قبل اكتمال تسجيل الدخول. اضغط «تسجيل الدخول» مرة أخرى وأكمل في النافذة التي تُفتح."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "লগ ইন সারার আগে উইন্ডোটা আপনি বন্ধ করে ফেলেছেন। Sign in টিপে গোড়া থেকে ধরুন, আর নতুন উইন্ডোয় কাজটা সেরে ফেলুন।"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You closed the window before signing in finished. Tap Sign in to start over, and complete it in the new window."
+          }
+        },
+        "fil": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naisara mo ang window bago matapos mag-log in. I-tap ang Sign in para magsimula ulit, at tapusin ito sa bagong window."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लॉगिन बीच में था, तभी आपने खिड़की बंद कर डाली। शुरू से करने को Sign in दबाएँ, और नई खिड़की में लॉगिन ख़त्म करें।"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anda menutup jendela sebelum login selesai. Ketuk Masuk untuk memulai dari awal, lalu selesaikan di jendela yang baru."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tetingkap ditutup sebelum daftar masuk selesai. Tekan Daftar masuk sekali lagi dan selesaikannya dalam tetingkap yang dibuka."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je sloot het venster voordat het aanmelden klaar was. Tik op Aanmelden om opnieuw te beginnen en rond het af in het nieuwe venster."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คุณปิดหน้าต่างก่อนลงชื่อเสร็จ แตะ Sign in เพื่อเริ่มใหม่ และทำให้เสร็จในหน้าต่างใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giriş bitmeden pencere kapatıldı. Giriş Yap'a yeniden basıp girişi açılan pencerede bitirin."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سائن ان پورا ہونے سے قبل آپ نے ونڈو بند کر دی۔ نئے سرے سے آغاز کے لیے Sign in پر ٹیپ کریں اور نئی ونڈو میں عمل پورا کریں۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã đóng cửa sổ khi đăng nhập chưa xong. Chạm Đăng nhập để làm lại, rồi hoàn tất trong cửa sổ mới."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

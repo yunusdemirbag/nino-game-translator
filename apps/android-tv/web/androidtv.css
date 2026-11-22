@@ -1,0 +1,61 @@
+/* SPDX-License-Identifier: AGPL-3.0-only */
+/* Copyright (C) 2026 Nino contributors */
+/* Android TV'ye özgü görünümler (androidtv.js). Ortak sayfanın ölçüleri 1920×1080'dir. */
+
+/* Katman: TV'nin kendi HDMI ekranının üstü. Kumanda buraya gelmez; yalnız altyazı, ekran çevirisi ve rozet kalır. */
+body.mode-overlay #lobby, body.mode-overlay #status, body.mode-overlay #no-signal,
+body.mode-overlay #demo-note, body.mode-overlay #source-note { display: none !important; }
+/* HDMI görüntüsü ayrı bir düzlemde: arka plan bulanıklığı bir şey göstermez, zayıf TV'de yalnız yorar. */
+body.mode-overlay * { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+
+#nino-offline { position: absolute; top: 32px; right: 32px; width: 14px; height: 14px; border-radius: 50%;
+  background: #f28b82; opacity: 0.8; z-index: 50; }
+#nino-offline.off { display: none; }
+
+/* Ana ekran ve izin ekranı: sayfanın geri kalanı görünmez. */
+body.native-welcome { background: #03060d !important; }
+body.native-welcome > *:not(#nino-welcome) { display: none !important; }
+
+#nino-welcome { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100;
+  font-family: -apple-system, "SF Pro Display", Roboto, "Helvetica Neue", Arial, sans-serif; }
+/* Işıklar filtre yerine yumuşak geçişle çizilir: zayıf TV'lerde (TCL, Vestel) büyük blur kare atlatıyordu. */
+#nino-welcome .glow { position: absolute; border-radius: 50%; opacity: 0.55; will-change: transform; }
+#nino-welcome .glow.blue { width: 1100px; height: 1100px; left: -320px; top: -420px;
+  background: radial-gradient(closest-side, #1d4ed8 0%, rgba(29, 78, 216, 0.55) 45%, rgba(29, 78, 216, 0) 100%);
+  animation: nino-drift 14s ease-in-out infinite alternate; }
+#nino-welcome .glow.red { width: 900px; height: 900px; right: -280px; bottom: -380px; opacity: 0.32;
+  background: radial-gradient(closest-side, #c8102e 0%, rgba(200, 16, 46, 0.55) 45%, rgba(200, 16, 46, 0) 100%);
+  animation: nino-drift 18s ease-in-out infinite alternate-reverse; }
+@keyframes nino-drift { from { transform: none; } to { transform: translate(60px, 40px) scale(1.08); } }
+
+#nino-welcome .brand { display: flex; flex-direction: column; align-items: center; z-index: 1; }
+#nino-welcome .logo { width: 200px; height: 200px; border-radius: 46px; box-shadow: 0 30px 90px rgba(29, 78, 216, 0.55); }
+#nino-welcome .name { margin-top: 34px; font-size: 92px; font-weight: 700; letter-spacing: -2px; }
+#nino-welcome .tag { margin-top: 4px; font-size: 22px; font-weight: 600; letter-spacing: 9px; color: rgba(255, 255, 255, 0.55); }
+#nino-welcome .status { margin-top: 44px; display: flex; align-items: center; font-size: 28px; color: rgba(255, 255, 255, 0.8); z-index: 1; }
+#nino-welcome .status i { margin-right: 14px; width: 14px; height: 14px; border-radius: 50%; background: #f5a524; box-shadow: 0 0 18px #f5a524; }
+#nino-welcome .status.on i { background: #30d158; box-shadow: 0 0 18px #30d158; }
+#nino-welcome .card { margin-top: 64px; width: 1180px; box-sizing: border-box; padding: 44px 56px; border-radius: 36px;
+  z-index: 1; text-align: center; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.45); }
+#nino-welcome h1 { margin: 0; font-size: 54px; font-weight: 700; letter-spacing: -0.5px; }
+#nino-welcome .card p { margin: 18px 0 0; font-size: 30px; line-height: 1.45; color: rgba(255, 255, 255, 0.72); }
+#nino-welcome .card .hint { font-size: 22px; color: rgba(255, 255, 255, 0.5); margin-top: 20px; }
+#nino-welcome .choices { display: flex; margin-top: 34px; justify-content: center; }
+#nino-welcome .choice { font-size: 28px; font-weight: 600; padding: 18px 34px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1); border: 3px solid transparent; }
+#nino-welcome .choice + .choice { margin-left: 22px; }
+#nino-welcome .choice.on { background: #fff; color: #03060d; border-color: #ffd166; }
+#nino-welcome .foot { position: absolute; bottom: 54px; left: 0; right: 0; text-align: center; font-size: 22px;
+  color: rgba(255, 255, 255, 0.38); z-index: 1; }
+
+/* İzin ekranında daha çok yazı var: 1080 piksele sığsın diye logo ve boşluklar küçülür. */
+#nino-welcome.asking .logo { width: 120px; height: 120px; border-radius: 28px; }
+#nino-welcome.asking .name { margin-top: 18px; font-size: 60px; }
+#nino-welcome.asking .tag { display: none; }
+#nino-welcome.asking .status { margin-top: 20px; }
+#nino-welcome.asking .card { margin-top: 30px; padding: 34px 48px; }
+#nino-welcome.asking h1 { font-size: 46px; color: #ffd166; }
+#nino-welcome.asking .card p { font-size: 27px; margin-top: 14px; }
+#nino-welcome.asking .card .hint { font-size: 21px; }

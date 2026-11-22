@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Nino.Core.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\glossary-en-tr.json" LogicalName="glossary-en-tr.json" />
+    <EmbeddedResource Include="Resources\ai-models.json" LogicalName="ai-models.json" />
+    <EmbeddedResource Include="Link\Resources\obs.html" LogicalName="link/obs.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Arayüz metinleri (dil başına bir dosya) ve tasarım belirteçleri. -->
+    <EmbeddedResource Include="Text\Catalog\*.json" LogicalName="text/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="Design\tokens.json" LogicalName="design/tokens.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SSH.NET" Version="2026.0.0" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,2 @@
+# Ekran görüntüsü testlerinin ürettiği dosyalar (HomeSnapshotTests); depoya girmez.
+*.png

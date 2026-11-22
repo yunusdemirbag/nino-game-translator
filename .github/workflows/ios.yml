@@ -1,0 +1,94 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# iPhone/iPad uygulaması (apps/ios): simülatör için derleme ve birim testleri.
+# İmzalama, TestFlight, App Store yok.
+name: ios
+
+on:
+  push:
+    paths:
+      - "apps/ios/**"
+      - "core/**"
+      - "apps/tv-web/**"
+      - "NOTICE"
+      - ".github/workflows/ios.yml"
+  pull_request:
+    paths:
+      - "apps/ios/**"
+      - "core/**"
+      - "apps/tv-web/**"
+      - "NOTICE"
+      - ".github/workflows/ios.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ios:
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode sürümü
+        run: xcodebuild -version
+      - name: Araçlar (xcodegen, protoc, pkg-config)
+        run: |
+          command -v xcodegen  || brew install xcodegen
+          command -v protoc    || brew install protobuf
+          command -v pkg-config || brew install pkgconf
+          command -v cmake     || brew install cmake
+
+      # core-mac.yml ile aynı önbellek anahtarı (çerçeve dört dilimi birlikte taşır).
+      # restore/save ayrı: sonraki adımlar başarısız olsa da derlenen çerçeve önbelleğe yazılır.
+      - name: Remote Play çerçevesi önbelleği
+        id: cremoteplay
+        uses: actions/cache/restore@v4
+        with:
+          path: core/NinoRemotePlay/Frameworks/CRemotePlay.xcframework
+          key: cremoteplay-xcf-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('core/NinoRemotePlay/scripts/fetch-deps.sh', 'core/NinoRemotePlay/scripts/build-deps.sh', 'core/NinoRemotePlay/scripts/build-c.sh') }}
+      - name: Remote Play C çekirdeğini derle
+        if: steps.cremoteplay.outputs.cache-hit != 'true'
+        working-directory: core/NinoRemotePlay
+        run: |
+          ./scripts/fetch-deps.sh
+          ./scripts/build-deps.sh
+          ./scripts/build-c.sh
+      - name: Remote Play çerçevesini önbelleğe yaz
+        if: steps.cremoteplay.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: core/NinoRemotePlay/Frameworks/CRemotePlay.xcframework
+          key: ${{ steps.cremoteplay.outputs.cache-primary-key }}
+
+      - name: Xcode projesini üret
+        working-directory: apps/ios
+        run: ./scripts/generate.sh
+
+      # Kullanılabilir ilk iPhone simülatörü seçilir (cihaz adı sabit yazılmaz).
+      - name: Simülatör seç
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          data = json.load(sys.stdin)["devices"]
+          ios = sorted((k for k in data if "iOS" in k), reverse=True)
+          for runtime in ios:
+              for d in data[runtime]:
+                  if d["name"].startswith("iPhone"):
+                      print(d["udid"]); sys.exit(0)
+          sys.exit("iPhone simülatörü bulunamadı")
+          ')
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+
+      - name: Derle ve sına (simülatör, yerel imza; Anahtarlık testleri imza ister)
+        working-directory: apps/ios
+        run: |
+          xcodebuild -project Nino.xcodeproj -scheme Nino -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath "$RUNNER_TEMP/ios-dd" \
+            CODE_SIGN_IDENTITY="-" CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" \
+            test

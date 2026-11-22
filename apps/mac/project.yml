@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Nino contributors
+#
+# Yeni Mac uygulaması. Bütün mantık ve ekranlar NinoMacKit paketindedir;
+# bu hedef yalnız uygulamayı açar.
+#   cd apps/mac && xcodegen generate && xcodebuild -scheme Nino -configuration Debug build
+# Debug: com.ninotranslator.mac.dev ("Nino Dev" klasörü); kurulu Nino'ya dokunmaz.
+# Release: com.ninotranslator.mac (kullanıcının gerçek ayarları ve verisi).
+name: Nino
+options:
+  bundleIdPrefix: com.ninotranslator
+  deploymentTarget:
+    macOS: "14.0"
+  developmentLanguage: en
+settings:
+  configs:
+    Debug:
+      ONLY_ACTIVE_ARCH: YES
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "4.5.0"
+    CURRENT_PROJECT_VERSION: "32"
+    ENABLE_HARDENED_RUNTIME: YES
+    # Evrensel: Apple Silicon ve Intel (Remote Play çerçevesi iki mimariyi de taşır). Debug yalnız bu Mac'in mimarisi.
+    ARCHS: "arm64 x86_64"
+    ONLY_ACTIVE_ARCH: NO
+    CODE_SIGN_IDENTITY: "-"
+packages:
+  NinoMacKit:
+    path: NinoMacKit
+  # Güncelleme (guncelleme-admin.md §2). Yalnız GitHub/DMG uygulamasına girer; NinoMacKit Sparkle'sız kalır.
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    exactVersion: 2.10.1
+targets:
+  Nino:
+    type: application
+    platform: macOS
+    sources:
+      - App
+    dependencies:
+      - package: NinoMacKit
+      - package: Sparkle
+      # Hata ayıklama kaydı aracı: Nino.app/Contents/MacOS/nino-debug (uygulamayla aynı kimlikle imzalı).
+      - target: nino-debug
+        embed: true
+        codeSign: true
+        copy:
+          destination: executables
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Nino
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.utilities
+        LSMinimumSystemVersion: "14.0"
+        NSLocalNetworkUsageDescription: Nino looks for your console and TV on this network so it can show translated subtitles on the TV.
+        NSBonjourServices: [_nino._tcp]
+        NSCameraUsageDescription: A capture card shows up as a camera. Nino reads the game image from it to find subtitles.
+        NSMicrophoneUsageDescription: A capture card also carries the game audio, which Nino passes through to your speakers.
+        NSHumanReadableCopyright: AGPL-3.0. Nino contributors.
+        # Sparkle: akış, Nino'nun EdDSA açık anahtarı, saatte bir otomatik denetim ve sessiz indirme.
+        # Deneme (.dev) yapısında güncelleyici hiç başlatılmaz (NinoAppSupport).
+        SUFeedURL: https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/appcast.xml
+        SUPublicEDKey: 6cKlWabXU8zDCWKxq0PyPS0Hzk26EdCJoAN9JzXYcXE=
+        SUEnableAutomaticChecks: true
+        SUAutomaticallyUpdate: true
+        SUAllowsAutomaticUpdates: true
+        SUScheduledCheckInterval: 3600
+    entitlements:
+      path: App/Nino.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+        com.apple.security.device.camera: true
+        com.apple.security.device.audio-input: true
+    settings:
+      base:
+        PRODUCT_NAME: Nino
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      configs:
+        Debug:
+          PRODUCT_BUNDLE_IDENTIFIER: com.ninotranslator.mac.dev
+          PRODUCT_NAME: Nino Dev
+        Release:
+          PRODUCT_BUNDLE_IDENTIFIER: com.ninotranslator.mac
+          # İmzalı, sertleştirilmiş yayın yapısı (Sparkle'ın gömülü yardımcıları da aynı kimlikle imzalanır).
+          # Derleme komutu kimliği CODE_SIGN_IDENTITY=<sertifika> ile verir; dağıtımda Developer ID ile yeniden imzalanır.
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: Apple Development
+          ENABLE_HARDENED_RUNTIME: YES
+          CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+          OTHER_CODE_SIGN_FLAGS: --timestamp
+  # Komut satırı aracı: debug-kayit/ klasöründen aralığı çıkarır (Sources/nino-debug, NinoDebugKit).
+  nino-debug:
+    type: tool
+    platform: macOS
+    sources:
+      - NinoMacKit/Sources/nino-debug
+    dependencies:
+      - package: NinoMacKit
+        product: NinoDebugKit
+    settings:
+      base:
+        PRODUCT_NAME: nino-debug
+        PRODUCT_BUNDLE_IDENTIFIER: com.ninotranslator.mac.nino-debug
+        SKIP_INSTALL: YES
+      configs:
+        Release:
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: Apple Development
+          ENABLE_HARDENED_RUNTIME: YES
+          OTHER_CODE_SIGN_FLAGS: --timestamp
+schemes:
+  Nino:
+    build:
+      targets:
+        Nino: all
+    run:
+      config: Debug
+    archive:
+      config: Release

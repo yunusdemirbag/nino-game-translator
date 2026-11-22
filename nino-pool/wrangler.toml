@@ -1,0 +1,96 @@
+# Nino ortak altyazı havuzu. Canlıya alma adımları README.md'de.
+name = "nino-pool"
+main = "src/worker.js"
+compatibility_date = "2026-11-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nino-pool"
+# Canlı veritabanı (Cloudflare D1, EEUR).
+database_id = "2d7c0031-0899-4f72-ad6a-802580e34369"
+migrations_dir = "migrations"
+
+# Cloudflare Workers AI (ücretsiz çeviri zincirinin anahtarsız yedeği, src/free.js).
+[ai]
+binding = "AI"
+
+[vars]
+# Günde kabul edilen en çok satır (18 Kasım 2026'dan beri Workers Paid: ayda 50 milyon yazma dahil).
+# Aşılınca sunucu 429 ile ertesi güne kadar beklemesini söyler; satırlar cihazlarda kuyrukta bekler, kaybolmaz.
+DAILY_LINE_BUDGET = "300000"
+# Bir kurulumun saatte gönderebileceği en çok parça.
+INSTALL_HOURLY_BATCHES = "60"
+# Nino yardımcısı (23 Kasım 2026, kullanıcı kararı: Gemini'ye sorulmaz, hep dolu oluyordu). Sıra: hazır cevap kütüphanesi
+# (assistant/hazir-cevaplar.json, model yok) → OpenRouter (OPENROUTER_API_KEY sırrı, çeviriyle aynı anahtar) → benzer hazır
+# cevap ya da kullanıcının dilinde "şu an yoğunum" cevabı. OpenRouter'ın gerçek maliyeti (cevaptaki usage.cost) sayılır;
+# günde en çok ASSISTANT_DAILY_USD dolar (çevirinin FREE_PAID_DAILY_USD sınırından ayrı). Bilgi tabanı önbellek işaretli.
+# gemini-2.5-flash-lite (0,10 $/M girdi, 0,40 $/M çıktı, önbellekten okuma 0,01 $/M): resim görür; ~19 bin token'lık istek
+# önbelleksiz ~0,0023 $ (canlıda ölçüldü), önbellekle ~0,0005 $ → 2 $ ≈ 900–4.000 soru.
+ASSISTANT_PROVIDER = "openrouter"
+ASSISTANT_MODEL = "google/gemini-2.5-flash-lite"
+ASSISTANT_DAILY_USD = "2"
+# Seçili model meşgulse (429) OpenRouter aynı istekte bunlara geçer (resim görürler): deepseek-v4.1-flash 0,05/0,20 $/M,
+# gemini-3.1-flash-lite 0,25/1,50 $/M. Maliyet yine cevaptaki gerçek tutarla sayılır.
+ASSISTANT_MODEL_ALTERNATIVES = "deepseek/deepseek-v4.1-flash,google/gemini-3.1-flash-lite"
+# Yedek model kapalı ("0"); istenirse ASSISTANT_FALLBACK = "gemini" + ASSISTANT_FALLBACK_MODEL ile açılır.
+ASSISTANT_FALLBACK = "0"
+
+# Ücretsiz çeviri (src/free.js, 20 Kasım 2026'dan beri): Claude yerine ücretsiz servisler kalite sırasıyla denenir; hakkı dolan
+# 10 dk atlanır, hepsi doluysa uygulama cihazın ücretsiz çevirisini gösterir. Anahtarlar sır: GEMINI_API_KEY (faturalandırma kapalı).
+TRANSLATE_ENGINE = "free"
+# "servis:model" sırası. Gemini ücretsiz plan (20 Kasım ölçümü): flash-lite modelleri dakikada 15 istek; 3.5-flash ve 3.6-flash günde yalnız 20 istek (zincirde yok). Hak doldu cevabındaki bekleme (retryDelay) kadar atlanır. Kıyas: Gemini 3.1-flash-lite ~1,5 sn ve en iyi Türkçe; 3.5-flash daha yavaş (~3 sn); 3.8-flash
+# çok yavaş. DeepL Free (DEEPL_API_KEY) ~0,5 sn, akıcı ama küfrü yumuşatır; ayda 1 milyon karakter. Groq (GROQ_API_KEY) yedek: gpt-oss-120b ~2 sn, qwen3.8-27b ~0,5 sn; Türkçeleri biraz zayıf. OpenRouter (OPENROUTER_API_KEY, kredisiz: günde 50 istek) ernie-5.5-flash ~4 sn iyi Türkçe, gemma-4 çoğu zaman meşgul. Her Gemini/Groq modelinin günlük hakkı ayrı (ek modeller ek hak). Workers AI m2m100 (kod hazır) zincirde değil: Türkçesi çok kötü ("weed" → "çürük"); eklenirse ücretli planda 10.000 nöron/gün üstü para yazdığı için WORKERS_AI_DAILY_NEURONS (8.000) dolunca o gün kullanılmaz. NVIDIA (NVIDIA_API_KEY) en son: ücretsiz katman yavaş (minimax ~6 sn), nadiren yetişir. Mistral'ın ücretsiz API'si yok.
+# Gemini'nin ücretsiz sınırı istek başına: canlı tek satırlara değil, yarım saatlik toplu çeviriye (istekte 50 satır) ayrıldı.
+FREE_CHAIN = "groq:openai/gpt-oss-120b,groq:qwen/qwen3.8-27b,groq:openai/gpt-oss-20b,deepl:free,openrouter:baidu/ernie-5.5-flash-preview:free,openrouter:google/gemma-4-31b-it:free,nvidia:minimaxai/minimax-m3.1-flash,openrouter:openai/gpt-oss-120b,openrouter:openai/gpt-oss-20b,openrouter:google/gemini-3.1-flash-lite"
+GEMINI_THINKING = "minimal"
+FREE_TIMEOUT_MS = "2800"
+# Aylık hakkı olan servise günlük satır sınırı: DeepL ayda 1 milyon karakter ≈ 18 bin satır → günde 600.
+FREE_DAILY_LINES = "deepl:free=600"
+# Ücretli servisler (OpenRouter kredisi, kullanıcı kararı 20 Kasım): hepsinin toplamı günde en çok 3 dolar.
+FREE_PAID_DAILY_USD = "3"
+# Toplu çeviri (src/batch.js, 50 satırlık partiler): önce Gemini, hakkı bitince Groq ve NVIDIA (günlük sınırı yok, yavaş ama
+# toplu işte bekleme sorun değil). 20 Kasım: Gemini günlük hakkı öğleden önce bitiyordu, bekleyen satırlar birikiyordu.
+BATCH_CHAIN = "gemini:gemini-3.1-flash-lite,gemini:gemini-3.5-flash-lite,gemini:gemini-3.1-flash-lite-preview,gemini:gemini-3-flash-preview,openrouter:openai/gpt-oss-120b,openrouter:deepseek/deepseek-v4-flash,openrouter:google/gemini-3.1-flash-lite"
+# Claude kapalı: anında çeviri, Opus gözden geçirmesi ve ekrandan oyun tanıma para harcamaz ("1" yapılırsa yeniden açılır).
+CLAUDE_ENABLED = "0"
+WORKERS_AI_DAILY_NEURONS = "8000"
+
+# Ölçüm (src/events.js, tarif NinoCore docs/tarif/olcum.md): uygulamaların hata ve hız istatistikleri.
+# "0" yapılırsa uygulamalar göndermeyi bırakır ve kuyruklarını siler. SAMPLE yalnız süre ölçümlerini örnekler (0–1).
+TELEMETRY_ENABLED = "1"
+TELEMETRY_SAMPLE = "1"
+TELEMETRY_MAX_PER_DAY = "1000"
+TELEMETRY_FLUSH_SECONDS = "600"
+# Bütün kurulumlar için günde en çok kabul edilen ölçüm parçası (her parça ~20-40 satır yazma).
+EVENTS_DAILY_BATCHES = "100000"
+
+# Çeviri havuzu (src/translate.js): anında çeviri Claude Sonnet, 30 dakikada bir bağlamla gözden geçirme Claude Opus (toplu işlem, yarı fiyat).
+# Günlük en çok harcama (dolar); dolunca uygulamalar kendi çevirileriyle devam eder.
+TRANSLATE_DAILY_USD = "10"
+# Claude yalnız bu hedef dillerde para harcar (virgüllü; "*" hepsi). Öbür dillerde havuzdaki çeviriler yine verilir,
+# yeni satırları uygulama kullanıcının kendi motoruyla ya da ücretsiz çeviriyle çevirir; İngilizcesi havuza yazılır.
+TRANSLATE_LANGS = "tr"
+# Gözden geçirmenin özeni (Opus 5.5): kıyasta "medium" "high" kadar iyi çıktı, daha ucuz. "0" REVIEW_BATCH: anında.
+REVIEW_EFFORT = "medium"
+# Claude yalnız bu oyunlarda çevirir (oyun kimliği bu parçalardan birini içeriyorsa); "*" bütün oyunlar.
+TRANSLATE_GAMES = "grand-theft-auto-vi,gta-vi,gta-6,gta6,mafia"
+# Uygulama sunucunun çevirisini en çok bu kadar bekler (milisaniye), sonra kendi çevirisini gösterir.
+TRANSLATE_DEADLINE_MS = "900"
+# Uygulamalar oyunun yeni çevirilerini bu aralıkla çeker (saniye).
+TRANSLATE_SYNC_SECONDS = "180"
+# Havuz öncelikli oyunlar: uygulama bu oyunlarda satırı önce sunucuya sorar, kullanıcının kendi motorunu (Gemini,
+# DeepL, yapay zekâ) hiç kullanmaz; POOL_FIRST_DEADLINE_MS içinde cevap gelmezse yalnız ücretsiz yerel çeviriye düşer.
+POOL_FIRST_GAMES = "grand-theft-auto-vi,gta-vi,gta-6,gta6"
+POOL_FIRST_DEADLINE_MS = "3000"
+
+# Oyun paketleri (src/packs.js): günde bir (03:17 UTC) havuzun kendi çevirilerinden üretilir, GET /v1/packs ile dağıtılır.
+# Satır pakete en az PACK_MIN_INSTALLS ayrı kurulumda görüldüyse girer; PACK_MIN_LINES satırdan az olan oyuna paket yok.
+# "0" yapılırsa üretim durur (var olan paketler listede kalır).
+PACK_ENABLED = "1"
+PACK_LANGS = "tr"
+PACK_MIN_INSTALLS = "2"
+PACK_MIN_LINES = "20"
+
+# Günde bir: eski parça kimliklerini (tekrar sayılmasın diye tutulur) temizler. 30 dakikada bir: yeni çevirileri gözden geçirir.
+[triggers]
+crons = ["17 3 * * *", "*/30 * * * *"]

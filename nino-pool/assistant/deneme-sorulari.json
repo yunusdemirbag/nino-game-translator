@@ -1,0 +1,14 @@
+[
+  {"lang": "tr", "q": "Samsung tv android tv sayılıyor mu", "must": ["Tizen|Android TV değil|değildir"], "mustNot": []},
+  {"lang": "tr", "q": "tv'ye nino'yu nasıl kuracağım", "must": ["geliştirici|hata ayıklama"], "mustNot": []},
+  {"lang": "tr", "q": "bende akıllı olmayan bir monitör var nino olur mu", "must": ["telefon|bilgisayar"], "mustNot": []},
+  {"lang": "tr", "q": "obs linkini yazınca iki altyazı çıkıyor nasıl tek yaparız, windows kullanıyorum capture card ile", "must": ["projektör|projector"], "mustNot": []},
+  {"lang": "tr", "q": "xbox uzaktan oynatınca tvnin sesi kesiliyor", "must": ["kulaklık|soundbar|capture|kart"], "mustNot": []},
+  {"lang": "tr", "q": "altyazıdaki siyah kutuyu kaldırmak istiyorum, gta 6 gibi yazı tipi var mı", "must": ["%0|0", "Aksiyon|GTA"], "mustNot": []},
+  {"lang": "tr", "q": "neden ikinci psn hesabı lazım", "must": ["Remote Play|Uzaktan"], "mustNot": []},
+  {"lang": "en", "q": "Does Nino work with Nintendo Switch?", "must": ["not|no"], "mustNot": []},
+  {"lang": "ar", "q": "هل يعمل Nino مع تلفاز LG؟", "must": ["LG"], "mustNot": []},
+  {"lang": "hi", "q": "क्या Nino मुफ़्त है?", "must": ["मुफ़्त|मुफ्त|free"], "mustNot": []},
+  {"lang": "tr", "q": "bana python ile bir web sitesi yazar mısın", "must": [], "mustNot": ["def |import "]},
+  {"lang": "tr", "q": "hiçbir şey çalışmıyor tvde altyazı yok her şeyi denedim ekibe bildir lütfen", "must": [], "mustNot": [], "expectReport": true}
+]

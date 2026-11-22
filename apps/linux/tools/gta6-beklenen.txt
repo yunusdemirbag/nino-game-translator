@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Nino contributors
+# Eski Linux sunucusunun (linux/Nino.Linux) --read-raw çıktısı, aynı libtesseract 5 + eng verisiyle (22 Kasım 2026).
+# Biçim: kare<TAB>tür<TAB>metin
+gta6-altyazi-beyaz	satır	code is 7700.
+gta6-altyazi-beyaz	satır	§ Yeah, okay. Just wait, you're gonna loy it, we're gonna have fun.
+gta6-altyazi-beyaz	altyazı	§ Yeah, okay. Just wait, you're gonna loy it, we're gonna have fun.
+gta6-gorev-pembe	altyazı	
+gta6-harita-balik	altyazı	
+gta6-harita-buckme	satır	a G
+gta6-harita-buckme	altyazı	a G
+gta6-isaretci-motel	satır	VIEW ON MAP
+gta6-isaretci-motel	satır	@® SET DESTINATION
+gta6-isaretci-motel	altyazı	VIEW ON MAP
+gta6-menu-kapusonlu	altyazı	
+gta6-telefon-altin-kapi	satır	dl
+gta6-telefon-altin-kapi	satır	Hangin bya thread, girl... I'I) Call
+gta6-telefon-altin-kapi	satır	YOU When I Can.
+gta6-telefon-altin-kapi	satır	OK just be Careful,
+gta6-telefon-altin-kapi	altyazı	Hangin bya thread, girl... I'I) Call
+gta6-telefon-brian-parlama	satır	Oh, yeah, yeah. Definitely.
+gta6-telefon-brian-parlama	altyazı	Oh, yeah, yeah. Definitely.
+gta6-telefon-donnie	altyazı	
+gta6-telefon-egik-alt	altyazı	
+gta6-telefon-egik-mavi	satır	Remember YOu get your hands
+gta6-telefon-egik-mavi	satır	on anything I might be
+gta6-telefon-egik-mavi	satır	interested in you bring it to my
+gta6-telefon-egik-mavi	satır	lockups, lll cut YOu a littie
+gta6-telefon-egik-mavi	satır	finder's fee. Door Code is 7700,
+gta6-telefon-egik-mavi	altyazı	Remember YOu get your hands
+gta6-telefon-jason-haber-karti	satır	a Put some Money aside 'n our
+gta6-telefon-jason-haber-karti	satır	> Savings
+gta6-telefon-jason-haber-karti	satır	=
+gta6-telefon-jason-haber-karti	altyazı	a Put some Money aside 'n our
+gta6-telefon-karanlik	satır	thank you, $$$ in
+gta6-telefon-karanlik	satır	Your mailbox
+gta6-telefon-karanlik	satır	You got MY plane?! You better
+gta6-telefon-karanlik	satır	be good to her! Brian wants me I I
+gta6-telefon-karanlik	satır	to pick her Up in the Ay.
+gta6-telefon-karanlik	altyazı	Your mailbox
+gta6-telefon-kat-kucuk-harf	satır	a
+gta6-telefon-kat-kucuk-harf	altyazı	
+gta6-telefon-kenton	altyazı	
+gta6-telefon-koyu-altpencere	satır	Book Ryde ($82)
+gta6-telefon-koyu-altpencere	satır	Choose Ryde
+gta6-telefon-koyu-altpencere	altyazı	Book Ryde ($82)
+gta6-telefon-koyu-rydeme	satır	Book Ryde ($82)
+gta6-telefon-koyu-rydeme	satır	Choose Ryde
+gta6-telefon-koyu-rydeme	satır	Change Destination
+gta6-telefon-koyu-rydeme	altyazı	Book Ryde ($82)
+gta6-telefon-liste	altyazı	
+gta6-telefon-lucia-foto	satır	@247Heaven a
+gta6-telefon-lucia-foto	altyazı	a
+gta6-telefon-shirley	altyazı	
+gta6-telefon-sohbet-listesi	satır	next time I see uit's ON Si...
+gta6-telefon-sohbet-listesi	satır	Mattia
+gta6-telefon-sohbet-listesi	satır	Your house. We're on Our
+gta6-telefon-sohbet-listesi	altyazı	next time I see uit's ON Si...
+gta6-telefon-yakin-alt	satır	» YOU. $$$ jn
+gta6-telefon-yakin-alt	satır	your mailbox
+gta6-telefon-yakin-alt	satır	I You got MY plane?! You better I
+gta6-telefon-yakin-alt	satır	I be goog to her! Brian wants me
+gta6-telefon-yakin-alt	altyazı	your mailbox

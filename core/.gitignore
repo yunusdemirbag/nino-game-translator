@@ -1,0 +1,17 @@
+.DS_Store
+/.build
+/.swiftpm
+/Packages
+*.xcodeproj
+xcuserdata/
+DerivedData/
+.netrc
+
+# İndirilen üçüncü taraf kaynak (sürüm ve özet docs/tarif/remote-play.md içinde)
+/NinoRemotePlay/Vendor/
+/NinoRemotePlay/.tools/
+/NinoRemotePlay/.build-c/
+/NinoRemotePlay/Frameworks/
+/NinoRemotePlay/.build/
+/NinoRemotePlay/.swiftpm/
+/NinoRemotePlay/.build-deps/

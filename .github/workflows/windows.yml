@@ -1,0 +1,65 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Windows uygulaması (apps/windows, .NET 10): çözümün derlenmesi ve testler.
+# Yerel köprü (nino_native.dll, MSYS2 + FFmpeg) burada derlenmez: betiği henüz hiç denenmedi.
+# Köprü ve model testleri kendiliğinden atlanır (NINO_NATIVE_LIBRARY / NINO_TEST_MODELS verilmez).
+# Paketleme (Velopack) ve yayın yok.
+name: windows
+
+on:
+  push:
+    paths:
+      - "apps/windows/**"
+      - "testdata/**"
+      - ".gitattributes"
+      - "NOTICE"
+      - ".github/workflows/windows.yml"
+  pull_request:
+    paths:
+      - "apps/windows/**"
+      - "testdata/**"
+      - ".gitattributes"
+      - "NOTICE"
+      - ".github/workflows/windows.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_NOLOGO: "1"
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      # Uyum fikstürleri bayt bayt karşılaştırılır; satır sonları git'in kendi kuralıyla (.gitattributes) kalsın.
+      - name: Satır sonu dönüşümünü kapat
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - name: NuGet önbelleği
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-windows-${{ hashFiles('apps/windows/**/*.csproj', 'apps/windows/Directory.Build.props') }}
+          restore-keys: nuget-windows-
+      - name: Derle (Release)
+        run: dotnet build apps/windows/Nino.Windows.slnx -c Release
+      # Testler Debug'da koşar: örnek dosyaları [CallerFilePath] ile gerçek yoldan bulunur (Directory.Build.props).
+      - name: Testler
+        run: dotnet test apps/windows/Nino.Windows.slnx -c Debug --logger "trx;LogFilePrefix=windows" --results-directory "${{ runner.temp }}/test-results"
+      - name: Test sonuçları
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-test-sonuclari
+          path: ${{ runner.temp }}/test-results
+          if-no-files-found: ignore

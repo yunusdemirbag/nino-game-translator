@@ -1,0 +1,140 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<!-- Copyright (C) 2026 Nino contributors -->
+<!--
+  Pencere, ayırıcı, kaydırma çubuğu, ilerleme çubuğu, ipucu balonu.
+  Pencereler Style="{DynamicResource Window.Nino}" alır: düz background zemini, ana yazı rengi textPrimary.
+  Şablonlar önce anahtarlı kaynak olarak tanımlanır, stiller onları StaticResource ile alır.
+-->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="Base.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <Style x:Key="Window.Nino" TargetType="Window">
+    <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+    <Setter Property="FontSize" Value="15" />
+    <Setter Property="Background" Value="{DynamicResource backgroundBrush}" />
+    <Setter Property="UseLayoutRounding" Value="True" />
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+  </Style>
+
+  <!-- ===== Ayırıcı: border rengi, üst/alt 12. ===== -->
+  <ControlTemplate x:Key="Separator.Line" TargetType="Separator">
+    <Border SnapsToDevicePixels="True" Background="{DynamicResource borderBrush}" Height="1" />
+  </ControlTemplate>
+
+  <Style TargetType="Separator">
+    <Setter Property="Template" Value="{StaticResource Separator.Line}" />
+    <Setter Property="Margin" Value="0,12" />
+  </Style>
+
+  <!-- ===== Kaydırma çubuğu: 8 px, oksuz; tutamaç border renkli, köşe 4; boş kısma tıklamak sayfa kaydırır. ===== -->
+
+  <!-- Odak almayan parçaların ortak temeli. -->
+  <Style x:Key="ScrollBar.PartBase" TargetType="Control">
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="Focusable" Value="False" />
+  </Style>
+
+  <ControlTemplate x:Key="ScrollBar.PageTemplate" TargetType="RepeatButton">
+    <Border Background="Transparent" />
+  </ControlTemplate>
+
+  <ControlTemplate x:Key="ScrollBar.ThumbTemplate" TargetType="Thumb">
+    <Border Background="{DynamicResource borderBrush}" CornerRadius="4" />
+  </ControlTemplate>
+
+  <Style x:Key="ScrollBar.Page" TargetType="RepeatButton" BasedOn="{StaticResource ScrollBar.PartBase}">
+    <Setter Property="Template" Value="{StaticResource ScrollBar.PageTemplate}" />
+  </Style>
+
+  <Style x:Key="ScrollBar.Thumb" TargetType="Thumb" BasedOn="{StaticResource ScrollBar.PartBase}">
+    <Setter Property="Template" Value="{StaticResource ScrollBar.ThumbTemplate}" />
+  </Style>
+
+  <!-- Dikey: aşağıdan yukarı değil, yukarıdan aşağı (yön ters). -->
+  <ControlTemplate x:Key="ScrollBar.VerticalTemplate" TargetType="ScrollBar">
+    <Track x:Name="PART_Track" IsDirectionReversed="True">
+      <Track.Thumb>
+        <Thumb Style="{StaticResource ScrollBar.Thumb}" />
+      </Track.Thumb>
+      <Track.IncreaseRepeatButton>
+        <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Style="{StaticResource ScrollBar.Page}" />
+      </Track.IncreaseRepeatButton>
+      <Track.DecreaseRepeatButton>
+        <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Style="{StaticResource ScrollBar.Page}" />
+      </Track.DecreaseRepeatButton>
+    </Track>
+  </ControlTemplate>
+
+  <ControlTemplate x:Key="ScrollBar.HorizontalTemplate" TargetType="ScrollBar">
+    <Track x:Name="PART_Track">
+      <Track.Thumb>
+        <Thumb Style="{StaticResource ScrollBar.Thumb}" />
+      </Track.Thumb>
+      <Track.IncreaseRepeatButton>
+        <RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Style="{StaticResource ScrollBar.Page}" />
+      </Track.IncreaseRepeatButton>
+      <Track.DecreaseRepeatButton>
+        <RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Style="{StaticResource ScrollBar.Page}" />
+      </Track.DecreaseRepeatButton>
+    </Track>
+  </ControlTemplate>
+
+  <Style TargetType="ScrollBar">
+    <Setter Property="Template" Value="{StaticResource ScrollBar.VerticalTemplate}" />
+    <Setter Property="Margin" Value="0,4,4,4" />
+    <Setter Property="MinWidth" Value="8" />
+    <Setter Property="Width" Value="8" />
+    <Style.Triggers>
+      <Trigger Property="Orientation" Value="Horizontal">
+        <Setter Property="Template" Value="{StaticResource ScrollBar.HorizontalTemplate}" />
+        <Setter Property="Margin" Value="4,0,4,4" />
+        <Setter Property="MinHeight" Value="8" />
+        <Setter Property="Height" Value="8" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Width" Value="Auto" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <!-- ===== İlerleme çubuğu: 6 px; iz border, dolgu accent, ikisi de köşe 3; dolgu soldan büyür. Değer 0–1. ===== -->
+  <ControlTemplate x:Key="ProgressBar.Bar" TargetType="ProgressBar">
+    <Grid>
+      <Border x:Name="PART_Track" Background="{DynamicResource borderBrush}" CornerRadius="3" />
+      <Border x:Name="PART_Indicator" HorizontalAlignment="Left" Background="{DynamicResource accentBrush}"
+              CornerRadius="3" />
+    </Grid>
+  </ControlTemplate>
+
+  <Style TargetType="ProgressBar">
+    <Setter Property="Template" Value="{StaticResource ProgressBar.Bar}" />
+    <Setter Property="Maximum" Value="1" />
+    <Setter Property="Minimum" Value="0" />
+    <Setter Property="Height" Value="6" />
+  </Style>
+
+  <!-- ===== İpucu balonu: düz surface, ince çerçeve, gölgesiz. ===== -->
+  <ControlTemplate x:Key="ToolTip.Bubble" TargetType="ToolTip">
+    <Border MaxWidth="360" Padding="8,4" CornerRadius="{DynamicResource radius.tag}" BorderThickness="1"
+            BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+      <ContentPresenter>
+        <ContentPresenter.Resources>
+          <Style TargetType="TextBlock" BasedOn="{StaticResource Text.Inherit}" />
+        </ContentPresenter.Resources>
+      </ContentPresenter>
+    </Border>
+  </ControlTemplate>
+
+  <Style TargetType="ToolTip">
+    <Setter Property="Template" Value="{StaticResource ToolTip.Bubble}" />
+    <Setter Property="HasDropShadow" Value="False" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="BorderBrush" Value="{DynamicResource borderBrush}" />
+    <Setter Property="FontFamily" Value="{DynamicResource font.text}" />
+    <Setter Property="Background" Value="{DynamicResource surfaceBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+  </Style>
+</ResourceDictionary>
