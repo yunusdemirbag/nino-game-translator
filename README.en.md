@@ -73,7 +73,7 @@ Then start the game and plug in the plug in Nino. That's it.
 | Android TV / Google TV | [Nino-TV.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · Nino can also install it for you |
 | LG TV | [Nino-TV.ipk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · Nino installs it for you |
 | Samsung TV | [Nino-TV.wgt](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt) · Nino installs it for you |
-| Windows | 4.5 coming soon · for now [4.0.6](https://github.com/yunusdemirbag/nino-game-translator/releases/tag/v4.0.6) |
+| Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) · 4.0.6 for now, 4.5 on the way |
 | Linux | 4.5 coming soon |
 
 If macOS warns on first launch: System Settings › Privacy & Security › **Open Anyway**. All files and install notes: [Nino 4.5 release page](https://github.com/yunusdemirbag/nino-game-translator/releases/latest).

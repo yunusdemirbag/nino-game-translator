@@ -73,7 +73,7 @@ Sonra oyunu aç, Nino'daki fişi tak. Hepsi bu.
 | Android TV / Google TV | [Nino-TV.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · Nino TV'ye kendisi de kurar |
 | LG TV | [Nino-TV.ipk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · Nino TV'ye kendisi kurar |
 | Samsung TV | [Nino-TV.wgt](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt) · Nino TV'ye kendisi kurar |
-| Windows | 4.5 yakında · şimdilik [4.0.6](https://github.com/yunusdemirbag/nino-game-translator/releases/tag/v4.0.6) |
+| Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) · şimdilik 4.0.6, 4.5 yolda |
 | Linux | 4.5 yakında |
 
 Mac'te ilk açılışta uyarı çıkarsa: Sistem Ayarları › Gizlilik ve Güvenlik › **Yine de Aç**. Bütün dosyalar ve kurulum notları: [Nino 4.5 sürüm sayfası](https://github.com/yunusdemirbag/nino-game-translator/releases/latest).
