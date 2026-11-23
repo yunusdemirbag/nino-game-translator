@@ -6,15 +6,23 @@
 Ekranı olmayan bir Linux makinesinde (çoğunlukla Docker ile) çalışan Nino. Kurulum ve denetim aynı ağdaki bir
 tarayıcıdan açılan panelle yapılır: `http://<sunucu adresi>:8788`.
 
-Davranışın tamamı: [docs/yeni/linux/tarif.md](../../docs/yeni/linux/tarif.md). Durum:
-[docs/yeni/linux/ilerleme.md](../../docs/yeni/linux/ilerleme.md).
+## Kurulum (hazır imaj)
 
-## Kurulum
+```bash
+curl -fsSLO https://raw.githubusercontent.com/yunusdemirbag/nino-game-translator/main/apps/linux/docker-compose.yml
+docker compose up -d
+```
+
+İmaj `ghcr.io/yunusdemirbag/nino` (amd64 ve arm64). Güncellemek için: `docker compose pull && docker compose up -d`.
+
+## Kaynaktan derleme
 
 ```bash
 ./apps/linux/build.sh
 docker compose -f apps/linux/compose.yml up -d
 ```
+
+`docker-compose.yml` hazır imajı, `compose.yml` yerelde derlenen imajı kullanır.
 
 - Sunucu ev ağına doğrudan bağlı çalışır (`network_mode: host`); PS5 ve TV böyle bulunur.
 - 8788 panel (parolasız; yalnız ev ağında açık tutun), 8787 eski TV uygulamaları, 47800 yeni TV protokolü.

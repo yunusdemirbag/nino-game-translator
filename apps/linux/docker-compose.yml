@@ -3,7 +3,7 @@
 # Nino Linux sunucusu. Kurulum: docker compose up -d   →   panel: http://<bu bilgisayarın adresi>:8788
 services:
   nino:
-    image: ghcr.io/yunusdemirbag/nino:4.5.0
+    image: ghcr.io/yunusdemirbag/nino:latest
     container_name: nino
     # PS5'i ve TV'yi bulabilmek için ev ağına doğrudan bağlı çalışır.
     network_mode: host
