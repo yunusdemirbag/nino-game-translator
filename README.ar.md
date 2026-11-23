@@ -68,6 +68,8 @@
 
 ## التحميل
 
+<p><a href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest"><img src="https://img.shields.io/github/v/release/yunusdemirbag/nino-game-translator?label=%D8%A2%D8%AE%D8%B1%20%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1&style=for-the-badge&color=2ea44f" alt="آخر إصدار"></a></p>
+
 | الجهاز | التحميل | طريقة التثبيت |
 |---|---|---|
 | Mac | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) | [التثبيت ↓](#setup-mac) |

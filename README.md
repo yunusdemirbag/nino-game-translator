@@ -64,6 +64,8 @@ Sonra oyunu aç ve Nino Game Translator'da fişi prize sürükle: çeviri başla
 
 ## İndir
 
+<p><a href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest"><img src="https://img.shields.io/github/v/release/yunusdemirbag/nino-game-translator?label=Son%20s%C3%BCr%C3%BCm&style=for-the-badge&color=2ea44f" alt="Son sürüm"></a></p>
+
 | Cihaz | İndir | Nasıl kurulur? |
 |---|---|---|
 | Mac | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) | [Kurulum ↓](#kurulum-mac) |

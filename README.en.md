@@ -64,6 +64,8 @@ Then start your game and, in Nino Game Translator, drag the plug into the socket
 
 ## Download
 
+<p><a href="https://github.com/yunusdemirbag/nino-game-translator/releases/latest"><img src="https://img.shields.io/github/v/release/yunusdemirbag/nino-game-translator?label=Latest%20version&style=for-the-badge&color=2ea44f" alt="Latest version"></a></p>
+
 | Device | Download | How to install |
 |---|---|---|
 | Mac | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) | [Setup ↓](#setup-mac) |
