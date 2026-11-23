@@ -27,6 +27,11 @@ Altyazıları, oyundaki telefon mesajlarını, görev ve harita kartlarını çe
   <br><sub>Oyunda gelen mesaj, hemen üstünde Türkçesi.</sub>
 </p>
 
+<p align="center">
+  <img src="docs/img/rdr2-turkce-altyazi.webp" width="560" alt="Gerçek bir TV'de, oyunun üstünde Türkçe altyazı">
+  <br><sub>Gerçek bir TV'den: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ Sesli video (30 sn)</a></sub>
+</p>
+
 <table>
   <tr>
     <td width="50%" align="center">

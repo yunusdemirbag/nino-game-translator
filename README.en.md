@@ -27,6 +27,11 @@ The translation shows up on your TV, on top of the game. You just play as usual.
   <br><sub>A message arrives in the game, and its translation sits right above it.</sub>
 </p>
 
+<p align="center">
+  <img src="docs/img/rdr2-turkce-altyazi.webp" width="560" alt="Subtitles on a real TV, on top of the game">
+  <br><sub>From a real TV: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ Video with sound (30 s)</a></sub>
+</p>
+
 <table>
   <tr>
     <td width="50%" align="center">

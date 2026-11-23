@@ -29,6 +29,11 @@
   <br><sub>رسالة تصل داخل اللعبة، وترجمتها فوقها مباشرةً.</sub>
 </p>
 
+<p align="center">
+  <img src="docs/img/rdr2-turkce-altyazi.webp" width="560" alt="ترجمة على تلفاز حقيقي فوق اللعبة">
+  <br><sub>من تلفاز حقيقي: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ فيديو بالصوت (30 ثانية)</a></sub>
+</p>
+
 <table>
   <tr>
     <td width="50%" align="center">
