@@ -122,4 +122,6 @@ Soru ve öneri için: [GitHub › Issues](https://github.com/yunusdemirbag/nino-
 
 Geliştiren: **Yunus Demirbağ** · Destekleyen: **M. Akif Demirbağ**
 
+İlk sürümlerimize ilham veren **Sinan Yorulmaz**'a çok teşekkür ederiz.
+
 <sub>Nino; Sony, Microsoft, LG ve Samsung ile bağlantılı değildir. PlayStation, PS5, Xbox, LG ve Samsung sahiplerinin markalarıdır. Görsellerdeki oyun görüntüleri sahiplerine aittir.</sub>

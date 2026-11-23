@@ -126,6 +126,8 @@ Nino مفتوح المصدر بترخيص [AGPL-3.0](LICENSE).
 
 تطوير: **Yunus Demirbağ** · بدعم من: **M. Akif Demirbağ**
 
+شكرًا جزيلًا لـ **Sinan Yorulmaz** الذي ألهم إصداراتنا الأولى.
+
 <sub>لا يرتبط Nino بشركات Sony أو Microsoft أو LG أو Samsung. أسماء PlayStation و PS5 و Xbox و LG و Samsung علامات تجارية لأصحابها، وصور الألعاب ملك لأصحابها.</sub>
 
 </div>
