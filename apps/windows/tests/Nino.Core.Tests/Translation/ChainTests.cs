@@ -86,6 +86,26 @@ public class ChainTests
     }
 
     [Fact]
+    public async Task HavuzVeUcretsizYoksaKendiMotoru()
+    {
+        // Ücretsiz model kurulu değilse (UnavailableTranslator) satır boş kalmaz: kullanıcının motoru denenir.
+        var engine = new LabelTranslator("gemini");
+        var pool = new FakePool { Answer = _ => null };
+        var logs = new List<string>();
+        var chain = new PoolFirstTranslator(engine, new UnavailableTranslator(UnavailableReason.DownloadRequired),
+            new PoolFirstOptions(pool, true, () => "GTA VI", _ => [], logs.Add));
+        var r = await chain.TranslateAsync("Follow me.");
+        Assert.Equal(("gemini", TranslationOrigin.Engine), (r.Text, r.Origin));
+        Assert.Equal(["Follow me."], engine.Calls);
+        Assert.Equal(2, logs.Count);
+
+        // Motorun kendisi ücretsizse ikinci deneme yapılmaz, hata satırı düşürür.
+        var free = new UnavailableTranslator(UnavailableReason.DownloadRequired);
+        var alone = new PoolFirstTranslator(free, free, new PoolFirstOptions(pool, true, () => "GTA VI", _ => []));
+        await Assert.ThrowsAsync<TranslatorUnavailableException>(() => alone.TranslateAsync("Follow me."));
+    }
+
+    [Fact]
     public async Task HavuzGelmezseUcretsiz()
     {
         var (chain, engine, free, pool) = Setup();

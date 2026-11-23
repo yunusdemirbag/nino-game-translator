@@ -71,8 +71,23 @@ public sealed class PoolFirstTranslator(ITranslator inner, ITranslator free, Poo
         }
         if (!string.IsNullOrWhiteSpace(pooled)) return new TranslationResult(pooled, TranslationOrigin.Pool);
         options.Log?.Invoke("havuzu öncelikli oyunda sunucu çeviri vermedi; yerine ücretsiz çeviri kondu");
-        var local = await free.TranslateAsync(text, cancellationToken).ConfigureAwait(false);
-        return new TranslationResult(local.Text, TranslationOrigin.Free);
+        try
+        {
+            var local = await free.TranslateAsync(text, cancellationToken).ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(local.Text) || ReferenceEquals(free, inner))
+                return new TranslationResult(local.Text, TranslationOrigin.Free);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception) when (!ReferenceEquals(free, inner))
+        {
+            // Ücretsiz model kurulu değil ya da açılamadı: satır boş kalmasın, kullanıcının kendi motoru denenir.
+        }
+        options.Log?.Invoke("ücretsiz çeviri de olmadı; kullanıcının çeviri motoru denendi");
+        var own = await inner.TranslateAsync(text, cancellationToken).ConfigureAwait(false);
+        return own with { Origin = own.Origin == TranslationOrigin.AlreadyTarget ? own.Origin : TranslationOrigin.Engine };
     }
 
     /// <inheritdoc />

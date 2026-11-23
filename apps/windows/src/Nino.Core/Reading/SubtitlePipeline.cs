@@ -37,8 +37,11 @@ public sealed class SubtitlePipelineOptions
     /// <summary>Telefon/harita kancaları (yoksa null).</summary>
     public IPhoneLineHooks? Phone { get; init; }
 
-    /// <summary>Görev şeridi çizgisi (karede y; Windows uygulaması vermez).</summary>
-    public double? QuestLine { get; init; }
+    /// <summary>
+    /// Görev şeridi çizgisi (karede y; her karede okunur, null: yok). Çizginin altında başlayan satırlar (GTA 6'da
+    /// "Follow Moses" gibi görev hedefi) altyazı sayılmaz.
+    /// </summary>
+    public Func<double?>? QuestLine { get; init; }
 
     /// <summary>Altyazı günlüğü (tek satırlık kayıtlar; kilit altında çağrılır, hızlı olmalı).</summary>
     public Action<string>? Log { get; init; }
@@ -338,7 +341,7 @@ public sealed class SubtitlePipeline
                 var context = new PhoneLineContext(r, region, area, maskBox, phoneFound);
                 reading = SafeGet(() => hooks.FilterLines(context)) ?? r;
             }
-            if (_options.QuestLine is { } quest) reading = LineLayout.RemoveBelowQuestLine(reading, area, quest);
+            if (_options.QuestLine?.Invoke() is { } quest) reading = LineLayout.RemoveBelowQuestLine(reading, area, quest);
             bool sameSession;
             lock (_lock) sameSession = _session == session;
             if (sameSession) reading = _staleLines.Apply(reading, _clock.NowMs);

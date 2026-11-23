@@ -241,6 +241,7 @@ public sealed partial class NinoController
             ReadingScore = quality?.Score,
             HoldWithoutPack = quality is not null,
             Phone = overlay.CreateLineHooks(() => PhoneGame),
+            QuestLine = () => PhoneGame ? GameQuestLine : null,
             Log = line => _logs.Subtitle(line),
         };
         var pipeline = new SubtitlePipeline(reader, chain.Translator, new ServerOutput(_server, NewTvShows()), _msClock, options);
@@ -483,6 +484,12 @@ public sealed partial class NinoController
     }
 
     // ---- Telefon ve harita (§12.3) ----
+
+    /// <summary>
+    /// Telefon oyununda (havuz öncelikli, ör. GTA 6) görev şeridi çizgisi: karenin altındaki görev hedefi ("Follow
+    /// Moses") bu çizginin altında başlar ve altyazı sayılmaz (Mac çekirdeğiyle aynı değer).
+    /// </summary>
+    public const double GameQuestLine = 0.935;
 
     bool PhoneGame
     {
