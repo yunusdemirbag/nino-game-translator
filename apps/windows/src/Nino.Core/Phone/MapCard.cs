@@ -42,18 +42,31 @@ public static partial class MapCard
 
     static bool Overlaps(Box a, Box b) => a.Left < b.Right && b.Left < a.Right;
 
-    /// <summary>Okumadan (kareye göre kutular) kartı bulur; yoksa null.</summary>
+    /// <summary>
+    /// Okumadan (kareye göre kutular) kartı bulur; yoksa null. Önce sağ taraf (x &gt; 0,30) aranır; yoksa kart ekranın
+    /// solunda da olabilir (duraklatma menüsünün MAP sekmesinde sol üstteki aktivite kartı, ör. BREAKFAST RUN). Solda
+    /// yalnız yapısıyla tanınır: büyük harfli başlık hemen üstte, cümleler nokta/ünlem/soruyla biter, en az 6 sözcük;
+    /// soldaki menü listesinin satırları bu yapıda değildir.
+    /// </summary>
     public static MapCardText? Find(OcrReading reading)
+    {
+        if (Find(reading, 0.30) is { } right) return right;
+        if (Find(reading, 0) is not { } left || left.Title.Length == 0) return null;
+        if (PhoneText.Words(string.Join(" ", left.Sentences)).Length < 6 || !left.Sentences.All(EndsSentence)) return null;
+        return left;
+    }
+
+    static MapCardText? Find(OcrReading reading, double minX)
     {
         var candidates = new List<Candidate>();
         foreach (var line in reading.Lines)
         {
-            if (line.Box is not { } b || b.Right <= 0.30) continue;
+            if (line.Box is not { } b || b.Right <= minX) continue;
             var text = line.Text.Trim();
             if (DistancePattern().IsMatch(text))
             {
                 text = DistancePattern().Replace(text, " ").Trim();
-                if (b.Left < 0.5) b = b with { Left = 0.5 };
+                if (minX > 0 && b.Left < 0.5) b = b with { Left = 0.5 };
             }
             var lead = LeadingSymbols().Match(text);
             if (lead.Success && text.Length > 0)
@@ -62,7 +75,7 @@ public static partial class MapCard
                 text = text[lead.Length..];
                 b = b with { Left = b.Left + shift };
             }
-            if (b.Left <= 0.30 || PhoneText.LetterCount(text) < 3) continue;
+            if (b.Left <= minX || PhoneText.LetterCount(text) < 3) continue;
             candidates.Add(new Candidate(text, b));
         }
         candidates = candidates.OrderBy(c => c.Box.Top).ToList();

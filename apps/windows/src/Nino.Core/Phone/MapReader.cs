@@ -17,6 +17,9 @@ public sealed class MapReader
     /// <summary>İki tur arası en az süre.</summary>
     public const long ReadEveryMs = 2_000;
 
+    /// <summary>Bu kadar dönmeyen okuma bırakılır, yenisi başlar (takılan okuma haritayı oturum boyunca kör etmesin).</summary>
+    public const long StuckMs = 15_000;
+
     /// <summary>Harita ekranı görüldükten sonra "açık" sayılan süre.</summary>
     public const long OpenForMs = 5_000;
 
@@ -51,6 +54,8 @@ public sealed class MapReader
     long? _lastTour;
     BgraFrame? _lastFrame;
     int _busy;
+    long _busySince;
+    long _tourGen;
     long _session;
     bool _translating;
     string _shownTitle = "";
@@ -110,7 +115,14 @@ public sealed class MapReader
             if (_lastTour is { } t && now - t < ReadEveryMs) return;
             _lastTour = now;
         }
-        if (Interlocked.CompareExchange(ref _busy, 1, 0) != 0) return;
+        if (Interlocked.CompareExchange(ref _busy, 1, 0) != 0)
+        {
+            var since = Interlocked.Read(ref _busySince);
+            if (now - since < StuckMs) return;
+            Log($"harita: okuma {now - since} ms'dir dönmedi; bırakıldı, yeniden okunuyor");
+        }
+        Interlocked.Exchange(ref _busySince, now);
+        var gen = Interlocked.Increment(ref _tourGen);
         Running = Task.Run(() =>
         {
             try
@@ -122,7 +134,7 @@ public sealed class MapReader
                 Process(reading, frame);
             }
             catch (Exception e) { Log($"harita: okunamadı ({e.GetType().Name})"); }
-            finally { Volatile.Write(ref _busy, 0); }
+            finally { if (Interlocked.Read(ref _tourGen) == gen) Volatile.Write(ref _busy, 0); }
         });
     }
 

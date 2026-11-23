@@ -175,4 +175,54 @@ public class PackUpdaterTests
             "gta-6"));
         foreach (var bad in new[] { "-gta", "../evil", "GTA" }) Assert.False(PackUpdater.IsValidId(bad));
     }
+
+    [Fact]
+    public async Task DileGorePaketler()
+    {
+        var root = PoolTemp.Folder();
+        var packs = Path.Combine(root, "packs");
+        var state = Path.Combine(root, "packs-remote.json");
+        const string tr = "{\"format\":1,\"lang\":\"tr\"}";
+        const string ar = "{\"format\":1,\"lang\":\"ar\"}";
+        var fake = new FakeServer(r =>
+        {
+            var lang = r.Uri.Query.Contains("lang=ar") ? "ar" : "tr";
+            var content = lang == "ar" ? ar : tr;
+            if (r.Uri.AbsolutePath == "/v1/packs")
+                return FakeServer.Json($"{{\"packs\":[{{\"id\":\"pool-gta\",\"title\":\"GTA\",\"version\":1,\"sha256\":\"{Sha(content)}\",\"lang\":\"{lang}\"}},"
+                    + $"{{\"id\":\"yanlis\",\"title\":\"x\",\"version\":1,\"sha256\":\"{Sha(content)}\",\"lang\":\"de\"}}]}}");
+            return FakeServer.Bytes(Encoding.UTF8.GetBytes(content));
+        });
+        var updater = new PackUpdater(packs, state, new Uri("https://packs.example.test/"), fake.Client(), new PoolClock(1_793_000_000));
+
+        Assert.Equal(["pool-gta"], (await updater.RefreshAsync(force: true)).Downloaded);
+        Assert.Equal(tr, File.ReadAllText(Path.Combine(packs, "pool-gta.json.gz")));
+
+        updater.SetLanguage("ar");
+        Assert.Equal("ar", updater.Language);
+        Assert.Equal(["pool-gta"], (await updater.RefreshAsync(force: false)).Downloaded);
+        Assert.Equal(ar, File.ReadAllText(Path.Combine(root, "packs-ar", "pool-gta.json.gz")));
+        Assert.True(File.Exists(Path.Combine(root, "packs-remote-ar.json")));
+        Assert.Equal(tr, File.ReadAllText(Path.Combine(packs, "pool-gta.json.gz")));
+        Assert.Contains(fake.Requests, r => r.Uri.PathAndQuery == "/v1/packs?lang=ar");
+        Assert.Contains(fake.Requests, r => r.Uri.PathAndQuery == "/v1/packs/pool-gta?lang=ar");
+        Assert.DoesNotContain(fake.Requests, r => r.Uri.AbsolutePath.EndsWith("/yanlis"));
+
+        updater.SetLanguage("de");
+        Assert.Equal("tr", updater.Language);
+
+        updater.DeleteDownloaded();
+        Assert.False(File.Exists(Path.Combine(packs, "pool-gta.json.gz")));
+        Assert.False(File.Exists(Path.Combine(root, "packs-ar", "pool-gta.json.gz")));
+    }
+
+    [Fact]
+    public void PaketDiliKlasorleri()
+    {
+        Assert.Equal(Path.Combine("x", "packs-ar"), PackLanguage.Folder(Path.Combine("x", "packs"), "ar"));
+        Assert.Equal(Path.Combine("x", "packs"), PackLanguage.Folder(Path.Combine("x", "packs"), "tr"));
+        Assert.Equal(Path.Combine("x", "packs-remote-ar.json"), PackLanguage.StateFile(Path.Combine("x", "packs-remote.json"), "ar"));
+        Assert.True(PackLanguage.IsSupported("ar"));
+        Assert.False(PackLanguage.IsSupported("de"));
+    }
 }

@@ -30,7 +30,8 @@ public sealed class PackLibrary
         ("v", "y"), ("q", "g"), ("g", "q"),
     ];
 
-    readonly string? _userFolder;
+    readonly string? _baseFolder;
+    volatile string? _userFolder;
     readonly object _gate = new();
     List<GamePack>? _packs;
     Dictionary<ulong, string> _merged = new();
@@ -45,7 +46,25 @@ public sealed class PackLibrary
     /// </param>
     public PackLibrary(string? userFolder)
     {
+        _baseFolder = userFolder;
         _userFolder = userFolder;
+    }
+
+    /// <summary>
+    /// Paket dilini seçer (hedef dil): Türkçe temel klasörden, diğer diller <c>packs-&lt;dil&gt;</c> klasöründen okunur.
+    /// Klasör değişirse kütüphane sıfırlanır; true döner.
+    /// </summary>
+    public bool SetLanguage(string? target)
+    {
+        if (_baseFolder is null) return false;
+        var folder = PackLanguage.Folder(_baseFolder, PackLanguage.For(target));
+        lock (_gate)
+        {
+            if (folder == _userFolder) return false;
+            _userFolder = folder;
+        }
+        Reload();
+        return true;
     }
 
     /// <summary>Kullanıcı paket klasörü.</summary>

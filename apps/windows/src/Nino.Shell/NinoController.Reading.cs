@@ -94,7 +94,7 @@ public sealed partial class NinoController
         _translating && !IsXbox && OnStreamPath && _settings.FrameSource == FrameSource.Ps5 && _lastTranslation is null;
 
     bool PacksEnabled => _settings.GamePacks && TargetLanguages.Code(_settings.SourceLanguage) == "en"
-        && TargetLanguages.Code(_settings.TargetLanguage) == "tr" && _services.Packs is not null;
+        && PackLanguage.IsSupported(_settings.TargetLanguage) && _services.Packs is not null;
 
     bool PoolTranslationsEnabled => _settings.SharePool && TargetLanguages.Code(_settings.SourceLanguage) == "en"
         && _services.Pool is not null;

@@ -44,7 +44,10 @@ public sealed partial class NinoController
             if (_translating) restart = true;
         }
         if (TargetLanguages.Code(previous.TargetLanguage) != TargetLanguages.Code(next.TargetLanguage))
+        {
             _services.Pool?.SetLanguage(next.TargetLanguage);
+            OnPackLanguageChanged(next.TargetLanguage);
+        }
         var rebuild = false;
         if (previous.GamePacks != next.GamePacks && _pipeline is not null) rebuild = true;
         if (previous.ShowSpeakerNames != next.ShowSpeakerNames && _pipeline is not null) rebuild = true;

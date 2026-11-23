@@ -20,7 +20,7 @@
     <Product>Nino</Product>
     <Company>Nino</Company>
     <Copyright>AGPL-3.0. Uses chiaki-ng (AGPL-3.0).</Copyright>
-    <!-- Paket sunucusu adresi derlemede verilir (-p:NinoPacksUrl=...); boşsa paket indirme kapalı. -->
+    <!-- Paket sunucusu adresi derlemede verilebilir (-p:NinoPacksUrl=...); boşsa havuz sunucusu kullanılır. -->
     <NinoPacksUrl Condition="'$(NinoPacksUrl)' == ''"></NinoPacksUrl>
   </PropertyGroup>
   <ItemGroup>

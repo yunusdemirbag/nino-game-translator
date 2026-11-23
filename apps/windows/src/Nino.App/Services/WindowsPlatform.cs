@@ -85,6 +85,7 @@ public static class WindowsPlatform
         var sleep = new WindowsSleepGuard(dispatcher);
         var browser = new BrowserLauncher(errors, tvInstall);
 
+        var poolEndpoint = PoolEndpoint.Resolve(dataFolder);
         var core = new CoreShellServicesOptions
         {
             DataFolder = dataFolder,
@@ -95,8 +96,10 @@ public static class WindowsPlatform
             KeepLegacyTurkish = false,
             RemotePlayLog = options.RemotePlayLog ?? new RpLog(Path.Combine(dataFolder, RpLog.FileName)),
             Identity = new SenderIdentity { Client = "nino-windows/" + version },
-            PoolEndpoint = PoolEndpoint.Resolve(dataFolder),
-            PackServer = PackUpdater.ResolveAddress(Environment.GetEnvironmentVariable("NINO_PACKS_URL"), BuildMetadata("NinoPacksUrl")),
+            PoolEndpoint = poolEndpoint,
+            // Paketler havuz sunucusundadır (v1/packs?lang=); ortam değişkeni ya da derleme meta verisi başka adres verebilir.
+            PackServer = PackUpdater.ResolveAddress(Environment.GetEnvironmentVariable("NINO_PACKS_URL"), BuildMetadata("NinoPacksUrl"))
+                ?? PackUpdater.ResolveAddress(null, poolEndpoint.ToString()),
             OpenBrowser = browser.Open,
             CudaDriverPresent = NvidiaDriverPresent,
             ErrorLog = (m, e) => { try { errors.Write(m, e); } catch (Exception) { } },

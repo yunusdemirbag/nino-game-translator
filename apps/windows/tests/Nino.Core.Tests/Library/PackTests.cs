@@ -358,8 +358,11 @@ public class SubtitleLookupTests
         var lookup = new SubtitleLookup(lib, null);
         var on = new LookupState("en", "tr", GamePacks: true, SharePool: true, PoolFirst: false);
         Assert.Equal(("Köprüyü kaldır!", true), lookup.Find("Raise the drawbridge!", on));
-        Assert.Null(lookup.Find("Raise the drawbridge!", on with { Target = "ar" }));
-        Assert.Null(lookup.Find("Raise the drawbridge!", on with { PoolFirst = true }));
+        Assert.Null(lookup.Find("Raise the drawbridge!", on with { Target = "fr" }));
+        // Kütüphane hedef dilin klasörünü okur; Arapça da paketli dildir.
+        Assert.Equal(("Köprüyü kaldır!", true), lookup.Find("Raise the drawbridge!", on with { Target = "ar" }));
+        // Havuz öncelikli oyunda havuz yoksa paket yerelde yine bulunur.
+        Assert.Equal(("Köprüyü kaldır!", true), lookup.Find("Raise the drawbridge!", on with { PoolFirst = true }));
         Assert.Null(lookup.Find("Raise the drawbridge!", on with { Source = "de" }));
         Assert.Null(lookup.Find("Raise the drawbridge!", on with { GamePacks = false }));
 

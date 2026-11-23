@@ -22,6 +22,30 @@ public class MapTests
     }
 
     [Fact]
+    public void LeftActivityCard()
+    {
+        // GTA 6 duraklatma menüsü MAP sekmesi (23:49 karesi, 1920×1080): yan aktivite kartı sol üstte, simge sütununun yanında.
+        var card = MapCard.Find(R(L("JASON & LUCIA", 0.365, 0.03, 0.45, 0.06), L("MAP", 0.474, 0.03, 0.497, 0.06),
+            L("BREAKFAST RUN", 0.121, 0.123, 0.220, 0.155),
+            L("Jason is finally back on his feet. Head", 0.093, 0.169, 0.324, 0.194),
+            L("out together and get some fresh air.", 0.093, 0.204, 0.321, 0.230),
+            L("$9,335", 0.913, 0.12, 0.96, 0.145), L("RECENTER", 0.907, 0.755, 0.958, 0.78),
+            L("SET DESTINATION", 0.872, 0.900, 0.958, 0.925), L("EXIT", 0.945, 0.948, 0.958, 0.972)));
+        Assert.NotNull(card);
+        Assert.Equal("BREAKFAST RUN", card!.Title);
+        Assert.Equal("Jason is finally back on his feet. Head out together and get some fresh air.", string.Join(" ", card.Sentences));
+        Assert.True(card.Box.Left < 0.12);
+    }
+
+    [Fact]
+    public void LeftMenuListIsNotACard()
+    {
+        // Soldaki araç/menü listesi: başlık yok, cümle yapısında değil.
+        Assert.Null(MapCard.Find(R(L("Declasse Yosemite 1500 pickup truck", 0.05, 0.20, 0.25, 0.225),
+            L("Karin Futo sports coupe car", 0.05, 0.24, 0.22, 0.265), L("SET DESTINATION", 0.872, 0.900, 0.958, 0.925))));
+    }
+
+    [Fact]
     public void BuckMeCard()
     {
         var card = MapCard.Find(Fixtures.Load("gta6-harita-buckme"))!;
@@ -262,5 +286,41 @@ public class MapTests
         var item = Assert.Single(rig.Reader.Items);
         Assert.True(item.Box.Top > card.Box.Bottom || item.Box.Bottom < card.Box.Top);
         if (found is { } f) Assert.True(f.Width > card.Box.Width);
+    }
+
+    [Fact]
+    public async Task StuckReadIsAbandoned()
+    {
+        // Takılan okuma haritayı oturum boyunca kör etmez: StuckMs sonra bırakılır, yenisi okunur.
+        var clock = new ManualMsClock(0);
+        using var release = new ManualResetEventSlim(false);
+        var first = true;
+        var ocr = new FuncReader(_ =>
+        {
+            if (first)
+            {
+                first = false;
+                release.Wait(TimeSpan.FromSeconds(10));
+            }
+            return new OcrReading([]);
+        });
+        var reader = new MapReader(new OverlayServices { Clock = clock, Ocr = ocr });
+        reader.OfferFrame(BgraFrame.Blank(64, 36));
+        var stuck = reader.Running!;
+        SpinWait.SpinUntil(() => ocr.Calls == 1, 5000);
+        clock.Advance(MapReader.ReadEveryMs);
+        reader.OfferFrame(BgraFrame.Blank(64, 36));
+        Assert.Same(stuck, reader.Running);
+        clock.Advance(MapReader.StuckMs);
+        reader.OfferFrame(BgraFrame.Blank(64, 36));
+        Assert.NotSame(stuck, reader.Running);
+        await reader.Running!;
+        Assert.Equal(2, ocr.Calls);
+        release.Set();
+        await stuck;
+        clock.Advance(MapReader.ReadEveryMs);
+        reader.OfferFrame(BgraFrame.Blank(64, 36));
+        await reader.Running!;
+        Assert.Equal(3, ocr.Calls);
     }
 }

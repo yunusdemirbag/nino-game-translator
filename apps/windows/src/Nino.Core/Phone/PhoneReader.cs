@@ -54,6 +54,12 @@ public sealed class PhoneReader
     /// <summary>Örtü yokken iki okuma arası en az süre.</summary>
     public const long ReadEveryMs = 600;
 
+    /// <summary>
+    /// Bu kadar dönmeyen tur (yazı tanıma ya da çeviri takıldı) bırakılır, yenisi başlar. Yoksa takılan tur "meşgul"
+    /// bayrağını açık bırakıp telefonu oturum boyunca kör eder.
+    /// </summary>
+    public const long StuckMs = 15_000;
+
     /// <summary>Örtü varken iki okuma arası en az süre.</summary>
     public const long ReadEveryWithOverlayMs = 1_000;
 
@@ -80,6 +86,8 @@ public sealed class PhoneReader
     long? _lastMessageAt;
     long? _lastReadAt;
     int _busy;
+    long _busySince;
+    long _tourGen;
     long _session;
     Box? _baseBox;
     List<ScreenItem> _baseItems = [];
@@ -151,7 +159,14 @@ public sealed class PhoneReader
             var every = _items.Count > 0 ? ReadEveryWithOverlayMs : ReadEveryMs;
             if (_lastReadAt is { } t && now - t <= every) return;
         }
-        if (Interlocked.CompareExchange(ref _busy, 1, 0) != 0) return;
+        if (Interlocked.CompareExchange(ref _busy, 1, 0) != 0)
+        {
+            var since = Interlocked.Read(ref _busySince);
+            if (now - since < StuckMs) return;
+            Log($"telefon: okuma {now - since} ms'dir dönmedi; bırakıldı, yeniden okunuyor");
+        }
+        Interlocked.Exchange(ref _busySince, now);
+        var gen = Interlocked.Increment(ref _tourGen);
         lock (_lock)
         {
             _lastReadAt = now;
@@ -161,7 +176,7 @@ public sealed class PhoneReader
         {
             try { await TourAsync(frame, session).ConfigureAwait(false); }
             catch (Exception e) { Log($"telefon: okunamadı ({e.GetType().Name})"); }
-            finally { Volatile.Write(ref _busy, 0); }
+            finally { if (Interlocked.Read(ref _tourGen) == gen) Volatile.Write(ref _busy, 0); }
         });
     }
 

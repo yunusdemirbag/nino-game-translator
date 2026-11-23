@@ -77,6 +77,8 @@ public sealed partial class NinoController
 
     void StartPacksAndPools()
     {
+        _services.Packs?.SetLanguage(_settings.TargetLanguage);
+        _services.PackUpdater?.SetLanguage(_settings.TargetLanguage);
         if (_services.Packs is { } packs)
         {
             var version = _packListVersion;
@@ -118,6 +120,14 @@ public sealed partial class NinoController
             DgPackResult(false, e is HttpRequestException { StatusCode: { } code } ? (int)code : null,
                 e is HttpRequestException { StatusCode: null } ? "offline" : null);
         }
+    }
+
+    /// <summary>Hedef dil değişti: o dilin paketleri okunur ve sunucudan o dilde istenir.</summary>
+    void OnPackLanguageChanged(string target)
+    {
+        _services.PackUpdater?.SetLanguage(target);
+        if (_services.Packs?.SetLanguage(target) == true) ReloadPacks();
+        if (_services.PackUpdater is not null) Background(() => RefreshPacksFromServerAsync(force: true));
     }
 
     /// <summary>"Paketleri yeniden yükle" (Ayarlar).</summary>

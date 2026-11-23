@@ -31,8 +31,9 @@ public sealed partial class PackUpdater
 
     const long MaxPackBytes = 64L * 1024 * 1024;
 
-    readonly string _packs;
-    readonly string _stateFile;
+    readonly string _basePacks;
+    readonly string _baseState;
+    volatile string _lang = "tr";
     readonly Uri? _base;
     readonly HttpClient _http;
     readonly TimeProvider _clock;
@@ -51,8 +52,8 @@ public sealed partial class PackUpdater
     /// <param name="clock">Saat.</param>
     public PackUpdater(string packsFolder, string stateFile, Uri? baseUrl, HttpClient http, TimeProvider? clock = null)
     {
-        _packs = packsFolder;
-        _stateFile = stateFile;
+        _basePacks = packsFolder;
+        _baseState = stateFile;
         _base = baseUrl;
         _http = http;
         _clock = clock ?? TimeProvider.System;
@@ -76,6 +77,18 @@ public sealed partial class PackUpdater
         return null;
     }
 
+    /// <summary>Paket dili (<c>tr</c>, <c>ar</c>).</summary>
+    public string Language => _lang;
+
+    /// <summary>
+    /// Paket dilini değiştirir (hedef dil). Her dilin klasörü ve durum dosyası ayrıdır; dil değişince paketler o dilin
+    /// klasöründen okunur ve sunucudan o dilde istenir. Desteklenmeyen dil Türkçe sayılır.
+    /// </summary>
+    public void SetLanguage(string? target) => _lang = PackLanguage.For(target);
+
+    /// <summary>Dilin paket klasörü.</summary>
+    public string FolderFor(string lang) => PackLanguage.Folder(_basePacks, lang);
+
     /// <summary>Kimlik geçerli mi.</summary>
     public static bool IsValidId(string? id) => id is not null && IdPattern().IsMatch(id);
 
@@ -92,13 +105,16 @@ public sealed partial class PackUpdater
             _gate.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
-            var (checkedAt, records) = ReadState();
+            var lang = _lang;
+            var packsFolder = PackLanguage.Folder(_basePacks, lang);
+            var stateFile = PackLanguage.StateFile(_baseState, lang);
+            var (checkedAt, records) = ReadState(stateFile);
             var now = PoolHttp.Unix(_clock.GetUtcNow());
             var age = (maxAge ?? DefaultMaxAge).TotalSeconds;
             if (!force && checkedAt > 0 && now - checkedAt < age && records.All(r => r.Version != -1))
                 return none with { Skipped = true };
 
-            var list = await GetListAsync(cancellationToken).ConfigureAwait(false);
+            var list = await GetListAsync(lang, cancellationToken).ConfigureAwait(false);
             if (list is null) return none with { ListFailed = true };
 
             var byId = records.ToDictionary(r => r.Id, StringComparer.Ordinal);
@@ -106,13 +122,13 @@ public sealed partial class PackUpdater
             var downloaded = new List<string>();
             var removed = new List<string>();
             var retry = false;
-            Directory.CreateDirectory(_packs);
+            Directory.CreateDirectory(packsFolder);
 
             foreach (var (id, title, version, shaRaw) in list)
             {
                 if (!IsValidId(id) || !ShaPattern().IsMatch(shaRaw)) continue;
                 var sha = shaRaw.ToLowerInvariant();
-                var file = Path.Combine(_packs, id + ".json.gz");
+                var file = Path.Combine(packsFolder, id + ".json.gz");
                 byId.TryGetValue(id, out var recorded);
                 var diskSha = File.Exists(file) ? Sha(file) : null;
                 if (recorded is not null && recorded.Version == version && recorded.Sha256 == sha && diskSha == sha)
@@ -122,14 +138,14 @@ public sealed partial class PackUpdater
                 }
                 if (diskSha is not null && diskSha != recorded?.Sha256 && diskSha != sha) continue;
 
-                var data = await DownloadAsync(id, cancellationToken).ConfigureAwait(false);
+                var data = await DownloadAsync(id, lang, cancellationToken).ConfigureAwait(false);
                 if (data is null || data.Length > MaxPackBytes || Convert.ToHexStringLower(SHA256.HashData(data)) != sha)
                 {
                     retry = true;
                     if (recorded is not null && File.Exists(file)) next[id] = recorded with { Version = -1 };
                     continue;
                 }
-                var temp = Path.Combine(_packs, "." + id + ".download");
+                var temp = Path.Combine(packsFolder, "." + id + ".download");
                 try
                 {
                     await File.WriteAllBytesAsync(temp, data, cancellationToken).ConfigureAwait(false);
@@ -150,7 +166,7 @@ public sealed partial class PackUpdater
             var listed = list.Select(p => p.Id).ToHashSet(StringComparer.Ordinal);
             foreach (var r in records.Where(r => !listed.Contains(r.Id)))
             {
-                var file = Path.Combine(_packs, r.Id + ".json.gz");
+                var file = Path.Combine(packsFolder, r.Id + ".json.gz");
                 if (File.Exists(file) && Sha(file) == r.Sha256)
                 {
                     try { File.Delete(file); }
@@ -160,7 +176,7 @@ public sealed partial class PackUpdater
                 removed.Add(r.Id);
             }
 
-            WriteState(retry ? checkedAt : now, next.Values);
+            WriteState(stateFile, retry ? checkedAt : now, next.Values);
             return new PackUpdateResult(downloaded, removed, false, false);
         }
         finally
@@ -172,10 +188,16 @@ public sealed partial class PackUpdater
     /// <summary>"İndirilen paketleri sil": özeti kayıtlıyla aynı dosyalar silinir, durum dosyası silinir.</summary>
     public void DeleteDownloaded()
     {
-        var (_, records) = ReadState();
+        foreach (var lang in PackLanguage.Supported)
+            DeleteDownloaded(PackLanguage.Folder(_basePacks, lang), PackLanguage.StateFile(_baseState, lang));
+    }
+
+    static void DeleteDownloaded(string packsFolder, string stateFile)
+    {
+        var (_, records) = ReadState(stateFile);
         foreach (var r in records)
         {
-            var file = Path.Combine(_packs, r.Id + ".json.gz");
+            var file = Path.Combine(packsFolder, r.Id + ".json.gz");
             try
             {
                 if (File.Exists(file) && Sha(file) == r.Sha256) File.Delete(file);
@@ -183,7 +205,7 @@ public sealed partial class PackUpdater
             catch (Exception e) when (e is IOException
                 or UnauthorizedAccessException) { }
         }
-        try { File.Delete(_stateFile); }
+        try { File.Delete(stateFile); }
         catch (Exception e) when (e is IOException
             or UnauthorizedAccessException) { }
     }
@@ -202,9 +224,9 @@ public sealed partial class PackUpdater
         }
     }
 
-    async Task<List<(string Id, string Title, long Version, string Sha)>?> GetListAsync(CancellationToken ct)
+    async Task<List<(string Id, string Title, long Version, string Sha)>?> GetListAsync(string lang, CancellationToken ct)
     {
-        var response = await PoolHttp.SendAsync(_http, new HttpRequestMessage(HttpMethod.Get, new Uri(_base!, "v1/packs")),
+        var response = await PoolHttp.SendAsync(_http, new HttpRequestMessage(HttpMethod.Get, new Uri(_base!, "v1/packs?lang=" + lang)),
             TimeSpan.FromSeconds(60), "packs", ct).ConfigureAwait(false);
         if (response is null || !response.Ok) return null;
         using var doc = PoolHttp.Parse(response.Body);
@@ -214,6 +236,9 @@ public sealed partial class PackUpdater
         foreach (var p in packs.EnumerateArray())
         {
             if (p.ValueKind != JsonValueKind.Object) continue;
+            // Sunucu dili yanlış ya da eski sunucu dil bilmiyorsa: başka dilin paketi bu klasöre inmez.
+            if (p.TryGetProperty("lang", out var pl) && pl.ValueKind == JsonValueKind.String && pl.GetString() != lang) continue;
+            if (!p.TryGetProperty("lang", out _) && lang != "tr") continue;
             var id = p.TryGetProperty("id", out var i) && i.ValueKind == JsonValueKind.String ? i.GetString()! : "";
             var title = p.TryGetProperty("title", out var t) && t.ValueKind == JsonValueKind.String ? t.GetString()! : id;
             var version = p.TryGetProperty("version", out var v) && v.TryGetInt64(out var vv) ? vv : 0;
@@ -223,19 +248,19 @@ public sealed partial class PackUpdater
         return list;
     }
 
-    async Task<byte[]?> DownloadAsync(string id, CancellationToken ct)
+    async Task<byte[]?> DownloadAsync(string id, string lang, CancellationToken ct)
     {
-        var response = await PoolHttp.SendAsync(_http, new HttpRequestMessage(HttpMethod.Get, new Uri(_base!, "v1/packs/" + id)),
+        var response = await PoolHttp.SendAsync(_http, new HttpRequestMessage(HttpMethod.Get, new Uri(_base!, "v1/packs/" + id + "?lang=" + lang)),
             TimeSpan.FromSeconds(60), "packs", ct).ConfigureAwait(false);
         return response is { Ok: true } && response.Body.Length > 0 ? response.Body : null;
     }
 
-    (double Checked, List<Record> Records) ReadState()
+    static (double Checked, List<Record> Records) ReadState(string stateFile)
     {
         try
         {
-            if (!File.Exists(_stateFile)) return (0, []);
-            using var doc = JsonDocument.Parse(File.ReadAllBytes(_stateFile));
+            if (!File.Exists(stateFile)) return (0, []);
+            using var doc = JsonDocument.Parse(File.ReadAllBytes(stateFile));
             var root = doc.RootElement;
             var checkedAt = root.TryGetProperty("checked", out var c) && c.TryGetDouble(out var cv) ? cv : 0;
             var records = new List<Record>();
@@ -252,7 +277,7 @@ public sealed partial class PackUpdater
         }
     }
 
-    void WriteState(double checkedAt, IEnumerable<Record> records)
+    static void WriteState(string stateFile, double checkedAt, IEnumerable<Record> records)
     {
         var json = PoolHttp.Json(w =>
         {
@@ -271,7 +296,7 @@ public sealed partial class PackUpdater
             w.WriteEndArray();
             w.WriteEndObject();
         });
-        try { FileIo.WriteAtomic(_stateFile, json); }
+        try { FileIo.WriteAtomic(stateFile, json); }
         catch (Exception e) when (e is IOException
             or UnauthorizedAccessException) { }
     }
