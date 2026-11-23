@@ -56,14 +56,14 @@ while read -r name; do
 done < <(objdump -p "$dll" | sed -n 's/^[[:space:]]*DLL Name: //p')
 [ $bad -eq 0 ] || exit 1
 
-# Dışa aktarım denetimi.
-exports="$(objdump -p "$dll")"
+# Dışa aktarım denetimi (çıktı dosyaya yazılır; büyük metinde bash yerine koyma çok yavaş).
+exports_file="$build/exports.txt"
+objdump -p "$dll" | tr -d '\r' > "$exports_file"
 for fn in nino_rp_init nino_rp_discover nino_rp_discover_ex nino_rp_wake nino_rp_register \
           nino_rp_session_start nino_rp_session_set_login_pin nino_rp_session_stop; do
-  # grep -q erken çıkınca "echo |" SIGPIPE alır ve pipefail hatayı yanlış bildirir; bu yüzden here-string.
-  grep -q "[[:space:]]$fn\$" <<<"${exports//$'\r'/}" || {
+  grep -q "[[:space:]]$fn\$" "$exports_file" || {
     echo "dışa aktarım yok: $fn"
-    echo "$exports" | sed -n '/Export Address Table/,/^$/p;/\[Ordinal\/Name Pointer\] Table/,/^$/p'
+    sed -n '/Export Address Table/,/^$/p;/\[Ordinal\/Name Pointer\] Table/,/^$/p' "$exports_file"
     exit 1
   }
 done
