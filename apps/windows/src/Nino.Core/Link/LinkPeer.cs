@@ -97,9 +97,10 @@ public sealed class LinkPeer : IAsyncDisposable
     /// <summary>
     /// Bağlantıyı yürütür ve bitince nasıl bittiğini döner. <paramref name="onReady"/> <c>welcome</c>'dan hemen sonra,
     /// mesaj gönderilmeden önce çağrılır (hazırlık mesajlarını <see cref="Send"/> ile kuyruğa koyar).
+    /// <paramref name="active"/>: verilirse <c>hello</c> gönderici durumunu (<c>active</c>) taşır (yalnız 47800 girişi).
     /// </summary>
     public async Task<LinkEnd> RunAsync(string device, string client, int version, Action<LinkPeer>? onReady,
-        CancellationToken ct)
+        CancellationToken ct, Func<bool>? active = null)
     {
         using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, stop.Token);
         var token = linked.Token;
@@ -108,6 +109,7 @@ public sealed class LinkPeer : IAsyncDisposable
         try
         {
             var hello = new WireObject { ["version"] = version, ["device"] = device, ["client"] = client };
+            if (active is not null) hello["active"] = active();
             await SendNowAsync(TvWire.Envelope("hello", hello), token).ConfigureAwait(false);
 
             using (var welcomeWait = CancellationTokenSource.CreateLinkedTokenSource(token))

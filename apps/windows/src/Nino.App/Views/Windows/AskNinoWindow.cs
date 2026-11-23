@@ -282,6 +282,8 @@ public sealed class AskNinoWindow : Window
                     var body = ReplyText(nino.Text, out var first);
                     var content = Ui.Column(body);
                     if (!string.IsNullOrEmpty(nino.ReportId)) content.Children.Add(Badge());
+                    if (i == entries.Count - 1 && nino.Options.Count > 0)
+                        content.Children.Add(OptionButtons(nino.Options, enabled: !waiting));
                     _messages.Children.Add(RobotRow(content, thinking: false));
                     live = first;
                     liveText = nino.Text;
@@ -314,6 +316,29 @@ public sealed class AskNinoWindow : Window
         }
         UpdateSend();
         Dispatcher.BeginInvoke(_scroll.ScrollToEnd, System.Windows.Threading.DispatcherPriority.Background);
+    }
+
+    /// <summary>
+    /// Teşhis sorusunun seçenekleri: balonun altında sarılarak dizilen ikincil haplar; basınca etiket aynen gönderilir.
+    /// Sağdan sola arayüzde ya da Arapça yazılı seçenekte akış sağdan sola.
+    /// </summary>
+    WrapPanel OptionButtons(IReadOnlyList<string> options, bool enabled)
+    {
+        var panel = new WrapPanel { Margin = new(0, 10, 0, 0), MaxWidth = BubbleWidth, HorizontalAlignment = HorizontalAlignment.Left };
+        if (L.IsRightToLeft || options.Any(o => RightToLeft.ForText(o) == FlowDirection.RightToLeft))
+            panel.FlowDirection = FlowDirection.RightToLeft;
+        foreach (var label in options)
+        {
+            var text = new TextBlock { Text = label, TextWrapping = TextWrapping.Wrap, FlowDirection = RightToLeft.ForText(label) };
+            var chip = new Button { Content = text, MinHeight = 34, Padding = new(14, 0, 14, 0), Margin = new(0, 0, 8, 8), IsEnabled = enabled }
+                .Styled("Button.Secondary");
+            chip.Fg("accentTextBrush");
+            AutomationNames.Set(chip, label);
+            var captured = label;
+            chip.Click += (_, _) => _chat.Choose(captured);
+            panel.Children.Add(chip);
+        }
+        return panel;
     }
 
     static Button ActionButton(string text, bool primary, Action click)

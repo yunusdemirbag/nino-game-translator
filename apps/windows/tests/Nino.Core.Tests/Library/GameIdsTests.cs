@@ -243,7 +243,7 @@ public class GameIdsTests
         var q = new LineQueue(new LineQueueOptions(folder, Server, "4.0.0", fake.Client(), Clock: new PoolClock(1_763_300_100),
             Random: () => 0.5, NewId: () => $"00000000-0000-4000-8000-{++ids:000000000000}"));
         Assert.True(q.Add("Where is Marco heading now?", "Grand Theft Auto VI", "s1"));
-        Assert.True(q.Add("The ferry leaves at sunrise", "community-grand-theft-auto-vi", "s1"));
+        Assert.True(q.Add("Meet me at the docks tonight", "community-grand-theft-auto-vi", "s1"));
         await q.SendAsync(force: true);
         q.Close();
 

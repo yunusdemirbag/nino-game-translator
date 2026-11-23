@@ -32,7 +32,7 @@ public class AiProtocolTests
     [InlineData("[Korkma, ortak.\nBen bakarım, dert etme.]", 2, "Korkma, ortak.|Ben bakarım, dert etme.")]
     [InlineData("[Hey, Sen]", 2, "Hey|Sen")]
     [InlineData("Şimdi çıkıyoruz.\nArkamda kal.", 2, "Şimdi çıkıyoruz.|Arkamda kal.")]
-    [InlineData("<think>\nTranslating one short line to Turkish…\n</think>\n\n[\"Koş!\"]", 1, "Koş!")]
+    [InlineData("<think>\nThe user wants [\"x\"] translated…\n</think>\n\n[\"Koş!\"]", 1, "Koş!")]
     public void YanitOkuma(string text, int count, string expected) =>
         Assert.Equal(expected.Split('|'), AiProtocol.ParseList(text, count));
 

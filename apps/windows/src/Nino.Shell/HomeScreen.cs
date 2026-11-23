@@ -211,28 +211,41 @@ public sealed record HomeFooterInput
     public bool IsTranslating { get; init; }
     public bool HasConsole { get; init; }
     public string? ConsoleName { get; init; }
+
+    /// <summary>Kaynağın (PS5, pencere, kart) uzun durum metni (ipucu).</summary>
     public string ConsoleStatusText { get; init; } = "";
+
+    /// <summary>Kaynağın (PS5, pencere, kart) kısa durum etiketi (şeritte).</summary>
+    public string ConsoleShortText { get; init; } = "";
     public StatusTone ConsoleTone { get; init; }
     public bool ShowsOnTv { get; init; }
     public bool TvPaired { get; init; }
-    public string TvStatusText { get; init; } = "";
+
+    /// <summary>Bağlı TV uygulaması sayısı.</summary>
+    public int ConnectedTvs { get; init; }
     public StatusTone TvTone { get; init; }
-    public string TranslationSourceText { get; init; } = "";
+
+    /// <summary>Sağdaki bağlantının değeri (<see cref="TranslationLinkRule"/>).</summary>
+    public string TranslationValue { get; init; } = "";
 }
 
-/// <summary>Alt şeridin hesaplanmış hali.</summary>
+/// <summary>Alt şeridin hesaplanmış hali. Şeritte yalnız kısa durum yazar; uzun açıklama ögenin ipucundadır.</summary>
 /// <param name="SourceName">Görüntünün kaynağının adı (yarı kalın).</param>
-/// <param name="SourceValue">Görüntünün kaynağının değeri.</param>
+/// <param name="SourceValue">Görüntünün kaynağının kısa değeri.</param>
+/// <param name="SourceHelp">Görüntünün kaynağının uzun açıklaması (ipucu).</param>
 /// <param name="SourceTone">Görüntünün kaynağı noktası.</param>
-/// <param name="TvVisible">TV noktası ve yazısı görünür mü.</param>
-/// <param name="TvValue">TV değeri.</param>
+/// <param name="TvVisible">TV ögesi görünür mü (altyazı TV'ye gidiyorsa).</param>
+/// <param name="TvValue">TV'nin kısa değeri (kurulu değilse "Bağlayın ›").</param>
+/// <param name="TvHelp">TV'nin uzun açıklaması (ipucu).</param>
 /// <param name="TvTone">TV noktası.</param>
-/// <param name="TvClickOpensSetup">TV yazısına tıklayınca kurulumun TV adımı açılır mı.</param>
-/// <param name="TranslationSource">Sağdaki bağlantıdaki çeviri kaynağı adı.</param>
-public sealed record HomeFooterState(string SourceName, string SourceValue, StatusTone SourceTone, bool TvVisible,
-    string TvValue, StatusTone TvTone, bool TvClickOpensSetup, string TranslationSource);
+/// <param name="TranslationValue">Sağdaki bağlantının değeri.</param>
+public sealed record HomeFooterState(string SourceName, string SourceValue, string SourceHelp, StatusTone SourceTone,
+    bool TvVisible, string TvValue, string TvHelp, StatusTone TvTone, string TranslationValue);
 
-/// <summary>Alt şerit kuralları (ana-ekran §3.2).</summary>
+/// <summary>
+/// Alt şerit kuralları (Mac'in alt şeridiyle aynı): solda görüntü kaynağı ve TV, ortada güncelleme, sağda çeviri bağlantısı.
+/// TV ögesine tıklayınca her zaman kurulumun TV adımı açılır.
+/// </summary>
 public static class HomeFooter
 {
     /// <summary>Alt şeridi hesaplar.</summary>
@@ -242,13 +255,34 @@ public static class HomeFooter
             : i.UsesCaptureCard ? text.Get("status.card.defaultName")
             : i.ConsoleTitle;
         var ready = i.OnStreamPath && !i.IsXbox && i.FrameSourceIsPs5 && !i.IsTranslating && i.HasConsole;
-        var value = ready
+        var readyText = ready
             ? text.Format("home.footer.ps5Ready", string.IsNullOrEmpty(i.ConsoleName) ? "PS5" : i.ConsoleName)
-            : i.ConsoleStatusText;
-        var tvValue = i.TvPaired ? i.TvStatusText : text.Get("home.footer.connectTv");
-        var tvTone = i.TvPaired ? i.TvTone : StatusTone.Warning;
-        return new HomeFooterState(name, value, i.ConsoleTone, i.ShowsOnTv, tvValue, tvTone, !i.TvPaired,
-            i.TranslationSourceText);
+            : null;
+        var value = readyText ?? (i.ConsoleShortText is { Length: > 0 } shortText ? shortText : i.ConsoleStatusText);
+        var help = readyText ?? i.ConsoleStatusText;
+
+        string tvValue, tvHelp;
+        StatusTone tvTone;
+        if (!i.TvPaired)
+        {
+            tvValue = text.Get("home.short.tvSetUp") + " ›";
+            tvHelp = text.Get("home.tv.connect");
+            tvTone = StatusTone.Warning;
+        }
+        else if (i.ConnectedTvs > 0)
+        {
+            tvValue = text.Get("status.common.connected");
+            tvHelp = tvValue;
+            tvTone = i.TvTone;
+        }
+        else
+        {
+            tvValue = text.Get("home.short.tvWaiting");
+            tvHelp = text.Get("status.tv.waitingForApp");
+            tvTone = i.TvTone;
+        }
+        return new HomeFooterState(name, value, help, i.ConsoleTone, i.ShowsOnTv, tvValue, tvHelp, tvTone,
+            i.TranslationValue);
     }
 
     /// <summary>Alt şerit girdilerini denetleyiciden okur.</summary>
@@ -267,12 +301,13 @@ public static class HomeFooter
             HasConsole = c.HasConsole,
             ConsoleName = c.ConsoleName,
             ConsoleStatusText = c.ConsoleStatusText,
+            ConsoleShortText = c.ConsoleShortStatusText,
             ConsoleTone = c.ConsoleTone,
             ShowsOnTv = c.ShowsOnTv,
             TvPaired = c.TvPaired,
-            TvStatusText = c.TvStatusText,
+            ConnectedTvs = c.ConnectedTvs,
             TvTone = c.TvTone,
-            TranslationSourceText = c.TranslationSourceText,
+            TranslationValue = c.TranslationLinkValue,
         };
     }
 }

@@ -17,7 +17,11 @@ public sealed class HomeScreenTests
         ["home.footer.gameWindow"] = "Pencereden",
         ["status.card.defaultName"] = "Kart",
         ["home.footer.ps5Ready"] = "%@ · hazır",
-        ["home.footer.connectTv"] = "TV Bağlayın ›",
+        ["home.short.tvSetUp"] = "Bağlayın",
+        ["home.short.tvWaiting"] = "Bekleniyor",
+        ["home.tv.connect"] = "TV bağlayın",
+        ["status.common.connected"] = "Bağlı",
+        ["status.tv.waitingForApp"] = "TV'de Nino bekleniyor",
     });
 
     // ---- Yay (§4.9) ----
@@ -190,11 +194,12 @@ public sealed class HomeScreenTests
         HasConsole = true,
         ConsoleName = "PS5-123",
         ConsoleStatusText = "PS5-123 ile eşleşti.",
+        ConsoleShortText = "Eşli",
         ShowsOnTv = true,
         TvPaired = true,
-        TvStatusText = "Bağlı",
+        ConnectedTvs = 1,
         TvTone = StatusTone.Good,
-        TranslationSourceText = "Ücretsiz",
+        TranslationValue = "Nino",
     };
 
     [Fact]
@@ -203,21 +208,26 @@ public sealed class HomeScreenTests
         var state = HomeFooter.Compute(Ps5Ready, Text);
         Assert.Equal("PS5", state.SourceName);
         Assert.Equal("PS5-123 · hazır", state.SourceValue);
+        Assert.Equal("PS5-123 · hazır", state.SourceHelp);
         Assert.Equal("Bağlı", state.TvValue);
         Assert.Equal(StatusTone.Good, state.TvTone);
-        Assert.False(state.TvClickOpensSetup);
-        Assert.Equal("Ücretsiz", state.TranslationSource);
+        Assert.Equal("Nino", state.TranslationValue);
         Assert.Equal("PS5 · hazır", HomeFooter.Compute(Ps5Ready with { ConsoleName = "" }, Text).SourceValue);
     }
 
     [Fact]
-    public void FooterFallsBackToStatusText()
+    public void FooterShowsShortValueAndLongHelp()
     {
-        Assert.Equal("Bağlanıyor…", HomeFooter.Compute(Ps5Ready with { IsTranslating = true, ConsoleStatusText = "Bağlanıyor…" }, Text).SourceValue);
-        Assert.Equal("Durum", HomeFooter.Compute(Ps5Ready with { IsXbox = true, ConsoleStatusText = "Durum" }, Text).SourceValue);
-        Assert.Equal("Durum", HomeFooter.Compute(Ps5Ready with { FrameSourceIsPs5 = false, ConsoleStatusText = "Durum" }, Text).SourceValue);
-        Assert.Equal("Durum", HomeFooter.Compute(Ps5Ready with { HasConsole = false, ConsoleStatusText = "Durum" }, Text).SourceValue);
-        Assert.Equal("Durum", HomeFooter.Compute(Ps5Ready with { OnStreamPath = false, ConsoleStatusText = "Durum" }, Text).SourceValue);
+        var translating = HomeFooter.Compute(Ps5Ready with
+        {
+            IsTranslating = true, ConsoleShortText = "Uykuda", ConsoleStatusText = "PS5 uykuda; açın.",
+        }, Text);
+        Assert.Equal("Uykuda", translating.SourceValue);
+        Assert.Equal("PS5 uykuda; açın.", translating.SourceHelp);
+        Assert.Equal("Durum", HomeFooter.Compute(Ps5Ready with { IsXbox = true, ConsoleShortText = "", ConsoleStatusText = "Durum" }, Text).SourceValue);
+        Assert.Equal("Eşli", HomeFooter.Compute(Ps5Ready with { FrameSourceIsPs5 = false }, Text).SourceValue);
+        Assert.Equal("Eşli", HomeFooter.Compute(Ps5Ready with { HasConsole = false }, Text).SourceValue);
+        Assert.Equal("Eşli", HomeFooter.Compute(Ps5Ready with { OnStreamPath = false }, Text).SourceValue);
     }
 
     [Fact]
@@ -229,13 +239,17 @@ public sealed class HomeScreenTests
     }
 
     [Fact]
-    public void FooterAsksToConnectATv()
+    public void FooterTvStates()
     {
-        var state = HomeFooter.Compute(Ps5Ready with { TvPaired = false, TvTone = StatusTone.Idle }, Text);
-        Assert.True(state.TvVisible);
-        Assert.Equal("TV Bağlayın ›", state.TvValue);
-        Assert.Equal(StatusTone.Warning, state.TvTone);
-        Assert.True(state.TvClickOpensSetup);
+        var setUp = HomeFooter.Compute(Ps5Ready with { TvPaired = false, TvTone = StatusTone.Idle }, Text);
+        Assert.True(setUp.TvVisible);
+        Assert.Equal("Bağlayın ›", setUp.TvValue);
+        Assert.Equal("TV bağlayın", setUp.TvHelp);
+        Assert.Equal(StatusTone.Warning, setUp.TvTone);
+        var waiting = HomeFooter.Compute(Ps5Ready with { ConnectedTvs = 0, TvTone = StatusTone.Idle }, Text);
+        Assert.Equal("Bekleniyor", waiting.TvValue);
+        Assert.Equal("TV'de Nino bekleniyor", waiting.TvHelp);
+        Assert.Equal(StatusTone.Idle, waiting.TvTone);
         Assert.False(HomeFooter.Compute(Ps5Ready with { ShowsOnTv = false }, Text).TvVisible);
     }
 

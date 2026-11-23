@@ -68,7 +68,7 @@ public class TextCatalogTests
         var other = Raw(language);
         // Yalnız harf içeren ve marka adı olmayan uzun metinler: İngilizceyle aynı kalmamalı.
         var same = en.Keys
-            .Where(k => en[k].Length > 24 && en[k] == other[k])
+            .Where(k => en[k].Length > 24 && en[k] == other[k] && k != "about.basedOn")
             .ToList();
         Assert.Empty(same);
     }

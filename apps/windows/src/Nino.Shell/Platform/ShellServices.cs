@@ -140,6 +140,14 @@ public interface IShellServices
     Task<FoundPs5?> RunningGameAsync(string host, CancellationToken cancellationToken = default) =>
         Task.FromResult<FoundPs5?>(null);
 
+    // ---- Kullanıcı ----
+
+    /// <summary>(V) Bilgisayarın bölgesi (ISO iki harf, ör. "TR"); null ise .NET'in bölgesi kullanılır.</summary>
+    string? RegionCode => null;
+
+    /// <summary>(V) Hesabın görünen adı (oda adı önerisi için); null ise oturum kullanıcı adı.</summary>
+    string? AccountName => null;
+
     // ---- Xbox ----
 
     /// <summary>(V) Xbox hizmeti; yoksa Xbox yayını bu sürümde yok.</summary>
@@ -183,6 +191,12 @@ public interface IShellServices
 
     /// <summary>TV bekçisi.</summary>
     ITvWatch CreateTvWatch(TvWatchRequest request);
+
+    /// <summary>
+    /// TV açık mı: markanın uyanık uçlarından biri (<see cref="UpdateRules.WakePorts"/>) 2 sn içinde bağlantı kabul ediyor
+    /// mu ("Güncellemeleri Denetle"nin TV satırı; yalnız okur).
+    /// </summary>
+    Task<bool> TvAwakeAsync(TvRecord tv, CancellationToken cancellationToken = default) => Task.FromResult(false);
 
     /// <summary>(V) Paketle gelen LG uygulamasının sürümü.</summary>
     string? LgPackageVersion => null;

@@ -106,4 +106,41 @@ public sealed class WindowsShellServices : CoreShellServices, IShellServices
             return (model, DeviceInfo.WindowsName(v.Major, v.Minor, v.Build));
         }
     }
+
+    /// <summary>Windows'un "Ülke veya bölge" ayarı (biçim dilinden bağımsız).</summary>
+    public string? RegionCode
+    {
+        get
+        {
+            try
+            {
+                var buffer = new char[16];
+                var n = GetUserDefaultGeoName(buffer, buffer.Length);
+                return n > 1 ? new string(buffer, 0, n - 1) : null;
+            }
+            catch (Exception) { return null; }
+        }
+    }
+
+    /// <summary>Hesabın görünen adı (ör. Microsoft hesabındaki ad); yoksa null.</summary>
+    public string? AccountName
+    {
+        get
+        {
+            try
+            {
+                var size = 256u;
+                var buffer = new char[size];
+                return GetUserNameExW(3, buffer, ref size) && size > 0 ? new string(buffer, 0, (int)size) : null;
+            }
+            catch (Exception) { return null; }
+        }
+    }
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+    static extern int GetUserDefaultGeoName([System.Runtime.InteropServices.Out] char[] geoName, int geoNameCount);
+
+    [System.Runtime.InteropServices.DllImport("secur32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
+    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.U1)]
+    static extern bool GetUserNameExW(int nameFormat, [System.Runtime.InteropServices.Out] char[] name, ref uint size);
 }

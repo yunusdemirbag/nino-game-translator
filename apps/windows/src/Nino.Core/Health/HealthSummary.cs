@@ -22,9 +22,9 @@ public static class HealthSummary
             $"akış: {HealthFormat.Invariant(s.StreamedMinutes, "0.0")} dk, bağlanma denemesi {s.ConnectAttempts}, " +
             $"bağlandı {s.Connects}, akışta kopma {s.Drops}",
             $"son kopma sebebi: {(string.IsNullOrEmpty(s.LastReason) ? "-" : s.LastReason)}",
-            $"tekrar istenen paket {s.Resends}, dolan tampon {s.Overflows}, dakikada {Rate(s.LossPerMinute)} kayıp",
+            $"yeniden gönderim {s.Resends}, tampon taşması {s.Overflows} (kayıp {Rate(s.LossPerMinute)}/dk)",
             $"görüntü durması {s.Stalls} ({Rate(s.StallsPerMinute)}/dk), bozuk kare {s.CorruptFrames}",
-            $"{s.Lines} satır okundu, {s.Translations} çevrildi; çeviri süresi ortanca " +
+            $"altyazı satırı {s.Lines}, çeviri {s.Translations}, ortanca " +
             (s.MedianTranslationMs is { } m ? $"{m} ms" : "-") + $", en uzun {s.LongestTranslationMs} ms",
         ];
     }

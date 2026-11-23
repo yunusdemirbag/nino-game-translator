@@ -110,6 +110,7 @@ public static class SettingsRules
     public static bool ApplyWriteRules(AppSettings previous, AppSettings next, int logicalProcessors)
     {
         next.CpuTranslationThreads = NormalizeCpuThreads(next.CpuTranslationThreads, logicalProcessors);
+        next.GameRoomName = Design.GameRoomSign.CleanName(next.GameRoomName);
 
         var frameChanged = next.FrameSource != previous.FrameSource;
         var videoChanged = next.VideoSource != previous.VideoSource;

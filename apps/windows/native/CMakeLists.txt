@@ -15,7 +15,7 @@ project(nino_native C)
 
 set(NINO_CHIAKI_DIR "" CACHE PATH "chiaki-ng v1.10.1 kaynak klasörü")
 set(NINO_FFMPEG_PREFIX "" CACHE PATH "FFmpeg kurulum öneki")
-option(NINO_NATIVE_TESTS "native_tests programını da üret" ON)
+option(NINO_NATIVE_TESTS "Yerel testleri derle" ON)
 option(NINO_NATIVE_ASAN "Her şeyi AddressSanitizer ile derle (yalnız test)" OFF)
 
 if(NOT NINO_CHIAKI_DIR OR NOT EXISTS "${NINO_CHIAKI_DIR}/lib/include/chiaki/session.h")

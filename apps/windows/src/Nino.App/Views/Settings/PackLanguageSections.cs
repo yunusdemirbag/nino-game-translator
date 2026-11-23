@@ -16,7 +16,7 @@ using Nino.Shell.Panels;
 
 namespace Nino.App.Views;
 
-/// <summary>§6 Paketler: açıklama, içe aktarma, paket karoları ve seçenekler kartı.</summary>
+/// <summary>Gizli Paketler bölümü (Mac'te de gizli): açıklama, içe aktarma, paket karoları ve iki seçenek.</summary>
 internal sealed class GamePacksSection(SettingsWindow host) : SettingsSection(host)
 {
     Pill? _pill;
@@ -24,24 +24,24 @@ internal sealed class GamePacksSection(SettingsWindow host) : SettingsSection(ho
     Button? _import;
     bool _closed;
 
-    public override string SectionTitle => L.Get("pack.settings.title");
+    public override SettingsPage Page => SettingsPage.Packs;
 
     protected override void Build()
     {
         _pill = new Pill { VerticalAlignment = VerticalAlignment.Center };
-        Children.Add(Ui.Split(Ui.Display(SectionTitle), _pill).At(0, 0, 0, 8));
-        Children.Add(Ui.Secondary(L.Get("settings.packs.description")).At(0, 0, 0, 16));
-        _import = Ui.Button(L.Get("settings.packs.import"), () => _ = ImportAsync()).At(0, 0, 0, 16);
+        AddHeader(_pill);
+        Children.Add(Ui.Secondary(L.Get("settings.packs.hint")).At(0, 0, 0, 12));
+        _import = Ui.Button(L.Get("settings.packs.import"), () => _ = ImportAsync()).At(0, 0, 0, 12);
+        _import.HorizontalAlignment = HorizontalAlignment.Left;
         Children.Add(_import);
         Children.Add(_list);
         RenderList();
 
+        // Mac'teki gibi: paketleri aç ve havuzla paylaş. "Oyunu bana sor" kalktı (oyun seçme penceresi yok);
+        // konuşanın adı Görünüş bölümü kartına taşındı.
         var options = new StackPanel();
-        AddOption(options, "settings.packs.useGamePacks", null, s => s.GamePacks, (s, v) => s.GamePacks = v, first: true);
-        AddOption(options, "settings.packs.sharePool", "settings.packs.sharePoolHint", s => s.SharePool, (s, v) => s.SharePool = v);
-        AddOption(options, "settings.packs.askGame", "settings.packs.askGameHint", s => s.AskGame, (s, v) => s.AskGame = v);
-        AddOption(options, "settings.packs.speakerNames", "settings.packs.speakerNamesHint", s => s.ShowSpeakerNames,
-            (s, v) => s.ShowSpeakerNames = v);
+        AddOption(options, "settings.packs.use", null, s => s.GamePacks, (s, v) => s.GamePacks = v, first: true);
+        AddOption(options, "settings.packs.share", "settings.packs.shareHint", s => s.SharePool, (s, v) => s.SharePool = v);
         Children.Add(new Card { Content = options, Padding = new(20, 4, 20, 4) });
     }
 
@@ -69,7 +69,7 @@ internal sealed class GamePacksSection(SettingsWindow host) : SettingsSection(ho
         var packs = C.Packs;
         if (_pill is not null)
         {
-            _pill.Text = L.Format("settings.packs.pill", packs.Count);
+            _pill.Text = L.Format("settings.packs.badge", packs.Count);
             _pill.Shown(packs.Count > 0);
         }
         _list.Children.Clear();
@@ -145,7 +145,7 @@ internal sealed class LanguageSection(SettingsWindow host) : SettingsSection(hos
     static readonly string[] Sources = ["en", "ja", "de", "fr", "es"];
     TextBlock? _hint;
 
-    public override string SectionTitle => L.Get("settings.section.language");
+    public override SettingsPage Page => SettingsPage.Language;
 
     protected override void Build()
     {

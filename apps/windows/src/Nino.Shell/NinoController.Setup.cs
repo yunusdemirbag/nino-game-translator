@@ -216,7 +216,7 @@ public sealed partial class NinoController
         UpdateSettings(next);
     }
 
-    /// <summary>Oyun bu bilgisayardaki PS Remote Play penceresinde oynanıyor.</summary>
+    /// <summary>"Yerel bilgisayarda PS Remote Play ile oynuyorum".</summary>
     public void UseGameWindowHere()
     {
         ChangeSettings(s =>

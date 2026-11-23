@@ -148,7 +148,7 @@ public sealed class GameSense
     /// <summary>Ekrandan tanınan oyun (boşsa silinir).</summary>
     public void SetScreen(string? name) => Screen = RunningGame.WithName(name);
 
-    /// <summary>Kullanıcıya soru kartı çıktı ya da "Sorma" seçildi.</summary>
+    /// <summary>Soru kartı gösterildi ya da "Sorma"ya basıldı.</summary>
     public void MarkAsked() => Asked = true;
 
     /// <summary>Yeni oturum: son kayıtlar, paket oyunu, PS5 oyunu silinir; kullanıcının seçimi ve ekrandan tanınan kalır.</summary>
@@ -208,7 +208,7 @@ public sealed class ScreenCheckSchedule
         _attempts++;
     }
 
-    /// <summary>İstek sona erdi; başarılı olsun olmasın.</summary>
+    /// <summary>İstek bitti (sonuç ne olursa olsun).</summary>
     public void Finish() => _running = false;
 }
 

@@ -38,7 +38,7 @@ public sealed class MapReader
     /// <summary>Kart kutusunun izinde "değişti" sayılmak için değişmesi gereken örnek oranı.</summary>
     public const double ChangedShare = 0.10;
 
-    /// <summary>Haritada okunacak alan; üstteki sekmeler ve alt kenar dışarıda kalır.</summary>
+    /// <summary>Okunan bölge (sekme şeridi ve alt kenar hariç).</summary>
     public static readonly Box ReadArea = new(0, 0.03, 1, 0.95);
 
     readonly OverlayServices _s;

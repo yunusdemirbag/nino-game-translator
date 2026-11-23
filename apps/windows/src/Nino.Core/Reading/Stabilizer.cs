@@ -17,7 +17,7 @@ public enum StabilizerAction
     /// <summary>Ekrandaki satır kalktı.</summary>
     Clear,
 
-    /// <summary>Kısa süre önce silinen satır yeniden göründü (<see cref="StabilizerReaction.Text"/> ilk gönderilen hali).</summary>
+    /// <summary>Az önce kalkan satır geri geldi (<see cref="StabilizerReaction.Text"/> ilk gönderilen hali).</summary>
     Restore,
 }
 

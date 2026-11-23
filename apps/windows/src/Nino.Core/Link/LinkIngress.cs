@@ -116,6 +116,14 @@ public sealed class LinkIngress : IDisposable
         foreach (var p in targets) p.Send(message);
     }
 
+    /// <summary>
+    /// Gönderici etkin mi (çeviri sürüyor ve altyazı TV'ye gidiyor). <c>/nino/info</c> ve <c>hello</c> bunu
+    /// <c>active</c> olarak taşır; değişince <see cref="TvOutput"/> bağlı TV'lere <c>state</c> yollar.
+    /// </summary>
+    public bool Active { get => Volatile.Read(ref active); set => Volatile.Write(ref active, value); }
+
+    bool active;
+
     /// <summary><c>/nino/info</c> gövdesi.</summary>
     public string InfoJson() => TvWire.Envelope("info", new WireObject
     {
@@ -124,6 +132,7 @@ public sealed class LinkIngress : IDisposable
         ["name"] = identity.Name,
         ["id"] = identity.Id,
         ["role"] = "sender",
+        ["active"] = Active,
     });
 
     async Task AcceptLoopAsync(TcpListener l, CancellationToken ct)
@@ -208,7 +217,7 @@ public sealed class LinkIngress : IDisposable
                 try { OnReady?.Invoke(p); } catch (Exception) { }
                 Notify();
                 try { PeerConnected?.Invoke(p); } catch (Exception) { }
-            }, ct).ConfigureAwait(false);
+            }, ct, () => Active).ConfigureAwait(false);
         }
         catch (Exception) when (!ct.IsCancellationRequested)
         {

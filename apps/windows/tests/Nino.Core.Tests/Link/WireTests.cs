@@ -51,11 +51,11 @@ public class WireTests
     [Fact]
     public void SubtitleFrameMatchesExample()
     {
-        var e = new SubtitleShown("Günaydın", 4000, new Box(0.25, 0.8, 0.75, 0.87499));
+        var e = new SubtitleShown("Merhaba", 4000, new Box(0.25, 0.8, 0.75, 0.87499));
         var frame = TvWire.LegacyFrame(e, 1234);
         Assert.StartsWith("event: subtitle\ndata: ", frame);
         Assert.EndsWith("\n\n", frame);
-        Assert.Equal("{\"at\":1234,\"box\":{\"bottom\":0.875,\"left\":0.25,\"right\":0.75,\"top\":0.8},\"duration\":4000,\"text\":\"Günaydın\"}",
+        Assert.Equal("{\"at\":1234,\"box\":{\"bottom\":0.875,\"left\":0.25,\"right\":0.75,\"top\":0.8},\"duration\":4000,\"text\":\"Merhaba\"}",
             Data(frame));
         Assert.DoesNotContain("replace", frame);
 
@@ -76,13 +76,13 @@ public class WireTests
     public void ScreenFrameMatchesExample()
     {
         var e = new ScreenShown([
-            new ScreenItem(new Box(0.05, 0.3, 0.2, 0.4), "Envanter\nHarita") { Line = 0.03 },
-            new ScreenItem(new Box(0.4, 0.8, 0.6, 0.84), "Işıkları söndür.") { Line = 0.04 },
+            new ScreenItem(new Box(0.05, 0.3, 0.2, 0.4), "Harita\nAyarlar") { Line = 0.03 },
+            new ScreenItem(new Box(0.4, 0.8, 0.6, 0.84), "Kapıyı aç.") { Line = 0.04 },
         ], 12000);
         var body = Data(TvWire.LegacyFrame(e, 0));
         Assert.Contains("\"duration\":12000", body);
-        Assert.Contains("{\"box\":{\"bottom\":0.4,\"left\":0.05,\"right\":0.2,\"top\":0.3},\"line\":0.03,\"paragraphs\":true,\"text\":\"Envanter\\nHarita\"}", body);
-        Assert.Contains("{\"box\":{\"bottom\":0.84,\"left\":0.4,\"right\":0.6,\"top\":0.8},\"line\":0.04,\"text\":\"Işıkları söndür.\"}", body);
+        Assert.Contains("{\"box\":{\"bottom\":0.4,\"left\":0.05,\"right\":0.2,\"top\":0.3},\"line\":0.03,\"paragraphs\":true,\"text\":\"Harita\\nAyarlar\"}", body);
+        Assert.Contains("{\"box\":{\"bottom\":0.84,\"left\":0.4,\"right\":0.6,\"top\":0.8},\"line\":0.04,\"text\":\"Kapıyı aç.\"}", body);
         Assert.DoesNotContain("overlay", body);
     }
 
@@ -109,8 +109,8 @@ public class WireTests
     [Fact]
     public void RegionFramesMatchExamples()
     {
-        Assert.Equal("{\"box\":{\"bottom\":0.12,\"left\":0.7,\"right\":0.95,\"top\":0.05},\"id\":\"q\",\"line\":0.03,\"text\":\"Kuyuyu ara\"}",
-            Data(TvWire.LegacyFrame(new RegionShown("q", "Kuyuyu ara", new Box(0.7, 0.05, 0.95, 0.12), 0.03), 0)));
+        Assert.Equal("{\"box\":{\"bottom\":0.12,\"left\":0.7,\"right\":0.95,\"top\":0.05},\"id\":\"q\",\"line\":0.03,\"text\":\"Fenerciyi bul\"}",
+            Data(TvWire.LegacyFrame(new RegionShown("q", "Fenerciyi bul", new Box(0.7, 0.05, 0.95, 0.12), 0.03), 0)));
         Assert.Equal("{\"id\":\"q\",\"text\":\"\"}", Data(TvWire.LegacyFrame(new RegionShown("q", ""), 0)));
         Assert.Equal("event: region-clear\ndata: {}\n\n", TvWire.LegacyFrame(new RegionsCleared(), 0));
         Assert.Equal("event: screen-clear\ndata: {}\n\n", TvWire.LegacyFrame(new ScreenCleared(), 0));
@@ -202,7 +202,7 @@ public class WireTests
         output.Send(new ScreenShown([new ScreenItem(box, "Harita\nEnvanter"), new ScreenItem(box, "Ayrıl")], 12000));
         output.Send(new ScreenCleared());
         output.Send(new ScreenShown([new ScreenItem(box, "Lucia")], 120000, Overlay: true));
-        output.Send(new RegionShown("q", "Kuyuyu ara", box, 0.03));
+        output.Send(new RegionShown("q", "Fenerciyi bul", box, 0.03));
         output.Send(new RegionShown("q", ""));
         output.Send(new RegionsCleared());
         output.Send(new StyleChanged(new TvStyle()));
@@ -214,7 +214,7 @@ public class WireTests
             new LocalSubtitleEvent(LocalEventKind.Clear),
             new LocalSubtitleEvent(LocalEventKind.Screen, "Harita\nEnvanter\nAyrıl", 12000, Paragraphs: true),
             new LocalSubtitleEvent(LocalEventKind.ScreenClear),
-            new LocalSubtitleEvent(LocalEventKind.Region, "Kuyuyu ara", RegionId: "q", Box: box),
+            new LocalSubtitleEvent(LocalEventKind.Region, "Fenerciyi bul", RegionId: "q", Box: box),
             new LocalSubtitleEvent(LocalEventKind.Region, "", RegionId: "q"),
             new LocalSubtitleEvent(LocalEventKind.RegionClear),
         ], seen.Where(e => e.Kind != LocalEventKind.Overlay));

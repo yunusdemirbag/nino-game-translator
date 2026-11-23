@@ -20,7 +20,7 @@ public sealed record PhoneShape(Box Box, double TopLeft, double Slant, double Wi
     /// <summary><paramref name="y"/> yüksekliğinde ekranın ortası.</summary>
     public double CenterAt(double y) => LeftAt(y) + Width / 2;
 
-    /// <summary>Derece cinsinden eğiklik (saat yönü pozitif): <c>atan(−eğim × 16 / 9)</c>.</summary>
+    /// <summary>Dönme açısı (derece, saat yönü artı): <c>atan(−eğim × 16 / 9)</c>.</summary>
     public double AngleDegrees => Math.Atan(-Slant * 16 / 9) * 180 / Math.PI;
 }
 

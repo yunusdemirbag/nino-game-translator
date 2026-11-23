@@ -225,7 +225,7 @@ public sealed class ExtraAreaTracker(ITextReader reader, ITranslator translator,
             if (candidate.Key.Length == 0)
             {
                 ClearDrawn(area.Id, state);
-                log?.Invoke($"ek alan {area.Name} artık boş");
+                log?.Invoke($"ek alan {area.Name}: boşaldı");
                 return;
             }
         }

@@ -6,37 +6,52 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using Nino.App.Controls;
 using Nino.App.Strings;
+using Nino.App.Theme;
 using Nino.Core.Settings;
 using Nino.Shell;
+using Nino.Shell.Panels;
 
 namespace Nino.App.Views;
 
 /// <summary>
-/// Ayarlar penceresi (ayarlar tarifi §1): solda 240 genişlikte kenar çubuğu, sağda seçili bölüm, altta "Bitti".
-/// Bütün değişiklikler anında yazılır; Enter ve Esc pencereyi kapatır (kısayol kaydında ve yerel model kutularında hariç).
-/// Açmak için <see cref="Open"/> (tek pencere kuralı) ya da <c>new SettingsWindow(controller) { Owner = … }.Show()</c>.
+/// Ayarlar penceresi, Mac'le aynı yapı: açılışta gruplu liste (iPhone Ayarları gibi), satıra basınca bölüm sayfası
+/// sağdan kayarak gelir; üstte solda "Ayarlar" başlığı ya da "‹ Ayarlar" geri düğmesi, sağda "Bitti". Liste, gruplar,
+/// gizli bölümler ve bölüm renkleri <see cref="SettingsPages"/>'tan gelir (Linux paneliyle ortak). Değişiklikler anında
+/// yazılır. Esc ve Enter pencereyi kapatır (kısayol kaydında ve yerel model kutularında hariç); Alt+Sol geri döner.
 /// </summary>
 public sealed class SettingsWindow : Window
 {
     readonly NinoController _controller;
-    readonly ListBox _sidebar;
     readonly ScrollViewer _scroller;
-    readonly List<SettingsSection> _sections;
+    readonly ContentControl _topLeft = new() { Focusable = false, VerticalAlignment = VerticalAlignment.Center };
+    readonly Dictionary<SettingsPage, SettingsSection> _sections = [];
+    FrameworkElement? _list;
     SettingsSection? _current;
 
     /// <summary>Yayıncı penceresini açan iş (<c>StreamWindow</c> uygulama yüklenince atar).</summary>
     public static Action<Window>? OpenStreamWindow { get; set; }
 
-    /// <summary>Tek pencere kuralıyla açar.</summary>
-    public static SettingsWindow Open(NinoController controller, Window? owner) =>
-        Ui.ShowSingle(owner, () => new SettingsWindow(controller));
+    /// <summary>Tek pencere kuralıyla açar; <paramref name="page"/> verilirse doğrudan o bölüm açılır (liste atlanır).</summary>
+    public static SettingsWindow Open(NinoController controller, Window? owner, SettingsPage? page = null)
+    {
+        var window = Ui.ShowSingle(owner, () => new SettingsWindow(controller, page));
+        if (page is { } p && window._current?.Page != p) window.ShowPage(p, animate: false);
+        return window;
+    }
 
-    public SettingsWindow(NinoController controller)
+    public SettingsWindow(NinoController controller) : this(controller, null) { }
+
+    /// <param name="controller">Denetleyici.</param>
+    /// <param name="page">Açılışta gösterilecek bölüm (null: liste). Ekran dökümü de bunu kullanır.</param>
+    public SettingsWindow(NinoController controller, SettingsPage? page)
     {
         _controller = controller;
-        Ui.Prepare(this, L.Get("common.settings"));
+        Ui.Prepare(this, L.Get("settings.title"));
         Width = 1000;
         Height = 720;
         MinWidth = 860;
@@ -46,66 +61,29 @@ public sealed class SettingsWindow : Window
             Source = new Uri("pack://application:,,,/Nino;component/Views/Settings/SettingsStyles.xaml", UriKind.Absolute),
         });
 
-        _sections =
-        [
-            new InterfaceSection(this),
-            new ConnectionSection(this),
-            new SubtitleAppearanceSection(this),
-            new TranslationSection(this),
-            new GamePacksSection(this),
-            new LanguageSection(this),
-            new SubtitleAreaSection(this),
-            new ShortcutsSection(this),
-            new ObsSection(this),
-            new PictureSourceSection(this),
-            new PasscodeSection(this),
-            new SystemHealthSection(this),
-            new AboutSection(this),
-            new ResetSection(this),
-        ];
-
         var root = new Grid { Margin = new(24) };
-        root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
         root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+        root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
-        var body = new Grid();
-        body.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(240) });
-        body.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-
-        _sidebar = new ListBox().Styled("Settings.SidebarList");
-        _sidebar.Res(ItemsControl.ItemContainerStyleProperty, "Settings.SidebarItem");
-        _sidebar.SelectionChanged += (_, _) => ShowSelected();
-        var sideTitle = Ui.Title(L.Get("common.settings")).At(12, 0, 12, 12);
-        sideTitle.Fg("textPrimaryBrush");
-        var sideDock = new DockPanel();
-        DockPanel.SetDock(sideTitle, Dock.Top);
-        sideDock.Children.Add(sideTitle);
-        sideDock.Children.Add(_sidebar);
-        var sideCard = new Card { Content = sideDock, Padding = new(12, 20, 12, 20) };
-        sideCard.Res(ForegroundProperty, "textPrimaryBrush");
-        body.Children.Add(sideCard);
+        var done = Ui.Primary(L.Get("settings.done"), Close);
+        done.MinWidth = 100;
+        var top = Ui.Split(_topLeft, done, 16);
+        top.MinHeight = 40;
+        top.Margin = new(0, 0, 0, 16);
+        root.Children.Add(top);
 
         _scroller = new ScrollViewer
         {
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
             HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
-            Margin = new(16, 0, 0, 0),
             Focusable = false,
         };
-        Grid.SetColumn(_scroller, 1);
-        body.Children.Add(_scroller);
-        root.Children.Add(body);
-
-        var done = Ui.Primary(L.Get("common.done"), Close);
-        done.MinWidth = 120;
-        done.HorizontalAlignment = HorizontalAlignment.Right;
-        done.Margin = new(0, 16, 0, 0);
-        Grid.SetRow(done, 1);
-        root.Children.Add(done);
+        Grid.SetRow(_scroller, 1);
+        root.Children.Add(_scroller);
         Content = root;
 
-        RebuildSidebar();
-        _sidebar.SelectedIndex = 0;
+        if (page is { } start) ShowPage(start, animate: false);
+        else ShowList(animate: false);
 
         PreviewKeyDown += OnPreviewKeyDown;
         _controller.PropertyChanged += OnControllerChanged;
@@ -116,7 +94,7 @@ public sealed class SettingsWindow : Window
             _controller.PropertyChanged -= OnControllerChanged;
             _controller.FrameArrived -= OnFrameArrived;
             _controller.SnapshotRequested -= OnSnapshotRequested;
-            foreach (var s in _sections) s.WindowClosed();
+            foreach (var s in _sections.Values) s.WindowClosed();
         };
     }
 
@@ -125,44 +103,245 @@ public sealed class SettingsWindow : Window
     /// <summary>Kısayol kaydı sürüyorsa bütün tuşlar ona gider.</summary>
     internal ShortcutsSection? Capturing { get; set; }
 
-    void RebuildSidebar()
+    /// <summary>Şu an görünen bölüm bu mu.</summary>
+    internal bool IsCurrent(SettingsSection section) => _current == section;
+
+    // ---- Gezinme ----
+
+    void ShowList(bool animate)
     {
-        var selected = _current;
-        _sidebar.Items.Clear();
-        foreach (var section in _sections.Where(s => s.Available))
-            _sidebar.Items.Add(new ListBoxItem { Content = section.SectionTitle, Tag = section });
-        if (selected is not null)
+        _current?.Hidden();
+        _current = null;
+        var title = Ui.Display(L.Get("settings.title"));
+        title.FontWeight = FontWeights.Bold;
+        _topLeft.Content = title;
+        _list ??= BuildList();
+        Present(Centered(_list, SettingsPages.ContentWidth), fromRight: false, animate);
+    }
+
+    /// <summary>Bölümü açar (pencere açan satırlar dahil).</summary>
+    internal void Open(SettingsPage page)
+    {
+        switch (SettingsPages.Opens(page))
         {
-            var item = _sidebar.Items.OfType<ListBoxItem>().FirstOrDefault(i => i.Tag == selected);
-            if (item is not null) _sidebar.SelectedItem = item;
-            else _sidebar.SelectedIndex = 0;
+            case SettingsPageOpens.Window:
+                OpenWindow(page);
+                break;
+            case SettingsPageOpens.CloseThenAskNino:
+                var owner = Application.Current?.MainWindow ?? Owner;
+                var controller = _controller;
+                Close();
+                if (owner is null) return;
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(SettingsPages.AskNinoDelayMs) };
+                timer.Tick += (_, _) =>
+                {
+                    timer.Stop();
+                    ShellWindows.Show(ShellWindowKind.AskNino, owner, controller);
+                };
+                timer.Start();
+                break;
+            default:
+                ShowPage(page, animate: true);
+                break;
         }
     }
 
-    void ShowSelected()
+    void OpenWindow(SettingsPage page)
     {
-        if ((_sidebar.SelectedItem as ListBoxItem)?.Tag is not SettingsSection section || section == _current) return;
+        switch (page)
+        {
+            case SettingsPage.Health:
+                Ui.ShowSingle(this, () => new SystemHealthWindow(_controller));
+                break;
+            case SettingsPage.Report:
+                ReportProblemWindow.Open(_controller, this);
+                break;
+        }
+    }
+
+    void ShowPage(SettingsPage page, bool animate)
+    {
+        if (SettingsPages.Opens(page) != SettingsPageOpens.Page) return;
         _current?.Hidden();
+        var section = Section(page);
         _current = section;
         section.EnsureBuilt();
-        _scroller.Content = section;
-        _scroller.ScrollToTop();
+        _topLeft.Content = BackButton();
+        Present(Centered(section, SettingsPages.Width(page)), fromRight: true, animate);
         section.Shown();
     }
 
-    /// <summary>Şu an görünen bölüm bu mu.</summary>
-    internal bool IsCurrent(SettingsSection section) => _current == section;
+    void Back()
+    {
+        if (_current is not null) ShowList(animate: true);
+    }
+
+    SettingsSection Section(SettingsPage page)
+    {
+        if (_sections.TryGetValue(page, out var s)) return s;
+        s = page switch
+        {
+            SettingsPage.Connection => new ConnectionSection(this),
+            SettingsPage.Passcode => new PasscodeSection(this),
+            SettingsPage.Appearance => new SubtitleAppearanceSection(this),
+            SettingsPage.Translation => new TranslationSection(this),
+            SettingsPage.Shortcuts => new ShortcutsSection(this),
+            SettingsPage.Obs => new ObsSection(this),
+            SettingsPage.Updates => new UpdatesSection(this),
+            SettingsPage.Reset => new ResetSection(this),
+            SettingsPage.About => new AboutSection(this),
+            SettingsPage.Interface => new InterfaceSection(this),
+            SettingsPage.Language => new LanguageSection(this),
+            SettingsPage.Packs => new GamePacksSection(this),
+            SettingsPage.Area => new SubtitleAreaSection(this),
+            SettingsPage.Home => new GameRoomSection(this),
+            _ => throw new ArgumentOutOfRangeException(nameof(page)),
+        };
+        _sections[page] = s;
+        return s;
+    }
+
+    Button BackButton()
+    {
+        var content = Ui.Row(Ui.Icon("", 14, "accentTextBrush").At(0, 0, 6, 0),
+            new TextBlock { Text = L.Get("settings.back"), FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center });
+        ((TextBlock)content.Children[1]).Fg("accentTextBrush");
+        var back = new Button { Content = content, HorizontalAlignment = HorizontalAlignment.Left }.Styled("Button.Ghost");
+        AutomationNames.Set(back, L.Get("settings.back"));
+        back.Click += (_, _) => Back();
+        return back;
+    }
+
+    static FrameworkElement Centered(FrameworkElement content, double width)
+    {
+        content.RemoveFromParent();
+        var holder = new Border
+        {
+            MaxWidth = width,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            Padding = new(0, 0, 0, 24),
+            Child = content,
+        };
+        return new Border { Child = holder, Focusable = false };
+    }
+
+    /// <summary>Sayfa sağdan (geri dönüşte soldan) kayarak ve belirerek gelir; hareket azaltılmışsa doğrudan.</summary>
+    void Present(FrameworkElement page, bool fromRight, bool animate)
+    {
+        _scroller.Content = page;
+        _scroller.ScrollToTop();
+        if (!animate || Motion.IsReduced) return;
+        var shift = new TranslateTransform(fromRight ? 40 : -40, 0);
+        page.RenderTransform = shift;
+        page.Opacity = 0;
+        var duration = TimeSpan.FromMilliseconds(260);
+        var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
+        shift.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(0, duration) { EasingFunction = ease });
+        page.BeginAnimation(OpacityProperty, new DoubleAnimation(1, duration) { EasingFunction = ease });
+    }
+
+    // ---- Liste görünümü ----
+
+    FrameworkElement BuildList()
+    {
+        var panel = new StackPanel();
+        foreach (var group in SettingsPages.VisibleGroups)
+        {
+            var rows = new StackPanel();
+            for (var i = 0; i < group.Count; i++)
+            {
+                if (i > 0)
+                    rows.Children.Add(new Border { Height = 1, Margin = new(58, 0, 0, 0), Opacity = 0.6 }
+                        .Res(Border.BackgroundProperty, "borderBrush"));
+                rows.Children.Add(ListRow(group[i]));
+            }
+            var box = new Border
+            {
+                BorderThickness = new(1),
+                Child = rows,
+                ClipToBounds = true,
+                Margin = new(0, panel.Children.Count == 0 ? 0 : 24, 0, 0),
+            };
+            box.Res(Border.BackgroundProperty, "surfaceBrush").Res(Border.BorderBrushProperty, "tileBorderBrush")
+                .Res(Border.CornerRadiusProperty, "radius.card");
+            panel.Children.Add(box);
+        }
+        return panel;
+    }
+
+    Button ListRow(SettingsPage page)
+    {
+        var title = L.Get(SettingsPages.TitleKey(page));
+        var name = new TextBlock { Text = title, VerticalAlignment = VerticalAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis };
+        var chevron = Ui.Icon(FlowDirection == FlowDirection.RightToLeft ? "" : "", 12);
+        chevron.Opacity = 0.7;
+        chevron.VerticalAlignment = VerticalAlignment.Center;
+        var line = new DockPanel();
+        var icon = SectionIcon(page, large: false);
+        icon.Margin = new(0, 0, 12, 0);
+        DockPanel.SetDock(icon, Dock.Left);
+        DockPanel.SetDock(chevron, Dock.Right);
+        line.Children.Add(icon);
+        line.Children.Add(chevron);
+        line.Children.Add(name);
+        var row = new Button { Content = line }.Styled("Settings.ListRow");
+        AutomationNames.Set(row, title);
+        row.Click += (_, _) => Open(page);
+        return row;
+    }
+
+    /// <summary>Bölümün renkli simge kutusu: listede 30 (köşe 8), bölüm başında 40 (köşe 11); içinde beyaz simge.</summary>
+    internal static Border SectionIcon(SettingsPage page, bool large)
+    {
+        var (r, g, b) = SettingsPages.Color(page);
+        var size = large ? 40 : 30;
+        var glyph = new TextBlock
+        {
+            Text = Glyph(page),
+            FontSize = large ? 18 : 14,
+            Foreground = Brushes.White,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+        }.Styled("Text.Icon");
+        glyph.Foreground = Brushes.White;
+        return new Border
+        {
+            Width = size,
+            Height = size,
+            CornerRadius = new(large ? 11 : 8),
+            Background = Ui.Frozen(Color.FromRgb(r, g, b)),
+            Child = glyph,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+    }
+
+    static string Glyph(SettingsPage page) => page switch
+    {
+        SettingsPage.Connection => Glyphs.Connect,
+        SettingsPage.Passcode => Glyphs.Lock,
+        SettingsPage.Appearance => Glyphs.Subtitles,
+        SettingsPage.Translation => Glyphs.Globe,
+        SettingsPage.Shortcuts => Glyphs.Keyboard,
+        SettingsPage.Obs => "",
+        SettingsPage.Health => "",
+        SettingsPage.Updates => Glyphs.Download,
+        SettingsPage.AskNino => "",
+        SettingsPage.Report => "",
+        SettingsPage.About => Glyphs.Info,
+        SettingsPage.Reset => "",
+        SettingsPage.Interface => "",
+        SettingsPage.Language => Glyphs.Characters,
+        SettingsPage.Packs => Glyphs.Package,
+        SettingsPage.Home => "\uE80F",
+        _ => "",
+    };
+
+    // ---- Olaylar ----
 
     void OnControllerChanged(object? sender, PropertyChangedEventArgs e)
     {
         var name = e.PropertyName ?? "";
-        if (name is nameof(NinoController.IsXbox) or nameof(NinoController.ConsoleKind))
-        {
-            var before = _sidebar.Items.Count;
-            RebuildSidebar();
-            if (_sidebar.Items.Count != before && _current is { Available: false }) _sidebar.SelectedIndex = 0;
-        }
-        foreach (var s in _sections)
+        foreach (var s in _sections.Values)
         {
             if (!s.IsBuilt) continue;
             try { s.ControllerChanged(name); }
@@ -172,12 +351,12 @@ public sealed class SettingsWindow : Window
 
     void OnFrameArrived()
     {
-        foreach (var s in _sections.OfType<SubtitleAreaSection>()) s.FrameArrived();
+        foreach (var s in _sections.Values.OfType<SubtitleAreaSection>()) s.FrameArrived();
     }
 
     void OnSnapshotRequested()
     {
-        foreach (var s in _sections.OfType<SubtitleAreaSection>()) s.RefreshPictureNow();
+        foreach (var s in _sections.Values.OfType<SubtitleAreaSection>()) s.RefreshPictureNow();
     }
 
     void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -189,7 +368,12 @@ public sealed class SettingsWindow : Window
             return;
         }
         var focused = Keyboard.FocusedElement as DependencyObject;
-        if (e.Key == Key.Escape)
+        if (KeyInput.Real(e) == Key.Left && Keyboard.Modifiers == ModifierKeys.Alt && _current is not null)
+        {
+            Back();
+            e.Handled = true;
+        }
+        else if (e.Key == Key.Escape)
         {
             if (focused is ComboBox { IsDropDownOpen: true } || FindParent<ComboBox>(focused) is { IsDropDownOpen: true }) return;
             Close();
@@ -204,6 +388,12 @@ public sealed class SettingsWindow : Window
                 e.Handled = true;
                 return;
             }
+            if (focused is PasswordBox { Tag: Action submit })
+            {
+                submit();
+                e.Handled = true;
+                return;
+            }
             if (focused is ButtonBase or ComboBox or ComboBoxItem or ListBoxItem || (focused is TextBox { AcceptsReturn: true })) return;
             Close();
             e.Handled = true;
@@ -215,13 +405,13 @@ public sealed class SettingsWindow : Window
         while (d is not null)
         {
             if (d is T t) return t;
-            d = System.Windows.Media.VisualTreeHelper.GetParent(d) ?? LogicalTreeHelper.GetParent(d);
+            d = VisualTreeHelper.GetParent(d) ?? LogicalTreeHelper.GetParent(d);
         }
         return null;
     }
 }
 
-/// <summary>Ayarlar bölümünün ortak işleri: başlık, kartlar arası 16, yükleniyor bayrağı, ayar yazma.</summary>
+/// <summary>Ayarlar bölümünün ortak işleri: başlık (renkli kare + ad), kartlar arası 12, yükleniyor bayrağı, ayar yazma.</summary>
 internal abstract class SettingsSection : StackPanel
 {
     protected SettingsSection(SettingsWindow host) => Host = host;
@@ -234,17 +424,16 @@ internal abstract class SettingsSection : StackPanel
 
     public bool IsBuilt { get; private set; }
 
-    /// <summary>Kenar çubuğundaki ad (bölüm başlığıyla aynı).</summary>
-    public abstract string SectionTitle { get; }
+    /// <summary>Bölüm.</summary>
+    public abstract SettingsPage Page { get; }
 
-    /// <summary>Kenar çubuğunda görünür mü.</summary>
-    public virtual bool Available => true;
+    /// <summary>Bölümün adı (listedekiyle aynı).</summary>
+    public string SectionTitle => L.Get(SettingsPages.TitleKey(Page));
 
     public void EnsureBuilt()
     {
         if (IsBuilt) return;
         IsBuilt = true;
-        Margin = new(0, 0, 12, 0);
         Guard.Run(Build);
     }
 
@@ -259,18 +448,32 @@ internal abstract class SettingsSection : StackPanel
 
     public virtual void WindowClosed() { }
 
-    /// <summary>Büyük bölüm başlığı (altta 16).</summary>
-    protected TextBlock AddHeader(string? text = null)
+    /// <summary>Bölümün başı: 40'lık renkli kare + 28 kalın ad (altta 12).</summary>
+    protected FrameworkElement AddHeader(FrameworkElement? trailing = null)
     {
-        var t = Ui.Display(text ?? SectionTitle).At(0, 0, 0, 16);
-        Children.Add(t);
-        return t;
+        var title = Ui.Display(SectionTitle);
+        title.FontWeight = FontWeights.Bold;
+        title.VerticalAlignment = VerticalAlignment.Center;
+        var icon = SettingsWindow.SectionIcon(Page, large: true);
+        icon.Margin = new(0, 0, 12, 0);
+        var row = new DockPanel { Margin = new(0, 0, 0, 12), LastChildFill = true };
+        DockPanel.SetDock(icon, Dock.Left);
+        row.Children.Add(icon);
+        if (trailing is not null)
+        {
+            DockPanel.SetDock(trailing, Dock.Right);
+            trailing.VerticalAlignment = VerticalAlignment.Center;
+            row.Children.Add(trailing);
+        }
+        row.Children.Add(title);
+        Children.Add(row);
+        return row;
     }
 
-    /// <summary>Kart ekler (ilk karttan sonrakiler üstte 16).</summary>
+    /// <summary>Kart ekler (ilk karttan sonrakiler üstte 12).</summary>
     protected T AddCard<T>(T card) where T : FrameworkElement
     {
-        if (Children.OfType<FrameworkElement>().Any(c => c is Card or FirewallSettingsCard)) card.Margin = new(0, 16, 0, 0);
+        if (Children.Count > 1) card.Margin = new(0, 12, 0, 0);
         Children.Add(card);
         return card;
     }
@@ -282,5 +485,19 @@ internal abstract class SettingsSection : StackPanel
         var s = C.Settings;
         change(s);
         C.UpdateSettings(s);
+    }
+}
+
+/// <summary>Öğeyi bulunduğu kaptan çıkarır (bölüm sayfası yeniden gösterilirken).</summary>
+internal static class ElementParents
+{
+    public static void RemoveFromParent(this FrameworkElement element)
+    {
+        switch (element.Parent)
+        {
+            case Panel panel: panel.Children.Remove(element); break;
+            case Decorator decorator: decorator.Child = null; break;
+            case ContentControl control: control.Content = null; break;
+        }
     }
 }

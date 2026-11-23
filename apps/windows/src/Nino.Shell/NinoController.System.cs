@@ -165,6 +165,7 @@ public sealed partial class NinoController
         try { version = await updater.FindNewerAsync().ConfigureAwait(false); }
         catch (Exception e) when (e is HttpRequestException or TaskCanceledException or IOException or InvalidOperationException)
         {
+            _updateCheckFailed = true;
             return;
         }
         await OnUi();

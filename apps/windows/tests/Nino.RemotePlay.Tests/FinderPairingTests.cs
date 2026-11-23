@@ -42,7 +42,7 @@ public class FinderTests
         Assert.Contains(Ps5Finder.Broadcast, targets);
         Assert.Equal(Ps5Finder.Broadcast, targets[^1]);
         Assert.Equal(targets.Distinct().Count(), targets.Count);
-        Assert.False(targets.Contains("127.0.0.1"));
+        Assert.DoesNotContain("127.0.0.1", targets);
 
         var twice = Ps5Finder.TargetsFor([(Ps5Finder.ToUInt("192.168.1.10"), 0xFFFFFF00), (Ps5Finder.ToUInt("192.168.1.20"), 0xFFFFFF00)]);
         Assert.Equal(twice.Count, twice.Distinct().Count());
@@ -123,7 +123,7 @@ public class PairingTests
         Assert.Equal(PairingOutcome.ConsoleCrashed, Ps5Pairing.Classify(1, 0x80108b15, []).Outcome);
         Assert.Equal(PairingOutcome.Failed, Ps5Pairing.Classify(1, 0x80108bff, []).Outcome);
         Assert.Equal(PairingOutcome.Failed, Ps5Pairing.Classify(1, 0, []).Outcome);
-        // Kod istendiyse konsol zaten bulunmuş, yani bulma adımı tamam.
+        // PS5 kod bildirdiyse arama aşaması geçilmiştir.
         Assert.Equal(PairingOutcome.WrongCode,
                      Ps5Pairing.Classify(1, 0x80108b09, ["Regist timed out waiting for search response"]).Outcome);
         Assert.Equal((PairingOutcome.NoReply, "the PS5 did not reply in 30 seconds"), Ps5Pairing.Classify(2, 0, []));
@@ -205,7 +205,7 @@ public class PairingTests
         Assert.Equal(2, bridge.RegisterCalls);
         lock (lines)
         {
-            Assert.Contains("[nino] PS5 eşleştirmesi başladı (192.168.1.44); hesap kimliği AQEBAQEBAQE=", lines);
+            Assert.Contains("[nino] PS5 kaydı başlıyor: 192.168.1.44, hesap kimliği AQEBAQEBAQE=", lines);
             Assert.Contains("[chiaki error] Regist search failed", lines);
             Assert.Contains("[nino] PS5 eşleşmesi kuruldu (192.168.1.44): PS5-777", lines);
         }

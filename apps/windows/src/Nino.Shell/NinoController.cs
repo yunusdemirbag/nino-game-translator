@@ -150,8 +150,16 @@ public sealed partial class NinoController : INotifyPropertyChanged, IAsyncDispo
         {
             if (_tv is { Brand: TvBrand.AndroidTv } tv && tv.Host != host) SaveTv(tv with { Host = host });
         });
-        Action<Nino.Core.Link.TvLinkConnected> onLinkUp = e => Post(() => TmTvConnected(e));
-        Action<Nino.Core.Link.TvLinkDropped> onLinkDown = e => Post(() => TmTvDropped(e));
+        Action<Nino.Core.Link.TvLinkConnected> onLinkUp = e => Post(() =>
+        {
+            NoteTvLinkUp(e);
+            TmTvConnected(e);
+        });
+        Action<Nino.Core.Link.TvLinkDropped> onLinkDown = e => Post(() =>
+        {
+            NoteTvLinkDown(e);
+            TmTvDropped(e);
+        });
         _server.TvConnected += onLinkUp;
         _server.TvDropped += onLinkDown;
         _server.AndroidTvHostFound += onAndroid;

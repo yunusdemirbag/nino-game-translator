@@ -29,7 +29,7 @@ public sealed class LogRedactorTests
     public void Redacts(string input, string expected) => Assert.Equal(expected, LogRedactor.Redact(input));
 
     [Theory]
-    [InlineData("12:04:31 okundu \"Close the gate!\" → \"Kapıyı kapat!\"")]
+    [InlineData("12:04:31 okundu \"Where is the key?\" → \"Anahtar nerede?\"")]
     [InlineData(@"C:\Users\nino\AppData\Local\Nino\models\opus-mt-en-tr\model.bin hazır")]
     [InlineData("System.IO.IOException: Nino.Core.Link.TvOutput.SendAsync")]
     [InlineData("2026-11-20T08:15:02.456Z PS5 10.0.0.9 akış başladı, 1280x720 30 fps")]

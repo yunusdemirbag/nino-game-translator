@@ -11,7 +11,7 @@ public interface IProblemWatcherHost
     /// <summary>Çeviri sürüyor mu.</summary>
     bool IsTranslating { get; }
 
-    /// <summary>Şu anda PS5'ten kare akıyorsa true.</summary>
+    /// <summary>PS5 görüntüsü şu an geliyor mu.</summary>
     bool IsPictureArriving { get; }
 
     /// <summary>Altyazı TV'ye gidiyor mu.</summary>

@@ -155,9 +155,10 @@ sealed class FakeServer : ISubtitleServer
     public void ReportModel(string m) => TvModelReported?.Invoke(m);
 
     /// <summary>Bağlantı olayı (sayıyı da bir artırır).</summary>
-    public void LinkUp(long id, TvLinkKind kind, string address = "192.168.1.50", string? model = null, int tookMs = 0)
+    public void LinkUp(long id, TvLinkKind kind, string address = "192.168.1.50", string? model = null, int tookMs = 0,
+        string? appVersion = null)
     {
-        TvConnected?.Invoke(new TvLinkConnected(id, kind, kind == TvLinkKind.Legacy ? 8787 : 47800, address, model, null,
+        TvConnected?.Invoke(new TvLinkConnected(id, kind, kind == TvLinkKind.Legacy ? 8787 : 47800, address, model, appVersion,
             TimeSpan.FromMilliseconds(tookMs)));
         SetTvCount(TvCount + 1);
     }
@@ -365,11 +366,18 @@ sealed class FakeReaders : ITextReaderFactory
     }
 
     public bool HasLanguagePack(string language) => Pack;
+
+    /// <summary>Küçük JPEG kodlayıcısı (buzlu zemin, oyun tanıma); null: kodlayıcı yok.</summary>
+    public Func<BgraFrame, int, int, byte[]?>? Jpeg;
+
+    public byte[]? SmallJpeg(BgraFrame frame, int maxWidth, int quality) => Jpeg?.Invoke(frame, maxWidth, quality);
 }
 
 /// <summary>Sahte dünya: PS5 192.168.1.253 "PS5-789" uyanık, TV "LG TV" 192.168.1.153, LG parolası ABC123.</summary>
 sealed class FakeServices : IShellServices
 {
+    public string? RegionCode { get; set; } = "US";
+    public string? AccountName { get; set; } = "yunus.demir";
     public readonly FakeModel Model = new();
     public readonly FakeFactory Factory;
     public readonly FakeReaders ReaderFactory = new();
@@ -409,6 +417,31 @@ sealed class FakeServices : IShellServices
     public Func<TvInstallEvents, TvInstallResult>? SamsungInstall;
     public int SamsungInstalls;
     public bool AdbOpen;
+
+    // Güncelleme denetimi
+    public IAppUpdater? UpdaterService;
+    public IAppUpdater? Updater => UpdaterService;
+    public bool TvOn;
+    public int TvAwakeCalls;
+
+    // Sorun bildirimi
+    public string? HealthDir;
+    public string? HealthFolder => HealthDir;
+    public readonly List<Nino.Core.Support.ReportBody> Reports = [];
+    public Nino.Core.Support.ReportStatus ReportAnswer = Nino.Core.Support.ReportStatus.Sent;
+
+    public Task<Nino.Core.Support.ReportResult> SendReportAsync(Nino.Core.Support.ReportBody body,
+        CancellationToken cancellationToken = default)
+    {
+        Reports.Add(body);
+        return Task.FromResult(new Nino.Core.Support.ReportResult(ReportAnswer));
+    }
+
+    public Task<bool> TvAwakeAsync(TvRecord tv, CancellationToken cancellationToken = default)
+    {
+        TvAwakeCalls++;
+        return Task.FromResult(TvOn);
+    }
     public List<string> AdbScan = [];
     public Func<string, TvInstallEvents, TvInstallResult>? AndroidInstall;
 

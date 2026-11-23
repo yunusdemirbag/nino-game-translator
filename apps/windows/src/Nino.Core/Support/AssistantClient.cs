@@ -51,6 +51,41 @@ public sealed record AssistantResult(AssistantOutcome Outcome, string? Reply = n
     TimeSpan? RetryAfter = null)
 {
     public static AssistantResult Failed { get; } = new(AssistantOutcome.Failed);
+
+    /// <summary>Teşhis sorusunun seçenekleri (cevapta <c>options</c>; yoksa boş). Basılınca etiket aynen gönderilir.</summary>
+    public IReadOnlyList<string> Options { get; init; } = AssistantOptions.None;
+}
+
+/// <summary>Cevaptaki <c>options</c> dizisinin okunması ve sınırları.</summary>
+public static class AssistantOptions
+{
+    /// <summary>En çok seçenek sayısı (fazlası atılır).</summary>
+    public const int MaxCount = 8;
+
+    /// <summary>Bir seçeneğin en uzun hâli; daha uzunu kırpılmaz, atılır (gönderilecek metin birebir kalsın).</summary>
+    public const int MaxLength = 80;
+
+    /// <summary>Seçeneksiz (paylaşılan boş dizi).</summary>
+    public static IReadOnlyList<string> None { get; } = [];
+
+    /// <summary>
+    /// <c>options</c> öğesini okur: dizi değilse boş; dizgi olmayan, boş (kırpılınca), çok uzun ya da tekrar eden öğeler
+    /// atılır; ilk <see cref="MaxCount"/> tanesi kalır. Etiketler yalnız baş/son boşluktan kırpılır.
+    /// </summary>
+    public static IReadOnlyList<string> Read(JsonElement element)
+    {
+        if (element.ValueKind != JsonValueKind.Array) return None;
+        var list = new List<string>();
+        foreach (var item in element.EnumerateArray())
+        {
+            if (list.Count >= MaxCount) break;
+            if (item.ValueKind != JsonValueKind.String) continue;
+            var label = (item.GetString() ?? "").Trim();
+            if (label.Length == 0 || label.Length > MaxLength || list.Contains(label, StringComparer.Ordinal)) continue;
+            list.Add(label);
+        }
+        return list.Count == 0 ? None : list.ToArray();
+    }
 }
 
 /// <summary>Nino'ya Sor istek gövdesinin kurulması (§8.1 kuralları).</summary>
@@ -188,6 +223,7 @@ public sealed class AssistantClient(HttpClient http, Uri? root, TimeProvider? cl
     internal static AssistantResult Map(HttpStatusCode status, byte[] body, TimeSpan? retryAfter)
     {
         string? error = null, text = null, report = null;
+        var options = AssistantOptions.None;
         try
         {
             using var doc = JsonDocument.Parse(body);
@@ -198,6 +234,7 @@ public sealed class AssistantClient(HttpClient http, Uri? root, TimeProvider? cl
                 error = Str("error");
                 text = Str("reply");
                 report = Str("report");
+                if (doc.RootElement.TryGetProperty("options", out var o)) options = AssistantOptions.Read(o);
             }
         }
         catch (JsonException) { }
@@ -208,7 +245,10 @@ public sealed class AssistantClient(HttpClient http, Uri? root, TimeProvider? cl
                 var trimmed = text?.Trim();
                 if (string.IsNullOrEmpty(trimmed)) return AssistantResult.Failed;
                 var id = report?.Trim();
-                return new AssistantResult(AssistantOutcome.Reply, trimmed, string.IsNullOrEmpty(id) ? null : id);
+                return new AssistantResult(AssistantOutcome.Reply, trimmed, string.IsNullOrEmpty(id) ? null : id)
+                {
+                    Options = options,
+                };
             case 503 when error == "assistant_disabled":
                 return new AssistantResult(AssistantOutcome.Disabled);
             case 429 when error == "busy":

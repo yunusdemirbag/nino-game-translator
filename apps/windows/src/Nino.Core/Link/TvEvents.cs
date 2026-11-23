@@ -20,6 +20,25 @@ public sealed record SubtitleShown(
 {
     /// <summary>Süre verilmezse 15 sn.</summary>
     public const int DefaultDurationMs = 15000;
+
+    /// <summary>
+    /// Konuşan adı (kaynakta tek baştaki "AD:" etiketi). <see cref="Text"/> yine adla birlikte tam metindir (eski 8787 ve
+    /// bilgisayar penceresi onu gösterir); yalnız yeni protokolde ad metinden ayrılıp <c>speaker</c> alanında gider.
+    /// Kuralı <see cref="TvSpeaker.Split"/>.
+    /// </summary>
+    public string? Speaker { get; init; }
+
+    /// <summary><c>bottom</c> ya da <c>top</c> (<see cref="TvPosition"/>).</summary>
+    public string Position { get; init; } = TvPosition.Bottom;
+
+    /// <summary>Sahne aydınlığı 0–1 (yalnız yeni protokol).</summary>
+    public double? Light { get; init; }
+
+    /// <summary>Buzlu zemin: altyazının arkasının bulanık hali, base64 JPEG (yalnız yeni protokol; <see cref="FrostCover"/>).</summary>
+    public string? Cover { get; init; }
+
+    /// <summary>Metindeki <c>⟦T1⟧</c> yer tutucularının tuş simgeleri. Eski yolda okunur metne döner.</summary>
+    public IReadOnlyList<LinkIcon>? Icons { get; init; }
 }
 
 /// <summary>Ekrandaki altyazıyı kaldır.</summary>
@@ -38,7 +57,11 @@ public sealed record ScreenShown(IReadOnlyList<ScreenItem> Items, int DurationMs
 public sealed record ScreenCleared : TvEvent;
 
 /// <summary>Ek alan. Metin boşsa o alanın kutusu kalkar.</summary>
-public sealed record RegionShown(string Id, string Text, Box? Box = null, double? Line = null) : TvEvent;
+public sealed record RegionShown(string Id, string Text, Box? Box = null, double? Line = null) : TvEvent
+{
+    /// <summary>Metindeki <c>⟦T1⟧</c> yer tutucularının tuş simgeleri. Eski yolda okunur metne döner.</summary>
+    public IReadOnlyList<LinkIcon>? Icons { get; init; }
+}
 
 /// <summary>Bütün ek alan kutularını kaldır.</summary>
 public sealed record RegionsCleared : TvEvent;
@@ -61,6 +84,10 @@ public sealed record ScreenItem(Box Box, string Text)
     public bool Side { get; init; }
     public bool Backdrop { get; init; }
     public bool Card { get; init; }
+    /// <summary>Buzlu kutu (yalnız yeni protokol).</summary>
+    public bool Frost { get; init; }
+    /// <summary>Metindeki <c>⟦T1⟧</c> yer tutucularının tuş simgeleri. Eski yolda okunur metne döner.</summary>
+    public IReadOnlyList<LinkIcon>? Icons { get; init; }
 }
 
 /// <summary>TV'ye giden görünüm (değerler TV'nin beklediği küçük harfli adlarla).</summary>
@@ -78,6 +105,10 @@ public sealed record TvStyle
     public bool StackPrevious { get; init; } = true;
     public string TextColor { get; init; } = "white";
     public bool Watermark { get; init; } = true;
+    /// <summary>
+    /// Görünüm teması (yalnız yeni protokol; eski 8787'de yoktu). Windows'ta tema seçimi yok: Mac gibi hep <c>classic</c>.
+    /// </summary>
+    public string Theme { get; init; } = "classic";
 
     /// <summary>
     /// Kayıttaki stilden TV stili. Örtme yerleşiminde koyuluk 60'tan azsa 100 gider (örtme kutusu oyunun yazısını

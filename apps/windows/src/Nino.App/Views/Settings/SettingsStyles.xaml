@@ -55,4 +55,56 @@
     <Setter Property="FontSize" Value="15" />
     <Setter Property="Padding" Value="12,0" />
   </Style>
+
+  <!-- Mac'le aynı liste görünümü: grup içindeki satır (en az 52, yatay iç boşluk 16). Üstüne gelince accentSoft. -->
+  <ControlTemplate x:Key="Settings.ListRowTemplate" TargetType="Button">
+    <Border x:Name="Box" Background="Transparent" Padding="{TemplateBinding Padding}" BorderThickness="1"
+            BorderBrush="Transparent" SnapsToDevicePixels="True">
+      <ContentPresenter VerticalAlignment="Center" />
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter TargetName="Box" Property="Background" Value="{DynamicResource accentSoftBrush}" />
+      </Trigger>
+      <Trigger Property="IsKeyboardFocused" Value="True">
+        <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource accentTextBrush}" />
+      </Trigger>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter TargetName="Box" Property="Background" Value="{DynamicResource surface2Brush}" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <Style x:Key="Settings.ListRow" TargetType="Button">
+    <Setter Property="Template" Value="{StaticResource Settings.ListRowTemplate}" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="MinHeight" Value="52" />
+    <Setter Property="Padding" Value="16,0" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+    <Setter Property="FontSize" Value="15" />
+  </Style>
+
+  <!-- Akordiyon satırı başlığı (API anahtarları): çerçevesiz, düz. -->
+  <ControlTemplate x:Key="Settings.PlainRowTemplate" TargetType="Button">
+    <Border x:Name="Box" Background="Transparent" Padding="{TemplateBinding Padding}" BorderThickness="1"
+            BorderBrush="Transparent" CornerRadius="{DynamicResource radius.inner}">
+      <ContentPresenter VerticalAlignment="Center" />
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="IsKeyboardFocused" Value="True">
+        <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource accentTextBrush}" />
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+
+  <Style x:Key="Settings.PlainRow" TargetType="Button">
+    <Setter Property="Template" Value="{StaticResource Settings.PlainRowTemplate}" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Padding" Value="0,10" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="Foreground" Value="{DynamicResource textPrimaryBrush}" />
+  </Style>
 </ResourceDictionary>

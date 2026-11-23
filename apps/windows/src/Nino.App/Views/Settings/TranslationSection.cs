@@ -3,6 +3,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using Nino.App.Controls;
 using Nino.App.Strings;
 using Nino.Core.Settings;
 using Nino.Core.Translation;
@@ -12,98 +13,131 @@ using Nino.Translation.Online;
 
 namespace Nino.App.Views;
 
-/// <summary>§5 Çeviri: motor, ücretsiz çeviri aygıtı, CPU iş parçacıkları, anahtar bölmesi ve Gelişmiş kartı.</summary>
+/// <summary>
+/// Çeviri (Mac'le aynı sıra): "Nino Game Translator Kütüphanesi Aktif" kartı (Nino robotu + kütüphanedeki oyunlar),
+/// dil kartı, Windows'a özgü ücretsiz çeviri aygıtı kartı (CPU/GPU, iş parçacığı) ve en altta API anahtarları
+/// akordiyonu (Gemini, DeepL, OpenAI, Claude, yerel model; aynı anda bir satır açık). "Gelişmiş" kartı yok.
+/// </summary>
 internal sealed class TranslationSection(SettingsWindow host) : SettingsSection(host)
 {
-    const string OllamaDownload = "https://ollama.com/download";
-    const string DeepLKeyPage = "https://www.deepl.com/pro-api";
+    static readonly string[] Sources = ["en", "ja", "de", "fr", "es"];
 
-    ComboBox? _engine;
-    readonly StackPanel _engineBody = new();
-    readonly StackPanel _keyPane = new() { Margin = new(0, 12, 0, 0) };
-    TextBlock? _status;
-    TextBlock? _error;
-    Slider? _misread;
-    Slider? _partial;
+    readonly StackPanel _library = new();
+    readonly StackPanel _device = new();
+    readonly StackPanel _api = new();
+    readonly Dictionary<OnlineEngine, (string Key, object[] Args, bool Error)> _results = [];
+    readonly HashSet<OnlineEngine> _testing = [];
+    TextBlock? _nonTurkish;
+    OnlineEngine? _open;
+    bool _localAdvanced;
     int _render;
 
-    public override string SectionTitle => L.Get("home.footer.translation");
-
-    OnlineEngine Engine => SettingsRules.SelectedEngine(C.Settings);
+    public override SettingsPage Page => SettingsPage.Translation;
 
     protected override void Build()
     {
         AddHeader();
-        var card = new StackPanel();
-        _engine = Ui.Combo(240);
-        _engine.Items.Add(Ui.Item(OnlineEngine.Free, L.Get("translation.engine.free")));
-        _engine.Items.Add(Ui.Item(OnlineEngine.DeepL, "DeepL"));
-        _engine.Items.Add(Ui.Item(OnlineEngine.Gemini, "Google Gemini"));
-        _engine.Items.Add(Ui.Item(OnlineEngine.OpenAi, "OpenAI"));
-        _engine.Items.Add(Ui.Item(OnlineEngine.Claude, "Anthropic Claude"));
-        _engine.Items.Add(Ui.Item(OnlineEngine.Local, L.Get("settings.translation.engine.local")));
-        _engine.SelectTag(Engine);
-        _engine.SelectionChanged += (_, _) =>
-        {
-            if (Guard.Busy || _engine.SelectedTag() is not OnlineEngine e) return;
-            Write(s =>
-            {
-                if (e == OnlineEngine.Free) s.OnlineTranslation = false;
-                else
-                {
-                    s.OnlineTranslation = true;
-                    s.OnlineEngine = e;
-                }
-            });
-            RenderEngine(clearResult: true);
-        };
-        card.Children.Add(Ui.Labeled(L.Get("translation.engine.title"), _engine).At(0, 0, 0, 12));
-        card.Children.Add(_engineBody);
-        AddCard(Ui.Card(null, card));
-        AddCard(AdvancedCard());
-        RenderEngine(clearResult: true);
+        AddCard(new Card { Content = _library });
+        RenderLibrary();
+        AddCard(Ui.Card(null, LanguageRows()));
+        AddCard(Ui.Card(L.Get("setup.better.deviceTitle"), _device));
+        RenderDevice();
+        AddCard(Ui.Card(L.Get("settings.api.title"), _api));
+        RenderApi();
     }
 
-    static string EngineHintKey(OnlineEngine e) => e switch
-    {
-        OnlineEngine.DeepL => "settings.translation.engineHint.deepl",
-        OnlineEngine.Gemini => "settings.translation.engineHint.gemini",
-        OnlineEngine.OpenAi => "settings.translation.engineHint.openai",
-        OnlineEngine.Claude => "settings.translation.engineHint.claude",
-        OnlineEngine.Local => "settings.translation.engineHint.local",
-        _ => "settings.translation.engineHint.free",
-    };
+    // ---- Kütüphane kartı ----
 
-    static AiService ServiceOf(OnlineEngine e) => e switch
+    void RenderLibrary()
     {
-        OnlineEngine.Gemini => AiService.Gemini,
-        OnlineEngine.OpenAi => AiService.OpenAi,
-        OnlineEngine.Claude => AiService.Claude,
-        _ => AiService.Local,
-    };
+        _library.Children.Clear();
+        var bot = new NinoBot { Width = 72, Height = 84, Blinks = false, Floats = false, VerticalAlignment = VerticalAlignment.Center };
+        var text = new StackPanel { Margin = new(16, 0, 0, 0), VerticalAlignment = VerticalAlignment.Center };
+        var check = Ui.Icon(Glyphs.CompletedSolid, 16, "successBrush").At(0, 0, 6, 0);
+        check.VerticalAlignment = VerticalAlignment.Center;
+        text.Children.Add(Ui.Row(check, Ui.Headline(L.Get("settings.library.title"))));
+        text.Children.Add(Ui.Hint(L.Get("settings.library.detail")).At(0, 6, 0, 0));
+        var (shown, more) = SettingsLibrary.Shown(SettingsLibrary.GameNames(C.Packs));
+        var games = new StackPanel { Margin = new(0, 4, 0, 0) };
+        foreach (var name in shown)
+        {
+            var icon = Ui.Icon(Glyphs.Game, 11, "accentTextBrush").At(0, 0, 8, 0);
+            icon.VerticalAlignment = VerticalAlignment.Center;
+            var label = Ui.Hint(name);
+            label.FontWeight = FontWeights.SemiBold;
+            label.Fg("textPrimaryBrush");
+            games.Children.Add(Ui.Row(icon, label).At(0, 2, 0, 2));
+        }
+        if (more > 0) games.Children.Add(Ui.Hint(L.Format("settings.library.more", more)));
+        text.Children.Add(games);
+        if (C.PlayingGame is { Length: > 0 } game)
+        {
+            var now = Ui.Hint(L.Format("settings.library.now", game)).At(0, 6, 0, 0);
+            now.FontWeight = FontWeights.SemiBold;
+            now.Fg("accentTextBrush");
+            text.Children.Add(now);
+        }
+        var row = new DockPanel();
+        DockPanel.SetDock(bot, Dock.Left);
+        row.Children.Add(bot);
+        row.Children.Add(text);
+        _library.Children.Add(row);
+    }
 
-    static string Brand(OnlineEngine e) => e switch
-    {
-        OnlineEngine.Gemini => "Gemini",
-        OnlineEngine.OpenAi => "OpenAI",
-        OnlineEngine.Claude => "Claude",
-        OnlineEngine.DeepL => "DeepL",
-        _ => L.Get("status.online.localModelName"),
-    };
+    // ---- Dil kartı ----
 
-    void RenderEngine(bool clearResult) => Guard.Run(() =>
+    FrameworkElement LanguageRows()
     {
-        _render++;
         var s = C.Settings;
-        var engine = Engine;
-        _engineBody.Children.Clear();
-        _engineBody.Children.Add(Ui.Hint(L.Get(EngineHintKey(engine))));
+        var body = new StackPanel();
+        var game = Ui.Combo(200);
+        foreach (var code in Sources.Where(C.CanTranslateFrom))
+            game.Items.Add(Ui.Item(code, L.Get("settings.translation.lang." + code)));
+        game.SelectTag(TargetLanguages.Code(s.SourceLanguage));
+        if (game.SelectedIndex < 0 && game.Items.Count > 0) game.SelectedIndex = 0;
+        game.SelectionChanged += (_, _) =>
+        {
+            if (game.SelectedTag() is string code) Write(x => x.SourceLanguage = code);
+            RenderApi();
+        };
+        body.Children.Add(PickerRow(L.Get("settings.translation.gameLanguage"), game).At(0, 0, 0, 12));
 
-        // Ücretsiz çevirinin aygıtı.
-        _engineBody.Children.Add(Ui.Body(L.Get("setup.better.deviceTitle")).At(0, 16, 0, 8));
-        var device = Ui.Combo(240);
-        device.Width = 240;
-        device.HorizontalAlignment = HorizontalAlignment.Left;
+        var target = Ui.Combo(200);
+        var label = new FrameworkElementFactory(typeof(LanguageLabel));
+        label.SetBinding(LanguageLabel.CodeProperty, new System.Windows.Data.Binding());
+        target.ItemTemplate = new DataTemplate { VisualTree = label };
+        foreach (var language in TargetLanguages.All) target.Items.Add(language.Code);
+        target.SelectedItem = TargetLanguages.Find(s.TargetLanguage)?.Code ?? "tr";
+        target.SelectionChanged += (_, _) =>
+        {
+            if (target.SelectedItem is not string code) return;
+            Write(x => x.TargetLanguage = code);
+            UpdateLanguageHint();
+        };
+        body.Children.Add(PickerRow(L.Get("settings.translation.targetLanguage"), target));
+        _nonTurkish = Ui.Hint(L.Get("settings.language.nonTurkishHint")).At(0, 12, 0, 0);
+        body.Children.Add(_nonTurkish);
+        UpdateLanguageHint();
+        return body;
+    }
+
+    static Grid PickerRow(string title, FrameworkElement picker)
+    {
+        var text = Ui.Body(title);
+        text.VerticalAlignment = VerticalAlignment.Center;
+        picker.VerticalAlignment = VerticalAlignment.Center;
+        return Ui.Split(text, picker);
+    }
+
+    void UpdateLanguageHint() => _nonTurkish?.Shown(TargetLanguages.Code(C.Settings.TargetLanguage) != "tr");
+
+    // ---- Cihaz içi çevirinin aygıtı (Windows'a özgü) ----
+
+    void RenderDevice() => Guard.Run(() =>
+    {
+        var s = C.Settings;
+        _device.Children.Clear();
+        var device = Ui.Combo(200);
         device.Items.Add(Ui.Item(TranslationDevice.Cpu, L.Get("setup.better.deviceCpu")));
         device.Items.Add(Ui.Item(TranslationDevice.Gpu, L.Get("setup.better.deviceGpu")));
         device.SelectTag(s.TranslationDevice);
@@ -111,19 +145,14 @@ internal sealed class TranslationSection(SettingsWindow host) : SettingsSection(
         {
             if (Guard.Busy || device.SelectedTag() is not TranslationDevice d) return;
             Write(x => x.TranslationDevice = d);
-            RenderEngine(clearResult: false);
+            RenderDevice();
         };
-        _engineBody.Children.Add(device);
-
+        _device.Children.Add(device);
+        device.HorizontalAlignment = HorizontalAlignment.Left;
         if (s.TranslationDevice == TranslationDevice.Cpu)
         {
             var cpus = Environment.ProcessorCount;
-            var pane = new StackPanel { Margin = new(0, 12, 0, 0) };
-            pane.Children.Add(Ui.Body(L.Get("settings.translation.cpuThreads")).At(0, 0, 0, 8));
             var threads = Ui.Combo(120);
-            threads.MinWidth = 120;
-            threads.Width = 120;
-            threads.HorizontalAlignment = HorizontalAlignment.Left;
             foreach (var n in SettingsRules.CpuThreadOptions(cpus)) threads.Items.Add(Ui.Item(n, n.ToString(L.Catalog.Culture)));
             var selected = SettingsRules.NormalizeCpuThreads(s.CpuTranslationThreads, cpus);
             threads.SelectTag(selected);
@@ -135,219 +164,322 @@ internal sealed class TranslationSection(SettingsWindow host) : SettingsSection(
                 warning.Shown(SettingsRules.CpuThreadsNearCapacity(n, cpus));
                 Write(x => x.CpuTranslationThreads = n);
             };
-            pane.Children.Add(threads);
-            pane.Children.Add(warning);
-            _engineBody.Children.Add(pane);
+            _device.Children.Add(PickerRow(L.Get("settings.translation.cpuThreads"), threads).At(0, 12, 0, 0));
+            _device.Children.Add(warning);
         }
-        _engineBody.Children.Add(Ui.Hint(L.Get("settings.translation.deviceHint")).At(0, 8, 0, 0));
-        if (C.GpuFellBack) _engineBody.Children.Add(Ui.Error(L.Get("settings.translation.gpuFallback")).At(0, 8, 0, 0));
-        if (engine != OnlineEngine.Free && TargetLanguages.Code(s.SourceLanguage) != "en")
-            _engineBody.Children.Add(Ui.Hint(L.Get("settings.translation.englishOnlyHint")).At(0, 8, 0, 0));
-
-        if (engine == OnlineEngine.Free)
-        {
-            var offer = Ui.Hint(L.Get("settings.translation.geminiOffer"));
-            offer.VerticalAlignment = VerticalAlignment.Center;
-            var get = Ui.Button(L.Get("setup.better.getFreeKey"), () =>
-            {
-                C.GetFreeGeminiKey();
-                Guard.Run(() => _engine?.SelectTag(OnlineEngine.Gemini));
-                RenderEngine(clearResult: true);
-            });
-            _engineBody.Children.Add(Ui.Split(offer, get).At(0, 12, 0, 0));
-        }
-        if (engine == OnlineEngine.Gemini)
-        {
-            _engineBody.Children.Add(Ui.Hint(L.Get("settings.translation.geminiPrivacy")).At(0, 8, 0, 0));
-            _engineBody.Children.Add(Ui.Hint(L.Get("settings.translation.geminiLimit")).At(0, 8, 0, 0));
-        }
-        if (engine != OnlineEngine.Free)
-        {
-            RenderKeyPane(engine, clearResult);
-            _engineBody.Children.Add(_keyPane);
-        }
+        _device.Children.Add(Ui.Hint(L.Get("settings.translation.deviceHint")).At(0, 8, 0, 0));
+        if (C.GpuFellBack) _device.Children.Add(Ui.Error(L.Get("settings.translation.gpuFallback")).At(0, 8, 0, 0));
     });
 
-    void RenderKeyPane(OnlineEngine engine, bool clearResult)
+    // ---- API anahtarları ----
+
+    void RenderApi() => Guard.Run(() =>
     {
-        var keepStatus = clearResult ? null : _status?.Text;
-        var keepError = clearResult ? null : _error?.Text;
-        var keepStatusShown = !clearResult && _status?.Visibility == Visibility.Visible;
-        var keepErrorShown = !clearResult && _error?.Visibility == Visibility.Visible;
-        _keyPane.Children.Clear();
-        var s = C.Settings;
-        var hasKey = C.HasKey(engine);
-
-        if (engine is OnlineEngine.Gemini or OnlineEngine.OpenAi or OnlineEngine.Claude)
+        _render++;
+        _api.Children.Clear();
+        _api.Children.Add(Ui.Hint(L.Get("settings.api.message")));
+        if (TargetLanguages.Code(C.Settings.SourceLanguage) != "en")
+            _api.Children.Add(Ui.Hint(L.Get("settings.translation.englishOnly")).At(0, 8, 0, 0));
+        var rows = new StackPanel { Margin = new(0, 8, 0, 0) };
+        for (var i = 0; i < ApiProviders.Order.Count; i++)
         {
-            var service = ServiceOf(engine);
-            var models = Ui.Combo(240);
-            foreach (var m in AiModelCatalog.Default.Models(service)) models.Items.Add(Ui.Item(m.Id, L.Get(m.TextKey)));
-            var saved = engine switch
-            {
-                OnlineEngine.Gemini => s.GeminiModel,
-                OnlineEngine.OpenAi => s.OpenAiModel,
-                _ => s.ClaudeModel,
-            };
-            models.SelectTag(AiModelCatalog.Default.Resolve(service, saved)?.Id);
-            models.SelectionChanged += (_, _) =>
-            {
-                if (Guard.Busy || models.SelectedTag() is not string id) return;
-                Write(x =>
-                {
-                    if (engine == OnlineEngine.Gemini) x.GeminiModel = id;
-                    else if (engine == OnlineEngine.OpenAi) x.OpenAiModel = id;
-                    else x.ClaudeModel = id;
-                });
-            };
-            _keyPane.Children.Add(Ui.Labeled(L.Get("translation.engine.model"), models).At(0, 0, 0, 12));
+            if (i > 0) rows.Children.Add(new Separator());
+            rows.Children.Add(ProviderRow(ApiProviders.Order[i]));
         }
+        _api.Children.Add(rows);
+    });
 
-        Button? saveButton = null;
-        Button? testButton = null;
-        Func<bool>? addressValid = null;
-        Action? saveLocal = null;
-        if (engine == OnlineEngine.Local)
+    ApiProviderState StateOf(OnlineEngine engine) =>
+        ApiProviders.State(engine, SettingsRules.SelectedEngine(C.Settings), C.HasKey(engine));
+
+    FrameworkElement ProviderRow(OnlineEngine engine)
+    {
+        var state = StateOf(engine);
+        var open = _open == engine;
+        var name = Ui.Headline(engine == OnlineEngine.Local ? L.Get("settings.translation.localName") : ApiProviders.Brand(engine));
+        name.VerticalAlignment = VerticalAlignment.Center;
+        var dot = new StatusDot { Tone = ApiProviders.Tone(state), VerticalAlignment = VerticalAlignment.Center };
+        var status = Ui.Hint(L.Get(ApiProviders.StatusKey(state))).At(6, 0, 6, 0);
+        status.VerticalAlignment = VerticalAlignment.Center;
+        var chevron = Ui.Icon(open ? "" : Glyphs.ChevronDown, 10);
+        chevron.VerticalAlignment = VerticalAlignment.Center;
+        var header = Ui.Split(name, Ui.Row(dot, status, chevron));
+        var button = new Button { Content = header }.Styled("Settings.PlainRow");
+        AutomationNames.Set(button, name.Text);
+        button.Click += (_, _) =>
         {
-            var pane = new StackPanel { Margin = new(0, 0, 0, 12) };
-            var grid = new Grid();
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            grid.RowDefinitions.Add(new RowDefinition());
-            grid.RowDefinitions.Add(new RowDefinition());
-            var address = new TextBox { Text = s.LocalAiBaseUrl, Margin = new(0, 0, 0, 8) };
-            var model = new TextBox { Text = s.LocalAiModel };
-            AddGrid(grid, Ui.Body(L.Get("translation.local.address")).At(0, 0, 16, 8), 0, 0);
-            AddGrid(grid, address, 0, 1);
-            AddGrid(grid, Ui.Body(L.Get("translation.local.modelName")).At(0, 0, 16, 0), 1, 0);
-            AddGrid(grid, model, 1, 1);
-            pane.Children.Add(grid);
-            var addressError = Ui.Error(L.Format("settings.translation.addressInvalid", LocalServer.OllamaUrl)).At(0, 8, 0, 0);
-            addressValid = () => LocalServer.NormalizeAddress(address.Text) is not null;
-            void Validate()
+            _open = ApiProviders.Toggle(_open, engine);
+            RenderApi();
+        };
+        var panel = new StackPanel();
+        panel.Children.Add(button);
+        if (open)
+        {
+            var body = new StackPanel { Margin = new(0, 0, 0, 12) };
+            switch (engine)
             {
-                var ok = addressValid();
-                addressError.Shown(!ok);
-                if (saveButton is not null) saveButton.IsEnabled = ok;
-                if (testButton is not null) testButton.IsEnabled = ok;
+                case OnlineEngine.DeepL: DeepLFields(body); break;
+                case OnlineEngine.Local: LocalFields(body); break;
+                default:
+                    AiFields(body, engine);
+                    if (engine == OnlineEngine.Gemini)
+                        body.Children.Add(Ui.Hint(L.Get("settings.translation.geminiPrivacy")).At(0, 8, 0, 0));
+                    break;
             }
-            saveLocal = () =>
+            switch (ApiProviders.Action(engine, state))
             {
-                var a = address.Text.Trim();
-                var m = model.Text.Trim();
-                Validate();
-                var now = C.Settings;
-                if (a == now.LocalAiBaseUrl && m == now.LocalAiModel) return;
-                Write(x =>
-                {
-                    x.LocalAiBaseUrl = a;
-                    x.LocalAiModel = m;
-                });
-                _status?.Shown(false);
-                _error?.Shown(false);
-            };
-            var save = saveLocal;
-            address.Tag = save;
-            model.Tag = save;
-            address.LostFocus += (_, _) => save();
-            model.LostFocus += (_, _) => save();
-            address.TextChanged += (_, _) => Validate();
-            var ollama = Ui.Button(L.Get("settings.translation.useOllama"), () =>
-            {
-                address.Text = LocalServer.OllamaUrl;
-                save();
-            });
-            var lmStudio = Ui.Button(L.Get("settings.translation.useLmStudio"), () =>
-            {
-                address.Text = LocalServer.LmStudioUrl;
-                save();
-            }).At(8, 0, 0, 0);
-            pane.Children.Add(Ui.Row(ollama, lmStudio).At(0, 8, 0, 0));
-            pane.Children.Add(addressError);
-            pane.Children.Add(Ui.Hint(L.Get("settings.translation.localHint")).At(0, 8, 0, 0));
-            if (!hasKey) pane.Children.Add(Ui.Body(L.Get("translation.key.optional")).At(0, 12, 0, 0));
-            _keyPane.Children.Add(pane);
-            addressError.Shown(!addressValid());
+                case ApiProviderAction.Use:
+                    var use = Ui.Primary(L.Get("settings.api.use"), () =>
+                    {
+                        Write(s => ApiProviders.Choose(s, engine));
+                        RenderApi();
+                    }).At(0, 12, 0, 0);
+                    use.HorizontalAlignment = HorizontalAlignment.Left;
+                    use.IsEnabled = ApiProviders.CanUse(engine, C.Settings);
+                    body.Children.Add(use);
+                    break;
+                case ApiProviderAction.Stop:
+                    var stop = Ui.Button(L.Get("settings.api.stop"), () =>
+                    {
+                        Write(s => ApiProviders.Choose(s, null));
+                        RenderApi();
+                    }).At(0, 12, 0, 0);
+                    stop.HorizontalAlignment = HorizontalAlignment.Left;
+                    body.Children.Add(stop);
+                    break;
+            }
+            panel.Children.Add(body);
         }
+        return panel;
+    }
 
-        var local = engine == OnlineEngine.Local;
-        if (!hasKey)
+    static AiService ServiceOf(OnlineEngine e) => e switch
+    {
+        OnlineEngine.Gemini => AiService.Gemini,
+        OnlineEngine.OpenAi => AiService.OpenAi,
+        OnlineEngine.Claude => AiService.Claude,
+        _ => AiService.Local,
+    };
+
+    void AddResult(StackPanel into, OnlineEngine engine)
+    {
+        if (!_results.TryGetValue(engine, out var r)) return;
+        var text = L.Format(r.Key, r.Args);
+        into.Children.Add((r.Error ? Ui.Error(text) : Ui.Hint(text)).At(0, 8, 0, 0));
+    }
+
+    /// <summary>Kayıtlı anahtar satırı: "Anahtar saklandı" + Dene + Anahtarı Kaldır.</summary>
+    FrameworkElement SavedRow(OnlineEngine engine, Func<Task> test)
+    {
+        var saved = Ui.Success(L.Get("settings.key.saved"));
+        saved.VerticalAlignment = VerticalAlignment.Center;
+        var testing = _testing.Contains(engine);
+        var tryIt = Ui.Button(L.Get(testing ? "settings.key.testing" : "settings.key.test"), () => _ = test());
+        tryIt.IsEnabled = !testing;
+        var remove = Ui.Button(L.Get("settings.key.remove"), () =>
         {
-            var box = Ui.Secret(320);
-            AutomationNames.Set(box, L.Get("translation.key.title"));
-            var label = L.Get(local ? "translation.local.testConnection" : "setup.better.saveAndTest");
-            saveButton = Ui.Button(label).At(12, 0, 0, 0);
-            var button = saveButton;
-            button.Click += async (_, _) =>
+            C.RemoveKey(engine);
+            _results.Remove(engine);
+            RenderApi();
+        }).At(8, 0, 0, 0);
+        return Ui.Split(saved, Ui.Row(tryIt, remove));
+    }
+
+    /// <summary>Anahtar alanı + "Kaydet ve Sına" ve altında anahtar edinme bağlantısı.</summary>
+    FrameworkElement EntryRow(OnlineEngine engine, string placeholder, Func<string, Task> save)
+    {
+        var box = Ui.Secret(0);
+        box.Width = double.NaN;
+        var testing = _testing.Contains(engine);
+        var button = Ui.Button(L.Get(testing ? "settings.key.testing" : "settings.key.saveAndTest"));
+        button.IsEnabled = false;
+        void Submit()
+        {
+            var key = box.Password.Trim();
+            if (key.Length == 0 || _testing.Contains(engine)) return;
+            _ = save(key);
+        }
+        button.Click += (_, _) => Submit();
+        box.PasswordChanged += (_, _) => button.IsEnabled = box.Password.Trim().Length > 0 && !testing;
+        box.Tag = (Action)Submit;
+        return Ui.Split(Ui.SecretWithPlaceholder(box, placeholder), button, 8);
+    }
+
+    async Task RunAsync(OnlineEngine engine, Func<Task<KeyCheckStatus>> work, Func<KeyCheckStatus, string?>? sample = null)
+    {
+        _testing.Add(engine);
+        _results.Remove(engine);
+        RenderApi();
+        KeyCheckStatus status;
+        try { status = await work(); }
+        catch (Exception) { status = KeyCheckStatus.Unreachable; }
+        _testing.Remove(engine);
+        _results[engine] = ApiProviders.Result(engine, status, C.Settings, sample?.Invoke(status));
+        RenderApi();
+    }
+
+    void AiFields(StackPanel body, OnlineEngine engine)
+    {
+        if (C.HasKey(engine)) body.Children.Add(SavedRow(engine, () => RunAsync(engine, () => C.CheckAiKeyAsync(engine))));
+        else
+        {
+            body.Children.Add(EntryRow(engine, L.Get("settings.key.placeholder"), key => RunAsync(engine, () => C.SaveAiKeyAsync(engine, key))));
+            body.Children.Add(Ui.Link(L.Format("settings.key.getKey", ApiProviders.Brand(engine)),
+                OnlineFailureText.KeyPage(ServiceOf(engine))).At(0, 8, 0, 0));
+        }
+        AddResult(body, engine);
+
+        var service = ServiceOf(engine);
+        var models = Ui.Combo(220);
+        var list = AiModelCatalog.Default.Models(service);
+        for (var i = 0; i < list.Count; i++)
+            models.Items.Add(Ui.Item(list[i].Id, L.Get(i == 0 ? "settings.key.model.fast" : "settings.key.model.quality")));
+        var s = C.Settings;
+        var saved = engine switch
+        {
+            OnlineEngine.Gemini => s.GeminiModel,
+            OnlineEngine.OpenAi => s.OpenAiModel,
+            _ => s.ClaudeModel,
+        };
+        models.SelectTag(AiModelCatalog.Default.Resolve(service, saved)?.Id);
+        models.SelectionChanged += (_, _) =>
+        {
+            if (Guard.Busy || models.SelectedTag() is not string id) return;
+            Write(x =>
             {
-                button.IsEnabled = false;
-                if (local)
-                {
-                    saveLocal?.Invoke();
-                    button.Content = L.Get("setup.better.testing");
-                }
-                var render = _render;
-                await SaveAndTestAsync(engine, box.Password, () => box.Clear());
-                if (render != _render) return;
-                button.Content = label;
-                button.IsEnabled = addressValid?.Invoke() ?? true;
-            };
-            _keyPane.Children.Add(Ui.Row(box, button));
-            if (engine is not (OnlineEngine.DeepL or OnlineEngine.Local))
-                _keyPane.Children.Add(Ui.Hint(L.Get("settings.translation.noKeyHint")).At(0, 8, 0, 0));
-            var link = engine switch
-            {
-                OnlineEngine.Local => Ui.Link(L.Get("translation.local.downloadOllama"), OllamaDownload),
-                OnlineEngine.DeepL => Ui.Link(L.Get("settings.translation.getDeeplKey"), DeepLKeyPage),
-                _ => Ui.Link(L.Format("settings.translation.getApiKey", Brand(engine)), OnlineFailureText.KeyPage(ServiceOf(engine))),
-            };
-            _keyPane.Children.Add(link.At(0, 8, 0, 0));
+                if (engine == OnlineEngine.Gemini) x.GeminiModel = id;
+                else if (engine == OnlineEngine.OpenAi) x.OpenAiModel = id;
+                else x.ClaudeModel = id;
+            });
+        };
+        body.Children.Add(PickerRow(L.Get("settings.key.model"), models).At(0, 12, 0, 0));
+    }
+
+    void DeepLFields(StackPanel body)
+    {
+        const string page = "https://www.deepl.com/pro-api";
+        if (C.HasKey(OnlineEngine.DeepL))
+        {
+            body.Children.Add(SavedRow(OnlineEngine.DeepL, () => DeepLUsageAsync(_render)));
+            if (!_results.ContainsKey(OnlineEngine.DeepL) && !_testing.Contains(OnlineEngine.DeepL))
+                Dispatcher.BeginInvoke(() => _ = DeepLUsageAsync(_render));
         }
         else
         {
-            var saved = Ui.Success(L.Get("translation.key.saved"));
-            saved.VerticalAlignment = VerticalAlignment.Center;
-            var right = Ui.Row(Ui.Button(L.Get("settings.translation.removeKey"), () =>
-            {
-                C.RemoveKey(engine);
-                RenderEngine(clearResult: true);
-            }).At(8, 0, 0, 0));
-            if (engine != OnlineEngine.DeepL)
-            {
-                var label = L.Get(local ? "translation.local.testConnection" : "settings.translation.test");
-                testButton = Ui.Button(label).At(8, 0, 0, 0);
-                var button = testButton;
-                button.Click += async (_, _) =>
-                {
-                    if (local) saveLocal?.Invoke();
-                    button.IsEnabled = false;
-                    button.Content = L.Get("setup.better.testing");
-                    var render = _render;
-                    var status = local ? await C.TryLocalServerAsync() : await C.CheckAiKeyAsync(engine);
-                    if (render != _render) return;
-                    ShowResult(engine, status);
-                    button.Content = label;
-                    button.IsEnabled = addressValid?.Invoke() ?? true;
-                };
-                right.Children.Add(button);
-            }
-            var grid = Ui.Split(saved, right, 0);
-            _keyPane.Children.Add(grid);
+            body.Children.Add(EntryRow(OnlineEngine.DeepL, L.Get("settings.key.deeplPlaceholder"),
+                key => RunAsync(OnlineEngine.DeepL, () => C.SaveDeepLKeyAsync(key))));
+            body.Children.Add(Ui.Link(L.Get("settings.key.getDeepL"), page).At(0, 8, 0, 0));
         }
-        if (addressValid is not null && !addressValid())
+        AddResult(body, OnlineEngine.DeepL);
+    }
+
+    async Task DeepLUsageAsync(int render)
+    {
+        if (_testing.Contains(OnlineEngine.DeepL)) return;
+        _testing.Add(OnlineEngine.DeepL);
+        if (render == _render) RenderApi();
+        DeepLUsageResult? usage = null;
+        try { usage = await C.DeepLUsageAsync(); }
+        catch (Exception) { }
+        _testing.Remove(OnlineEngine.DeepL);
+        if (usage is { Status: KeyCheckStatus.Valid, Used: { } used, Limit: { } limit })
+            _results[OnlineEngine.DeepL] = ("settings.deepl.usage",
+                [SettingsPanelRules.Thousands(used, L.Catalog.Culture), SettingsPanelRules.Thousands(limit, L.Catalog.Culture)], false);
+        else _results[OnlineEngine.DeepL] = ApiProviders.Result(OnlineEngine.DeepL, usage?.Status ?? KeyCheckStatus.Unreachable, C.Settings);
+        RenderApi();
+    }
+
+    void LocalFields(StackPanel body)
+    {
+        var s = C.Settings;
+        var valid = LocalServer.NormalizeAddress(s.LocalAiBaseUrl) is not null;
+        var testing = _testing.Contains(OnlineEngine.Local);
+        PasswordBox? keyBox = null;
+        var test = Ui.Button(L.Get(testing ? "settings.key.testing" : "settings.local.test"), () =>
         {
-            if (saveButton is not null) saveButton.IsEnabled = false;
-            if (testButton is not null) testButton.IsEnabled = false;
+            var typed = keyBox?.Password.Trim();
+            _ = RunAsync(OnlineEngine.Local, () => C.TryLocalServerAsync(typed is { Length: > 0 } ? typed : null));
+        });
+        test.HorizontalAlignment = HorizontalAlignment.Left;
+        test.IsEnabled = !testing && valid;
+        body.Children.Add(test);
+        AddResult(body, OnlineEngine.Local);
+
+        // Sunucu ayarları (açılır grup).
+        var toggle = new Button
+        {
+            Content = Ui.Row(Ui.Icon(_localAdvanced ? Glyphs.ChevronDown : "", 10).At(0, 0, 6, 0),
+                Ui.Caption(L.Get("settings.local.server")).Fg("textSecondaryBrush")),
+        }.Styled("Settings.PlainRow");
+        toggle.Margin = new(0, 8, 0, 0);
+        toggle.Click += (_, _) =>
+        {
+            _localAdvanced = !_localAdvanced;
+            RenderApi();
+        };
+        body.Children.Add(toggle);
+        if (!_localAdvanced) return;
+
+        var grid = new Grid();
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        grid.RowDefinitions.Add(new RowDefinition());
+        grid.RowDefinitions.Add(new RowDefinition());
+        var address = new TextBox { Text = s.LocalAiBaseUrl, Margin = new(0, 0, 0, 8), FontFamily = new System.Windows.Media.FontFamily("Consolas") };
+        var model = new TextBox { Text = s.LocalAiModel, FontFamily = new System.Windows.Media.FontFamily("Consolas") };
+        AddGrid(grid, Ui.Body(L.Get("settings.local.address")).At(0, 0, 12, 8), 0, 0);
+        AddGrid(grid, Ui.WithPlaceholder(address, LocalServer.OllamaUrl, top: false), 0, 1);
+        AddGrid(grid, Ui.Body(L.Get("settings.local.modelName")).At(0, 0, 12, 0), 1, 0);
+        AddGrid(grid, Ui.WithPlaceholder(model, SettingsRules.DefaultLocalModel, top: false), 1, 1);
+        body.Children.Add(grid);
+        void Commit()
+        {
+            var a = address.Text.Trim();
+            var m = model.Text.Trim();
+            var now = C.Settings;
+            if ((a.Length == 0 || a == now.LocalAiBaseUrl) && (m.Length == 0 || m == now.LocalAiModel)) return;
+            Write(x =>
+            {
+                if (a.Length > 0) x.LocalAiBaseUrl = a;
+                if (m.Length > 0) x.LocalAiModel = m;
+            });
+            _results.Remove(OnlineEngine.Local);
+            Dispatcher.BeginInvoke(RenderApi);
         }
-
-        _status = Ui.Hint("").At(0, 8, 0, 0).Shown(keepStatusShown);
-        _error = Ui.Error().At(0, 8, 0, 0).Shown(keepErrorShown);
-        if (keepStatus is not null) _status.Text = keepStatus;
-        if (keepError is not null) _error.Text = keepError;
-        _keyPane.Children.Add(_status);
-        _keyPane.Children.Add(_error);
-
-        if (engine == OnlineEngine.DeepL && hasKey) _ = ShowDeepLUsageAsync(_render);
+        address.Tag = (Action)Commit;
+        model.Tag = (Action)Commit;
+        address.LostFocus += (_, _) => Commit();
+        model.LostFocus += (_, _) => Commit();
+        var ollama = Ui.Button(L.Get("settings.local.useOllama"), () =>
+        {
+            address.Text = LocalServer.OllamaUrl;
+            Commit();
+        });
+        var lmStudio = Ui.Button(L.Get("settings.local.useLMStudio"), () =>
+        {
+            address.Text = LocalServer.LmStudioUrl;
+            Commit();
+        }).At(8, 0, 0, 0);
+        body.Children.Add(Ui.Row(ollama, lmStudio).At(0, 8, 0, 0));
+        if (!valid) body.Children.Add(Ui.Error(L.Format("settings.local.badAddress", LocalServer.OllamaUrl)).At(0, 8, 0, 0));
+        body.Children.Add(Ui.Hint(L.Get("settings.local.nameHint")).At(0, 8, 0, 0));
+        body.Children.Add(Ui.Link(L.Get("settings.local.download"), "https://ollama.com/download").At(0, 8, 0, 0));
+        if (C.HasKey(OnlineEngine.Local))
+        {
+            var saved = Ui.Success(L.Get("settings.key.saved"));
+            saved.VerticalAlignment = VerticalAlignment.Center;
+            body.Children.Add(Ui.Split(saved, Ui.Button(L.Get("settings.key.remove"), () =>
+            {
+                C.RemoveKey(OnlineEngine.Local);
+                RenderApi();
+            })).At(0, 8, 0, 0));
+        }
+        else
+        {
+            keyBox = Ui.Secret(0);
+            keyBox.Width = double.NaN;
+            body.Children.Add(Ui.SecretWithPlaceholder(keyBox, L.Get("settings.local.keyPlaceholder")).At(0, 8, 0, 0));
+        }
     }
 
     static void AddGrid(Grid grid, FrameworkElement element, int row, int column)
@@ -358,146 +490,20 @@ internal sealed class TranslationSection(SettingsWindow host) : SettingsSection(
         grid.Children.Add(element);
     }
 
-    async Task SaveAndTestAsync(OnlineEngine engine, string key, Action clearBox)
-    {
-        KeyCheckStatus status;
-        if (engine == OnlineEngine.DeepL) status = await C.SaveDeepLKeyAsync(key);
-        else if (engine == OnlineEngine.Local) status = await C.TryLocalServerAsync(key);
-        else status = await C.SaveAiKeyAsync(engine, key);
-        var saved = engine == OnlineEngine.DeepL
-            ? status is KeyCheckStatus.Valid or KeyCheckStatus.QuotaExhausted
-            : status is KeyCheckStatus.Valid or KeyCheckStatus.QuotaExhausted or KeyCheckStatus.ModelRejected;
-        if (saved && (engine != OnlineEngine.Local || key.Trim().Length > 0)) clearBox();
-        Guard.Run(() => _engine?.SelectTag(Engine));
-        RenderEngine(clearResult: true);
-        if (engine == OnlineEngine.DeepL && status == KeyCheckStatus.Valid) return; // kullanım kendiliğinden gösterilir
-        ShowResult(engine, status);
-    }
-
-    async Task ShowDeepLUsageAsync(int render)
-    {
-        DeepLUsageResult usage;
-        try { usage = await C.DeepLUsageAsync(); }
-        catch (Exception) { return; }
-        if (render != _render) return;
-        if (usage.Status == KeyCheckStatus.Valid && usage.Used is { } used && usage.Limit is { } limit)
-            Show(L.Format("settings.translation.result.deeplUsage", SettingsPanelRules.Thousands(used, L.Catalog.Culture),
-                SettingsPanelRules.Thousands(limit, L.Catalog.Culture)), error: false);
-        else if (usage.Status != KeyCheckStatus.Valid) ShowResult(OnlineEngine.DeepL, usage.Status);
-    }
-
-    void ShowResult(OnlineEngine engine, KeyCheckStatus status)
-    {
-        if (engine == OnlineEngine.DeepL)
-        {
-            switch (status)
-            {
-                case KeyCheckStatus.QuotaExhausted: Show(L.Get("settings.translation.result.deeplQuota"), false); break;
-                case KeyCheckStatus.InvalidKey: Show(L.Get("settings.translation.result.deeplRejected"), true); break;
-                case KeyCheckStatus.Valid: Show(L.Get("status.online.working"), false); break;
-                default: Show(L.Get("settings.translation.result.deeplUnreachable"), true); break;
-            }
-            return;
-        }
-        if (engine == OnlineEngine.Local)
-        {
-            var s = C.Settings;
-            var server = LocalServer.Create(s.LocalAiBaseUrl, s.LocalAiModel);
-            var model = (s.LocalAiModel ?? "").Trim();
-            var address = server?.ShortAddress ?? (s.LocalAiBaseUrl ?? "").Trim();
-            var kind = server?.Kind ?? LocalServerKind.Other;
-            switch (status)
-            {
-                case KeyCheckStatus.Valid: Show(L.Get("status.online.working"), false); break;
-                case KeyCheckStatus.InvalidKey: Show(L.Get("settings.translation.result.localKeyRejected"), true); break;
-                case KeyCheckStatus.QuotaExhausted: Show(L.Get("settings.translation.result.localBusy"), true); break;
-                case KeyCheckStatus.ModelRejected:
-                    Show(kind == LocalServerKind.LmStudio
-                        ? L.Format("settings.translation.result.lmStudioNoModel", model)
-                        : L.Format("settings.translation.result.localNoModel", model), true);
-                    break;
-                default:
-                    Show(kind switch
-                    {
-                        LocalServerKind.Ollama => L.Format("settings.translation.result.ollamaUnreachable", address, model),
-                        LocalServerKind.LmStudio => L.Format("settings.translation.result.lmStudioUnreachable", address),
-                        _ => L.Format("settings.translation.result.localUnreachable", address),
-                    }, true);
-                    break;
-            }
-            return;
-        }
-        var brand = Brand(engine);
-        switch (status)
-        {
-            case KeyCheckStatus.Valid: Show(L.Get("status.online.working"), false); break;
-            case KeyCheckStatus.InvalidKey: Show(L.Format("settings.translation.result.aiKeyRejected", brand), true); break;
-            case KeyCheckStatus.QuotaExhausted: Show(L.Format("settings.translation.result.aiQuota", brand), true); break;
-            case KeyCheckStatus.ModelRejected: Show(L.Format("translation.error.modelRejected", brand), true); break;
-            default: Show(L.Format("translation.error.unreachable", brand), true); break;
-        }
-    }
-
-    void Show(string text, bool error)
-    {
-        if (_status is null || _error is null) return;
-        _status.Text = error ? "" : text;
-        _error.Text = error ? text : "";
-        _status.Shown(!error);
-        _error.Shown(error);
-    }
-
-    // ---- Gelişmiş ----
-
-    FrameworkElement AdvancedCard()
-    {
-        var s = C.Settings;
-        var body = new StackPanel();
-        var fast = Ui.Toggle(L.Get("settings.translation.fastDetection"));
-        fast.IsChecked = s.FastSubtitleDetection;
-        fast.Checked += (_, _) => Write(x => x.FastSubtitleDetection = true);
-        fast.Unchecked += (_, _) => Write(x => x.FastSubtitleDetection = false);
-        body.Children.Add(fast);
-        body.Children.Add(Ui.Hint(L.Get("settings.translation.fastDetectionHint")).At(0, 6, 0, 16));
-        body.Children.Add(Ui.Hint(L.Get("settings.translation.waitsHint")).At(0, 0, 0, 16));
-
-        _misread = WaitRow(body, "settings.translation.misreadWait", "settings.translation.misreadWaitHint", s.MisreadWaitMs,
-            ms => Write(x => x.MisreadWaitMs = ms));
-        _partial = WaitRow(body, "settings.translation.partialWait", "settings.translation.partialWaitHint", s.PartialWaitMs,
-            ms => Write(x => x.PartialWaitMs = ms));
-        body.Children.Add(Ui.Button(L.Get("settings.restoreDefaults"), () =>
-        {
-            _misread.Value = 0.8;
-            _partial.Value = 0.3;
-        }));
-        return Ui.Card(L.Get("settings.translation.advanced"), body);
-    }
-
-    Slider WaitRow(StackPanel into, string labelKey, string hintKey, int ms, Action<int> write)
-    {
-        into.Children.Add(Ui.Body(L.Get(labelKey)).At(0, 0, 0, 8));
-        var row = new SliderRow(null, null, 0, 1, true, 56);
-        row.Slider.TickFrequency = 0.1;
-        row.Slider.IsSnapToTickEnabled = true;
-        row.Slider.SmallChange = 0.1;
-        row.Slider.LargeChange = 0.1;
-        row.Slider.Margin = new(0, 0, 12, 0);
-        row.Slider.Value = Math.Clamp(ms / 1000.0, 0, 1);
-        void Label(double v) => row.ValueText!.Text =
-            L.Format("settings.translation.waitSeconds", SettingsPanelRules.Seconds(SettingsRules.SecondsToWaitMs(v), L.Catalog.Culture));
-        Label(row.Slider.Value);
-        row.Slider.ValueChanged += (_, e) =>
-        {
-            Label(e.NewValue);
-            write(SettingsRules.SecondsToWaitMs(e.NewValue));
-        };
-        into.Children.Add(row);
-        into.Children.Add(Ui.Hint(L.Get(hintKey)).At(0, 0, 0, 16));
-        return row.Slider;
-    }
-
     public override void ControllerChanged(string property)
     {
-        if (property is nameof(NinoController.GpuFellBack)) RenderEngine(clearResult: false);
+        switch (property)
+        {
+            case nameof(NinoController.GpuFellBack):
+                RenderDevice();
+                break;
+            case nameof(NinoController.Packs) or nameof(NinoController.PlayingGame):
+                RenderLibrary();
+                break;
+            case nameof(NinoController.Settings):
+                UpdateLanguageHint();
+                if (!_api.IsKeyboardFocusWithin) RenderApi();
+                break;
+        }
     }
 }

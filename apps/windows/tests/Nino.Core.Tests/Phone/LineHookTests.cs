@@ -59,9 +59,9 @@ public class LineHookTests
     {
         var hooks = Hooks();
         var area = new Box(0, 0, 1, 1);
-        var reading = R(L("inside the phone", 0.55, 0.3, 0.7, 0.32), L("The bridge is closing soon.", 0.3, 0.88, 0.6, 0.92));
+        var reading = R(L("inside the phone", 0.55, 0.3, 0.7, 0.32), L("We have to leave now.", 0.3, 0.88, 0.6, 0.92));
         var result = hooks.FilterLines(new PhoneLineContext(reading, BgraFrame.Blank(0, 0), area, new Box(0.5, 0.2, 0.8, 0.84), true));
-        Assert.Equal(["The bridge is closing soon."], result.Lines.Select(l => l.Text));
+        Assert.Equal(["We have to leave now."], result.Lines.Select(l => l.Text));
     }
 
     [Fact]

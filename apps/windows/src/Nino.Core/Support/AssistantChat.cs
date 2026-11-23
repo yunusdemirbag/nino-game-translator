@@ -9,8 +9,15 @@ public abstract record ChatEntry;
 /// <summary>Kullanıcının mesajı (metin kırpılmış, en çok 3 JPEG).</summary>
 public sealed record UserChatEntry(string Text, IReadOnlyList<byte[]> Images) : ChatEntry;
 
-/// <summary>Nino'nun cevabı; cevapla bildirim açıldıysa kimliği.</summary>
-public sealed record NinoChatEntry(string Text, string? ReportId) : ChatEntry;
+/// <summary>
+/// Nino'nun cevabı; cevapla bildirim açıldıysa kimliği. <see cref="Text"/> sunucunun <c>reply</c> metnidir ve geçmişe
+/// aynen gider (bloklara ayırma yalnız gösterim içindir).
+/// </summary>
+public sealed record NinoChatEntry(string Text, string? ReportId) : ChatEntry
+{
+    /// <summary>Teşhis sorusunun seçenekleri; yalnız en son Nino girdisinde dolu kalır.</summary>
+    public IReadOnlyList<string> Options { get; init; } = AssistantOptions.None;
+}
 
 /// <summary>Yerel uyarı (sunucuya gitmez).</summary>
 public sealed record AlertChatEntry(AssistantOutcome Outcome) : ChatEntry
@@ -74,11 +81,38 @@ public sealed class AssistantChat(Func<IReadOnlyList<AssistantMessage>, Cancella
         get { lock (_gate) return !_waiting && _entries.Count > 0 && _entries[^1] is AlertChatEntry { Retriable: true }; }
     }
 
+    /// <summary>
+    /// Son Nino balonunun altındaki seçenekler: son girdi seçenekli bir Nino cevabıysa onunkiler, değilse boş
+    /// (kullanıcı bir şey gönderince ya da yeni cevap gelince kalkar).
+    /// </summary>
+    public IReadOnlyList<string> ActiveOptions
+    {
+        get { lock (_gate) return _entries.Count > 0 && _entries[^1] is NinoChatEntry n ? n.Options : AssistantOptions.None; }
+    }
+
+    /// <summary>
+    /// Seçeneğe basma: etiket son Nino cevabının seçeneklerindense birebir kullanıcı mesajı olarak gönderilir.
+    /// Beklenirken ya da etiket geçerli değilse false.
+    /// </summary>
+    public bool Choose(string label)
+    {
+        lock (_gate)
+        {
+            if (_waiting || _entries.Count == 0 || _entries[^1] is not NinoChatEntry n
+                || !n.Options.Contains(label, StringComparer.Ordinal)) return false;
+            ClearOptions();
+            _entries.Add(new UserChatEntry(label, []));
+            StartRun();
+        }
+        RaiseChanged();
+        return true;
+    }
+
     /// <summary>Gönder düğmesi etkin mi.</summary>
     public bool CanSend(string? text, int imageCount) =>
         !IsWaiting && ((text ?? "").Trim().Length > 0 || imageCount > 0);
 
-    /// <summary>Sunucuya gönderilecek konuşma geçmişi: kullanıcının ve Nino'nun yazdıkları.</summary>
+    /// <summary>Sunucuya gidecek mesajlar (kullanıcı ve Nino girdileri).</summary>
     public IReadOnlyList<AssistantMessage> OutgoingMessages()
     {
         lock (_gate) return Outgoing();
@@ -92,6 +126,7 @@ public sealed class AssistantChat(Func<IReadOnlyList<AssistantMessage>, Cancella
         lock (_gate)
         {
             if (_waiting || (trimmed.Length == 0 && photos.Length == 0)) return false;
+            ClearOptions();
             _entries.Add(new UserChatEntry(trimmed, photos));
             StartRun();
         }
@@ -126,6 +161,17 @@ public sealed class AssistantChat(Func<IReadOnlyList<AssistantMessage>, Cancella
         RaiseChanged();
     }
 
+    // Kilit tutulurken çağrılır: kullanıcı yeni bir şey gönderince eski cevabın seçenekleri kalkar.
+    void ClearOptions()
+    {
+        for (var i = _entries.Count - 1; i >= 0; i--)
+        {
+            if (_entries[i] is not NinoChatEntry { Options.Count: > 0 } n) continue;
+            _entries[i] = n with { Options = AssistantOptions.None };
+            break;
+        }
+    }
+
     // Kilit tutulurken çağrılır.
     void StartRun()
     {
@@ -152,7 +198,7 @@ public sealed class AssistantChat(Func<IReadOnlyList<AssistantMessage>, Cancella
             if (generation != _generation) return;
             _waiting = false;
             _entries.Add(result.Outcome == AssistantOutcome.Reply && result.Reply is { Length: > 0 } reply
-                ? new NinoChatEntry(reply, result.ReportId)
+                ? new NinoChatEntry(reply, result.ReportId) { Options = result.Options ?? AssistantOptions.None }
                 : new AlertChatEntry(result.Outcome == AssistantOutcome.Reply ? AssistantOutcome.Failed : result.Outcome));
         }
         RaiseChanged();

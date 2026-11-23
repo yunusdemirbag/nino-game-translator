@@ -490,8 +490,8 @@ static void session_event(ChiakiEvent *event, void *user)
 static void session_display(void *user, bool cant_display)
 {
     nino_rp_session *s = user;
-    chiaki_log(&s->log, CHIAKI_LOG_INFO, cant_display ? "PS5 picture hidden: the console reports protected content"
-                                                      : "PS5 picture is visible again");
+    chiaki_log(&s->log, CHIAKI_LOG_INFO, cant_display ? "PS5 stream can't display (protected content)"
+                                                      : "PS5 stream can display again");
 }
 
 NINO_API nino_rp_session *NINO_CALL nino_rp_session_start(const char *host, const uint8_t regist_key[0x10],
@@ -524,7 +524,7 @@ NINO_API nino_rp_session *NINO_CALL nino_rp_session_start(const char *host, cons
     s->decoder = nino_h264_open();
     if (!s->decoder)
     {
-        session_error(log_cb, user, "failed to start the H.264 decoder", CHIAKI_ERR_SUCCESS);
+        session_error(log_cb, user, "H.264 decoder could not be opened", CHIAKI_ERR_SUCCESS);
         chiaki_mutex_fini(&s->guard);
         free(s);
         return NULL;

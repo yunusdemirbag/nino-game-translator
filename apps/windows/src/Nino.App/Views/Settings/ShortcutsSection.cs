@@ -25,7 +25,7 @@ internal sealed class ShortcutsSection(SettingsWindow host) : SettingsSection(ho
     TextBlock? _info;
     TextBlock? _error;
 
-    public override string SectionTitle => L.Get("settings.section.shortcuts");
+    public override SettingsPage Page => SettingsPage.Shortcuts;
 
     protected override void Build()
     {

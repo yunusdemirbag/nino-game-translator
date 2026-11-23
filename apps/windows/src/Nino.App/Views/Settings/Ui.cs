@@ -286,6 +286,28 @@ internal static class Ui
         grid.Children.Add(hint);
         return grid;
     }
+
+    /// <summary>Gizli kutunun üstünde tıklamayı geçiren yer tutucu (boşken görünür).</summary>
+    public static Grid SecretWithPlaceholder(PasswordBox box, string placeholder)
+    {
+        var hint = new TextBlock
+        {
+            Text = placeholder,
+            IsHitTestVisible = false,
+            Opacity = 0.75,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new(box.Padding.Left + 2, 0, box.Padding.Right, 0),
+        };
+        hint.SetResourceReference(TextBlock.ForegroundProperty, "textSecondaryBrush");
+        AutomationNames.Set(box, placeholder);
+        void Update() => hint.Visibility = box.Password.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
+        box.PasswordChanged += (_, _) => Update();
+        Update();
+        var grid = new Grid();
+        grid.Children.Add(box);
+        grid.Children.Add(hint);
+        return grid;
+    }
 }
 
 /// <summary>Ekran okuyucu adları.</summary>

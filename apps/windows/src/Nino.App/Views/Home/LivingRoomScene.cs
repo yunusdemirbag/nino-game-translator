@@ -4,6 +4,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -24,8 +25,11 @@ namespace Nino.App.Views;
 /// Salon sahnesi (ana-ekran §4): duvarda TV, sehpa, konsol ve priz. Fiş prize takılınca (tıklama ya da sürükleme)
 /// çeviri başlar, mavi LED'ler yanar, TV'de Nino açılır ve altyazı akar; çekilince durur. Fiş çıkıkken priz yanıp
 /// söner. Ölçüler sahne pikselidir (1672 × 941); tuval alana yalnız küçültülerek sığar. Tamamı soldan sağa kalır.
+/// Prizin üstünde fiş balonu (Mac'teki gibi): tek kısa satır ve prizi gösteren ok; normalde soluk, fare prize, fişe ya da
+/// balona gelince belirir (<see cref="PlugHintState"/>). Balon sahnenin dışında, ölçeklenmeyen katmanda; yalnız ok ucu
+/// sahneye bağlı. Sürüklerken ve açılış gösterisinde gizli.
 /// </summary>
-public sealed class LivingRoomScene : Viewbox, IDisposable
+public sealed class LivingRoomScene : Grid, IDisposable
 {
     /// <summary>Uygulama her açıldığında açılış gösterisi bir kez oynar (süreç boyunca tek bayrak).</summary>
     static bool _introPlayed;
@@ -36,6 +40,22 @@ public sealed class LivingRoomScene : Viewbox, IDisposable
     readonly NinoController _c;
     readonly SceneLayout _layout;
     readonly Canvas _scene = new() { Width = SceneLayout.ImageWidth, Height = SceneLayout.ImageHeight };
+    readonly Viewbox _viewbox = new() { Stretch = Stretch.Uniform, StretchDirection = StretchDirection.DownOnly };
+
+    // Fiş balonu (ölçeklenmeyen katman)
+    readonly Canvas _hintLayer = new() { ClipToBounds = false };
+    readonly Border _hintBubble = new() { Padding = new Thickness(12, 6, 12, 6), CornerRadius = new CornerRadius(12), BorderThickness = new Thickness(1) };
+    readonly TextBlock _hintText = new() { TextAlignment = TextAlignment.Center, TextWrapping = TextWrapping.Wrap, MaxHeight = 44, TextTrimming = TextTrimming.CharacterEllipsis };
+    readonly TextBlock _hintArrow = new() { Text = "\uE74B", FontSize = 14, Width = 18, TextAlignment = TextAlignment.Center, IsHitTestVisible = false };
+    readonly HashSet<string> _hoverParts = [];
+
+    // Oyun odası tabelası (ölçeklenmeyen katman; açıkken sahnenin üstünde yer ayrılır)
+    readonly Canvas _signLayer = new() { ClipToBounds = false, IsHitTestVisible = false };
+    readonly GameRoomSignView _sign = new();
+    string? _signText;
+    double _signSpace;
+    string? _hintKey;
+    bool? _hintShown;
 
     // Katmanlar
     readonly Canvas _leds = new() { IsHitTestVisible = false, Opacity = 0 };
@@ -81,16 +101,24 @@ public sealed class LivingRoomScene : Viewbox, IDisposable
     {
         _c = controller;
         _layout = xbox ? SceneLayout.Xbox : SceneLayout.Ps5;
-        Stretch = Stretch.Uniform;
-        StretchDirection = StretchDirection.DownOnly;
         FlowDirection = FlowDirection.LeftToRight;
-        ToolTip = L.Get("home.livingRoom.tooltip");
+        PlugHintState.Attach(controller.DataFolder);
 
         var shift = _layout.ShiftLeft;
         var canvas = new Canvas { Width = SceneLayout.ImageWidth + shift, Height = SceneLayout.ImageHeight };
         Canvas.SetLeft(_scene, shift);
         canvas.Children.Add(_scene);
-        Child = canvas;
+        _viewbox.Child = canvas;
+        Children.Add(_viewbox);
+        _signLayer.Children.Add(_sign);
+        Children.Add(_signLayer);
+        BuildHint();
+        Children.Add(_hintLayer);
+        SizeChanged += (_, _) =>
+        {
+            PlaceSign();
+            PlaceHint();
+        };
 
         // 1. LED'ler
         var frame = _layout.Frame;
@@ -164,6 +192,8 @@ public sealed class LivingRoomScene : Viewbox, IDisposable
             e.Handled = true;
             _ = HomeActions.ToggleAsync(_c);
         };
+        hit.MouseEnter += (_, _) => Hover("socket", true);
+        hit.MouseLeave += (_, _) => Hover("socket", false);
         _scene.Children.Add(hit);
 
         // 8. Kablo
@@ -209,6 +239,8 @@ public sealed class LivingRoomScene : Viewbox, IDisposable
         _plug.MouseLeftButtonDown += OnPlugDown;
         _plug.MouseMove += OnPlugMove;
         _plug.MouseLeftButtonUp += OnPlugUp;
+        _plug.MouseEnter += (_, _) => Hover("plug", true);
+        _plug.MouseLeave += (_, _) => Hover("plug", false);
         _plug.LostMouseCapture += (_, _) =>
         {
             if (_dragging) EndDrag(null);
@@ -227,6 +259,7 @@ public sealed class LivingRoomScene : Viewbox, IDisposable
         Loaded += OnLoaded;
         Unloaded += (_, _) => StopTimers();
         _c.PropertyChanged += OnControllerChanged;
+        PlugHintState.Changed += OnHintVisibilityChanged;
 
         if (!_introPlayed)
         {
@@ -270,6 +303,8 @@ public sealed class LivingRoomScene : Viewbox, IDisposable
         }
         UpdateLedColors();
         UpdateTv();
+        UpdateHint();
+        UpdateSign(animate);
     }
 
     void UpdateLedColors()
@@ -550,6 +585,7 @@ public sealed class LivingRoomScene : Viewbox, IDisposable
         _dragging = true;
         _plug.CaptureMouse();
         DrawPlug();
+        UpdateHint();
     }
 
     void OnPlugMove(object sender, MouseEventArgs e)
@@ -574,6 +610,7 @@ public sealed class LivingRoomScene : Viewbox, IDisposable
         if (_plug.IsMouseCaptured) _plug.ReleaseMouseCapture();
         _offset = default;
         DrawPlug();
+        UpdateHint();
         if (at is null) return;
         if (PlugDrop.Decide(_layout, _plugged, offset) == PlugRelease.Toggle) _ = HomeActions.ToggleAsync(_c);
     }
@@ -645,5 +682,128 @@ public sealed class LivingRoomScene : Viewbox, IDisposable
         StopTimers();
         StopSpring();
         _c.PropertyChanged -= OnControllerChanged;
+        PlugHintState.Changed -= OnHintVisibilityChanged;
+        if (_hoverParts.Count > 0)
+        {
+            _hoverParts.Clear();
+            PlugHintState.Hover(false);
+        }
+    }
+
+    // ---- Fiş balonu (Mac ana-ekran §4.9) ----
+
+    void BuildHint()
+    {
+        _hintText.SetResourceReference(StyleProperty, "Text.Callout");
+        _hintText.SetResourceReference(TextBlock.ForegroundProperty, "textPrimaryBrush");
+        _hintText.FlowDirection = L.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+        _hintBubble.SetResourceReference(Border.BackgroundProperty, "surfaceBrush");
+        _hintBubble.SetResourceReference(Border.BorderBrushProperty, "borderBrush");
+        _hintBubble.Effect = new DropShadowEffect { BlurRadius = 10, ShadowDepth = 2, Direction = 270, Opacity = 0.12 };
+        _hintBubble.Child = _hintText;
+        _hintBubble.MouseEnter += (_, _) => Hover("bubble", true);
+        _hintBubble.MouseLeave += (_, _) => Hover("bubble", false);
+        _hintArrow.SetResourceReference(TextBlock.FontFamilyProperty, "font.icon");
+        _hintArrow.SetResourceReference(TextBlock.ForegroundProperty, "accentBrush");
+        _hintArrow.FontWeight = FontWeights.SemiBold;
+        _hintLayer.Children.Add(_hintBubble);
+        _hintLayer.Children.Add(_hintArrow);
+    }
+
+    void Hover(string part, bool inside)
+    {
+        var changed = inside ? _hoverParts.Add(part) : _hoverParts.Remove(part);
+        if (changed) PlugHintState.Hover(_hoverParts.Count > 0);
+    }
+
+    void OnHintVisibilityChanged()
+    {
+        if (!_disposed) UpdateHint();
+    }
+
+    /// <summary>Balonun metni, görünürlüğü ve opaklığı; fişin ipucu ve sahnenin ekran okuyucu adı.</summary>
+    void UpdateHint()
+    {
+        var key = _c.PlugHintKey(_plugged);
+        var tip = L.Get(_plugged ? "home.plug.unplugToStop" : "home.plug.plugInToStart");
+        _plug.ToolTip = tip;
+        AutomationProperties.SetName(this, L.Get(_plugged ? "home.action.stop" : "home.action.start"));
+        AutomationProperties.SetHelpText(this, key is null ? "" : L.Get(key));
+        var shown = key is not null && !_dragging && !_introWaiting;
+        if (key != _hintKey)
+        {
+            _hintKey = key;
+            _hintText.Text = key is null ? "" : L.Get(key);
+            PlaceHint();
+        }
+        _hintBubble.Show(shown);
+        _hintArrow.Show(shown);
+        var opacity = PlugHintState.Visible ? 1 : PlugHintVisibility.FadedOpacity;
+        if (_hintShown != shown || Motion.IsReduced)
+        {
+            _hintLayer.BeginAnimation(OpacityProperty, null);
+            _hintLayer.Opacity = opacity;
+        }
+        else if (Math.Abs(_hintLayer.Opacity - opacity) > 0.001)
+        {
+            var duration = PlugHintState.Visible ? PlugHintVisibility.FadeIn : PlugHintVisibility.FadeOut;
+            _hintLayer.BeginAnimation(OpacityProperty, new DoubleAnimation(opacity, duration)
+            {
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut },
+            });
+        }
+        _hintShown = shown;
+    }
+
+    /// <summary>Balonu ve oku ayrılan alana göre yerleştirir (<see cref="PlugHintPlacement"/>).</summary>
+    void PlaceHint()
+    {
+        if (ActualWidth <= 0 || ActualHeight <= 0) return;
+        var place = PlugHintPlacement.Compute(_layout, ActualWidth, Math.Max(0, ActualHeight - _signSpace));
+        var box = place.Box with { Y = place.Box.Y + _signSpace };
+        place = place with { ArrowTip = new ScenePoint(place.ArrowTip.X, place.ArrowTip.Y + _signSpace) };
+        _hintBubble.MaxWidth = box.Width;
+        _hintBubble.Measure(new Size(box.Width, double.PositiveInfinity));
+        var size = _hintBubble.DesiredSize;
+        Canvas.SetLeft(_hintBubble, box.Right - size.Width);
+        Canvas.SetTop(_hintBubble, Math.Max(box.Y, box.Bottom - size.Height));
+        _hintArrow.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+        Canvas.SetLeft(_hintArrow, place.ArrowTip.X - 9);
+        Canvas.SetTop(_hintArrow, place.ArrowTip.Y - _hintArrow.DesiredSize.Height);
+    }
+
+    // ---- Oyun odası tabelası ----
+
+    void UpdateSign(bool animate)
+    {
+        var sign = _c.GameRoomSignText;
+        var text = sign?.Text;
+        if (text != _signText)
+        {
+            _signText = text;
+            if (sign is { } shown) _sign.SetText(shown);
+            _sign.Visibility = sign is null ? Visibility.Collapsed : Visibility.Visible;
+            PlaceSign();
+            PlaceHint();
+        }
+        if (sign is not null) _sign.SetBright(_plugged, animate);
+    }
+
+    /// <summary>Tabelayı TV'nin üstüne yerleştirir; tabela kapalıysa sahne tüm alanı kullanır.</summary>
+    void PlaceSign()
+    {
+        if (_signText is null || ActualWidth <= 0 || ActualHeight <= 0)
+        {
+            _signSpace = 0;
+            _viewbox.Margin = new Thickness(0);
+            return;
+        }
+        var place = GameRoomSignPlacement.Compute(_layout, ActualWidth, ActualHeight);
+        _signSpace = place.TopSpace;
+        _viewbox.Margin = new Thickness(0, _signSpace, 0, 0);
+        _sign.Width = place.Box.Width;
+        _sign.Height = place.Box.Height;
+        Canvas.SetLeft(_sign, place.Box.X);
+        Canvas.SetTop(_sign, place.Box.Y);
     }
 }

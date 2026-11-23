@@ -153,7 +153,7 @@ public sealed class RemotePlayLog : IDisposable
 public sealed class PictureStallNotes
 {
     /// <summary>Bekçi satırının birebir korunan parçası.</summary>
-    public const string StalledLineMarker = "sn boyunca kare alınamadı";
+    public const string StalledLineMarker = "sn'dir görüntü gelmiyor";
 
     long? pausedAt;
 

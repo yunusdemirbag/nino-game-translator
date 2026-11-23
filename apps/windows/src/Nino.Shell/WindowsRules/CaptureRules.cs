@@ -89,7 +89,7 @@ public static class CaptureCardRules
             .ThenByDescending(f => Uncompressed.Contains(f.Subtype.Trim()))
             .FirstOrDefault();
 
-    /// <summary>Saniyede 10 kare sınırına göre okuma hattına yeni kare gönderilebilir mi.</summary>
+    /// <summary>Okuma hattına kare verme zamanı geldi mi (saniyede 10).</summary>
     public static bool ReadDue(double nowSeconds, double lastSeconds) => nowSeconds - lastSeconds >= 0.1 - 0.002;
 
     /// <summary>

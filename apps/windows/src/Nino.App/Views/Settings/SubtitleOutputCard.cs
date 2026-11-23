@@ -109,10 +109,10 @@ public sealed class SubtitleOutputCard : Card
         _body.Children.Add(console);
 
         // 2. Oyunun görüntüsü.
-        _body.Children.Add(Ui.Caption(L.Get("settings.connection.gamePictureFrom")).At(0, 0, 0, 8));
+        _body.Children.Add(Ui.Caption(L.Get("settings.connection.picture")).At(0, 0, 0, 8));
         var source = new SegmentBar(true, "PS5",
-            L.Get(xbox ? "settings.connection.source.xboxWindow" : "settings.connection.source.remotePlayWindow"),
-            L.Get("status.card.defaultName")) { Margin = new(0, 0, 0, 12) };
+            L.Get(xbox ? "settings.connection.source.xboxWindow" : "settings.connection.source.window"),
+            L.Get("settings.connection.source.card")) { Margin = new(0, 0, 0, 12) };
         source.SetVisible(0, !xbox);
         source.Selected = _c.UsesGameWindow ? 1 : _c.UsesCaptureCard ? 2 : 0;
         source.Changed += i => Write(x => x.VideoSource = i switch
@@ -124,17 +124,18 @@ public sealed class SubtitleOutputCard : Card
         _body.Children.Add(source);
 
         // 3. Kaynak ipucu.
-        var hintKey = _c.UsesCaptureCard ? "settings.connection.hint.captureCard"
-            : _c.UsesGameWindow ? xbox ? "settings.connection.hint.xboxWindow" : "settings.connection.hint.remotePlayWindow"
-            : "settings.connection.hint.ps5";
-        if (_detailed || !_c.UsesCaptureCard) _body.Children.Add(Ui.Hint(L.Get(hintKey)).At(0, 0, 0, 12));
+        // Mac'le aynı: Xbox penceresinde Xbox ipucu her zaman; Remote Play ve PS5 ipuçları yalnız ayrıntılı hâlde.
+        string? hintKey = _c.UsesCaptureCard ? null
+            : _c.UsesGameWindow ? xbox ? "settings.connection.hint.xboxWindow" : _detailed ? "settings.connection.remotePlayHint" : null
+            : _detailed ? "settings.connection.ps5Hint" : null;
+        if (hintKey is not null) _body.Children.Add(Ui.Hint(L.Get(hintKey)).At(0, 0, 0, 12));
 
         // 4–5. HDMI yakalama kartı: altyazı yeri ve bölme.
         if (_c.UsesCaptureCard)
         {
-            _body.Children.Add(Ui.Caption(L.Get("settings.connection.showSubtitlesOn")).At(0, 0, 0, 8));
-            var output = new SegmentBar(true, L.Get("reading.target.tv"), L.Get("settings.connection.output.computer"),
-                L.Get("reading.target.both"));
+            _body.Children.Add(Ui.Caption(L.Get("settings.connection.output")).At(0, 0, 0, 8));
+            var output = new SegmentBar(true, L.Get("settings.connection.output.tv"), L.Get("settings.connection.output.computer"),
+                L.Get("settings.connection.output.both"));
             output.Selected = s.Output switch
             {
                 SubtitleOutput.Computer => 1,
@@ -159,8 +160,12 @@ public sealed class SubtitleOutputCard : Card
     FrameworkElement CardPane()
     {
         var pane = new StackPanel { Margin = new(0, 12, 0, 0) };
-        pane.Children.Add(Ui.Hint(L.Get(_c.ShowsOnTv ? "settings.connection.cardLayout.tv" : "settings.connection.cardLayout.computer"))
-            .At(0, 0, 0, 12));
+        if (_detailed)
+        {
+            var output = _c.Settings.Output;
+            if (output != SubtitleOutput.Computer) pane.Children.Add(Ui.Hint(L.Get("settings.connection.cardTVHint")).At(0, 0, 0, 12));
+            if (output != SubtitleOutput.Tv) pane.Children.Add(Ui.Hint(L.Get("settings.connection.cardComputerHint")).At(0, 0, 0, 12));
+        }
         var busy = _c.IsTranslating || _c.IsStarting;
         if (_detailed && !busy)
         {
@@ -172,10 +177,10 @@ public sealed class SubtitleOutputCard : Card
         else DropPreview();
 
         var content = Ui.Row(Ui.Icon("\uE8FD", 16, "textPrimaryBrush").At(0, 0, 8, 0),
-            new TextBlock { Text = L.Get("cardGuide.window.title"), VerticalAlignment = VerticalAlignment.Center });
+            new TextBlock { Text = L.Get("settings.connection.guide"), VerticalAlignment = VerticalAlignment.Center });
         var guide = new Button { Content = content, Padding = new(16, 0, 16, 0), IsEnabled = !busy }.Styled("Button.Secondary");
-        guide.ToolTip = L.Get("settings.connection.connectionGuide.tooltip");
-        AutomationNames.Set(guide, L.Get("cardGuide.window.title"));
+        guide.ToolTip = L.Get("settings.connection.guideHelp");
+        AutomationNames.Set(guide, L.Get("settings.connection.guide"));
         guide.Click += (_, _) =>
         {
             DropPreview();
@@ -196,7 +201,7 @@ public sealed class SubtitleOutputCard : Card
         toggle.Margin = new(0, 0, 16, 8);
         toggle.Checked += (_, _) => Write(x => x.OverlayClickThrough = true);
         toggle.Unchecked += (_, _) => Write(x => x.OverlayClickThrough = false);
-        var adjust = Ui.Button(L.Get("settings.connection.adjustSubtitleWindow"), () => _c.AdjustMode = true);
+        var adjust = Ui.Button(L.Get("settings.connection.adjustWindow"), () => _c.AdjustMode = true);
         adjust.Padding = new(16, 0, 16, 0);
         adjust.Margin = new(0, 0, 0, 8);
         adjust.IsEnabled = !_c.AdjustMode;

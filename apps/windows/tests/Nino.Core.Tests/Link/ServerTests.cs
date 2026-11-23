@@ -188,7 +188,7 @@ public class IngressTests
         Assert.StartsWith("HTTP/1.1 200 OK\r\n", info);
         Assert.Contains("Content-Type: application/json\r\n", info);
         Assert.Contains("Access-Control-Allow-Origin: *\r\n", info);
-        Assert.EndsWith("{\"app\":\"nino\",\"type\":\"info\",\"id\":\"abc123\",\"name\":\"Salon PC\",\"role\":\"sender\",\"version\":1,\"versions\":[1]}", info);
+        Assert.EndsWith("{\"app\":\"nino\",\"type\":\"info\",\"active\":false,\"id\":\"abc123\",\"name\":\"Salon PC\",\"role\":\"sender\",\"version\":1,\"versions\":[1]}", info);
 
         var options = await RawAsync(port, "OPTIONS * HTTP/1.1\r\n\r\n");
         Assert.StartsWith("HTTP/1.1 204 No Content\r\n", options);
@@ -214,13 +214,14 @@ public class IngressTests
 
         await using var tv = await ConnectTvAsync(port);
         var hello = await tv.WaitForTypeAsync("hello");
-        Assert.Equal("{\"app\":\"nino\",\"type\":\"hello\",\"client\":\"nino-windows/4.0.0\",\"device\":\"Windows\",\"version\":1}", hello);
+        Assert.Equal("{\"app\":\"nino\",\"type\":\"hello\",\"active\":true,\"client\":\"nino-windows/4.0.0\",\"device\":\"Windows\",\"version\":1}", hello);
         Assert.Equal(0, output.TvCount);
 
         await tv.SendAsync("{\"app\":\"nino\",\"type\":\"welcome\",\"version\":1,\"name\":\"LG\",\"model\":\"OLED55\",\"appVersion\":\"1.2\"}");
         var show = await tv.WaitForTypeAsync("show");
+        Assert.Equal("{\"app\":\"nino\",\"type\":\"state\",\"active\":true}", await tv.WaitForTypeAsync("state"));
         var order = tv.Received.Select(TypeOf).ToList();
-        Assert.Equal(["hello", "style", "started", "show"], order);
+        Assert.Equal(["hello", "style", "started", "show", "state"], order);
         Assert.Contains("\"id\":1", show);
         Assert.Contains("\"text\":\"Buraya gel.\"", show);
         Assert.True(await EventuallyAsync(() => output.TvCount == 1));
@@ -371,6 +372,8 @@ public class ConnectorTests
         Assert.True(await EventuallyAsync(() => tv.Latest is not null));
         var first = tv.Latest!;
         Assert.Contains("\"device\":\"Windows\"", await first.WaitForTypeAsync("hello"));
+        // Giden bağlantının hello'su gönderici durumu taşımaz (yalnız 47800 girişi; Mac ile aynı).
+        Assert.DoesNotContain("active", await first.WaitForTypeAsync("hello"));
         await first.SendAsync("{\"app\":\"nino\",\"type\":\"welcome\",\"version\":1,\"name\":\"Salon\",\"model\":\"Sony\"}");
         await first.WaitForTypeAsync("started");
         Assert.True(await EventuallyAsync(() => output.TvCount == 1));

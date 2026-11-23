@@ -37,7 +37,7 @@ internal sealed class SubtitleAreaSection(SettingsWindow host) : SettingsSection
     SegmentBar? _freeTarget;
     DateTime _lastPicture = DateTime.MinValue;
 
-    public override string SectionTitle => L.Get("settings.section.subtitleArea");
+    public override SettingsPage Page => SettingsPage.Area;
 
     int Slot => _which?.Selected ?? 0;
 

@@ -111,12 +111,12 @@ public static class StartupMessages
         if (missing.Count > StartupFiles.MaxListed) text.AppendLine("…");
         text.AppendLine();
         text.Append(turkish
-            ? "Büyük ihtimalle bir antivirüs dosyalardan birini karantinaya aldı. Onu Windows Güvenliği › Virüs ve tehdit "
-              + "koruması › Koruma geçmişi bölümünden geri alın ya da Nino-windows-x64.zip'i tekrar indirip “Tümünü ayıkla” "
-              + "ile açın. Programı zip'in içinden başlatmayın."
-            : "Antivirus software has most likely quarantined one of the files. Bring it back via Windows Security › "
-              + "Virus & threat protection › Protection history, or get Nino-windows-x64.zip once more and unpack it using "
-              + "“Extract all”. Never start the program straight from the zip.");
+            ? "Bunun en sık nedeni antivirüsün dosyayı karantinaya almasıdır. Windows Güvenliği › Virüs ve tehdit koruması › "
+              + "Koruma geçmişi'nden geri yükleyin ya da Nino-windows-x64.zip'i yeniden indirip “Tümünü ayıkla” ile çıkarın. "
+              + "Programı zip'in içinden çalıştırmayın."
+            : "This usually happens when antivirus software quarantines a file. Restore it from Windows Security › Virus & "
+              + "threat protection › Protection history, or download Nino-windows-x64.zip again and extract it with "
+              + "“Extract all”. Don't run the program from inside the zip.");
         return text.ToString();
     }
 

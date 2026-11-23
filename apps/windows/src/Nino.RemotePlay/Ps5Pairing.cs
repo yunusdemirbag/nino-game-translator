@@ -90,7 +90,7 @@ public sealed class Ps5Pairing(IRemotePlayBridge bridge, RemotePlayLog log)
     {
         ArgumentNullException.ThrowIfNull(accountId);
         if (accountId.Length != 8)
-            throw new ArgumentException("accountId needs exactly 8 bytes.", nameof(accountId));
+            throw new ArgumentException("The account ID must be 8 bytes.", nameof(accountId));
         var work = Task.Factory.StartNew(() => Pair(host, pin, accountId), CancellationToken.None,
                                          TaskCreationOptions.LongRunning, TaskScheduler.Default);
         return work.WaitAsync(cancel);
@@ -98,7 +98,7 @@ public sealed class Ps5Pairing(IRemotePlayBridge bridge, RemotePlayLog log)
 
     Ps5Console Pair(string host, uint pin, byte[] accountId)
     {
-        log.Nino($"PS5 eşleştirmesi başladı ({host}); hesap kimliği {Convert.ToBase64String(accountId)}");
+        log.Nino($"PS5 kaydı başlıyor: {host}, hesap kimliği {Convert.ToBase64String(accountId)}");
         for (int attempt = 1; ; attempt++)
         {
             var errors = new List<string>();

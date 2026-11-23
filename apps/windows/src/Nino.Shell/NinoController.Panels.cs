@@ -40,7 +40,7 @@ public sealed partial class NinoController
         }
     }
 
-    /// <summary>PS Remote Play bu makinede yüklü görünüyorsa true; emin olunamıyorsa da true.</summary>
+    /// <summary>Remote Play uygulaması bu bilgisayarda kurulu mu (bilinmiyorsa evet).</summary>
     public bool IsRemotePlayAppInstalled(RemotePlayApp app)
     {
         try { return _services.IsRemotePlayAppInstalled(app); }

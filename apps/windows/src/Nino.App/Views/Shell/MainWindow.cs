@@ -4,6 +4,8 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Interop;
 using Nino.App.Services;
@@ -16,7 +18,8 @@ using Nino.Shell;
 namespace Nino.App.Views;
 
 /// <summary>
-/// Tek ana pencere, kabuk (ana-ekran §2): 1040 × 720 (en az da bu), ekranın ortasında, sistem çerçevesi. Tek ızgarada
+/// Tek ana pencere, kabuk (ana-ekran §2): 1040 × 720 (en az da bu; genişlik en çok 1300, Mac'teki gibi), ekranın
+/// ortasında, sistem çerçevesi. Ana ekranda Enter fişe tıklamakla aynıdır (<see cref="HomeReturnKey"/>; ekranda yazısı yok). Tek ızgarada
 /// altta ekran yeri (kurulum ya da ana ekran), üstünde "Nino'ya Sor" robotu ve "çeviri başladı" balonu. Pencereye bağlı
 /// işler: genel kısayollar (tutamaç oluşunca), uykudan uyanma, bilgisayardaki altyazı penceresi ve sonuç kutusu;
 /// kapanınca hepsi bırakılır, denetleyici kapatılır.
@@ -25,6 +28,9 @@ public sealed class MainWindow : Window
 {
     /// <summary>Pencere boyu.</summary>
     public const double DefaultWidth = 1040, DefaultHeight = 720;
+
+    /// <summary>En geniş hâli (1040 × 1,25).</summary>
+    public const double MaxWindowWidth = 1300;
 
     readonly NinoController _controller;
     readonly bool _live;
@@ -59,6 +65,7 @@ public sealed class MainWindow : Window
         Height = DefaultHeight;
         MinWidth = DefaultWidth;
         MinHeight = DefaultHeight;
+        MaxWidth = MaxWindowWidth;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         RightToLeft.ApplyTo(this);
 
@@ -70,7 +77,8 @@ public sealed class MainWindow : Window
 
         _toast.HorizontalAlignment = HorizontalAlignment.Left;
         _toast.VerticalAlignment = VerticalAlignment.Bottom;
-        _toast.Margin = new Thickness(36 + RobotButton.Size + 12, 0, 0, 84 + 6);
+        // Balon robotun sağında (12 boşluk), robotla dikeyde ortalı.
+        _toast.Margin = new Thickness(24 + RobotButton.Size + 12, 0, 0, 60 + 6);
         _robot.VerticalAlignment = VerticalAlignment.Bottom;
         _robot.Click += (_, _) => ShellWindows.Show(ShellWindowKind.AskNino, this, _controller);
 
@@ -87,6 +95,21 @@ public sealed class MainWindow : Window
             Loaded += OnFirstLoaded;
         }
         Closed += OnClosed;
+        KeyDown += OnKeyDown;
+    }
+
+    /// <summary>
+    /// Enter (bubbling: odaktaki düğme ya da yazı alanı tuşu önce kendisi işler) ana ekrandaysa fişi takar/çıkarır.
+    /// </summary>
+    void OnKeyDown(object sender, KeyEventArgs e)
+    {
+        var key = e.Key == Key.System ? e.SystemKey : e.Key;
+        var focused = Keyboard.FocusedElement;
+        var textInput = focused is TextBoxBase or PasswordBox or ComboBox { IsEditable: true };
+        if (!HomeReturnKey.ShouldHandle(key == Key.Enter, Keyboard.Modifiers != ModifierKeys.None, e.IsRepeat, IsActive,
+                _showingHome == true && _screen.Content is HomeView, textInput, e.Handled)) return;
+        e.Handled = true;
+        _ = HomeActions.ToggleAsync(_controller);
     }
 
     /// <summary>Denetleyici.</summary>
@@ -122,14 +145,14 @@ public sealed class MainWindow : Window
         {
             _screen.Content = new HomeView(_controller);
             _robot.HorizontalAlignment = HorizontalAlignment.Left;
-            _robot.Margin = new Thickness(36, 0, 0, 84);
+            _robot.Margin = new Thickness(24, 0, 0, 60);
         }
         else
         {
             _toast.HideNow();
             _screen.Content = ShellWindows.CreateSetupView(_controller) ?? new Grid();
             _robot.HorizontalAlignment = HorizontalAlignment.Right;
-            _robot.Margin = new Thickness(0, 0, 44, 100);
+            _robot.Margin = new Thickness(0, 0, 24, 96);
         }
     }
 

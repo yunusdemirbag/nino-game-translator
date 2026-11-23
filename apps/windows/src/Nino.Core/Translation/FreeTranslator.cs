@@ -80,7 +80,7 @@ public sealed class FreeTranslator : ITranslator, IDisposable
     /// <inheritdoc />
     public bool SupportsBatch => false;
 
-    /// <summary>Çeviri motoru başlatılamadı; tek sefer bildirilir, çağıran iş parçacığı fark etmez.</summary>
+    /// <summary>Motor açılamadı (bir kez; herhangi bir iş parçacığından).</summary>
     public event Action<Exception>?
         EngineFailed;
 

@@ -39,7 +39,7 @@ public sealed partial class NinoController
     /// </summary>
     public string PsnWindowClosedText(string? problem)
     {
-        _logs.RemotePlay("PSN oturumu tamamlanmadan giriş penceresi kapatıldı" + (string.IsNullOrWhiteSpace(problem) ? "" : ": " + problem));
+        _logs.RemotePlay("PSN giriş penceresi giriş bitmeden kapandı" + (string.IsNullOrWhiteSpace(problem) ? "" : ": " + problem));
         if (string.IsNullOrWhiteSpace(problem)) return _text.Get("wizard.psn.error.windowClosed");
         if (problem.Contains("429", StringComparison.Ordinal)) return _text.Get("wizard.psn.error.rateLimited");
         return $"{_text.Get("wizard.psn.error.pageFailed")} ({problem}) {LogHint()}";

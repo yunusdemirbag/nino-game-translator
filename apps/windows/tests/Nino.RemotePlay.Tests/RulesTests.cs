@@ -258,8 +258,8 @@ public class LogTests
         Assert.Equal("görüntü yeniden geldi (IDR karesi), 700 ms ara", notes.Interpret("[chiaki info] Received IDR frame, resuming decode", 1700));
         notes.Interpret("FEC failed", 2000);
         Assert.Equal("IDR karesi beklenmeyecek; görüntü gelmediği için PS5 oturumu baştan açılıyor (9000 ms ara)",
-                     notes.Interpret("[nino] PS5'ten 9 sn boyunca kare alınamadı; bağlantı açık, oturum yeniden kuruluyor", 11000));
+                     notes.Interpret("[nino] PS5'ten 9 sn'dir görüntü gelmiyor (bağlantı sürüyor); PS5 oturumu baştan açılıyor", 11000));
         Assert.Equal("IDR karesi beklenmeyecek; görüntü gelmediği için PS5 oturumu baştan açılıyor",
-                     notes.Interpret("PS5'ten 8 sn boyunca kare alınamadı", 20000));
+                     notes.Interpret("PS5'ten 8 sn'dir görüntü gelmiyor", 20000));
     }
 }

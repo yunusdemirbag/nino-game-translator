@@ -12,16 +12,18 @@ using Nino.App.Theme;
 using Nino.Core.Settings;
 using Nino.Core.Tv;
 using Nino.Shell;
+using Nino.Shell.Panels;
+using Nino.Shell.Setup;
 
 namespace Nino.App.Views;
 
-/// <summary>§2 Arayüz: ana ekran biçimi ve görünüm (tema).</summary>
+/// <summary>Gizli Arayüz bölümü (Mac'te de gizli): ana ekran biçimi ve görünüm (tema).</summary>
 internal sealed class InterfaceSection(SettingsWindow host) : SettingsSection(host)
 {
     Button? _livingRoom;
     Button? _toggle;
 
-    public override string SectionTitle => L.Get("settings.section.interface");
+    public override SettingsPage Page => SettingsPage.Interface;
 
     protected override void Build()
     {
@@ -130,229 +132,225 @@ internal sealed class InterfaceSection(SettingsWindow host) : SettingsSection(ho
     }
 }
 
-/// <summary>§3 Bağlantı: ayrıntılı altyazı çıkışı kartı.</summary>
+/// <summary>
+/// Bağlantı (Mac'le aynı): ayrıntılı bağlantı kartı, ardından Windows'a özgü görüntü kaynağı / Xbox kartı, Televizyon
+/// bölümü ve Windows Güvenlik Duvarı kartı.
+/// </summary>
 internal sealed class ConnectionSection(SettingsWindow host) : SettingsSection(host)
 {
-    public override string SectionTitle => L.Get("settings.section.connection");
+    PictureSourcePart? _source;
+    TvSettingsCard? _tv;
+
+    public override SettingsPage Page => SettingsPage.Connection;
 
     protected override void Build()
     {
         AddHeader();
         AddCard(new SubtitleOutputCard(C, detailed: true));
+        _source = AddCard(new PictureSourcePart(C, Host));
+        _tv = AddCard(new TvSettingsCard(C, Host));
+        AddCard(new FirewallSettingsCard(C));
+    }
+
+    public override void Shown()
+    {
+        _source?.Shown();
+        _tv?.Shown();
+    }
+
+    public override void ControllerChanged(string property)
+    {
+        _source?.ControllerChanged(property);
+        _tv?.ControllerChanged(property);
     }
 }
 
-/// <summary>§4 Görünüm: görünüm kartı ve Windows Güvenlik Duvarı kartı.</summary>
+/// <summary>
+/// Bağlantı › Televizyon (Mac'le aynı): eşli TV ve bağlantı durumu, TV uygulamasının kartı, TV'deki Nino eskiyse
+/// "Yeni Sürümü Kur", Android TV'de "Görüntü gelmiyorsa: Katman kipi" (displayMode overlay/inApp) ve "TV kurulumunu aç".
+/// </summary>
+internal sealed class TvSettingsCard : Card
+{
+    readonly NinoController _c;
+    readonly Window _host;
+    readonly StackPanel _body = new();
+    readonly LoadGuard _guard = new();
+    TvAppCard? _app;
+
+    public TvSettingsCard(NinoController controller, Window host)
+    {
+        _c = controller;
+        _host = host;
+        SetResourceReference(StyleProperty, typeof(Card));
+        Content = _body;
+        Render();
+    }
+
+    void Render() => _guard.Run(() =>
+    {
+        _body.Children.Clear();
+        _body.Children.Add(Ui.Caption(L.Get("settings.tv.header")).Fg("textSecondaryBrush").At(0, 0, 0, 8));
+        if (_c.Tv is { } tv)
+        {
+            var dot = new StatusDot { Tone = TvSettingsRules.Tone(_c.ConnectedTvs), VerticalAlignment = VerticalAlignment.Center };
+            var name = Ui.Headline(tv.Name).At(8, 0, 0, 0);
+            name.VerticalAlignment = VerticalAlignment.Center;
+            var state = Ui.Hint(L.Get(TvSettingsRules.StateKey(_c.ConnectedTvs)));
+            state.VerticalAlignment = VerticalAlignment.Center;
+            _body.Children.Add(Ui.Split(Ui.Row(dot, name), state));
+            _app?.RemoveFromParent();
+            _app ??= new TvAppCard(_c);
+            _app.Margin = new(0, 8, 0, 0);
+            _body.Children.Add(_app);
+            var update = _c.TvUpdate;
+            if (update.Kind is TvUpdateKind.Outdated or TvUpdateKind.Installing)
+            {
+                var title = Ui.Body(L.Get("about.tv.outdated"));
+                title.VerticalAlignment = VerticalAlignment.Center;
+                var install = Ui.Button(L.Get("about.tv.install"), () => _ = _c.InstallTvUpdateAsync());
+                install.IsEnabled = update.Kind == TvUpdateKind.Outdated;
+                _body.Children.Add(Ui.Split(title, install).At(0, 12, 0, 0));
+            }
+            if (TvSettingsRules.ShowsOverlaySwitch(tv))
+            {
+                var overlay = Ui.Toggle(L.Get("settings.tv.overlay")).At(0, 12, 0, 0);
+                overlay.IsChecked = TvSettingsRules.OverlayOn(_c.Settings.Style);
+                overlay.Checked += (_, _) => SetOverlay(true);
+                overlay.Unchecked += (_, _) => SetOverlay(false);
+                _body.Children.Add(overlay);
+                _body.Children.Add(Ui.Hint(L.Get("settings.tv.overlayHint")).At(0, 6, 0, 0));
+            }
+        }
+        else _body.Children.Add(Ui.Hint(L.Get("settings.tv.none")));
+        var setup = Ui.Button(L.Get("settings.tv.openSetup"), () =>
+        {
+            _host.Close();
+            _c.GoToStep(SetupStep.Tv);
+        }).At(0, 12, 0, 0);
+        setup.HorizontalAlignment = HorizontalAlignment.Left;
+        _body.Children.Add(setup);
+    });
+
+    void SetOverlay(bool on)
+    {
+        if (_guard.Busy) return;
+        var s = _c.Settings;
+        TvSettingsRules.SetOverlay(s, on);
+        _c.UpdateSettings(s);
+    }
+
+    /// <summary>Kart boşsa TV uygulamasının sürümü sorulur (eski sürüm kuruluysa "Yeni Sürümü Kur" çıkar).</summary>
+    public void Shown()
+    {
+        if (_c.TvPaired && _c.TvApp.Kind == TvAppKind.Unknown) _ = _c.RecheckTvAppAsync();
+    }
+
+    public void ControllerChanged(string property)
+    {
+        if (property is nameof(NinoController.Tv) or nameof(NinoController.ConnectedTvs) or nameof(NinoController.TvUpdate)
+            or nameof(NinoController.Settings))
+            Dispatcher.BeginInvoke(Render);
+    }
+}
+
+/// <summary>
+/// Görünüş bölümü (Mac'le aynı, 900 genişlik): solda 470 × 264 canlı önizleme, sağda üç seçenekli kart: yazı boyu
+/// (otomatik + kaydırıcı), arka planın koyuluğu, konuşanın adı. Yazı tipi, renk, kalınlık, zemin şekli, satır yığma,
+/// filigran ve yerleşim seçimleri Mac'teki gibi kalktı (kayıtlı değerler dosyada durur); Android TV'nin katman kipi
+/// Bağlantı › Televizyon'da.
+/// </summary>
 internal sealed class SubtitleAppearanceSection(SettingsWindow host) : SettingsSection(host)
 {
-    Card? _card;
-    CheckBox? _autoSize;
-    SliderRow? _size;
-    StackPanel? _placementPane;
-    TextBlock? _followsHint;
-    StackPanel? _positionPane;
-    StackPanel? _computerPane;
-    StackPanel? _displayModePane;
-    ComboBox? _placement;
+    SubtitlePreview? _preview;
+    TextBlock? _title;
+    TextBlock? _autoHint;
+    SliderRow? _background;
 
-    public override string SectionTitle => L.Get("settings.section.subtitleAppearance");
+    public override SettingsPage Page => SettingsPage.Appearance;
 
     protected override void Build()
     {
         AddHeader();
         var style = C.Settings.Style;
+        var grid = new Grid();
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        _preview = new SubtitlePreview(470, 264) { VerticalAlignment = VerticalAlignment.Top };
+        _preview.Apply(style);
+        grid.Children.Add(_preview);
+
         var body = new StackPanel();
+        _title = Ui.Headline("").At(0, 0, 0, 8);
+        body.Children.Add(_title);
+        var auto = Ui.Toggle(L.Get("settings.style.autoSize"));
+        auto.IsChecked = style.EffectiveAutoSize;
+        auto.Checked += (_, _) => WriteStyle(x => x.AutoSize = true);
+        auto.Unchecked += (_, _) => WriteStyle(x => x.AutoSize = false);
+        body.Children.Add(auto);
 
-        _autoSize = Ui.Toggle(L.Get("settings.subtitle.autoSize")).At(0, 0, 0, 4);
-        _autoSize.IsChecked = style.EffectiveAutoSize;
-        _autoSize.Checked += (_, _) => WriteStyle(x => x.AutoSize = true);
-        _autoSize.Unchecked += (_, _) => WriteStyle(x => x.AutoSize = false);
-        body.Children.Add(_autoSize);
-        body.Children.Add(Ui.Hint(L.Get("settings.subtitle.autoSizeHint")).At(0, 0, 0, 12));
+        body.Children.Add(Ui.Body(L.Get("settings.style.size")).At(0, 8, 0, 2));
+        var size = new SliderRow(L.Get("settings.style.size.small"), L.Get("settings.style.size.large"),
+            SubtitleLookRules.SizeMin, SubtitleLookRules.SizeMax, false);
+        size.Slider.IsSnapToTickEnabled = true;
+        size.Slider.TickFrequency = 1;
+        size.Slider.SmallChange = 1;
+        size.Slider.LargeChange = 4;
+        size.Slider.Value = SubtitleLookRules.ClampSize(style.FontSize);
+        size.Slider.ValueChanged += (_, e) => WriteStyle(x => x.FontSize = SubtitleLookRules.ClampSize(e.NewValue));
+        size.Slider.PreviewMouseLeftButtonDown += (_, _) => SendTest();
+        body.Children.Add(size);
+        _autoHint = Small("settings.style.autoSizeHint");
+        body.Children.Add(_autoHint);
+        body.Children.Add(new Separator { Margin = new(0, 8, 0, 8) });
 
-        body.Children.Add(Ui.Body(L.Get("settings.subtitle.textSize.label")).At(0, 0, 0, 8));
-        _size = new SliderRow(L.Get("settings.subtitle.textSize.small"), L.Get("settings.subtitle.textSize.large"), 16, 90, true)
-        { Margin = new(0, 0, 0, 16) };
-        _size.Slider.IsSnapToTickEnabled = true;
-        _size.Slider.TickFrequency = 1;
-        _size.Slider.SmallChange = 1;
-        _size.Slider.LargeChange = 4;
-        _size.Slider.Value = Math.Clamp(style.FontSize, 16, 90);
-        _size.ValueText!.Text = ((int)_size.Slider.Value).ToString(L.Catalog.Culture);
-        _size.Slider.ValueChanged += (_, e) =>
-        {
-            _size.ValueText.Text = ((int)Math.Round(e.NewValue)).ToString(L.Catalog.Culture);
-            if (Guard.Busy) return;
-            var size = (int)Math.Round(e.NewValue);
-            WriteStyle(x =>
-            {
-                x.FontSize = size;
-                x.AutoSize = false;
-            });
-            Guard.Run(() => _autoSize.IsChecked = false);
-        };
-        _size.Slider.PreviewMouseLeftButtonDown += (_, _) => SendTest();
-        body.Children.Add(_size);
+        body.Children.Add(Ui.Body(L.Get("settings.style.background")).At(0, 0, 0, 2));
+        var (min, max) = SubtitleLookRules.BackgroundRange(style.Placement);
+        _background = new SliderRow(L.Get(SubtitleLookRules.BackgroundMinKey(style.Placement)),
+            L.Get("settings.style.background.solid"), min, max, false);
+        _background.Slider.Value = SubtitleLookRules.ClampBackground(style.Background, style.Placement);
+        _background.Slider.ValueChanged += (_, e) =>
+            WriteStyle(x => x.Background = SubtitleLookRules.ClampBackground(e.NewValue, x.Placement));
+        _background.Slider.PreviewMouseLeftButtonDown += (_, _) => SendTest();
+        body.Children.Add(_background);
+        body.Children.Add(new Separator { Margin = new(0, 8, 0, 8) });
 
-        _placementPane = new StackPanel();
-        _placementPane.Children.Add(Ui.Body(L.Get("settings.subtitle.placement.label")).At(0, 0, 0, 8));
-        _placement = Ui.Combo(240).At(0, 0, 0, 8);
-        _placement.Items.Add(Ui.Item(SubtitlePlacement.Cover, L.Get("settings.subtitle.placement.cover")));
-        _placement.Items.Add(Ui.Item(SubtitlePlacement.Above, L.Get("settings.subtitle.placement.above")));
-        _placement.Items.Add(Ui.Item(SubtitlePlacement.Below, L.Get("settings.subtitle.placement.below")));
-        _placement.Items.Add(Ui.Item(SubtitlePlacement.Fixed, L.Get("settings.subtitle.placement.fixed")));
-        _placement.SelectTag(style.Placement);
-        _placement.SelectionChanged += (_, _) =>
-        {
-            if (_placement.SelectedTag() is SubtitlePlacement p) WriteStyle(x => x.Placement = p);
-            UpdateVisibility();
-        };
-        _placementPane.Children.Add(_placement);
-        _followsHint = Ui.Hint(L.Get("settings.subtitle.placementFollowsHint")).At(0, 0, 0, 16);
-        _placementPane.Children.Add(_followsHint);
-        _positionPane = new StackPanel();
-        _positionPane.Children.Add(Ui.Body(L.Get("settings.subtitle.position.label")).At(0, 0, 0, 8));
-        var position = new SliderRow(L.Get("reading.areaPreset.bottom"), L.Get("reading.areaPreset.top"), 0, 85, false);
-        position.Slider.Value = Math.Clamp(style.BottomPercent, 0, 85);
-        position.Slider.ValueChanged += (_, e) =>
-        {
-            var value = (int)Math.Round(e.NewValue);
-            WriteStyle(x => x.BottomPercent = value);
-        };
-        position.Slider.PreviewMouseLeftButtonDown += (_, _) => SendTest();
-        _positionPane.Children.Add(position);
-        _positionPane.Children.Add(Ui.Hint(L.Get("settings.subtitle.positionHint")).At(0, 12, 0, 16));
-        _placementPane.Children.Add(_positionPane);
-        body.Children.Add(_placementPane);
+        var speaker = Ui.Toggle(L.Get("settings.style.speaker"));
+        speaker.IsChecked = C.Settings.ShowSpeakerNames;
+        speaker.Checked += (_, _) => Write(s => s.ShowSpeakerNames = true);
+        speaker.Unchecked += (_, _) => Write(s => s.ShowSpeakerNames = false);
+        body.Children.Add(speaker);
+        body.Children.Add(Small("settings.style.speakerHint"));
 
-        _computerPane = new StackPanel { Margin = new(0, 0, 0, 16) };
-        _computerPane.Children.Add(Ui.Hint(L.Get("settings.subtitle.computerHint")));
-        var adjust = Ui.Button(L.Get("settings.connection.adjustSubtitleWindow"), () => C.AdjustMode = true).At(0, 8, 0, 0);
-        _computerPane.Children.Add(adjust);
-        body.Children.Add(_computerPane);
+        var card = new Card { Content = body, Padding = new(12), Margin = new(12, 0, 0, 0), VerticalAlignment = VerticalAlignment.Top };
+        Grid.SetColumn(card, 1);
+        grid.Children.Add(card);
+        Children.Add(grid);
+        Update();
+    }
 
-        body.Children.Add(Ui.Body(L.Get("settings.subtitle.background.label")).At(0, 0, 0, 8));
-        var background = new SliderRow(L.Get("common.none"), L.Get("settings.subtitle.background.solid"), 0, 100, false)
-        { Margin = new(0, 0, 0, 16) };
-        background.Slider.Value = Math.Clamp(style.Background, 0, 100);
-        background.Slider.ValueChanged += (_, e) =>
-        {
-            var value = (int)Math.Round(e.NewValue);
-            WriteStyle(x => x.Background = value);
-        };
-        background.Slider.PreviewMouseLeftButtonDown += (_, _) => SendTest();
-        body.Children.Add(background);
-
-        body.Children.Add(Ui.Body(L.Get("settings.subtitle.backgroundShape.label")).At(0, 0, 0, 8));
-        var shape = Ui.Combo(240).At(0, 0, 0, 8);
-        shape.Items.Add(Ui.Item(SubtitleBackgroundShape.Fit, L.Get("settings.subtitle.backgroundShape.fit")));
-        shape.Items.Add(Ui.Item(SubtitleBackgroundShape.Band, L.Get("settings.subtitle.backgroundShape.band")));
-        shape.SelectTag(style.BackgroundShape);
-        shape.SelectionChanged += (_, _) =>
-        {
-            if (shape.SelectedTag() is SubtitleBackgroundShape v) WriteStyle(x => x.BackgroundShape = v);
-        };
-        body.Children.Add(shape);
-        body.Children.Add(Ui.Hint(L.Get("settings.subtitle.backgroundShapeHint")).At(0, 0, 0, 16));
-
-        var bold = Ui.Toggle(L.Get("settings.subtitle.bold")).At(0, 0, 0, 16);
-        bold.IsChecked = style.Bold;
-        bold.Checked += (_, _) => WriteStyle(x => x.Bold = true);
-        bold.Unchecked += (_, _) => WriteStyle(x => x.Bold = false);
-        body.Children.Add(bold);
-
-        var stack = Ui.Toggle(L.Get("settings.subtitle.stackPrevious")).At(0, 0, 0, 4);
-        stack.IsChecked = style.StackPrevious;
-        stack.Checked += (_, _) => WriteStyle(x => x.StackPrevious = true);
-        stack.Unchecked += (_, _) => WriteStyle(x => x.StackPrevious = false);
-        body.Children.Add(stack);
-        body.Children.Add(Ui.Hint(L.Get("settings.subtitle.stackPreviousHint")).At(0, 0, 0, 16));
-
-        body.Children.Add(Ui.Body(L.Get("settings.subtitle.font.label")).At(0, 0, 0, 8));
-        var font = Ui.Combo(240).At(0, 0, 0, 16);
-        foreach (var (value, key) in new[]
-                 {
-                     (SubtitleFont.Condensed, "settings.subtitle.font.condensed"), (SubtitleFont.Modern, "settings.subtitle.font.modern"),
-                     (SubtitleFont.Rounded, "settings.subtitle.font.rounded"), (SubtitleFont.System, "settings.subtitle.font.system"),
-                 })
-        {
-            var item = Ui.Item(value, L.Get(key));
-            if (NinoFonts.ForSubtitle(value) is { } family)
-            {
-                item.FontFamily = family;
-                item.FontWeight = FontWeights.SemiBold;
-            }
-            font.Items.Add(item);
-        }
-        font.SelectTag(style.Font);
-        font.SelectionChanged += (_, _) =>
-        {
-            if (font.SelectedTag() is SubtitleFont v) WriteStyle(x => x.Font = v);
-        };
-        body.Children.Add(font);
-
-        body.Children.Add(Ui.Body(L.Get("settings.subtitle.textColor.label")).At(0, 0, 0, 8));
-        var color = Ui.Combo(240).At(0, 0, 0, 16);
-        color.Items.Add(Ui.Item(SubtitleTextColor.White, L.Get("settings.subtitle.textColor.white")));
-        color.Items.Add(Ui.Item(SubtitleTextColor.Yellow, L.Get("settings.subtitle.textColor.yellow")));
-        color.SelectTag(style.TextColor);
-        color.SelectionChanged += (_, _) =>
-        {
-            if (color.SelectedTag() is SubtitleTextColor v) WriteStyle(x => x.TextColor = v);
-        };
-        body.Children.Add(color);
-
-        _displayModePane = new StackPanel();
-        _displayModePane.Children.Add(Ui.Body(L.Get("settings.subtitle.displayMode.label")).At(0, 0, 0, 8));
-        var mode = Ui.Combo(240).At(0, 0, 0, 8);
-        mode.Items.Add(Ui.Item(SubtitleDisplayMode.InApp, L.Get("settings.subtitle.displayMode.inApp")));
-        mode.Items.Add(Ui.Item(SubtitleDisplayMode.Overlay, L.Get("settings.subtitle.displayMode.overlay")));
-        mode.SelectTag(style.DisplayMode);
-        mode.SelectionChanged += (_, _) =>
-        {
-            if (mode.SelectedTag() is SubtitleDisplayMode v) WriteStyle(x => x.DisplayMode = v);
-        };
-        _displayModePane.Children.Add(mode);
-        _displayModePane.Children.Add(Ui.Hint(L.Get("settings.subtitle.displayModeHint")).At(0, 0, 0, 16));
-        body.Children.Add(_displayModePane);
-
-        var watermark = Ui.Toggle(L.Get("settings.subtitle.watermark")).At(0, 0, 0, 4);
-        watermark.IsChecked = style.Watermark;
-        watermark.Checked += (_, _) => WriteStyle(x => x.Watermark = true);
-        watermark.Unchecked += (_, _) => WriteStyle(x => x.Watermark = false);
-        body.Children.Add(watermark);
-        body.Children.Add(Ui.Hint(L.Get("settings.subtitle.watermarkHint")).At(0, 0, 0, 16));
-
-        body.Children.Add(Ui.Button(L.Get("setup.try.sendSample"), SendTest));
-
-        _card = new Card { Content = body };
-        AddCard(_card);
-        AddCard(new FirewallSettingsCard(C));
-        UpdateVisibility();
+    static TextBlock Small(string key)
+    {
+        var t = Ui.Hint(L.Get(key)).At(0, 4, 0, 0);
+        t.FontSize = 11;
+        return t;
     }
 
     void WriteStyle(Action<SubtitleStyle> change) => Write(s => change(s.Style));
 
     void SendTest() => _ = C.SendTestSubtitleAsync();
 
-    void UpdateVisibility()
+    void Update()
     {
-        if (_card is null) return;
+        if (_title is null) return;
         var s = C.Settings;
-        _card.Header = L.Get(s.Output == SubtitleOutput.Tv ? "settings.area.target.tv" : "settings.section.subtitleAppearance");
-        var fixedPlace = (_placement?.SelectedTag() as SubtitlePlacement? ?? s.Style.Placement) == SubtitlePlacement.Fixed;
-        _placementPane!.Shown(C.ShowsOnTv);
-        _followsHint!.Shown(C.ShowsOnTv && !fixedPlace);
-        _positionPane!.Shown(C.ShowsOnTv && fixedPlace);
-        _computerPane!.Shown(C.ShowsOnComputer);
-        _displayModePane!.Shown(C.ShowsOnTv && C.Tv?.Brand == TvBrand.AndroidTv);
+        _title.Text = L.Get(SubtitleLookRules.TitleKey(s.Output));
+        _autoHint!.Shown(s.Style.EffectiveAutoSize);
+        _preview?.Apply(s.Style);
     }
 
     public override void ControllerChanged(string property)
     {
-        if (property is nameof(NinoController.Settings) or nameof(NinoController.ShowsOnTv) or nameof(NinoController.ShowsOnComputer)
-            or nameof(NinoController.Tv))
-            UpdateVisibility();
+        if (property is nameof(NinoController.Settings)) Update();
     }
 }
 

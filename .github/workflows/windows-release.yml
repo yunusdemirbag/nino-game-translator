@@ -1,0 +1,177 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Windows kurulumu (elle başlatılır): yerel köprü (nino_native.dll, MSYS2 + FFmpeg + chiaki-ng), dotnet publish win-x64,
+# Velopack paketi (NinoGameTranslator, kanal win; önceki sürümden delta), duman testi. Çıktılar yalnız artifact olarak
+# kalır; sürüme yükleme yapılmaz.
+name: windows-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Paket sürümü (ör. 4.5.0)"
+        required: true
+        default: "4.5.0"
+      tv_release:
+        description: "TV paketlerinin (Nino-TV.apk/.ipk/.wgt) alınacağı sürüm etiketi"
+        required: true
+        default: "v4.5.0"
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_NOLOGO: "1"
+  CHIAKI_TAG: v1.10.1
+  VPK_VERSION: 1.2.161
+
+jobs:
+  native:
+    name: Yerel köprü (nino_native.dll)
+    runs-on: windows-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Satır sonu dönüşümünü kapat
+        shell: pwsh
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            git make diffutils tar xz
+            mingw-w64-x86_64-cc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja mingw-w64-x86_64-pkgconf
+            mingw-w64-x86_64-nasm mingw-w64-x86_64-python mingw-w64-x86_64-python-protobuf mingw-w64-x86_64-protobuf
+            mingw-w64-x86_64-openssl mingw-w64-x86_64-json-c mingw-w64-x86_64-libevent mingw-w64-x86_64-miniupnpc
+      - name: FFmpeg önbelleği
+        uses: actions/cache@v4
+        with:
+          path: ffmpeg-mingw64
+          key: ffmpeg-7.1.2-mingw64-${{ hashFiles('apps/windows/native/scripts/build-ffmpeg.sh') }}
+      - name: chiaki-ng kaynağı
+        run: |
+          git clone --depth 1 --branch "$CHIAKI_TAG" https://github.com/streetpea/chiaki-ng.git chiaki-ng
+          cd chiaki-ng
+          git submodule update --init --depth 1 third-party/nanopb third-party/jerasure third-party/gf-complete third-party/curl
+      - name: Derle ve dene
+        run: |
+          export NINO_CHIAKI_DIR="$(cygpath -u "$GITHUB_WORKSPACE")/chiaki-ng"
+          export NINO_FFMPEG_PREFIX="$(cygpath -u "$GITHUB_WORKSPACE")/ffmpeg-mingw64"
+          bash apps/windows/native/scripts/build-windows-msys2.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nino-native
+          path: apps/windows/native/bin/nino_native.dll
+          if-no-files-found: error
+
+  package:
+    name: Paket ve duman testi
+    needs: native
+    runs-on: windows-latest
+    timeout-minutes: 60
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Satır sonu dönüşümünü kapat
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - uses: actions/download-artifact@v4
+        with:
+          name: nino-native
+          path: apps/windows/native/bin
+      - name: TV paketleri
+        shell: pwsh
+        run: |
+          $dir = "dist/tv-app"
+          New-Item -ItemType Directory -Force -Path $dir | Out-Null
+          gh release download "${{ inputs.tv_release }}" --repo "${{ github.repository }}" -p "Nino-TV.*" -D $env:RUNNER_TEMP/tv
+          $v = "${{ inputs.tv_release }}".TrimStart("v")
+          Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.ipk" "$dir/com.ninotranslator.tv_${v}_all.ipk"
+          Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.wgt" "$dir/nino-samsung_${v}.wgt"
+          Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.apk" "$dir/nino-androidtv_${v}.apk"
+          Get-ChildItem $dir
+      - name: Testler (köprü testleri dahil)
+        shell: pwsh
+        run: |
+          $env:NINO_NATIVE_LIBRARY = (Resolve-Path apps/windows/native/bin/nino_native.dll).Path
+          dotnet test apps/windows/Nino.Windows.slnx -c Debug --logger "trx;LogFilePrefix=windows" --results-directory "$env:RUNNER_TEMP/test-results"
+      - name: vpk
+        run: dotnet tool install -g vpk --version $env:VPK_VERSION
+      - name: Paketle
+        shell: pwsh
+        run: pwsh apps/windows/tools/package-windows.ps1 -Version "${{ inputs.version }}" -TvAppSource (Resolve-Path dist/tv-app).Path -DownloadPrevious
+      - name: Duman testi
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $pub = (Resolve-Path apps/windows/artifacts/publish).Path
+          $out = "$env:RUNNER_TEMP/duman"
+          New-Item -ItemType Directory -Force -Path $out | Out-Null
+
+          # 1. Yayın klasöründeki nino_native.dll yüklenir ve dışa aktarımları bulunur.
+          Add-Type -Namespace Duman -Name K32 -MemberDefinition @'
+          [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern IntPtr LoadLibraryW(string path);
+          [DllImport("kernel32.dll", CharSet = CharSet.Ansi)] public static extern IntPtr GetProcAddress(IntPtr module, string name);
+          '@
+          $h = [Duman.K32]::LoadLibraryW("$pub\nino_native.dll")
+          if ($h -eq [IntPtr]::Zero) { throw "nino_native.dll yüklenemedi (hata $([Runtime.InteropServices.Marshal]::GetLastWin32Error()))" }
+          foreach ($fn in "nino_rp_init", "nino_rp_discover", "nino_rp_session_start") {
+            if ([Duman.K32]::GetProcAddress($h, $fn) -eq [IntPtr]::Zero) { throw "dışa aktarım yok: $fn" }
+          }
+          Write-Host "nino_native.dll yüklendi"
+
+          # 2. Uygulama açılır, 30 sn ayakta kalır, penceresi görünür.
+          $p = Start-Process -FilePath "$pub\Nino.exe" -WorkingDirectory $pub -PassThru
+          Start-Sleep -Seconds 30
+          $p.Refresh()
+          Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+          $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+          $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
+          [System.Drawing.Graphics]::FromImage($bmp).CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
+          $bmp.Save("$out/acilis.png")
+          $logs = Join-Path $env:LOCALAPPDATA "Nino"
+          if (Test-Path $logs) { Copy-Item $logs "$out/veri" -Recurse -Force -ErrorAction SilentlyContinue }
+          if ($p.HasExited) { throw "Nino.exe açıldıktan sonra kapandı (çıkış kodu $($p.ExitCode))" }
+          $modules = @($p.Modules | ForEach-Object { $_.ModuleName })
+          Write-Host "pencere başlığı: '$($p.MainWindowTitle)'; yüklü modül sayısı: $($modules.Count)"
+          Write-Host "nino_native.dll süreçte yüklü mü: $($modules -contains 'nino_native.dll')"
+          if (-not $p.MainWindowTitle) { throw "Nino penceresi görünmedi" }
+          Stop-Process -Id $p.Id -Force
+
+          # 3. Kurulum dosyası sessiz kurulur.
+          $setup = (Resolve-Path apps/windows/artifacts/releases/Nino-Windows-Setup.exe).Path
+          $i = Start-Process -FilePath $setup -ArgumentList "--silent" -PassThru -Wait
+          Write-Host "kurulum çıkış kodu: $($i.ExitCode)"
+          Start-Sleep -Seconds 10
+          $installed = Get-ChildItem -Path $env:LOCALAPPDATA -Filter Nino.exe -Recurse -Depth 3 -ErrorAction SilentlyContinue | Select-Object -First 5
+          $installed | ForEach-Object { Write-Host "kurulu: $($_.FullName)" }
+          if (-not $installed) { throw "kurulumdan sonra Nino.exe bulunamadı" }
+          Get-Process Nino -ErrorAction SilentlyContinue | Stop-Process -Force
+      - name: Duman testi çıktıları
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-duman-testi
+          path: ${{ runner.temp }}/duman
+          if-no-files-found: ignore
+      - name: Test sonuçları
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-test-sonuclari
+          path: ${{ runner.temp }}/test-results
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nino-windows-${{ inputs.version }}
+          path: |
+            apps/windows/artifacts/releases/*
+            apps/windows/artifacts/Nino-windows-x64.zip
+          if-no-files-found: error

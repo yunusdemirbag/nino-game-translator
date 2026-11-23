@@ -118,7 +118,7 @@ public static partial class ReplyBlocks
         }
     }
 
-    /// <summary>Metni bağlantılar ve aradaki düz metin olarak böler; sondaki <c>. , ; : ! ?</c> bağlantıya girmez.</summary>
+    /// <summary>Yazıyı düz yazı ve bağlantı parçalarına ayırır; sondaki <c>. , ; : ! ?</c> bağlantıya girmez.</summary>
     public static IReadOnlyList<ReplyInline> SplitLinks(string text)
     {
         var result = new List<ReplyInline>();

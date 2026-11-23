@@ -117,9 +117,9 @@ public class LineLayoutTests
     [Fact]
     public void CenteredLines()
     {
-        var r = LineLayout.KeepCentered(new OcrReading([L("The bridge is closing soon.", 0.35, 0.5, 0.65, 0.6),
+        var r = LineLayout.KeepCentered(new OcrReading([L("We have to leave now.", 0.35, 0.5, 0.65, 0.6),
             L("Room Rates Today", 0.80, 0.1, 0.95, 0.2)]), Default);
-        Assert.Equal("The bridge is closing soon.", r.Text);
+        Assert.Equal("We have to leave now.", r.Text);
     }
 
     [Fact]

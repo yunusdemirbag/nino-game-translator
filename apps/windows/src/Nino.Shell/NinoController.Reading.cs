@@ -52,7 +52,7 @@ public sealed partial class NinoController
     /// <summary>Son kare değişti (arayüz iş parçacığında).</summary>
     public event Action? FrameArrived;
 
-    /// <summary>Num 8 ile taze kare istendiğinde ayar ekranı oyundan yeni bir kare çeker.</summary>
+    /// <summary>"Anlık görüntü istendi" (Num 8): ayar ekranı oyunun şu anki görüntüsünü yeniden alsın.</summary>
     public event Action? SnapshotRequested;
 
     /// <summary>Etkin dil (çeviri sürerken kaynak dil).</summary>
@@ -243,7 +243,7 @@ public sealed partial class NinoController
             Phone = overlay.CreateLineHooks(() => PhoneGame),
             Log = line => _logs.Subtitle(line),
         };
-        var pipeline = new SubtitlePipeline(reader, chain.Translator, new ServerOutput(_server), _msClock, options);
+        var pipeline = new SubtitlePipeline(reader, chain.Translator, new ServerOutput(_server, NewTvShows()), _msClock, options);
         pipeline.MetricsReady += m => Post(() => { if (gen == _pipelineGen) OnMetrics(m); });
         pipeline.PairShown += p => Post(() => { if (gen == _pipelineGen) OnPairShown(p); });
         pipeline.TranslationFinished += (ok, reason) => Post(() => { if (gen == _pipelineGen) OnTranslationFinished(ok, reason); });
@@ -579,11 +579,24 @@ public sealed partial class NinoController
         Card = i.Card,
     };
 
+    /// <summary>
+    /// Altyazının TV'ye giden ek alanları (konuşan adı, konum, buzlu zemin): ayarı ve son kareyi o an okur. Buzlu zemin
+    /// JPEG'i okuyucu fabrikasının kodlayıcısıyla yapılır (yoksa gönderilmez).
+    /// </summary>
+    TvShowBuilder NewTvShows() => new(new TvShowOptions
+    {
+        ShowSpeakerNames = () => _settings.ShowSpeakerNames,
+        Position = () => TvPosition.For(_settings.AreaPreset, _settings.Region),
+        LastFrame = () => Volatile.Read(ref _lastFrame),
+        EncodeJpeg = (frame, quality) => _services.Readers.SmallJpeg(frame, frame.Width, quality),
+    });
+
     /// <summary>Okuma hattının çıkışını altyazı sunucusuna bağlar.</summary>
-    sealed class ServerOutput(ISubtitleServer server) : ISubtitleOutput
+    sealed class ServerOutput(ISubtitleServer server, TvShowBuilder? shows = null) : ISubtitleOutput
     {
         public void ShowSubtitle(SubtitleShow show) =>
-            server.Send(new SubtitleShown(show.Text, show.DurationMs, show.Box, show.Paragraphs, show.Replace));
+            server.Send(shows?.Build(show)
+                ?? new SubtitleShown(show.Text, show.DurationMs, show.Box, show.Paragraphs, show.Replace, show.Source));
 
         public void ClearSubtitle() => server.Send(new SubtitleCleared());
 

@@ -16,10 +16,12 @@ public static class HomeActions
     /// <summary>
     /// Çeviri açılıyorsa açılış bitene kadar 50 ms aralıkla beklenir, bitince açıksa durdurulur (hazırlıkta verilen
     /// kapatma kaybolmaz). Açıksa durdur; başlatılabiliyorsa başlat; değilse kurulumun TV ya da konsol adımı.
-    /// Beklenmeyen hata günlüğe yazılır ve hatayı anlatan uyarı gösterilir.
+    /// Fiş balonuna "kullanıldı" bildirilir. Beklenmeyen hata günlüğe yazılır ve hatayı anlatan uyarı gösterilir.
     /// </summary>
     public static async Task ToggleAsync(NinoController controller)
     {
+        // Fiş balonu: her kullanımda (yalnız kurulumu açsa da) 2 sn görünür; ilk kullanım kalıcı yazılır.
+        PlugHintState.PlugUsed();
         try
         {
             if (controller.IsStarting)

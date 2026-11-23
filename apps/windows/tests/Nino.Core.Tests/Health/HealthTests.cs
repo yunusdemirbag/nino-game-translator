@@ -281,15 +281,15 @@ public sealed class HealthVerdictTests
         Assert.Equal("ağ: wifi, oturumdaki ağ kaybı 3, TV kaybı 0", lines[0]);
         Assert.Equal("akış: 31.2 dk, bağlanma denemesi 1, bağlandı 1, akışta kopma 0", lines[1]);
         Assert.Equal("son kopma sebebi: NotFound", lines[2]);
-        Assert.Equal("tekrar istenen paket 300, dolan tampon 7, dakikada 9.8 kayıp", lines[3]);
+        Assert.Equal("yeniden gönderim 300, tampon taşması 7 (kayıp 9.8/dk)", lines[3]);
         Assert.Equal("görüntü durması 12 (0.4/dk), bozuk kare 5", lines[4]);
-        Assert.Equal("40 satır okundu, 30 çevrildi; çeviri süresi ortanca 820 ms, en uzun 2100 ms", lines[5]);
+        Assert.Equal("altyazı satırı 40, çeviri 30, ortanca 820 ms, en uzun 2100 ms", lines[5]);
         Assert.StartsWith("sağlık: ağ: wifi", HealthSummary.LogLine(s, NetworkKind.Wifi));
         Assert.Contains(" · akış: ", HealthSummary.LogLine(s, NetworkKind.Wifi));
 
         var empty = HealthSummary.Lines(new HealthSnapshot(), NetworkKind.Unknown);
         Assert.Equal("son kopma sebebi: -", empty[2]);
-        Assert.EndsWith("dakikada - kayıp", empty[3]);
+        Assert.EndsWith("(kayıp -/dk)", empty[3]);
         Assert.Contains("ortanca -", empty[5]);
     }
 }

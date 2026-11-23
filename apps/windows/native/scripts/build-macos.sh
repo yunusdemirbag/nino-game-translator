@@ -6,7 +6,7 @@
 # derler, yerel testleri koşar ve native/build/bin/ altına koyar. C# testleri oradaki .dylib'i kullanır.
 #
 # Ortam:
-#   NINO_CHIAKI_DIR   chiaki-ng v1.10.1 kaynağı (varsayılan deponun core/NinoRemotePlay/Vendor/chiaki-ng klasörü, yoksa ~/Desktop/NinoCore/...)
+#   NINO_CHIAKI_DIR   chiaki-ng v1.10.1 kaynağı (varsayılan ~/Desktop/NinoCore/NinoRemotePlay/Vendor/chiaki-ng)
 #   NINO_PYTHON       google.protobuf modülü olan Python (nanopb üreteci için)
 #   NINO_BUILD_DIR    ara derleme klasörü (varsayılan geçici klasör). Not: macOS'ta Masaüstü klasörünün kendisi
 #                     gizlilik izni beklerken "cmake -E" takılabildiği için ara derleme Masaüstü dışında yapılır;
@@ -16,9 +16,7 @@ set -euo pipefail
 
 here="$(cd "$(dirname "$0")" && pwd)"
 native="$(cd "$here/.." && pwd)"
-repo_chiaki="$(cd "$(dirname "$0")/../../../.." && pwd)/core/NinoRemotePlay/Vendor/chiaki-ng"
-[ -d "$repo_chiaki/lib" ] || repo_chiaki="$HOME/Desktop/NinoCore/NinoRemotePlay/Vendor/chiaki-ng"
-chiaki="${NINO_CHIAKI_DIR:-$repo_chiaki}"
+chiaki="${NINO_CHIAKI_DIR:-$HOME/Desktop/NinoCore/NinoRemotePlay/Vendor/chiaki-ng}"
 python="${NINO_PYTHON:-python3}"
 work="${NINO_BUILD_DIR:-$(mktemp -d /tmp/nino-native.XXXXXX)}"
 brew="/opt/homebrew/opt"

@@ -49,6 +49,8 @@ public sealed class TvOutput : IAsyncDisposable
     LinkConnector? connector;
     StyleChanged? lastStyle;
     bool running;
+    DateTimeOffset? startedAt;
+    bool senderActive;
     long showCounter;
     long? lastShowId;
     (SubtitleShown Show, long Id, DateTimeOffset At)? lastShow;
@@ -69,7 +71,7 @@ public sealed class TvOutput : IAsyncDisposable
         legacy.TvDropped += (c, reason) => RaiseDropped(new TvLinkDropped(c.Id, TvLinkKind.Legacy,
             LegacyPort == 0 ? this.options.LegacyPort : LegacyPort, c.Address, reason, true, clock.GetUtcNow() - c.ConnectedAt,
             c.Model, null));
-        ingress = new LinkIngress(this.options.Identity, this.options.Timings, clock) { OnReady = CatchUp };
+        ingress = new LinkIngress(this.options.Identity, this.options.Timings, clock) { OnReady = IngressReady };
         ingress.PeerConnected += p => PeerConnected(TvLinkKind.WebTv, IngressPortNow, p);
         ingress.PeerEnded += (p, end) => PeerEnded(TvLinkKind.WebTv, IngressPortNow, p, end);
         ingress.DisplaysChanged += list =>
@@ -112,6 +114,18 @@ public sealed class TvOutput : IAsyncDisposable
     /// <summary>8787 sunucusunun gerçekten dinlediği port (açılmadıysa 0).</summary>
     public int LegacyPort => legacy.Port;
 
+    /// <summary>
+    /// Yeni bağlanan TV'ye <c>started</c> yalnız çeviri bu kadar önce başladıysa yeniden yollanır (TV her
+    /// <c>started</c>'da "çeviri başladı" balonu gösterir; sürdüğünü <c>state</c> söyler).
+    /// </summary>
+    public static readonly TimeSpan StartedReplayWindow = TimeSpan.FromSeconds(20);
+
+    /// <summary>Gönderici etkin mi: çeviri sürüyor (started..stopped) ve altyazı TV'ye gidiyor.</summary>
+    public bool SenderActive
+    {
+        get { lock (gate) return senderActive; }
+    }
+
     /// <summary>Bağlı TV sayısı.</summary>
     public int TvCount
     {
@@ -149,6 +163,7 @@ public sealed class TvOutput : IAsyncDisposable
                 BroadcastLink(TvWire.LinkMessage(new ScreenCleared()));
                 BroadcastLink(TvWire.LinkMessage(new RegionsCleared()));
             }
+            SyncActive();
         }
     }
 
@@ -269,6 +284,7 @@ public sealed class TvOutput : IAsyncDisposable
     /// <summary>Olayı bütün çıkışlara yollar.</summary>
     public void Send(TvEvent e)
     {
+        var duplicateStyle = false;
         if (e is ScreenShown screen)
         {
             e = TvWire.FitScreen(screen, out var dropped);
@@ -290,6 +306,8 @@ public sealed class TvOutput : IAsyncDisposable
             {
                 case SubtitleShown s:
                     id = ++showCounter;
+                    s = TvWire.FitShow(s, id);
+                    e = s;
                     lastShowId = id;
                     lastShow = (s, id.Value, now);
                     break;
@@ -304,19 +322,23 @@ public sealed class TvOutput : IAsyncDisposable
                     lastOverlay = null;
                     break;
                 case StyleChanged st:
+                    // Yeni protokolde görünüm yalnız değişince gider (bağlanana zaten son görünüm verilir).
+                    if (lastStyle is not null && lastStyle.Style == st.Style) duplicateStyle = true;
                     lastStyle = st;
                     break;
                 case TranslationStarted:
                     running = true;
+                    startedAt = now;
                     break;
                 case TranslationStopped:
                     running = false;
+                    startedAt = null;
                     lastShow = null;
                     lastOverlay = null;
                     break;
             }
             message = TvWire.LinkMessage(e, id);
-            toTv = subtitlesOnTv || !TvWire.IsSubtitleEvent(e);
+            toTv = (subtitlesOnTv || !TvWire.IsSubtitleEvent(e)) && !duplicateStyle;
         }
 
         if (legacy.IsRunning)
@@ -324,6 +346,21 @@ public sealed class TvOutput : IAsyncDisposable
             try { legacy.Send(e); } catch (Exception) { }
         }
         if (toTv) BroadcastLink(message);
+        if (e is TranslationStarted or TranslationStopped) SyncActive();
+    }
+
+    /// <summary>Etkinlik değiştiyse girişe bildirir ve bağlı web TV'lere <c>state</c> yollar (kapıdan bağımsız).</summary>
+    void SyncActive()
+    {
+        bool now;
+        lock (gate)
+        {
+            now = running && subtitlesOnTv;
+            if (now == senderActive) return;
+            senderActive = now;
+        }
+        ingress.Active = now;
+        try { ingress.Broadcast(TvWire.StateMessage(now)); } catch (Exception) { }
     }
 
     /// <summary>TV'ye verilen 8787 adresi: <c>http://&lt;adres ya da 127.0.0.1&gt;:&lt;port&gt;</c>.</summary>
@@ -365,10 +402,22 @@ public sealed class TvOutput : IAsyncDisposable
         try { connector?.Send(message); } catch (Exception) { }
     }
 
-    /// <summary>Yeni hazır olan TV'ye sırayla: son stil, (sürüyorsa) started, hâlâ ekranda olması gereken show ve örtü.</summary>
+    /// <summary>
+    /// Yeni hazır olan TV'ye sırayla: son stil, (son 20 sn içinde başladıysa) started, hâlâ ekranda olması gereken show
+    /// ve örtü.
+    /// </summary>
     void CatchUp(LinkPeer peer)
     {
         foreach (var m in Snapshot(includeStarted: true)) peer.Send(m);
+    }
+
+    /// <summary>Girişe bağlanan web TV: hazırlık mesajları, sonra gönderici durumu.</summary>
+    void IngressReady(LinkPeer peer)
+    {
+        CatchUp(peer);
+        bool active;
+        lock (gate) active = senderActive;
+        peer.Send(TvWire.StateMessage(active));
     }
 
     List<string> Snapshot(bool includeStarted)
@@ -378,7 +427,8 @@ public sealed class TvOutput : IAsyncDisposable
         {
             var now = clock.GetUtcNow();
             if (subtitlesOnTv && lastStyle is not null) list.Add(TvWire.LinkMessage(lastStyle));
-            if (includeStarted && running) list.Add(TvWire.LinkMessage(new TranslationStarted()));
+            if (includeStarted && running && startedAt is { } at && now - at <= StartedReplayWindow)
+                list.Add(TvWire.LinkMessage(new TranslationStarted()));
             if (!subtitlesOnTv) return list;
             if (lastShow is { } show && Remaining(show.Show.DurationMs, show.At, now) is { } left)
                 list.Add(TvWire.LinkMessage(show.Show, show.Id, left));

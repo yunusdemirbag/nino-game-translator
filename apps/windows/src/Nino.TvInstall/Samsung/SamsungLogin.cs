@@ -123,7 +123,7 @@ public sealed class SamsungLogin
                 const string page = "<!doctype html><html><head><meta charset=\"utf-8\"><title>Nino</title></head>" +
                                     "<body style=\"font-family:system-ui;text-align:center;padding:48px\">" +
                                     "<h2>Giriş tamam / Signed in</h2>" +
-                                    "<p>Artık bu sekmeye gerek yok; işleme Nino'dan devam edin.<br>This tab is no longer needed. Head back to Nino to continue.</p>" +
+                                    "<p>Bu sekmeyi kapatıp Nino'ya dönebilirsiniz.<br>You can close this tab and return to Nino.</p>" +
                                     "</body></html>";
                 await WriteAsync(stream, "200 OK", "text/html; charset=utf-8", page, ct).ConfigureAwait(false);
                 done.TrySetResult(account);

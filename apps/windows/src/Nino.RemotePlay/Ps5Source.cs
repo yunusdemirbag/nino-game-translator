@@ -65,7 +65,7 @@ public sealed class Ps5Source : IVideoSource
     {
         ArgumentNullException.ThrowIfNull(options.AccountId);
         if (options.AccountId.Length != 8)
-            throw new ArgumentException("accountId needs exactly 8 bytes.", nameof(options));
+            throw new ArgumentException("The account ID must be 8 bytes.", nameof(options));
         bridge = options.Bridge;
         log = options.Log;
         time = options.Time;
@@ -403,7 +403,7 @@ public sealed class Ps5Source : IVideoSource
             return;
         if (watchdog.Stalled(NowMs()) is not { } gap)
             return;
-        log.Nino($"PS5'ten {gap / 1000} {PictureStallNotes.StalledLineMarker}; bağlantı açık, oturum yeniden kuruluyor");
+        log.Nino($"PS5'ten {gap / 1000} {PictureStallNotes.StalledLineMarker} (bağlantı sürüyor); PS5 oturumu baştan açılıyor");
         CloseBox();
         ScheduleRetry(b.Generation, new ReasonHint(DisconnectReason.Other, "the PS5 stopped sending video"));
     }

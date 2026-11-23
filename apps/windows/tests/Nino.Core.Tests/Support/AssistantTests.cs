@@ -279,6 +279,162 @@ public sealed class AssistantChatTests
     }
 }
 
+public sealed class AssistantOptionsTests
+{
+    static readonly Uri Root = new("https://pool.example");
+    static readonly AssistantContext Context = new() { Install = "install-1234", App = "1.0", Language = "tr" };
+
+    const string Question = "Nino'yu hangi TV'de kullanıyorsun?\n\n1. Samsung TV\n2. LG TV\n3. Android TV";
+
+    static Task<AssistantResult> Ask(string body) =>
+        new AssistantClient(new HttpClient(StubHandler.Json(HttpStatusCode.OK, body)), Root)
+            .AskAsync(Context, [AssistantMessage.User("selam")]);
+
+    static IReadOnlyList<string> Read(string json) => AssistantOptions.Read(JsonDocument.Parse(json).RootElement);
+
+    [Fact]
+    public async Task Options_Read_ReplyUntouched()
+    {
+        var body = JsonSerializer.Serialize(new { ok = true, reply = Question, report = (string?)null,
+            options = new[] { "Samsung TV", "LG TV", "Android TV" } });
+        var r = await Ask(body);
+        Assert.Equal(AssistantOutcome.Reply, r.Outcome);
+        Assert.Equal(Question, r.Reply);
+        Assert.Equal(["Samsung TV", "LG TV", "Android TV"], r.Options);
+    }
+
+    [Theory]
+    [InlineData("""{"reply":"x"}""")]
+    [InlineData("""{"reply":"x","options":null}""")]
+    [InlineData("""{"reply":"x","options":"Samsung TV"}""")]
+    [InlineData("""{"reply":"x","options":{"a":"b"}}""")]
+    [InlineData("""{"reply":"x","options":[1,true,null,"  ",""]}""")]
+    public async Task Options_MissingOrBroken_Empty(string body)
+    {
+        var r = await Ask(body);
+        Assert.Equal(AssistantOutcome.Reply, r.Outcome);
+        Assert.Empty(r.Options);
+    }
+
+    [Fact]
+    public async Task Options_OnlyOnReply()
+    {
+        var r = await new AssistantClient(new HttpClient(StubHandler.Json(HttpStatusCode.TooManyRequests,
+            """{"error":"busy","options":["a"]}""")), Root).AskAsync(Context, [AssistantMessage.User("selam")]);
+        Assert.Equal(AssistantOutcome.Busy, r.Outcome);
+        Assert.Empty(r.Options);
+    }
+
+    [Fact]
+    public void Limits_CountLengthEmptyDuplicates()
+    {
+        var many = JsonSerializer.Serialize(Enumerable.Range(1, 12).Select(i => "Seçenek " + i));
+        Assert.Equal(AssistantOptions.MaxCount, Read(many).Count);
+        Assert.Equal("Seçenek 8", Read(many)[^1]);
+        var mixed = JsonSerializer.Serialize(new object[]
+            { "  LG TV  ", "", "   ", new string('a', AssistantOptions.MaxLength + 1), new string('b', AssistantOptions.MaxLength), "LG TV", 5, "تلفاز سامسونج" });
+        Assert.Equal(["LG TV", new string('b', AssistantOptions.MaxLength), "تلفاز سامسونج"], Read(mixed));
+        Assert.Same(AssistantOptions.None, Read("[]"));
+    }
+
+    static AssistantChat Chat(Queue<AssistantResult> answers, List<AssistantMessage[]> sent) =>
+        new((messages, _) =>
+        {
+            lock (sent) sent.Add(messages.ToArray());
+            return Task.FromResult(answers.Dequeue());
+        });
+
+    static AssistantResult WithOptions(string reply, params string[] options) =>
+        new(AssistantOutcome.Reply, reply) { Options = options };
+
+    [Fact]
+    public async Task Choose_SendsLabelVerbatim_HistoryKeepsRawReply()
+    {
+        var sent = new List<AssistantMessage[]>();
+        var chat = Chat(new([WithOptions(Question, "Samsung TV", "LG TV", "Android TV"), new(AssistantOutcome.Reply, "Tamam.")]), sent);
+        chat.Send("altyazı çıkmıyor");
+        await chat.LastRun;
+        Assert.Equal(["Samsung TV", "LG TV", "Android TV"], chat.ActiveOptions);
+        Assert.Equal(Question, ((NinoChatEntry)chat.Entries[^1]).Text);
+
+        Assert.False(chat.Choose("Philips TV"));
+        Assert.False(chat.Choose("lg tv"));
+        Assert.True(chat.Choose("LG TV"));
+        Assert.Empty(chat.ActiveOptions);
+        Assert.False(chat.Choose("LG TV"));
+        await chat.LastRun;
+
+        var last = sent[^1];
+        Assert.Equal(["altyazı çıkmıyor", Question, "LG TV"], last.Select(m => m.Text));
+        Assert.Equal([AssistantRole.User, AssistantRole.Assistant, AssistantRole.User], last.Select(m => m.Role));
+        Assert.Empty(((UserChatEntry)chat.Entries[2]).Images);
+        // Sunucuya giden gövdede de reply birebir.
+        var json = JsonDocument.Parse(AssistantPayload.Build(Context, last)!);
+        Assert.Equal(Question, json.RootElement.GetProperty("messages")[1].GetProperty("text").GetString());
+        Assert.Empty(chat.ActiveOptions);
+        Assert.All(chat.Entries.OfType<NinoChatEntry>(), n => Assert.Empty(n.Options));
+    }
+
+    [Fact]
+    public async Task OptionsCleared_WhenUserTypes_AndOnlyLastBalloonHolds()
+    {
+        var sent = new List<AssistantMessage[]>();
+        var chat = Chat(new([
+            WithOptions(Question, "Samsung TV", "LG TV"),
+            WithOptions("Altyazı nerede görünüyor?\n\n1. TV'de\n2. Bilgisayarda", "TV'de", "Bilgisayarda"),
+            AssistantResult.Failed,
+            new(AssistantOutcome.Reply, "Tamam."),
+        ]), sent);
+        chat.Send("yardım");
+        await chat.LastRun;
+        Assert.True(chat.Send("Samsung"));
+        Assert.Empty(chat.ActiveOptions);
+        Assert.Empty(((NinoChatEntry)chat.Entries[1]).Options);
+        Assert.False(chat.Choose("LG TV"));
+        await chat.LastRun;
+        Assert.Equal(["TV'de", "Bilgisayarda"], chat.ActiveOptions);
+        Assert.Single(chat.Entries.OfType<NinoChatEntry>(), n => n.Options.Count > 0);
+
+        // Gönderim başarısız: uyarı son girdi, seçenek yok; tekrar denemede eski seçenekler geri gelmez.
+        Assert.True(chat.Choose("TV'de"));
+        await chat.LastRun;
+        Assert.Empty(chat.ActiveOptions);
+        Assert.True(chat.Retry());
+        await chat.LastRun;
+        Assert.Empty(chat.ActiveOptions);
+        Assert.Equal("TV'de", sent[^1][^1].Text);
+        Assert.Equal(sent[^2].Select(m => m.Text), sent[^1].Select(m => m.Text));
+    }
+
+    [Fact]
+    public async Task NewReplyWithoutOptions_ClearsThem()
+    {
+        var chat = Chat(new([WithOptions(Question, "Samsung TV"), new(AssistantOutcome.Reply, "Oldu mu?")]), []);
+        chat.Send("a");
+        await chat.LastRun;
+        chat.Choose("Samsung TV");
+        await chat.LastRun;
+        Assert.Empty(chat.ActiveOptions);
+        Assert.Equal("Oldu mu?", ((NinoChatEntry)chat.Entries[^1]).Text);
+    }
+
+    [Fact]
+    public async Task Waiting_ChooseRefused()
+    {
+        var gate = new TaskCompletionSource<AssistantResult>();
+        var calls = 0;
+        var chat = new AssistantChat((_, _) => ++calls == 1 ? Task.FromResult(WithOptions(Question, "LG TV")) : gate.Task);
+        chat.Send("a");
+        await chat.LastRun;
+        Assert.True(chat.Choose("LG TV"));
+        Assert.True(chat.IsWaiting);
+        Assert.False(chat.Choose("LG TV"));
+        gate.SetResult(new AssistantResult(AssistantOutcome.Reply, "ok"));
+        await chat.LastRun;
+        Assert.Equal(2, calls);
+    }
+}
+
 public sealed class ReplyBlocksTests
 {
     [Fact]

@@ -182,7 +182,7 @@ public sealed class SubtitlePipeline
     /// <summary>Son çevirmen hatası (durum); başarılı çeviride silinir.</summary>
     public UnavailableReason? LastError { get { lock (_lock) return _lastError; } }
 
-    /// <summary>Hattın şimdiye dek paketten aldığı satırların adedi.</summary>
+    /// <summary>Bu hatta paketten gelen satır sayısı.</summary>
     public int PackHits { get { lock (_lock) return _packHits; } }
 
     /// <summary>Son okuma (ek bölge ve ekranı çevir için değil; ölçüm ve tanı için).</summary>
@@ -792,7 +792,7 @@ public sealed class SubtitlePipeline
             _lastShownId = request.Id;
             var replace = CorrectsShown(request.Source);
             _output.ShowSubtitle(new SubtitleShow(translation, onScreen ? OnScreenDurationMs : RemovedDurationMs(translation),
-                request.Box, Replace: replace));
+                request.Box, Replace: replace) { Source = request.Source });
             _lastPair = (request.Source, translation);
             _lastBox = request.Box;
             _lastOrigin = ShownOrigin.Engine;
@@ -840,7 +840,7 @@ public sealed class SubtitlePipeline
         Log($"#{request.Id} {LogQuote.Of(request.Source)} {originText}");
         _lastShownId = request.Id;
         var replace = CorrectsShown(request.Source);
-        _output.ShowSubtitle(new SubtitleShow(translation, OnScreenDurationMs, request.Box, Replace: replace));
+        _output.ShowSubtitle(new SubtitleShow(translation, OnScreenDurationMs, request.Box, Replace: replace) { Source = request.Source });
         _lastPair = (request.Source, translation);
         _lastBox = request.Box;
         _lastOrigin = ShownOrigin.Pack;
@@ -867,7 +867,7 @@ public sealed class SubtitlePipeline
                 Log($"#{full.Id} geri geldi, yarım okumasıyla: {LogQuote.Of(source)}");
                 if (full.Translation is { } t)
                 {
-                    _output.ShowSubtitle(new SubtitleShow(t, OnScreenDurationMs, box, Replace: true));
+                    _output.ShowSubtitle(new SubtitleShow(t, OnScreenDurationMs, box, Replace: true) { Source = full.Source });
                     _lastPair = (full.Source, t);
                     _lastBox = box;
                 }
@@ -880,7 +880,7 @@ public sealed class SubtitlePipeline
             Log($"#{pair.Id} geri geldi: {LogQuote.Of(source)}");
             if (pair.Translation is not { } translation) return;
             var replace = CorrectsShown(source);
-            _output.ShowSubtitle(new SubtitleShow(translation, OnScreenDurationMs, box, Replace: replace));
+            _output.ShowSubtitle(new SubtitleShow(translation, OnScreenDurationMs, box, Replace: replace) { Source = source });
             _lastPair = (source, translation);
             _lastBox = box;
             return;
@@ -948,7 +948,7 @@ public sealed class SubtitlePipeline
             if (_onScreenId != pair.Id || _lastShownId != pair.Id || _lastOrigin == ShownOrigin.Pack
                 || _lastPair?.Source != source) return;
             Log($"#{pair.Id} havuzdan daha iyi çeviri yerine kondu");
-            _output.ShowSubtitle(new SubtitleShow(presented, OnScreenDurationMs, _lastBox, Replace: true));
+            _output.ShowSubtitle(new SubtitleShow(presented, OnScreenDurationMs, _lastBox, Replace: true) { Source = source });
             _lastPair = (source, presented);
             _lastOrigin = ShownOrigin.Pool;
             shown = new ShownPair(source, presented, ShownOrigin.Pool, null);

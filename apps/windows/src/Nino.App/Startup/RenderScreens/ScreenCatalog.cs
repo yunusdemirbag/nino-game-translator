@@ -56,7 +56,7 @@ public static partial class ScreenCatalog
         list.Add(new ScreenEntry("ana", MainWindow.DefaultWidth, MainWindow.DefaultHeight, true, c => new HomeView(c)));
         list.Add(new ScreenEntry("pencere", MainWindow.DefaultWidth, MainWindow.DefaultHeight, true, c => new MainWindow(c, live: false)));
         list.Add(new ScreenEntry("ayarlar", 1000, 720, true, c => ShellWindows.Create(ShellWindowKind.Settings, c)));
-        list.Add(new ScreenEntry("hakkinda", 460, 640, true, c => ShellWindows.Create(ShellWindowKind.About, c)));
+        list.Add(new ScreenEntry("hakkinda", 520, 720, true, c => ShellWindows.Create(ShellWindowKind.About, c)));
         AddScreens(list);
         return list;
     }

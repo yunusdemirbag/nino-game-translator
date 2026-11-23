@@ -50,11 +50,11 @@ public class PhoneHookTests
     public async Task OffCenterLinesDroppedWhileSearching()
     {
         var t = new FakeTranslator();
-        var reader = new FuncReader(_ => new OcrReading([new OcrLine("The bridge is closing soon.", new Box(0.35, 0.5, 0.65, 0.6)),
+        var reader = new FuncReader(_ => new OcrReading([new OcrLine("We have to leave now.", new Box(0.35, 0.5, 0.65, 0.6)),
             new OcrLine("Room Rates Today", new Box(0.80, 0.1, 0.95, 0.2))]));
         var h = Make(new FakeHooks(), reader, t);
         await h.Frame(area: Area);
-        Assert.Equal(["The bridge is closing soon."], t.Requests);
+        Assert.Equal(["We have to leave now."], t.Requests);
     }
 
     [Fact]

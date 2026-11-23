@@ -37,7 +37,7 @@ public sealed partial class NinoController
     /// <summary>"Hangi oyun?" kartı açık mı.</summary>
     public bool GamePickerOpen => _gamePickerOpen;
 
-    /// <summary>Bu konsolda en son hangi oyunun seçildiği.</summary>
+    /// <summary>Bu PS5'te son seçilen oyun.</summary>
     public string? LastChosenGame => LastGames().GetValueOrDefault(ConsoleKey() ?? "");
 
     /// <summary>Çeviri havuzunun son bildiği toplam indirme sayısı (yoksa gösterge gizli).</summary>

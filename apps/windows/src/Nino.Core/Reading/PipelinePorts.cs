@@ -27,7 +27,11 @@ public interface ISubtitlePackLookup
 /// <param name="Box">İngilizce altyazının karedeki yeri (yoksa null).</param>
 /// <param name="Paragraphs">Satır satır, sola yaslı gösterim (görev paneli gibi).</param>
 /// <param name="Replace">Az önce gösterilenin uzamış/düzelmiş okuması: TV öncekinin yerine koyar.</param>
-public sealed record SubtitleShow(string Text, int DurationMs, Box? Box, bool Paragraphs = false, bool Replace = false);
+public sealed record SubtitleShow(string Text, int DurationMs, Box? Box, bool Paragraphs = false, bool Replace = false)
+{
+    /// <summary>Okunan İngilizce satır (TV'ye <c>source</c>; konuşan adı ayrımı buna bakar). Bilinmiyorsa null.</summary>
+    public string? Source { get; init; }
+}
 
 /// <summary>
 /// Tam ekran çevirisi ya da telefon/harita örtüsünün bir öğesi (TV <c>screen</c> olayının öğesi). Görünüm alanları telefon
@@ -87,7 +91,7 @@ public interface ISubtitleOutput
     /// <summary>Ek alanın çevirisini gösterir; metin boşsa o alanın kutusu kalkar.</summary>
     void ShowRegion(string id, string text, Box? box, double? lineHeight) { }
 
-    /// <summary>Ek alanların hepsini temizler.</summary>
+    /// <summary>Bütün ek alan kutularını kaldırır.</summary>
     void ClearRegions() { }
 }
 

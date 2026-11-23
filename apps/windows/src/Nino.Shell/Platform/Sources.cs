@@ -44,7 +44,7 @@ public interface ICaptureCardSource : IVideoSource
     /// <summary>Oyunu bu bilgisayarda gösteren pencereyi kullanıcı kapattı (çeviri durur).</summary>
     event Action? GameWindowClosed;
 
-    /// <summary>Oyun penceresinin tam ekran durumunu tersine çevirir.</summary>
+    /// <summary>Oyunun penceresini tam ekrana alır ya da çıkarır.</summary>
     void ToggleFullScreen();
 }
 

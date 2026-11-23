@@ -195,6 +195,21 @@ public static class WireNumbers
         return Shortest(Math.Round(Math.Clamp(value, 0, 1) * 100, MidpointRounding.AwayFromZero) / 100);
     }
 
+    /// <summary>
+    /// Yeni protokolün kutu değeri (Mac ile aynı): 0–1'e kırp, 4 ondalık, kayan noktalı aritmetikle yarıda sıfırdan uzağa
+    /// (<c>round(v × 10⁴) / 10⁴</c>), en kısa yazım. Eski 8787'deki <see cref="Fraction"/>'dan yalnız tam yarı
+    /// değerlerde ayrılabilir.
+    /// </summary>
+    public static RawNumber LinkUnit(double value) => LinkRound(double.IsNaN(value) ? 0 : Math.Clamp(value, 0, 1));
+
+    /// <summary>Yeni protokolün satır yüksekliği (Mac ile aynı): kırpılmadan 4 ondalık, yarıda sıfırdan uzağa.</summary>
+    public static RawNumber LinkRound(double value)
+    {
+        if (!double.IsFinite(value)) return new RawNumber("0");
+        var r = Math.Round(value * 10000, MidpointRounding.AwayFromZero) / 10000;
+        return Shortest(r == 0 ? 0 : r);
+    }
+
     /// <summary>Kayan noktalı sayının en kısa geri dönüşlü yazımı (.NET JSON yazıcısıyla aynı).</summary>
     static RawNumber Shortest(double value) => new(value.ToString("R", CultureInfo.InvariantCulture));
 }

@@ -296,6 +296,36 @@ public abstract class CoreShellServices : IShellServices, IDisposable
     }
 
     /// <inheritdoc />
+    public virtual async Task<bool> TvAwakeAsync(TvRecord tv, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(tv.Host)) return false;
+        using var any = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        any.CancelAfter(TimeSpan.FromSeconds(2));
+        async Task<bool> Probe(int port)
+        {
+            try
+            {
+                using var client = new System.Net.Sockets.TcpClient();
+                await client.ConnectAsync(tv.Host.Trim(), port, any.Token).ConfigureAwait(false);
+                return true;
+            }
+            catch (Exception) { return false; }
+        }
+        var probes = UpdateRules.WakePorts(tv.Brand).Select(Probe).ToList();
+        while (probes.Count > 0)
+        {
+            var done = await Task.WhenAny(probes).ConfigureAwait(false);
+            probes.Remove(done);
+            if (await done.ConfigureAwait(false))
+            {
+                await any.CancelAsync().ConfigureAwait(false);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <inheritdoc />
     public virtual Task<bool> AndroidAdbOpenAsync(string host, CancellationToken cancellationToken = default) =>
         AndroidTvAppInstaller.IsReachableAsync(host, ct: cancellationToken);
 

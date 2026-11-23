@@ -20,7 +20,7 @@ public class PsnTests
             "scope=psn:clientapp%20referenceDataService",
             "client_id=ba495a24-818c-472b-b12d-ff231c1b5745",
         ];
-        Assert.True(url.StartsWith("https://auth.api.sonyentertainmentnetwork.com/2.0/oauth/authorize?", StringComparison.Ordinal));
+        Assert.StartsWith("https://auth.api.sonyentertainmentnetwork.com/2.0/oauth/authorize?", url, StringComparison.Ordinal);
         foreach (string part in expected)
             Assert.Contains(part, url);
         Assert.Contains("?service_entity=urn:service-entity:psn&response_type=code&", url);

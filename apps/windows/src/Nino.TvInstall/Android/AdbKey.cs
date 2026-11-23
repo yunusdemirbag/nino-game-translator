@@ -45,7 +45,7 @@ public static class AdbKey
         return key;
     }
 
-    /// <summary>524 baytlık, Android'e özgü RSA açık anahtar düzeni.</summary>
+    /// <summary>Android'in kendi RSA açık anahtar biçimi (524 bayt).</summary>
     public static byte[] AndroidPublicKey(RSA rsa)
     {
         var p = rsa.ExportParameters(false);

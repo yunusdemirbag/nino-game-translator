@@ -24,7 +24,7 @@ public static class L
     /// <summary>Arayüz dili ("tr", "en", "fil" …).</summary>
     public static string Language => Catalog.Language;
 
-    /// <summary>Arapça ya da Urduca gibi sağdan sola yazılan bir dil seçiliyse true.</summary>
+    /// <summary>Arayüz sağdan sola mı (Arapça, Urduca).</summary>
     public static bool IsRightToLeft => Catalog.IsRightToLeft;
 
     public static string Get(string key) => Catalog.Get(key);

@@ -336,7 +336,7 @@ public sealed class CaptureCardCapture : ICaptureCardSource
         _blackWatch.Reset();
         _stall.Reset();
         _lastFrame = Now;
-        _log($"yakalama kartı kullanımda: {card.Name} ({described})");
+        _log($"yakalama kartı açıldı: {card.Name}, {described}");
         SetCard(gen, new CardStatus(CardCaptureState.Capturing, card.Name));
         if (_o.ShowGameHere && Current(gen)) await StartAudioAsync(gen, card).ConfigureAwait(false);
     }

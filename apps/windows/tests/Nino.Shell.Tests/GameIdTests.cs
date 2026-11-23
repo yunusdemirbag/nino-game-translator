@@ -21,8 +21,8 @@ public sealed class GameIdTests
         try
         {
             WritePack(folder, "community-grand-theft-auto-vi.json", "community-grand-theft-auto-vi", "Grand Theft Auto VI",
-                "The ferry leaves at sunrise");
-            WritePack(folder, "gta-6.json", "gta-6", "Grand Theft Auto VI", "The ferry leaves at sunrise", "Get in the car now");
+                "Meet me at the docks tonight");
+            WritePack(folder, "gta-6.json", "gta-6", "Grand Theft Auto VI", "Meet me at the docks tonight", "Get in the car now");
             WritePack(folder, "red-dead-redemption-2.json", "red-dead-redemption-2", "Red Dead Redemption 2", "Hold the reins tight");
             var w = new World().WithPs5().WithTv();
             w.Services.PackService = new PackLibrary(folder);

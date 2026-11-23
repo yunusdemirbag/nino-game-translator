@@ -170,7 +170,7 @@ public sealed unsafe class NativeBridge : IRemotePlayBridge
     {
         ArgumentNullException.ThrowIfNull(accountId);
         if (accountId.Length != 8)
-            throw new ArgumentException("accountId needs exactly 8 bytes.", nameof(accountId));
+            throw new ArgumentException("The account ID must be 8 bytes.", nameof(accountId));
         EnsureInitialized();
 
         var context = new RegisterContext(log);

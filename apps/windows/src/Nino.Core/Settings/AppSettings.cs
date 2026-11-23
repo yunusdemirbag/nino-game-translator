@@ -65,6 +65,21 @@ public sealed class AppSettings
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public XboxStreamQuality XboxStreamQuality { get; set; } = XboxStreamQuality.Auto;
 
+    /// <summary>Ana ekranda TV'nin üstündeki oyun odası tabelası açık mı. Yeni alan; varsayılanken dosyaya yazılmaz.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public bool GameRoomSign { get; set; }
+
+    /// <summary>Tabeladaki oda adı (en çok 16 harf). Yeni alan; boşken dosyaya yazılmaz.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string? GameRoomName { get; set; }
+
+    /// <summary>
+    /// Oda adı soruldu mu (kaydedildi ya da atlandı). Eski dosyada yok; bu yüzden tabelayı getiren sürüme geçince bir kez
+    /// sorulur. Varsayılanken dosyaya yazılmaz.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public bool GameRoomAsked { get; set; }
+
     /// <summary>Derin kopya.</summary>
     public AppSettings Clone() => SettingsJson.Deserialize(SettingsJson.Serialize(this));
 

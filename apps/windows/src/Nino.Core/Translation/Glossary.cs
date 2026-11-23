@@ -10,7 +10,7 @@ namespace Nino.Core.Translation;
 /// <summary>Sözlükteki bir terim.</summary>
 /// <param name="English">İngilizcesi (boşluklar teklenmiş).</param>
 /// <param name="Turkish">Türkçesi (<c>keep</c> adlarında kendisi).</param>
-/// <param name="Exact">Harf büyüklüğü birebir tutmalı (<c>keepExact</c>).</param>
+/// <param name="Exact">Yalnız aynı büyük/küçük harfle eşleşir (<c>keepExact</c>).</param>
 public sealed record GlossaryTerm(string English, string Turkish, bool Exact);
 
 /// <summary>Metinde bulunan terim.</summary>

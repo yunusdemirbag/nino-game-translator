@@ -41,7 +41,7 @@ public sealed partial class NinoController
     /// <summary>LG geliştirici modunun kalan saati (biliniyorsa).</summary>
     public int? LgHoursLeft => _lgHoursLeft;
 
-    /// <summary>Son eşleşme denemesinde TV'deki uygulama başlatılamadıysa true.</summary>
+    /// <summary>Son eşleşmede TV uygulaması açılamadı mı.</summary>
     public bool TvAppLaunchFailed => _tvLaunchFailed;
 
     /// <summary>Nino bu TV'ye uygulamayı kurabilir mi.</summary>
