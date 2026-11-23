@@ -237,6 +237,7 @@ public sealed partial class NinoController
             _sleep.Begin(KeepDisplayOn);
             _sleepActive = true;
             _translating = true;
+            _translationFailing = false;
             _server.Send(new TranslationStarted());
             UpdateFirewallClocks();
         }

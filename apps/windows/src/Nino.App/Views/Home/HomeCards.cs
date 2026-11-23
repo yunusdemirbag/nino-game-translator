@@ -65,9 +65,8 @@ internal sealed class HomeCards : IDisposable
         // 6. GPU
         _gpu.Content = HomeUi.Text(L.Get("home.card.gpu.warning"), "Text.Error");
 
-        // 7. Ücretsiz motor açılamadı
-        _engine.Content = Stack(Warning(L.Get("home.card.engineFailed.title")),
-            Hint(L.Get("home.card.engineFailed.hint"), new Thickness(0, 8, 0, 12)), SettingsButton());
+        // 7. Çeviri gelmiyor (tek satır; motor seçtirme yok)
+        _engine.Content = Warning(L.Get("home.card.noTranslation"));
 
         // 8. Çevrimiçi motor
         _onlineTitle = Warning("");
@@ -105,7 +104,7 @@ internal sealed class HomeCards : IDisposable
         // 5–7
         _unsupported.Show(_c.TranslatorStatus == TranslatorStatus.Unsupported);
         _gpu.Show(_c.GpuFellBack);
-        _engine.Show(_c.TranslatorStatus == TranslatorStatus.EngineFailed);
+        _engine.Show(_c.TranslationsMissing);
 
         // 8
         var online = _c.IsTranslating && _c.OnlineProblem is not null;

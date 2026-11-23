@@ -158,6 +158,9 @@ public sealed class TranslationTests
         await c.StartAsync();
         Assert.True(c.IsTranslating);
         Assert.Equal(TranslatorStatus.EngineFailed, c.TranslatorStatus);
+        // Motor açılamadı diye uyarı çıkmaz: çeviri havuzdan ya da başka yoldan gelebilir; yalnız çeviri denemesi
+        // başarısız olup ardından hiç çeviri gelmediyse görünür.
+        Assert.False(c.TranslationsMissing);
 
         var w2 = Ready();
         var c2 = w2.Open();

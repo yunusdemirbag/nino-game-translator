@@ -73,6 +73,14 @@ public sealed partial class NinoController
     /// <summary>Çevirmen durumu.</summary>
     public TranslatorStatus TranslatorStatus => _translatorStatus;
 
+    /// <summary>
+    /// Çeviri sürüyor ama satırlar çevrilemiyor: bu oturumda son çeviri denemesi başarısızdı ve ondan sonra hiç çeviri
+    /// gösterilmedi. Ücretsiz motor açılamasa bile havuz ya da başka yoldan çeviri geliyorsa yanlıştır (uyarı çıkmaz).
+    /// </summary>
+    public bool TranslationsMissing => _translating && _translationFailing;
+
+    bool _translationFailing;
+
     /// <summary>"GPU kullanılamadı, CPU'ya geçildi" uyarısı.</summary>
     public bool GpuFellBack => _gpuFellBack;
 
@@ -343,6 +351,7 @@ public sealed partial class NinoController
         }
         _lastSource = pair.Source;
         _lastTranslation = pair.Translation;
+        _translationFailing = false;
         _lastSubtitleBox = _pipeline?.LastBox ?? _lastSubtitleBox;
         _poolContext.Add(pair.Source);
         if (_history.Add(pair.Source, pair.Translation, pair.Origin == ShownOrigin.Pack ? HistoryOrigin.Pack : HistoryOrigin.Engine))
@@ -379,6 +388,9 @@ public sealed partial class NinoController
     void OnTranslationFinished(bool ok, UnavailableReason? reason)
     {
         DgTranslationFinished(ok);
+        var wasFailing = _translationFailing;
+        _translationFailing = !ok && reason is not null;
+        if (wasFailing != _translationFailing) Refresh();
         if (!ok && reason is { } r)
             _translatorStatus = r switch
             {
