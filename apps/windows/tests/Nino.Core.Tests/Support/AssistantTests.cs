@@ -337,11 +337,13 @@ public sealed class AssistantOptionsTests
         Assert.Same(AssistantOptions.None, Read("[]"));
     }
 
-    static AssistantChat Chat(Queue<AssistantResult> answers, List<AssistantMessage[]> sent) =>
-        new((messages, _) =>
+    static AssistantChat Chat(Queue<AssistantResult> answers, List<AssistantMessage[]> sent, SemaphoreSlim? gate = null) =>
+        new(async (messages, _) =>
         {
             lock (sent) sent.Add(messages.ToArray());
-            return Task.FromResult(answers.Dequeue());
+            // Kapı verilirse cevap, test izin verene kadar bekler (gönderim hemen biterse iddialarla yarışır).
+            if (gate is not null) await gate.WaitAsync();
+            lock (answers) return answers.Dequeue();
         });
 
     static AssistantResult WithOptions(string reply, params string[] options) =>
@@ -379,18 +381,21 @@ public sealed class AssistantOptionsTests
     public async Task OptionsCleared_WhenUserTypes_AndOnlyLastBalloonHolds()
     {
         var sent = new List<AssistantMessage[]>();
+        using var gate = new SemaphoreSlim(0);
         var chat = Chat(new([
             WithOptions(Question, "Samsung TV", "LG TV"),
             WithOptions("Altyazı nerede görünüyor?\n\n1. TV'de\n2. Bilgisayarda", "TV'de", "Bilgisayarda"),
             AssistantResult.Failed,
             new(AssistantOutcome.Reply, "Tamam."),
-        ]), sent);
+        ]), sent, gate);
         chat.Send("yardım");
+        gate.Release();
         await chat.LastRun;
         Assert.True(chat.Send("Samsung"));
         Assert.Empty(chat.ActiveOptions);
         Assert.Empty(((NinoChatEntry)chat.Entries[1]).Options);
         Assert.False(chat.Choose("LG TV"));
+        gate.Release(3);
         await chat.LastRun;
         Assert.Equal(["TV'de", "Bilgisayarda"], chat.ActiveOptions);
         Assert.Single(chat.Entries.OfType<NinoChatEntry>(), n => n.Options.Count > 0);
