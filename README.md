@@ -16,9 +16,11 @@
 
 ## Nino nedir?
 
-Nino, PS5 ve Xbox oyunlarındaki İngilizce yazıları anında Türkçeye ya da Arapçaya çevirir.
-Altyazıları, oyundaki telefon mesajlarını, görev ve harita kartlarını çevirir.
-Çeviri TV'de, oyunun üstünde görünür. Sen her zamanki gibi oynarsın.
+Oyunlardaki İngilizce yazıları **Türkçe** yapar.
+
+- Altyazılar, telefon mesajları, görevler ve harita: hepsi Türkçe.
+- Çeviri **TV'nde, oyunun üstünde** çıkar.
+- **PS5** ve **Xbox** ile çalışır. Ücretsiz.
 
 ## Nasıl görünüyor?
 
@@ -114,57 +116,39 @@ Bütün dosyalar: [Nino sürüm sayfası](https://github.com/yunusdemirbag/nino-
 
 ## Hangi TV'lerde çalışır?
 
-**Çalışır**
-- Android TV ve Google TV (Android TV kutuları dahil)
-- Samsung (Tizen)
-- LG (webOS)
-- Mac ya da bilgisayar ekranı
-- Monitör (HDMI kartla ya da bilgisayar ekranıyla)
+✅ **Android TV / Google TV**, **Samsung**, **LG**, ya da bilgisayar ekranı.
 
-**Çalışmaz**
-- Vidaa (çoğu Hisense)
-- TiVo
-- Titan OS (yeni Philips'ler)
-- Axen
-- Android olmayan eski Vestel'ler
-- Android olmayan TV kutuları
-
-Bu TV'lere başka uygulama kurulamıyor. Çözüm: TV'ye bir Android TV kutusu tak ya da altyazıyı bilgisayar ekranında gör.
+❌ Hisense (Vidaa), yeni Philips (Titan OS), TiVo ve Android olmayan eski TV'ler.
+Bunlarda çözüm: TV'ye ucuz bir Android TV kutusu tak.
 
 ## Sık sorulanlar
 
-**Para ödemem gerekir mi?**\
-Hayır. Nino tamamen ücretsiz. Reklam ve abonelik yok.
+**Ücretli mi?** Hayır. Tamamen ücretsiz, reklam yok.
 
-**İkinci bir PSN hesabı neden gerekiyor?**\
-PS5, oynadığın hesapla aynı anda uzaktan bağlantıya izin vermiyor. Ücretsiz ikinci bir hesap yeter.
+**İkinci PSN hesabı neden lazım?** PS5, oynadığın hesapla aynı anda bağlantıya izin vermiyor. Ücretsiz ikinci hesap yeter.
 
-**TV'de altyazı çıkmıyor, ne yapayım?**\
-Konsol, Nino ve TV aynı Wi-Fi'da olsun. Nino'yu ve TV uygulamasını kapatıp yeniden aç.
+**TV'de yazı çıkmıyor?** Konsol, Nino ve TV aynı Wi-Fi'da olsun. Nino'yu kapatıp aç.
 
-**Hangi oyunlarda çalışır?**\
-Ekranda İngilizce yazı olan neredeyse her oyunda. GTA 6 için özel çeviri desteği var.
+**Hangi oyunlar?** İngilizce yazısı olan neredeyse her oyun. GTA 6'ya özel destek var.
 
-**Xbox'ta da çalışır mı?**\
-Evet, deneme aşamasında. Kendi Microsoft hesabın yeter.
-
-Daha fazlası: [Sık Sorulan Sorular](docs/SSS.md)
+Daha fazlası: [Sık Sorulan Sorular](docs/SSS.md) · Soru sor: [Issues](https://github.com/yunusdemirbag/nino-game-translator/issues)
 
 ## Gizlilik
 
-- Hesap açman gerekmez.
-- Çeviri hizmeti anahtarın (API anahtarı) yalnız senin cihazında kalır, sunucumuza gitmez.
-- Oyun görüntüsü kaydedilmez, hiçbir yere gönderilmez.
+Hesap açmazsın. Oyun görüntün hiçbir yere gitmez. [Gizlilik politikası](PRIVACY.md)
 
-Ayrıntılar: [Gizlilik politikası](PRIVACY.md)
+## Kimler yapıyor?
 
-## Lisans ve iletişim
+- **Yunus Demirbağ**: Nino'yu tasarlayan ve geliştiren.
+- **M. Akif Demirbağ**: destekleyen, deneyen, fikir veren.
 
-Nino açık kaynaktır, [AGPL-3.0](LICENSE) lisanslıdır. Kaynak koddan derlemek isteyenler için: [docs/yeni](docs/yeni).
-Soru ve öneri için: [GitHub › Issues](https://github.com/yunusdemirbag/nino-game-translator/issues)
+Nino açık kaynaktır ([AGPL-3.0](LICENSE)); kodu herkes görebilir.
+Hata bulursan ya da bir fikrin varsa [Issues](https://github.com/yunusdemirbag/nino-game-translator/issues) sayfasına yaz, okuyoruz.
+Nino'yu beğendiysen sağ üstteki ⭐ ile destek olabilirsin.
 
-Geliştiren: **Yunus Demirbağ** · Destekleyen: **M. Akif Demirbağ**
-
-İlk sürümlerimize ilham veren **CouchSubs** ve geliştiricisi **Sinan Yorulmaz**'a çok teşekkür ederiz.
+---
 
 <sub>Nino; Sony, Microsoft, LG ve Samsung ile bağlantılı değildir. PlayStation, PS5, Xbox, LG ve Samsung sahiplerinin markalarıdır. Görsellerdeki oyun görüntüleri sahiplerine aittir.</sub>
+
+<p align="center">İlk sürümlerimize ilham veren <b>CouchSubs</b> ve geliştiricisi <b>Sinan Yorulmaz</b>'a çok teşekkür ederiz.</p>
+

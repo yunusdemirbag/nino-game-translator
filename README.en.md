@@ -16,9 +16,11 @@
 
 ## What is Nino?
 
-Nino translates the English text in PS5 and Xbox games into Turkish or Arabic, instantly.
-It translates subtitles, in-game phone messages, and mission and map cards.
-The translation shows up on your TV, on top of the game. You just play as usual.
+It turns the English text in your games into **Turkish** or **Arabic**.
+
+- Subtitles, phone messages, missions and the map: all translated.
+- The translation shows **on your TV, on top of the game**.
+- Works with **PS5** and **Xbox**. Free.
 
 ## What it looks like
 
@@ -114,57 +116,39 @@ All files: [Nino release page](https://github.com/yunusdemirbag/nino-game-transl
 
 ## Which TVs work?
 
-**Works on**
-- Android TV and Google TV (including Android TV boxes)
-- Samsung (Tizen)
-- LG (webOS)
-- A Mac or PC screen
-- Any monitor (with an HDMI capture card or the computer screen)
+✅ **Android TV / Google TV**, **Samsung**, **LG**, or a computer screen.
 
-**Does not work on**
-- Vidaa (most Hisense TVs)
-- TiVo
-- Titan OS (newer Philips TVs)
-- Axen
-- Older Vestel TVs without Android
-- TV boxes without Android
+❌ Hisense (Vidaa), new Philips (Titan OS), TiVo and older non-Android TVs.
+Fix: plug a cheap Android TV box into the TV.
 
-These TVs can't install other apps. The fix: plug an Android TV box into the TV, or show the subtitles on a computer screen.
+## Questions
 
-## Questions people ask most
+**Does it cost money?** No. Completely free, no ads.
 
-**Does it cost anything?**\
-No. Nino is completely free. No ads, no subscription.
+**Why a second PSN account?** The PS5 won't connect to the account you're playing on at the same time. A free second account is enough.
 
-**Why do I need a second PSN account?**\
-The PS5 won't allow remote play on the account you're playing with at the same time. A free second account is enough.
+**Nothing shows on the TV?** Put the console, Nino and the TV on the same Wi-Fi. Restart Nino.
 
-**Subtitles don't show on the TV. What now?**\
-Make sure the console, Nino and the TV are on the same Wi-Fi. Then close Nino and the TV app and open them again.
+**Which games?** Almost any game with English text. GTA 6 has special support.
 
-**Which games does it work with?**\
-Almost any game with English text on screen. GTA 6 has extra translation support.
-
-**Does it work with Xbox?**\
-Yes, in early testing. Your own Microsoft account is enough.
-
-More answers: [FAQ](docs/SSS.en.md)
+More: [FAQ](docs/SSS.en.md) · Ask: [Issues](https://github.com/yunusdemirbag/nino-game-translator/issues)
 
 ## Privacy
 
-- You don't need an account.
-- Your translation service key (API key) stays on your device. It is never sent to our server.
-- The game picture is never saved or sent anywhere.
+No account needed. Your game video goes nowhere. [Privacy policy](PRIVACY.md)
 
-Details: [Privacy policy](PRIVACY.md)
+## Who makes it?
 
-## License and contact
+- **Yunus Demirbağ**: designs and builds Nino.
+- **M. Akif Demirbağ**: supports, tests and shares ideas.
 
-Nino is open source under [AGPL-3.0](LICENSE). Build notes for developers: [docs/yeni](docs/yeni).
-Questions and ideas: [GitHub › Issues](https://github.com/yunusdemirbag/nino-game-translator/issues)
+Nino is open source ([AGPL-3.0](LICENSE)); anyone can read the code.
+Found a bug or have an idea? Write on [Issues](https://github.com/yunusdemirbag/nino-game-translator/issues), we read everything.
+If you like Nino, a ⭐ at the top right helps a lot.
 
-Made by **Yunus Demirbağ** · Supported by **M. Akif Demirbağ**
-
-Many thanks to **CouchSubs** and its developer **Sinan Yorulmaz**, who inspired our first versions.
+---
 
 <sub>Nino is not affiliated with Sony, Microsoft, LG or Samsung. PlayStation, PS5, Xbox, LG and Samsung are trademarks of their owners. Game images belong to their owners.</sub>
+
+<p align="center">Many thanks to <b>CouchSubs</b> and its developer <b>Sinan Yorulmaz</b>, who inspired our first versions.</p>
+
