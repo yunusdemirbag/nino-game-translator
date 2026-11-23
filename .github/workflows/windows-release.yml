@@ -19,6 +19,18 @@ on:
         description: "TV paketlerinin kendi sürümü (dosya adına yazılır; uygulama TV'deki sürümle bunu karşılaştırır)"
         required: true
         default: "4.5.0"
+      androidtv_draft:
+        description: "Android TV APK'sının (Nino-TV.apk) alınacağı TASLAK sürümün adı; boşsa tv_release'deki APK"
+        required: false
+        default: ""
+      androidtv_version:
+        description: "Taslaktaki Android TV APK'sının sürümü"
+        required: false
+        default: ""
+      androidtv_sha256:
+        description: "Taslaktaki Android TV APK'sının SHA-256'sı (denetlenir)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -77,6 +89,9 @@ jobs:
     needs: native
     runs-on: windows-latest
     timeout-minutes: 90
+    # Taslak sürümün dosyaları yalnız yazma yetkili anahtarla görünür (Android TV APK'sı taslakta bekler).
+    permissions:
+      contents: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -99,7 +114,24 @@ jobs:
           $v = "${{ inputs.tv_version }}"
           Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.ipk" "$dir/com.ninotranslator.tv_${v}_all.ipk"
           Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.wgt" "$dir/nino-samsung_${v}.wgt"
-          Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.apk" "$dir/nino-androidtv_${v}.apk"
+          $draft = "${{ inputs.androidtv_draft }}"
+          if ($draft) {
+            $av = "${{ inputs.androidtv_version }}"
+            if (-not $av) { throw "androidtv_version gerekli" }
+            $releases = gh api "repos/${{ github.repository }}/releases?per_page=100" | ConvertFrom-Json
+            $rel = $releases | Where-Object { $_.draft -and $_.name -eq $draft } | Select-Object -First 1
+            if (-not $rel) { throw "taslak sürüm yok: $draft" }
+            $asset = $rel.assets | Where-Object { $_.name -eq "Nino-TV.apk" } | Select-Object -First 1
+            if (-not $asset) { throw "taslakta Nino-TV.apk yok" }
+            $apk = "$dir/nino-androidtv_${av}.apk"
+            Invoke-WebRequest -Uri $asset.url -Headers @{ Authorization = "Bearer $env:GITHUB_TOKEN"; Accept = "application/octet-stream" } -OutFile $apk
+            $sha = (Get-FileHash $apk -Algorithm SHA256).Hash.ToLowerInvariant()
+            Write-Host "Android TV APK: $sha"
+            $want = "${{ inputs.androidtv_sha256 }}".ToLowerInvariant()
+            if ($want -and $sha -ne $want) { throw "APK özeti tutmuyor: $sha" }
+          } else {
+            Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.apk" "$dir/nino-androidtv_${v}.apk"
+          }
           Get-ChildItem $dir
       - name: Testler (köprü testleri dahil)
         shell: pwsh
@@ -110,6 +142,9 @@ jobs:
         run: dotnet tool install -g vpk --version $env:VPK_VERSION
       - name: Paketle
         shell: pwsh
+        # Önceki sürüm (delta için) anahtarsız indirilir: taslak sürümler görünmez, yalnız herkese açık son sürüm.
+        env:
+          GITHUB_TOKEN: ""
         run: pwsh apps/windows/tools/package-windows.ps1 -Version "${{ inputs.version }}" -TvAppSource (Resolve-Path dist/tv-app).Path -DownloadPrevious
       - name: Duman testi
         shell: pwsh
