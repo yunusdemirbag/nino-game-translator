@@ -28,11 +28,6 @@ Altyazıları, oyundaki telefon mesajlarını, görev ve harita kartlarını çe
 </p>
 
 <p align="center">
-  <img src="docs/img/rdr2-turkce-altyazi.webp" width="100%" alt="Gerçek bir TV'de, oyunun üstünde Türkçe altyazı">
-  <br><sub>Gerçek bir TV'den: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ Sesli video (30 sn)</a></sub>
-</p>
-
-<p align="center">
   <img src="docs/img/telefon-mesajlari-tr.webp" width="100%" alt="Oyundaki telefonun yanında Türkçe mesaj paneli">
   <br><sub><b>Telefon mesajları</b><br>Oyundaki telefonun yanında, balon balon Türkçe.</sub>
 </p>
@@ -52,28 +47,70 @@ Altyazıları, oyundaki telefon mesajlarını, görev ve harita kartlarını çe
   <br><sub><b>Mac ↔ iPhone</b><br>Aynı Nino, her cihazda aynı kolaylık.</sub>
 </p>
 
+<p align="center">
+  <img src="docs/img/rdr2-turkce-altyazi.webp" width="100%" alt="Gerçek bir TV'de, oyunun üstünde Türkçe altyazı">
+  <br><sub>Gerçek bir TV'den: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ Sesli video (30 sn)</a></sub>
+</p>
+
 ## 3 adımda başla
 
-1. **Cihazını seç:** Mac, Windows, iPhone, Android ya da Linux'a Nino'yu indir.
-2. **PS5'i bağla:** Nino'nun söylediklerini yap, PS5'teki 8 haneli kodu yaz.
-3. **TV'ni seç:** LG, Samsung ya da Android TV. TV uygulamasını Nino kendisi kurar.
+1. **Nino'yu indir:** Aşağıdaki tablodan cihazını seç.
+2. **Konsolunu bağla:** PS5 ya da Xbox. Nino ne yapacağını adım adım söyler.
+3. **TV'ni seç:** TV uygulamasını Nino kendisi kurar.
 
 Sonra oyunu aç, Nino'daki fişi tak. Hepsi bu.
 
 ## İndir
 
-| Cihaz | Bağlantı |
-|---|---|
-| Mac (macOS 14+) | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) |
-| Android telefon ve tablet | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) |
-| iPhone ve iPad | [TestFlight ile katıl](https://testflight.apple.com/join/1K3Q1KXp) · App Store onayı bekleniyor |
-| Android TV / Google TV | [Nino-TV.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · Nino TV'ye kendisi de kurar |
-| LG TV | [Nino-TV.ipk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · Nino TV'ye kendisi kurar |
-| Samsung TV | [Nino-TV.wgt](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt) · Nino TV'ye kendisi kurar |
-| Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) · şimdilik 4.0.6, 4.5 yolda |
-| Linux (Docker) | [Kurulum: 2 komut](https://github.com/yunusdemirbag/nino-game-translator/tree/main/apps/linux#readme) · amd64 ve arm64 (Raspberry Pi) |
+| Cihaz | İndir | Nasıl kurulur? |
+|---|---|---|
+| Mac | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) | [Kurulum ↓](#kurulum-mac) |
+| Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) | [Kurulum ↓](#kurulum-windows) |
+| iPhone ve iPad | [TestFlight](https://testflight.apple.com/join/1K3Q1KXp) | [Kurulum ↓](#kurulum-iphone) |
+| Android telefon | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) | [Kurulum ↓](#kurulum-android) |
+| TV (Android TV, LG, Samsung) | Nino kendisi kurar | [Kurulum ↓](#kurulum-tv) |
+| Linux | Docker | [Kurulum ↓](#kurulum-linux) |
 
-Mac'te ilk açılışta uyarı çıkarsa: Sistem Ayarları › Gizlilik ve Güvenlik › **Yine de Aç**. Bütün dosyalar ve kurulum notları: [Nino 4.5 sürüm sayfası](https://github.com/yunusdemirbag/nino-game-translator/releases/latest).
+## Kurulum
+
+<a id="kurulum-mac"></a>
+### Mac
+1. **Nino-Mac.zip**'i indir, çift tıkla.
+2. Çıkan **Nino**'yu **Uygulamalar** klasörüne sürükle ve aç.
+3. "Açılamıyor" derse: **Sistem Ayarları › Gizlilik ve Güvenlik › Yine de Aç**.
+
+<a id="kurulum-windows"></a>
+### Windows
+1. **Nino-Windows-Setup.exe**'yi indir, çift tıkla.
+2. "Windows bilgisayarınızı korudu" derse: **Ek bilgi › Yine de çalıştır**.
+3. Nino kendiliğinden açılır.
+
+<a id="kurulum-iphone"></a>
+### iPhone ve iPad
+1. App Store'dan **TestFlight**'ı yükle.
+2. [Bu linke](https://testflight.apple.com/join/1K3Q1KXp) dokun, **Kabul Et › Yükle**.
+3. Nino'yu aç. (App Store sürümü yakında.)
+
+<a id="kurulum-android"></a>
+### Android telefon
+1. Telefonda **Nino-Telefon.apk**'yı indir ve aç.
+2. "Bilinmeyen uygulamalar" izni sorarsa **İzin ver**.
+3. **Yükle**'ye dokun, Nino'yu aç.
+
+<a id="kurulum-tv"></a>
+### TV
+Bir şey indirmene gerek yok: Nino'da TV'ni seç, uygulamayı Nino TV'ye kendisi kurar.
+Elle kurmak istersen dosyalar: [Android TV](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · [LG](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · [Samsung](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt)
+
+<a id="kurulum-linux"></a>
+### Linux
+```bash
+curl -fsSLO https://raw.githubusercontent.com/yunusdemirbag/nino-game-translator/main/apps/linux/docker-compose.yml
+docker compose up -d
+```
+Sonra tarayıcıda `http://<bilgisayarın adresi>:8788` aç.
+
+Bütün dosyalar: [Nino sürüm sayfası](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
 
 ## Hangi TV'lerde çalışır?
 

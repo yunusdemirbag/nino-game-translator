@@ -30,11 +30,6 @@
 </p>
 
 <p align="center">
-  <img src="docs/img/rdr2-turkce-altyazi.webp" width="100%" alt="ترجمة على تلفاز حقيقي فوق اللعبة">
-  <br><sub>من تلفاز حقيقي: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ فيديو بالصوت (30 ثانية)</a></sub>
-</p>
-
-<p align="center">
   <img src="docs/img/iphone-yatay-phone-ar.webp" width="100%" alt="رسائل الهاتف داخل اللعبة مترجمة إلى العربية">
   <br><sub><b>رسائل الهاتف</b><br>على iPhone بالوضع الأفقي: الرسائل في الأعلى والترجمة في الوسط.</sub>
 </p>
@@ -54,30 +49,70 @@
   <br><sub><b>Mac ↔ iPhone</b><br>Nino نفسه وبالسهولة نفسها على كل جهاز.</sub>
 </p>
 
+<p align="center">
+  <img src="docs/img/rdr2-turkce-altyazi.webp" width="100%" alt="ترجمة على تلفاز حقيقي فوق اللعبة">
+  <br><sub>من تلفاز حقيقي: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ فيديو بالصوت (30 ثانية)</a></sub>
+</p>
+
 ## ابدأ في 3 خطوات
 
-1. **اختر جهازك:** نزّل Nino على Mac أو Windows أو iPhone أو Android أو Linux.
-2. **اربط PS5:** اتبع ما يطلبه Nino، واكتب الرمز المكوّن من 8 أرقام الظاهر على PS5.
-3. **اختر تلفازك:** LG أو Samsung أو Android TV، و Nino يثبّت تطبيق التلفاز بنفسه.
+1. **نزّل Nino:** اختر جهازك من الجدول أدناه.
+2. **اربط جهازك:** PS5 أو Xbox. يخبرك Nino بما تفعله خطوة بخطوة.
+3. **اختر تلفازك:** يثبّت Nino تطبيق التلفاز بنفسه.
 
-بعدها شغّل اللعبة وصِل القابس في Nino. هذا كل شيء.
-
-لاختيار العربية: اضغط على العلم في أعلى Nino واختر العلم السعودي.
+ثم شغّل اللعبة وأدخل قابس Nino. هذا كل شيء.
 
 ## التحميل
 
-| الجهاز | الرابط |
-|---|---|
-| Mac (macOS 14+) | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) |
-| هاتف وجهاز لوحي Android | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) |
-| iPhone و iPad | [انضم عبر TestFlight](https://testflight.apple.com/join/1K3Q1KXp) · بانتظار موافقة App Store |
-| Android TV / Google TV | [Nino-TV.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · يثبّته Nino بنفسه أيضًا |
-| تلفاز LG | [Nino-TV.ipk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · يثبّته Nino بنفسه |
-| تلفاز Samsung | [Nino-TV.wgt](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt) · يثبّته Nino بنفسه |
-| Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) · حاليًا 4.0.6، والإصدار 4.5 قريبًا |
-| Linux (Docker) | [التثبيت: أمران](https://github.com/yunusdemirbag/nino-game-translator/tree/main/apps/linux#readme) · amd64 و arm64 (Raspberry Pi) |
+| الجهاز | التحميل | طريقة التثبيت |
+|---|---|---|
+| Mac | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) | [التثبيت ↓](#setup-mac) |
+| Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) | [التثبيت ↓](#setup-windows) |
+| iPhone و iPad | [TestFlight](https://testflight.apple.com/join/1K3Q1KXp) | [التثبيت ↓](#setup-iphone) |
+| هاتف Android | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) | [التثبيت ↓](#setup-android) |
+| التلفاز (Android TV و LG و Samsung) | يثبّته Nino بنفسه | [التثبيت ↓](#setup-tv) |
+| Linux | Docker | [التثبيت ↓](#setup-linux) |
 
-إذا ظهر تحذير في macOS عند أول تشغيل: إعدادات النظام › الخصوصية والأمان › **فتح على أي حال**. كل الملفات وملاحظات التثبيت: [صفحة إصدار Nino 4.5](https://github.com/yunusdemirbag/nino-game-translator/releases/latest).
+## التثبيت
+
+<a id="setup-mac"></a>
+### Mac
+1. نزّل **Nino-Mac.zip** وانقر عليه مرتين.
+2. اسحب **Nino** إلى مجلد **التطبيقات** وافتحه.
+3. إذا ظهر أنه لا يمكن فتحه: **إعدادات النظام › الخصوصية والأمان › فتح على أي حال**.
+
+<a id="setup-windows"></a>
+### Windows
+1. نزّل **Nino-Windows-Setup.exe** وانقر عليه مرتين.
+2. إذا ظهرت رسالة "Windows protected your PC": **More info › Run anyway**.
+3. يفتح Nino تلقائيًا.
+
+<a id="setup-iphone"></a>
+### iPhone و iPad
+1. ثبّت **TestFlight** من App Store.
+2. اضغط [هذا الرابط](https://testflight.apple.com/join/1K3Q1KXp) ثم **قبول › تثبيت**.
+3. افتح Nino. (نسخة App Store قريبًا.)
+
+<a id="setup-android"></a>
+### هاتف Android
+1. نزّل **Nino-Telefon.apk** على هاتفك وافتحه.
+2. إذا طُلب إذن التطبيقات غير المعروفة، اضغط **سماح**.
+3. اضغط **تثبيت** ثم افتح Nino.
+
+<a id="setup-tv"></a>
+### التلفاز
+لا حاجة لتنزيل أي شيء: اختر تلفازك في Nino وسيثبّت التطبيق عليه بنفسه.
+للتثبيت اليدوي: [Android TV](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · [LG](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · [Samsung](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt)
+
+<a id="setup-linux"></a>
+### Linux
+```bash
+curl -fsSLO https://raw.githubusercontent.com/yunusdemirbag/nino-game-translator/main/apps/linux/docker-compose.yml
+docker compose up -d
+```
+ثم افتح `http://<عنوان الجهاز>:8788` في المتصفح.
+
+كل الملفات: [صفحة إصدار Nino](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
 
 ## على أي تلفاز يعمل؟
 
