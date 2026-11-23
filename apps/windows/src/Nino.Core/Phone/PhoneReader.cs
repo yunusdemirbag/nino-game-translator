@@ -55,8 +55,9 @@ public sealed class PhoneReader
     public const long ReadEveryMs = 600;
 
     /// <summary>
-    /// Bu kadar dönmeyen tur (yazı tanıma ya da çeviri takıldı) bırakılır, yenisi başlar. Yoksa takılan tur "meşgul"
-    /// bayrağını açık bırakıp telefonu oturum boyunca kör eder.
+    /// Yazı tanıma bu kadar dönmezse tur bırakılır, yenisi başlar (geç dönen okumanın sonucu atılır). Yoksa takılan
+    /// okuma "meşgul" bayrağını açık bırakıp telefonu oturum boyunca kör eder. Çeviri adımı sayılmaz: çevirmenlerin ve
+    /// havuzun kendi süre sınırları vardır, yavaş sunucuda turlar üst üste binmesin.
     /// </summary>
     public const long StuckMs = 15_000;
 
@@ -86,7 +87,7 @@ public sealed class PhoneReader
     long? _lastMessageAt;
     long? _lastReadAt;
     int _busy;
-    long _busySince;
+    long _ocrSince;
     long _tourGen;
     long _session;
     Box? _baseBox;
@@ -161,11 +162,11 @@ public sealed class PhoneReader
         }
         if (Interlocked.CompareExchange(ref _busy, 1, 0) != 0)
         {
-            var since = Interlocked.Read(ref _busySince);
-            if (now - since < StuckMs) return;
-            Log($"telefon: okuma {now - since} ms'dir dönmedi; bırakıldı, yeniden okunuyor");
+            var since = Interlocked.Read(ref _ocrSince);
+            if (since == 0 || now - since < StuckMs) return;
+            Log($"telefon: yazı tanıma {now - since} ms'dir dönmedi; bırakıldı, yeniden okunuyor");
+            Interlocked.Exchange(ref _ocrSince, 0);
         }
-        Interlocked.Exchange(ref _busySince, now);
         var gen = Interlocked.Increment(ref _tourGen);
         lock (_lock)
         {
@@ -174,7 +175,7 @@ public sealed class PhoneReader
         }
         Running = Task.Run(async () =>
         {
-            try { await TourAsync(frame, session).ConfigureAwait(false); }
+            try { await TourAsync(frame, session, gen).ConfigureAwait(false); }
             catch (Exception e) { Log($"telefon: okunamadı ({e.GetType().Name})"); }
             finally { if (Interlocked.Read(ref _tourGen) == gen) Volatile.Write(ref _busy, 0); }
         });
@@ -183,7 +184,7 @@ public sealed class PhoneReader
     /// <summary>Telefon uygulamasına özgü yazılar okuma hattında görüldü (kutular kareye göre): takipçi benimser.</summary>
     public void AdoptPhoneText(BgraFrame frame, IReadOnlyList<Box> boxes) => _tracker.Adopt(frame, boxes);
 
-    async Task TourAsync(BgraFrame frame, long session)
+    async Task TourAsync(BgraFrame frame, long session, long gen)
     {
         if (_s.Paused?.Invoke() == true)
         {
@@ -199,7 +200,11 @@ public sealed class PhoneReader
         if (_s.Ocr is not { } ocr) return;
         var crop = frame.CropRegion(phone.Box);
         if (crop.Height < 900 && crop.Width * 2 <= 2600 && crop.Height * 2 <= 2600) crop = crop.Upscale(2);
-        var reading = ocr.ReadLines(crop, false).PlaceIn(phone.Box);
+        Interlocked.Exchange(ref _ocrSince, Math.Max(1, _clock.NowMs));
+        OcrReading reading;
+        try { reading = ocr.ReadLines(crop, false).PlaceIn(phone.Box); }
+        finally { if (Interlocked.Read(ref _tourGen) == gen) Interlocked.Exchange(ref _ocrSince, 0); }
+        if (Interlocked.Read(ref _tourGen) != gen) return;
         await ProcessAsync(reading, phone, frame, session).ConfigureAwait(false);
     }
 

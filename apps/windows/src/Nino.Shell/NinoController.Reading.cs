@@ -518,7 +518,8 @@ public sealed partial class NinoController
             Clock = _msClock,
             Pool = pool is null ? null : AskPoolManyAsync,
             Fallback = fallback,
-            Ready = pool is null ? null : text => pool.Lookup(text),
+            // Bilinen çeviri: önce yereldeki oyun paketi, sonra indirilmiş havuz (ikisi de yoksa sunucuya sorulur).
+            Ready = pool is null && _services.Packs is null ? null : KnownTranslation,
             Glossary = target == "tr",
             TargetLanguage = target,
             Gta6Seen = () => Post(() => { if (gen == _pipelineGen) OnGta6Seen(); }),
@@ -530,6 +531,13 @@ public sealed partial class NinoController
             _logs.Error("Telefon okuyucusu kurulamadı", e);
             _phoneFailed = true;
         }
+    }
+
+    /// <summary>Telefon ve harita satırının yerelde bilinen çevirisi: paket (etkinse), sonra indirilmiş havuz.</summary>
+    string? KnownTranslation(string text)
+    {
+        if (PacksEnabled && _services.Packs?.Lookup(text) is { } packed) return packed;
+        return _services.Pool?.Lookup(text);
     }
 
     /// <summary>Yedek çevirmen her çeviride seçilir: havuz öncelikli oyunda ücretsiz yerel, değilse kullanıcının motoru.</summary>

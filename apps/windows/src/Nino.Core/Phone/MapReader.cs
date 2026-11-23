@@ -131,6 +131,7 @@ public sealed class MapReader
                 var region = frame.CropRegion(ReadArea);
                 while (region.Width > MaxSide || region.Height > MaxSide) region = Halve(region);
                 var reading = OcrJunk.Clean(ocr.ReadLines(region, false)).PlaceIn(ReadArea);
+                if (Interlocked.Read(ref _tourGen) != gen) return;
                 Process(reading, frame);
             }
             catch (Exception e) { Log($"harita: okunamadı ({e.GetType().Name})"); }

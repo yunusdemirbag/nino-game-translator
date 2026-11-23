@@ -323,4 +323,65 @@ public class PhoneReaderTests
         await reader.Running!;
         Assert.Empty(reader.Items);
     }
+
+    [Fact]
+    public async Task StuckOcrIsAbandoned()
+    {
+        // Takılan yazı tanıma telefonu oturum boyunca kör etmez: StuckMs sonra bırakılır; geç dönen okumanın sonucu atılır.
+        var clock = new ManualMsClock(0);
+        using var release = new ManualResetEventSlim(false);
+        var first = true;
+        var ocr = new FuncReader(_ =>
+        {
+            if (first)
+            {
+                first = false;
+                release.Wait(TimeSpan.FromSeconds(10));
+            }
+            return new OcrReading(KentonReading().Lines.Select(l => l with { Box = l.Box!.Value.RelativeTo(Kenton.Box) }));
+        });
+        var reader = new PhoneReader(new OverlayServices { Clock = clock, Own = new PrefixTranslator("TR: "), Ocr = ocr }, _ => Kenton);
+        reader.OfferFrame(Blank);
+        var stuck = reader.Running!;
+        SpinWait.SpinUntil(() => ocr.Calls == 1, 5000);
+        clock.Advance(PhoneReader.ReadEveryMs + 1);
+        reader.OfferFrame(Blank);
+        Assert.Same(stuck, reader.Running);
+        clock.Advance(PhoneReader.StuckMs);
+        reader.OfferFrame(Blank);
+        Assert.NotSame(stuck, reader.Running);
+        await reader.Running!;
+        Assert.Equal(2, ocr.Calls);
+        release.Set();
+        await stuck;
+        for (var i = 0; i < 2; i++)
+        {
+            clock.Advance(PhoneReader.ReadEveryWithOverlayMs + 1);
+            reader.OfferFrame(Blank);
+            await reader.Running!;
+        }
+        Assert.Equal(4, ocr.Calls);
+        Assert.Equal(3, reader.Items.Count);
+    }
+
+    [Fact]
+    public async Task SlowTranslationDoesNotOverlapTours()
+    {
+        // Çeviri adımı süre sınırına sayılmaz: yavaş sunucuda yeni tur başlamaz.
+        var clock = new ManualMsClock(0);
+        var slow = new PendingTranslator();
+        var ocr = new FuncReader(_ => new OcrReading(KentonReading().Lines.Select(l => l with { Box = l.Box!.Value.RelativeTo(Kenton.Box) })));
+        var reader = new PhoneReader(new OverlayServices { Clock = clock, Own = slow, Ocr = ocr }, _ => Kenton);
+        reader.OfferFrame(Blank);
+        await reader.Running!;
+        clock.Advance(PhoneReader.ReadEveryMs + 1);
+        reader.OfferFrame(Blank);
+        var translating = reader.Running!;
+        SpinWait.SpinUntil(() => slow.Requests.Count > 0, 5000);
+        Assert.NotEmpty(slow.Requests);
+        clock.Advance(PhoneReader.StuckMs * 3);
+        reader.OfferFrame(Blank);
+        Assert.Same(translating, reader.Running);
+        Assert.Equal(2, ocr.Calls);
+    }
 }

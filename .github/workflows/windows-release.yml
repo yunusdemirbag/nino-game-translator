@@ -10,7 +10,7 @@ on:
       version:
         description: "Paket sürümü (ör. 4.5.0)"
         required: true
-        default: "4.5.1"
+        default: "4.5.2"
       tv_release:
         description: "TV paketlerinin (Nino-TV.apk/.ipk/.wgt) alınacağı sürüm etiketi"
         required: true
