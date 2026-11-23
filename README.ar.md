@@ -26,6 +26,8 @@
 
 ## كيف يبدو؟
 
+<p align="center"><sub>الصور من النسخة التركية؛ والترجمة العربية تظهر بالطريقة نفسها تمامًا.</sub></p>
+
 <p align="center">
   <img src="docs/img/oyunda-turkce-mesaj.webp" width="100%" alt="رسالة تصل داخل اللعبة وفوقها ترجمتها">
   <br><sub>رسالة تصل داخل اللعبة، وترجمتها فوقها مباشرةً.</sub>
@@ -59,10 +61,10 @@
 ## ابدأ في 3 خطوات
 
 1. **نزّل Nino Game Translator:** اختر جهازك من الجدول أدناه.
-2. **اربط جهازك:** PS5 أو Xbox. يخبرك Nino Game Translator بما تفعله خطوة بخطوة.
+2. **اربط جهاز اللعب:** PS5 أو Xbox، على شبكة Wi-Fi نفسها. لـ PS5 تحتاج إلى حساب PSN ثانٍ مجاني. يخبرك Nino Game Translator بما تفعله خطوة بخطوة.
 3. **اختر تلفازك:** يثبّت Nino Game Translator تطبيق التلفاز بنفسه.
 
-ثم شغّل اللعبة وأدخل قابس Nino Game Translator. هذا كل شيء.
+ثم شغّل اللعبة، وفي Nino Game Translator اسحب القابس 🔌 إلى المقبس لتبدأ الترجمة. هذا كل شيء.
 
 ## التحميل
 
@@ -70,10 +72,12 @@
 |---|---|---|
 | Mac | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) | [التثبيت ↓](#setup-mac) |
 | Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) | [التثبيت ↓](#setup-windows) |
-| iPhone و iPad | [TestFlight](https://testflight.apple.com/join/1K3Q1KXp) | [التثبيت ↓](#setup-iphone) |
-| هاتف Android | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) | [التثبيت ↓](#setup-android) |
+| iPhone و iPad | [TestFlight (نسخة تجريبية من Apple)](https://testflight.apple.com/join/1K3Q1KXp) | [التثبيت ↓](#setup-iphone) |
+| هاتف Android | [Nino-Telefon.apk (ملف تثبيت)](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) | [التثبيت ↓](#setup-android) |
 | التلفاز (Android TV و LG و Samsung) | يثبّته Nino Game Translator بنفسه | [التثبيت ↓](#setup-tv) |
-| Linux | Docker | [التثبيت ↓](#setup-linux) |
+| Linux (للمستخدمين المتقدمين) | عبر Docker | [التثبيت ↓](#setup-linux) |
+
+كل الملفات: [صفحة إصدار Nino Game Translator](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
 
 ## التثبيت
 
@@ -81,7 +85,7 @@
 ### Mac
 1. نزّل **Nino-Mac.zip** وانقر عليه مرتين.
 2. اسحب **Nino** إلى مجلد **التطبيقات** وافتحه.
-3. إذا ظهر أنه لا يمكن فتحه: **إعدادات النظام › الخصوصية والأمان › فتح على أي حال**.
+3. إذا ظهر أنه لا يمكن فتحه: **إعدادات النظام ← الخصوصية والأمان ← فتح على أي حال**.
 
 <a id="setup-windows"></a>
 ### Windows
@@ -92,13 +96,13 @@
 <a id="setup-iphone"></a>
 ### iPhone و iPad
 1. ثبّت **TestFlight** من App Store.
-2. اضغط [هذا الرابط](https://testflight.apple.com/join/1K3Q1KXp) ثم **قبول › تثبيت**.
+2. اضغط [هذا الرابط](https://testflight.apple.com/join/1K3Q1KXp) ثم **قبول ← تثبيت**.
 3. افتح Nino Game Translator. (نسخة App Store قريبًا.)
 
 <a id="setup-android"></a>
 ### هاتف Android
 1. نزّل **Nino-Telefon.apk** على هاتفك وافتحه.
-2. إذا طُلب إذن التطبيقات غير المعروفة، اضغط **سماح**.
+2. إذا ظهرت رسالة "تثبيت التطبيقات غير المعروفة"، فعّل **السماح من هذا المصدر** ثم ارجع.
 3. اضغط **تثبيت** ثم افتح Nino Game Translator.
 
 <a id="setup-tv"></a>
@@ -108,28 +112,27 @@
 
 <a id="setup-linux"></a>
 ### Linux
+تعمل نسخة Linux عبر Docker (يجب أن يكون Docker مثبتًا). الصق هذين السطرين في الطرفية:
 ```bash
 curl -fsSLO https://raw.githubusercontent.com/yunusdemirbag/nino-game-translator/main/apps/linux/docker-compose.yml
 docker compose up -d
 ```
-ثم افتح `http://<عنوان الجهاز>:8788` في المتصفح.
-
-كل الملفات: [صفحة إصدار Nino Game Translator](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
+ثم افتح في المتصفح `http://localhost:8788`. من جهاز آخر استبدل `localhost` بعنوان جهاز Linux في شبكتك (مثل `http://192.168.1.20:8788`).
 
 ## على أي تلفاز يعمل؟
 
-✅ **Android TV / Google TV** و **Samsung** و **LG** أو شاشة الكمبيوتر.
+✅ يعمل مع: **Android TV / Google TV** و **Samsung** و **LG**، وكذلك شاشة الكمبيوتر.
 
-❌ Hisense (Vidaa) و Philips الجديدة (Titan OS) و TiVo والتلفزيونات القديمة غير العاملة بنظام Android.
+❌ لا يعمل مع: Hisense (Vidaa) وأجهزة Philips الجديدة (Titan OS) و TiVo، وأجهزة التلفاز القديمة التي لا تعمل بنظام Android.
 مع هذه التلفزيونات، اعرض الترجمة على شاشة Mac أو الكمبيوتر. أو أدِر هاتفك أفقيًا: تظهر الترجمة على الهاتف.
 
 ## أسئلة
 
 **هل هو مدفوع؟** لا. مجاني تمامًا وبلا إعلانات.
 
-**لماذا أحتاج حساب PSN ثانيًا؟** لا يسمح PS5 بالاتصال بالحساب الذي تلعب به في الوقت نفسه. يكفي حساب ثانٍ مجاني.
+**لماذا أحتاج إلى حساب PSN ثانٍ؟** لا يسمح PS5 بالاتصال بالحساب الذي تلعب به في الوقت نفسه. يكفي حساب ثانٍ مجاني.
 
-**لا يظهر شيء على التلفاز؟** اجعل الجهاز و Nino Game Translator والتلفاز على شبكة Wi-Fi نفسها. أعد تشغيل Nino Game Translator.
+**لا يظهر شيء على التلفاز؟** تأكد أن جهاز اللعب (PS5 أو Xbox) والجهاز الذي يعمل عليه Nino Game Translator والتلفاز متصلة كلها بشبكة Wi-Fi نفسها. أعد تشغيل Nino Game Translator.
 
 **أي ألعاب؟** تقريبًا كل لعبة فيها نص إنجليزي. ولـ GTA 6 دعم خاص.
 
@@ -137,7 +140,7 @@ docker compose up -d
 
 ## الخصوصية
 
-لا تحتاج إلى حساب. صورة لعبتك لا تذهب إلى أي مكان. [سياسة الخصوصية](PRIVACY.md)
+لا تحتاج إلى حساب. صورة شاشة لعبتك لا تُرسَل إلى أي جهة. [سياسة الخصوصية (بالتركية والإنجليزية)](PRIVACY.md)
 
 ## من يصنعه؟
 

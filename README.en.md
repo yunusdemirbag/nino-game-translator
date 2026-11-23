@@ -36,7 +36,7 @@ It turns the English text in your games into **Turkish** or **Arabic**.
 
 <p align="center">
   <img src="docs/img/iphone-yatay-map-tr.webp" width="100%" alt="Translated map mission card">
-  <br><sub><b>Map cards</b><br>The mission card on top, so you know what to do at a glance.</sub>
+  <br><sub><b>Map cards</b><br>Your current mission, translated at the top of the screen, so you know what to do at a glance.</sub>
 </p>
 
 <p align="center">
@@ -57,10 +57,10 @@ It turns the English text in your games into **Turkish** or **Arabic**.
 ## Get started in 3 steps
 
 1. **Download Nino Game Translator:** pick your device in the table below.
-2. **Connect your console:** PS5 or Xbox. Nino Game Translator tells you what to do, step by step.
+2. **Connect your console:** PS5 or Xbox, on the same Wi-Fi. For PS5 you need a free second PSN account. Nino Game Translator tells you what to do, step by step.
 3. **Pick your TV:** Nino Game Translator installs the TV app for you.
 
-Then start your game and plug in Nino Game Translator's plug. That's it.
+Then start your game and, in Nino Game Translator, drag the plug into the socket: translation starts. That's it.
 
 ## Download
 
@@ -68,10 +68,12 @@ Then start your game and plug in Nino Game Translator's plug. That's it.
 |---|---|---|
 | Mac | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) | [Setup ↓](#setup-mac) |
 | Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) | [Setup ↓](#setup-windows) |
-| iPhone and iPad | [TestFlight](https://testflight.apple.com/join/1K3Q1KXp) | [Setup ↓](#setup-iphone) |
-| Android phone | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) | [Setup ↓](#setup-android) |
+| iPhone and iPad | [TestFlight (Apple's free beta app)](https://testflight.apple.com/join/1K3Q1KXp) | [Setup ↓](#setup-iphone) |
+| Android phone | [Nino-Telefon.apk (install file, not on Google Play yet)](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) | [Setup ↓](#setup-android) |
 | TV (Android TV, LG, Samsung) | Nino Game Translator installs it | [Setup ↓](#setup-tv) |
-| Linux | Docker | [Setup ↓](#setup-linux) |
+| Linux (advanced) | With Docker | [Setup ↓](#setup-linux) |
+
+All files: [Nino Game Translator release page](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
 
 ## Setup
 
@@ -96,7 +98,7 @@ Then start your game and plug in Nino Game Translator's plug. That's it.
 <a id="setup-android"></a>
 ### Android phone
 1. Download **Nino-Telefon.apk** on your phone and open it.
-2. If it asks about unknown apps, tap **Allow**.
+2. If your phone blocks apps from unknown sources, turn on **Allow from this source** in Settings, then come back.
 3. Tap **Install**, then open Nino Game Translator.
 
 <a id="setup-tv"></a>
@@ -106,36 +108,35 @@ To install by hand: [Android TV](https://github.com/yunusdemirbag/nino-game-tran
 
 <a id="setup-linux"></a>
 ### Linux
+The Linux version runs with Docker (Docker must be installed). Paste these two lines into a terminal:
 ```bash
 curl -fsSLO https://raw.githubusercontent.com/yunusdemirbag/nino-game-translator/main/apps/linux/docker-compose.yml
 docker compose up -d
 ```
-Then open `http://<computer address>:8788` in a browser.
-
-All files: [Nino Game Translator release page](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
+Then open `http://localhost:8788` in a browser. From another device, use the computer's IP address instead (for example `http://192.168.1.20:8788`).
 
 ## Which TVs work?
 
 ✅ **Android TV / Google TV**, **Samsung**, **LG**, or a computer screen.
 
 ❌ Hisense (Vidaa), new Philips (Titan OS), TiVo and older non-Android TVs.
-On these TVs, show the subtitles on your Mac or computer screen instead. Or turn your phone sideways: the subtitles appear on the phone.
+With these TVs, show the subtitles on your computer screen (Mac or Windows) instead, or turn your phone sideways to see them on the phone.
 
 ## Questions
 
 **Does it cost money?** No. Completely free, no ads.
 
-**Why a second PSN account?** The PS5 won't connect to the account you're playing on at the same time. A free second account is enough.
+**Why a second PSN account?** Nino Game Translator connects to your PS5 with its own account, because the account you're playing on can't be used twice at once. A free account works fine.
 
-**Nothing shows on the TV?** Put the console, Nino Game Translator and the TV on the same Wi-Fi. Restart Nino Game Translator.
+**Nothing shows on the TV?** Make sure your console, your TV and the device running Nino Game Translator are on the same Wi-Fi, then restart Nino Game Translator.
 
 **Which games?** Almost any game with English text. GTA 6 has special support.
 
-More: [FAQ](docs/SSS.en.md) · Ask: [Issues](https://github.com/yunusdemirbag/nino-game-translator/issues)
+More: [FAQ](docs/SSS.en.md) · Ask a question: [Issues page](https://github.com/yunusdemirbag/nino-game-translator/issues)
 
 ## Privacy
 
-No account needed. Your game video goes nowhere. [Privacy policy](PRIVACY.md)
+No Nino Game Translator account needed. Your game video isn't uploaded or saved anywhere. [Privacy policy](PRIVACY.md)
 
 ## Who makes it?
 
@@ -143,8 +144,8 @@ No account needed. Your game video goes nowhere. [Privacy policy](PRIVACY.md)
 - **M. Akif Demirbağ**: supports, tests and shares ideas.
 
 Nino Game Translator is open source ([AGPL-3.0](LICENSE)); anyone can read the code.
-Found a bug or have an idea? Write on [Issues](https://github.com/yunusdemirbag/nino-game-translator/issues), we read everything.
-If you like Nino Game Translator, a ⭐ at the top right helps a lot.
+Found a bug or have an idea? Tell us on the [Issues page](https://github.com/yunusdemirbag/nino-game-translator/issues). We read everything.
+If you like Nino Game Translator, giving it a ⭐ (top right of this page) helps a lot.
 
 ---
 
