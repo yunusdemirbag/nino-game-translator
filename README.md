@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/img/nino-maskot.webp" width="120" alt="Nino'nun robotu">
+  <img src="docs/img/nino-ps5-kutusu.webp" width="420" alt="Nino PS5 kutusu">
 </p>
 
 <h1 align="center">Nino Game Translator</h1>
