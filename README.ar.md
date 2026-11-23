@@ -78,7 +78,7 @@
 | تلفاز LG | [Nino-TV.ipk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · يثبّته Nino بنفسه |
 | تلفاز Samsung | [Nino-TV.wgt](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt) · يثبّته Nino بنفسه |
 | Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) · حاليًا 4.0.6، والإصدار 4.5 قريبًا |
-| Linux | الإصدار 4.5 قريبًا |
+| Linux (Docker) | [التثبيت: أمران](https://github.com/yunusdemirbag/nino-game-translator/tree/main/apps/linux#readme) · amd64 و arm64 (Raspberry Pi) |
 
 إذا ظهر تحذير في macOS عند أول تشغيل: إعدادات النظام › الخصوصية والأمان › **فتح على أي حال**. كل الملفات وملاحظات التثبيت: [صفحة إصدار Nino 4.5](https://github.com/yunusdemirbag/nino-game-translator/releases/latest).
 
