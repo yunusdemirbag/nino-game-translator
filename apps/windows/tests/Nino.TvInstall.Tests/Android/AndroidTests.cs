@@ -263,4 +263,41 @@ public class AndroidInstallerTests
         Assert.Equal(TvInstallFailure.InstallFailed, e.Failure);
         Assert.Contains("INSTALL_FAILED_INVALID_APK", e.Detail);
     }
+
+    static string Legacy => LegacyNames.AndroidTvPackage;
+
+    static string WithLegacy(string c, string rest) =>
+        c == "shell:pm list packages " + Legacy ? "package:" + Legacy + "\n" : rest;
+
+    [Fact]
+    public async Task OnlyLegacyAppInstallsNewThenRemovesOld()
+    {
+        // Yalnız eski uygulama kurulu: yenisi mutlaka kurulur, eski ancak yeni kurulduktan sonra kaldırılır.
+        var (r, s) = await Run(c => WithLegacy(c, c.StartsWith("exec:") ? "Success\n" : ""), "4.5.0");
+        Assert.True(r.Installed);
+        var install = s.IndexOf("exec:cmd package install -r -S 1000");
+        var remove = s.IndexOf("shell:pm uninstall " + Legacy);
+        Assert.True(install >= 0 && remove > install);
+        Assert.True(remove < s.IndexOf(AndroidTvAppInstaller.LaunchCommand));
+        Assert.DoesNotContain("shell:pm uninstall " + AndroidTvAppInstaller.Package, s);
+    }
+
+    [Fact]
+    public async Task CurrentAppStaysOldAppIsRemoved()
+    {
+        // Yeni uygulama güncel ama eski de duruyor (çift altyazı): yeniye dokunulmaz, eski kaldırılır.
+        var (r, s) = await Run(c => WithLegacy(c,
+            c.StartsWith("shell:dumpsys") ? "versionName=4.5.0\n" : c.StartsWith("shell:pidof") ? "1234\n" : ""), "4.5.0");
+        Assert.False(r.Installed);
+        Assert.Contains("shell:pm uninstall " + Legacy, s);
+        Assert.DoesNotContain(s, x => x.StartsWith("exec:"));
+    }
+
+    [Fact]
+    public async Task NoLegacyAppNothingRemoved()
+    {
+        var (_, s) = await Run(c => c.StartsWith("exec:") ? "Success\n" : "", "4.5.0");
+        Assert.Contains("shell:pm list packages " + Legacy, s);
+        Assert.DoesNotContain(s, x => x.StartsWith("shell:pm uninstall"));
+    }
 }

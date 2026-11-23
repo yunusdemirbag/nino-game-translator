@@ -20,7 +20,9 @@ public sealed partial class AndroidTvAppInstaller
     public TimeSpan ApprovalTimeout { get; init; } = AdbSession.DefaultApprovalTimeout;
 
     /// <summary>
-    /// TV'deki sürüm paketten eski değilse dokunmaz (katman izni verir, çalışmıyorsa açar); değilse kurar.
+    /// TV'deki sürüm paketten eski değilse dokunmaz (katman izni verir, çalışmıyorsa açar); değilse kurar. Her iki yolda
+    /// da yeni uygulama hazır olduktan sonra eski adlı TV uygulaması varsa kaldırılır: yanında kalırsa o da bağlanıp kendi
+    /// altyazısını çizer (çift altyazı) ya da TV'de yalnız o açılır. Yalnız eski uygulama varsa yenisi kurulur.
     /// </summary>
     public async Task<TvInstallResult> InstallAsync(string host, string apkPath, string? packageVersion, string keyFolder,
         Action? onApprovalNeeded = null, CancellationToken ct = default)
@@ -33,6 +35,7 @@ public sealed partial class AndroidTvAppInstaller
         {
             await GrantOverlayAsync(adb, ct).ConfigureAwait(false);
             var pid = await adb.RunAsync("shell:pidof " + Package, null, ct).ConfigureAwait(false);
+            await RemoveLegacyAsync(adb, ct).ConfigureAwait(false);
             if (pid.Trim().Length == 0) await adb.RunAsync(LaunchCommand, null, ct).ConfigureAwait(false);
             return new TvInstallResult(installed, false);
         }
@@ -48,8 +51,19 @@ public sealed partial class AndroidTvAppInstaller
         if (!output.Contains("Success", StringComparison.Ordinal))
             throw new TvInstallException(TvInstallFailure.InstallFailed, output.Trim());
         await GrantOverlayAsync(adb, ct).ConfigureAwait(false);
+        await RemoveLegacyAsync(adb, ct).ConfigureAwait(false);
         await adb.RunAsync(LaunchCommand, null, ct).ConfigureAwait(false);
         return new TvInstallResult(packageVersion ?? "", true);
+    }
+
+    /// <summary>Eski adlı TV uygulaması kuruluysa kaldırır; döner: kaldırıldı mı.</summary>
+    static async Task<bool> RemoveLegacyAsync(AdbSession adb, CancellationToken ct)
+    {
+        var legacy = LegacyNames.AndroidTvPackage;
+        var list = await adb.RunAsync("shell:pm list packages " + legacy, null, ct).ConfigureAwait(false);
+        if (!list.Split('\n').Any(l => l.Trim() == "package:" + legacy)) return false;
+        var r = await adb.RunAsync("shell:pm uninstall " + legacy, null, ct).ConfigureAwait(false);
+        return r.Contains("Success", StringComparison.Ordinal);
     }
 
     static async Task<string> PushApkAsync(AdbSession adb, string apkPath, CancellationToken ct)
