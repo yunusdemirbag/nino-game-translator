@@ -120,6 +120,8 @@ elseif(UNIX)
   set_target_properties(nino_native PROPERTIES SUFFIX ".so")
 endif()
 target_include_directories(nino_native PRIVATE include src ${NINO_FFMPEG_INCLUDES})
+# Windows: üstbilgideki NINO_API bu tanımla dllexport olur (yoksa dllimport sayılır, işlevler dışa verilmez).
+target_compile_definitions(nino_native PRIVATE NINO_NATIVE_BUILDING)
 target_link_libraries(nino_native PRIVATE chiaki-lib ${NINO_FFMPEG_LIBS} ${NINO_PLATFORM_LIBS})
 target_compile_options(nino_native PRIVATE -Wall -Wextra)
 

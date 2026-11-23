@@ -60,7 +60,11 @@ done < <(objdump -p "$dll" | sed -n 's/^[[:space:]]*DLL Name: //p')
 exports="$(objdump -p "$dll")"
 for fn in nino_rp_init nino_rp_discover nino_rp_discover_ex nino_rp_wake nino_rp_register \
           nino_rp_session_start nino_rp_session_set_login_pin nino_rp_session_stop; do
-  echo "$exports" | grep -q "[[:space:]]$fn\$" || { echo "dışa aktarım yok: $fn"; exit 1; }
+  echo "$exports" | tr -d '\r' | grep -q "[[:space:]]$fn\$" || {
+    echo "dışa aktarım yok: $fn"
+    echo "$exports" | sed -n '/Export Address Table/,/^$/p;/\[Ordinal\/Name Pointer\] Table/,/^$/p'
+    exit 1
+  }
 done
 
 mkdir -p "$native/bin"
