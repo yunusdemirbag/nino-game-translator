@@ -60,7 +60,8 @@ done < <(objdump -p "$dll" | sed -n 's/^[[:space:]]*DLL Name: //p')
 exports="$(objdump -p "$dll")"
 for fn in nino_rp_init nino_rp_discover nino_rp_discover_ex nino_rp_wake nino_rp_register \
           nino_rp_session_start nino_rp_session_set_login_pin nino_rp_session_stop; do
-  echo "$exports" | tr -d '\r' | grep -q "[[:space:]]$fn\$" || {
+  # grep -q erken çıkınca "echo |" SIGPIPE alır ve pipefail hatayı yanlış bildirir; bu yüzden here-string.
+  grep -q "[[:space:]]$fn\$" <<<"${exports//$'\r'/}" || {
     echo "dışa aktarım yok: $fn"
     echo "$exports" | sed -n '/Export Address Table/,/^$/p;/\[Ordinal\/Name Pointer\] Table/,/^$/p'
     exit 1

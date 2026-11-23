@@ -44,6 +44,22 @@ public static class GameRoomSign
     /// <summary>Mavi ışıma: renk (ARGB) ve bulanıklık yarıçapı.</summary>
     public static (uint Argb, double Radius) BlueGlow { get; } = (0x7350AAFF, 24);
 
+    /// <summary>Açık görünümde fiş çıkıkken saydamlık (açık zeminde %35 neredeyse görünmüyordu).</summary>
+    public const double LightDimOpacity = 0.60;
+
+    /// <summary>Açık görünümde dolgu: aynı aile, koyulaştırılmış tonlar.</summary>
+    public static IReadOnlyList<(double Offset, uint Rgb)> LightGradient { get; } =
+        [(0.0, 0xE0369F), (0.45, 0x8E3FE0), (1.0, 0x1A86D0)];
+
+    /// <summary>Açık görünümde pembe ışıma (daha güçlü).</summary>
+    public static (uint Argb, double Radius) LightPinkGlow { get; } = (0xBFFF4FC8, 12);
+
+    /// <summary>Açık görünümde mavi ışıma (daha güçlü).</summary>
+    public static (uint Argb, double Radius) LightBlueGlow { get; } = (0x993C9BFF, 26);
+
+    /// <summary>Görünüme göre fiş çıkıkken saydamlık.</summary>
+    public static double DimFor(bool dark) => dark ? DimOpacity : LightDimOpacity;
+
     /// <summary>Latin kalıbının sonu (her dilde İngilizce).</summary>
     const string LatinTail = "'S GAMING ROOM";
 

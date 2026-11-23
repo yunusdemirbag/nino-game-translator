@@ -22,9 +22,10 @@ public sealed class GameRoomSignView : Viewbox
 
     readonly TextBlock _text = new() { TextAlignment = TextAlignment.Center };
     readonly Grid _outer = new();
-    readonly DropShadowEffect _pink;
-    readonly DropShadowEffect _blue;
+    readonly DropShadowEffect _pink = new() { ShadowDepth = 0 };
+    readonly DropShadowEffect _blue = new() { ShadowDepth = 0 };
     bool? _bright;
+    bool _dark = true;
 
     public GameRoomSignView()
     {
@@ -33,30 +34,49 @@ public sealed class GameRoomSignView : Viewbox
         IsHitTestVisible = false;
         HorizontalAlignment = HorizontalAlignment.Center;
         VerticalAlignment = VerticalAlignment.Bottom;
-        var stops = new GradientStopCollection();
-        foreach (var (offset, rgb) in GameRoomSign.Gradient)
-            stops.Add(new GradientStop(Color.FromRgb((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb), offset));
-        var fill = new LinearGradientBrush(stops, new Point(0, 0.5), new Point(1, 0.5));
-        fill.Freeze();
-        _text.Foreground = fill;
         _text.FontSize = 78;
         _text.Margin = new Thickness(20, 6, 20, 10);
-        _pink = Glow(GameRoomSign.PinkGlow);
-        _blue = Glow(GameRoomSign.BlueGlow);
         _text.Effect = _pink;
         _outer.Effect = _blue;
         _outer.Children.Add(_text);
         Child = _outer;
         Opacity = 0;
+        ApplyTheme(ThemeManager.IsDark);
+        Loaded += (_, _) => ThemeManager.ThemeChanged += OnThemeChanged;
+        Unloaded += (_, _) => ThemeManager.ThemeChanged -= OnThemeChanged;
     }
 
-    static DropShadowEffect Glow((uint Argb, double Radius) glow) => new()
+    void OnThemeChanged(object? sender, bool dark) => Dispatcher.BeginInvoke(() => ApplyTheme(dark));
+
+    (uint Argb, double Radius) PinkGlow => _dark ? GameRoomSign.PinkGlow : GameRoomSign.LightPinkGlow;
+    (uint Argb, double Radius) BlueGlow => _dark ? GameRoomSign.BlueGlow : GameRoomSign.LightBlueGlow;
+
+    /// <summary>
+    /// Koyu görünümde tarifteki renkler; açık görünümde tonlar koyulaşır, ışıma güçlenir, soluk hâl %60 olur.
+    /// </summary>
+    void ApplyTheme(bool dark)
     {
-        ShadowDepth = 0,
-        Color = Color.FromRgb((byte)(glow.Argb >> 16), (byte)(glow.Argb >> 8), (byte)glow.Argb),
-        Opacity = (glow.Argb >> 24) / 255.0,
-        BlurRadius = glow.Radius * 2,
-    };
+        _dark = dark;
+        var stops = new GradientStopCollection();
+        foreach (var (offset, rgb) in dark ? GameRoomSign.Gradient : GameRoomSign.LightGradient)
+            stops.Add(new GradientStop(Color.FromRgb((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb), offset));
+        var fill = new LinearGradientBrush(stops, new Point(0, 0.5), new Point(1, 0.5));
+        fill.Freeze();
+        _text.Foreground = fill;
+        SetGlow(_pink, PinkGlow);
+        SetGlow(_blue, BlueGlow);
+        if (_bright is { } bright)
+        {
+            _bright = null;
+            SetBright(bright, animate: false);
+        }
+    }
+
+    static void SetGlow(DropShadowEffect effect, (uint Argb, double Radius) glow)
+    {
+        effect.Color = Color.FromRgb((byte)(glow.Argb >> 16), (byte)(glow.Argb >> 8), (byte)glow.Argb);
+        effect.BlurRadius = glow.Radius * 2;
+    }
 
     /// <summary>Metni ve biçimi kurar.</summary>
     public void SetText(GameRoomSignText sign)
@@ -87,9 +107,9 @@ public sealed class GameRoomSignView : Viewbox
         if (_bright == bright) return;
         var first = _bright is null;
         _bright = bright;
-        var to = bright ? 1 : GameRoomSign.DimOpacity;
-        var pinkTo = bright ? (GameRoomSign.PinkGlow.Argb >> 24) / 255.0 : 0;
-        var blueTo = bright ? (GameRoomSign.BlueGlow.Argb >> 24) / 255.0 : 0;
+        var to = bright ? 1 : GameRoomSign.DimFor(_dark);
+        var pinkTo = bright ? (PinkGlow.Argb >> 24) / 255.0 : 0;
+        var blueTo = bright ? (BlueGlow.Argb >> 24) / 255.0 : 0;
         if (!animate || first || Motion.IsReduced)
         {
             BeginAnimation(OpacityProperty, null);

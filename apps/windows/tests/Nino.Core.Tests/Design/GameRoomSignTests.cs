@@ -85,4 +85,12 @@ public sealed class GameRoomSignTests
         SettingsRules.ApplyWriteRules(new AppSettings(), next, 8);
         Assert.Equal("Yunus", next.GameRoomName);
     }
+
+    [Fact]
+    public void LightThemeDimsLessThanDark()
+    {
+        Assert.Equal(0.35, GameRoomSign.DimFor(dark: true));
+        Assert.Equal(0.60, GameRoomSign.DimFor(dark: false));
+        Assert.Equal(GameRoomSign.Gradient.Count, GameRoomSign.LightGradient.Count);
+    }
 }
