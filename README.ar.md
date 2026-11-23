@@ -1,7 +1,7 @@
 <div dir="rtl" lang="ar">
 
 <p align="center">
-  <img src="docs/img/nino-kapak.webp" width="480" alt="علبة Nino لجهاز PS5">
+  <img src="docs/img/nino-kapak-ar.webp" width="100%" alt="علبة Nino لجهاز PS5">
 </p>
 
 <h1 align="center">Nino Game Translator</h1>
