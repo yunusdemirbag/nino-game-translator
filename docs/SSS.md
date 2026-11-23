@@ -40,8 +40,6 @@ Samsung'da kurulum çoğunlukla şu yerlerde takılır:
 
 Ekranda tam olarak hangi uyarı yazıyor?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/samsung-kurulum-hatasi.png`
-
 ### LG TV'ye Nino kurulurken hata alıyorum (Passphrase, anahtar, yanıt yok), ne yapmalıyım?
 
 LG kurulumunda en sık takılan yerler. Key Server, TV'nin Nino'ya kurulum anahtarını verdiği ayardır; Passphrase de bu anahtarın parolasıdır.
@@ -66,8 +64,6 @@ LG kurulumunda en sık takılan yerler. Key Server, TV'nin Nino'ya kurulum anaht
 
 Ekranda hangi uyarı çıkıyor?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/lg-kurulum-hatasi.png`
-
 ### Android TV'ye kurulum başlamıyor ya da Nino TV'yi bulamıyor, ne yapmalıyım?
 
 Android TV'ye kurulum başlamıyorsa şunlara bak:
@@ -86,8 +82,6 @@ Android TV'ye kurulum başlamıyorsa şunlara bak:
 
 Kur düğmesine basınca ekranda ne yazıyor?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/android-tv-kurulum-baslamiyor.png`
-
 ### TV kutusuyla (Xiaomi Mi Box, Android kutu) Nino'yu kullanabilir miyim?
 
 Google TV ya da Android TV kutularına Nino TV, Android TV ile aynı yolla kurulur: kutuda geliştirici seçeneklerini ve USB hata ayıklamayı (Nino'nun kutuya Wi-Fi üzerinden kurulum yapmasını sağlayan ayar) açarsın, telefondaki ya da bilgisayardaki Nino kurar.
@@ -101,8 +95,6 @@ Yalnız bir sınır var: kutu ekranda kendi görüntüsünü gösterir. PS5 doğ
 3. Bilgisayar varsa altyazıyı bilgisayar ekranında da gösterebilirsin.
 
 PS5 ile kutu aynı TV'nin farklı girişlerine mi bağlı?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/tv-kutusu.png`
 
 ### Android TV'de 'Tek seferlik bir izin lazım' ekranı çıkıyor ya da izin penceresi hiç gelmiyor, ne yapmalıyım?
 
@@ -120,8 +112,6 @@ Tek seferlik izin ekranı katman iznini ister. Katman izni, Nino'nun altyazıyı
 
 Bu adımlardan sonra TV'de oyun görüntüsü geliyor mu?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/android-tv-izin-ekrani.png`
-
 ### TV'de yapı satırı yok ya da 7 kez basınca geliştirici seçenekleri açılmıyor, ne yapmalıyım?
 
 Yapı satırı bulunamıyorsa ya da 7 kez basınca bir şey olmuyorsa:
@@ -138,8 +128,6 @@ Yapı satırı bulunamıyorsa ya da 7 kez basınca bir şey olmuyorsa:
 
 TV'nin Hakkında ekranında hangi satırlar var?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/android-tv-gelistirici-yok.png`
-
 ### TV'm Vidaa, TiVo ya da LG olmayan bir webOS kullanıyor; Nino TV kurulur mu?
 
 Nino TV uygulaması yalnız Android TV / Google TV, Samsung ve LG TV'lere kurulur. Vidaa (çoğu Hisense), TiVo OS, Titan OS (yeni Philips), Axen ve Android olmayan Vestel'lere uygulama kurulamaz. LG kurulumu için TV'nin LG Content Store'unda Developer Mode uygulaması bulunmalıdır.
@@ -153,8 +141,6 @@ Böyle bir TV'de Nino'yu şöyle kullanabilirsin:
 3. TV'ye bir Android TV kutusu takabilirsin; yalnız altyazının oyunun üstünde çıkması için oyun görüntüsünün de o kutunun ekranında olması gerekir.
 
 TV'nin ayarlarında işletim sisteminin adı ne yazıyor?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/desteklenmeyen-tv.png`
 
 ### Samsung TV'de 1 2 3 4 5 yazınca Developer Mode penceresi açılmıyor, ne yapmalıyım?
 
@@ -172,8 +158,6 @@ Developer Mode penceresi açılmıyorsa:
 
 Uygulama Ayarları ekranını bulabildin mi?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/samsung-gelistirici-penceresi.png`
-
 ### Nino açılınca TV'de oyun görüntüsü gidiyor ya da ekran siyah kalıyor, ne yapmalıyım?
 
 TV'de oyun görüntüsü gelmiyorsa ya da ekran siyahsa sırayla dene. HDR ve HDCP, PS5'in görüntü ayarlarıdır; HDCP görüntüyü kopyalanmaya karşı korur ve bazı cihazlarda görüntünün siyah gelmesine yol açar.
@@ -190,8 +174,6 @@ TV'de oyun görüntüsü gelmiyorsa ya da ekran siyahsa sırayla dene. HDR ve HD
 
 Hangi marka TV'de oluyor?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/tv-siyah-ekran.png`
-
 ### TV'de Nino açılıp hemen kapanıyor ya da açılınca doğrudan HDMI'ya geçiyor, ne yapmalıyım?
 
 TV'de Nino açılıp kapanıyorsa ya da hemen HDMI'ya atlıyorsa TV'ye göre şunlara bak:
@@ -206,8 +188,6 @@ TV'de Nino açılıp kapanıyorsa ya da hemen HDMI'ya atlıyorsa TV'ye göre şu
 
 Hangi marka TV'de oluyor?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/tv-uygulamasi-kapaniyor.png`
-
 ### PS5'im akıllı olmayan bir monitöre bağlı; altyazıyı nasıl görürüm?
 
 Akıllı olmayan monitöre TV uygulaması kurulamaz, ama altyazıyı başka yerde görebilirsin:
@@ -221,8 +201,6 @@ Akıllı olmayan monitöre TV uygulaması kurulamaz, ama altyazıyı başka yerd
 4. Monitör Samsung Smart Monitor gibi akıllıysa ona Nino TV kurulur ve altyazı oyunun üstünde çıkar.
 
 Hangisi sana uygun?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/akilli-olmayan-monitor.png`
 
 ## PS5 bağlantısı
 
@@ -248,8 +226,6 @@ Bağlanıyor yazısında kalıyorsa Nino PS5'e ulaşamıyor ya da PS5 oturumu a�
 
 Bağlanıyor yazısının altında bir neden yazıyor mu?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/ps5-baglaniyorda-kaliyor.png`
-
 ### Oyun sırasında PS5 bağlantısı sürekli kopuyor, ne yapmalıyım?
 
 Oyun sırasında bağlantı kopuyorsa şunları dene:
@@ -267,8 +243,6 @@ Oyun sırasında bağlantı kopuyorsa şunları dene:
 6. Nino bağlantı koptuğunda yeniden denemeyi kendisi sürdürür. Kopma sık tekrarlıyorsa Sorunu Bildir ile yaz (Mac'te Hata Bildir, Windows'ta Bir sorun bildir, Android'de Sorunu Anlat); cihaz bilgileri kendiliğinden eklenir.
 
 Kopma hangi cihazda oluyor?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/ps5-baglanti-kopuyor.png`
 
 ### PS5 bağlantıyı reddediyor ya da eşlemeyi kabul etmiyor (hata kodu çıkıyor), ne yapmalıyım?
 
@@ -288,8 +262,6 @@ PS5 bağlantıyı reddediyorsa ya da eşlemeyi kabul etmiyorsa sırayla dene:
 
 Hata kodunun yanında hangi yazı çıkıyor?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/ps5-eslesme-hatasi.png`
-
 ### PS5 ekranında 'Uzaktan Oynama bağlandı' bildirimi gitmiyor, nasıl kapatırım?
 
 Bu bildirim Nino'nun bağlandığı ikinci hesabın ayarından kapatılır:
@@ -301,8 +273,6 @@ Bu bildirim Nino'nun bağlandığı ikinci hesabın ayarından kapatılır:
 3. Kendi hesabına dön ve oyunu aç.
 
 Bildirim kayboldu mu?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/uzaktan-oynama-bildirimi.png`
 
 ### Nino çalışırken kol oyunda çalışmıyor ya da karakter hareket etmiyor, ne yapmalıyım?
 
@@ -316,8 +286,6 @@ Kol oyunda çalışmıyorsa PS5'te büyük ihtimalle Nino'nun ikinci hesabı se�
 
 Kendi hesabına geçince kol çalıştı mı?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/kol-calismiyor.png`
-
 ### İkinci hesapla Sony girişinde hata alıyorum (ör. CE-110032), ne yapmalıyım?
 
 Bu hata kodu Sony'nin giriş sayfasından geliyor; anlamı için elimde kesin bilgi yok. Deneyebileceğin yollar:
@@ -329,8 +297,6 @@ Bu hata kodu Sony'nin giriş sayfasından geliyor; anlamı için elimde kesin bi
 3. Olmazsa ekran görüntüsüyle Sorunu Bildir'den yaz; ekibimiz bakar.
 
 Hangi cihazda giriş yapıyorsun?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/sony-giris-hatasi.png`
 
 ### Nino PS5'i bulamıyor ya da 'PS5 yanıt vermiyor' diyor, ne yapmalıyım?
 
@@ -347,8 +313,6 @@ Nino PS5'e ulaşamıyorsa şunlara bak:
 5. Nino bağlantıyı denemeyi kendisi sürdürür; PS5'in ağ adresi değiştiyse yeni adresi yaz.
 
 PS5 ile Nino'nun cihazı aynı ağa mı bağlı?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/ps5-bulunamiyor.png`
 
 ## Altyazı
 
@@ -372,8 +336,6 @@ PS5 ile Nino'nun cihazı aynı ağa mı bağlı?
 
 Deneme yazısı TV'de görünüyor mu?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/tv-telefonda-var-tvde-yok.png`
-
 ### TV'de 'Bağlanmayı Bekliyor' ya da 'Nino'yu bekliyor' yazısı gitmiyor, ne yapmalıyım?
 
 Bu yazı TV'nin hazır olduğunu, yalnız telefonu ya da bilgisayarı henüz görmediğini söyler:
@@ -392,8 +354,6 @@ Bu yazı TV'nin hazır olduğunu, yalnız telefonu ya da bilgisayarı henüz gö
 
 TV ile telefon aynı ağ adına mı bağlı?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/tv-nino-bekliyor.png`
-
 ### Her şey bağlı görünüyor ama altyazı hiç gelmiyor ya da bir kez gelip duruyor, ne yapmalıyım?
 
 Altyazı hiç gelmiyorsa ya da bir kez gelip duruyorsa:
@@ -409,8 +369,6 @@ Altyazı hiç gelmiyorsa ya da bir kez gelip duruyorsa:
 5. Telefon, bilgisayar, TV ve konsol aynı Wi-Fi ağında olsun.
 
 Nino'nun ekranında oyun görüntüsü geliyor mu?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/altyazi-hic-gelmiyor.png`
 
 ### Altyazının boyutunu, arka planını ya da TV'deki Nino işaretini nasıl değiştiririm?
 
@@ -430,8 +388,6 @@ Altyazının görünüşünü Nino'nun ayarlarından değiştirirsin: Mac, Windo
 
 İstediğin ayarı bulabildin mi?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/altyazi-gorunusu.png`
-
 ### Nino altyazı yerine tuş ipuçlarını ya da ekrandaki her şeyi çeviriyor, ne yapmalıyım?
 
 Nino ilk birkaç altyazıda oyunun altyazı yerini öğrenir; öğrendikten sonra yalnız o bölgeyi okur. Yol tarifleri ve tuş ipuçları altyazı sayılmaz.
@@ -445,8 +401,6 @@ Nino ilk birkaç altyazıda oyunun altyazı yerini öğrenir; öğrendikten sonr
 4. Büyük siyah kutu rahatsız ediyorsa Altyazının görünüşü'nde arka planı Yok yap.
 
 Konuşmalı sahnede altyazı çevrilmeye başladı mı?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/yanlis-alan-cevriliyor.png`
 
 ## Xbox bağlantısı
 
@@ -466,8 +420,6 @@ Xbox'a bağlanmıyorsa şunlara bak:
 
 Xbox, Nino'nun listesinde görünüyor mu?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/xbox-baglanmiyor.png`
-
 ### Xbox'ta 'uzaktan yürütme başlatıldı' deyip hemen duruyor ya da bağlantı sürekli kopuyor, ne yapmalıyım?
 
 Xbox'ta uzaktan oynatma başlayıp duruyorsa ya da sürekli kopuyorsa:
@@ -482,8 +434,6 @@ Xbox'ta uzaktan oynatma başlayıp duruyorsa ya da sürekli kopuyorsa:
 
 Çözünürlüğü değiştirdikten sonra kopma sürüyor mu?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/xbox-baslayip-duruyor.png`
-
 ### Xbox'la kullanırken oyunun sesi telefondan geliyor, ne yapmalıyım?
 
 Bu Xbox'ın kendi davranışı: uzaktan oynatmada sesi bağlanan cihaza verir. Çözüm yolları:
@@ -495,8 +445,6 @@ Bu Xbox'ın kendi davranışı: uzaktan oynatmada sesi bağlanan cihaza verir. �
 3. Capture card kullan: konsolun sesi TV'de kalır.
 
 Hangi telefonu kullanıyorsun?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/xbox-ses-telefondan.png`
 
 ## Çeviri kalitesi / API
 
@@ -511,8 +459,6 @@ Bu ekran için elimde henüz kesin adımlar yok, yanlış yönlendirmek istemem.
 3. Sorunu ekran görüntüsüyle Ayarlar › Sorunu Bildir'den gönder; ekibimiz bakar.
 
 Ekran görüntüsünü gönderebilir misin?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/dil-paketi-indirilemiyor.png`
 
 ## Uygulama sorunları
 
@@ -532,8 +478,6 @@ Windows'taki duruma göre şunlara bak:
 
 Ekranda tam olarak hangi uyarı çıkıyor?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/windows-uygulama-hatasi.png`
-
 ### iPhone'da ekran kapanınca ya da bir süre sonra çeviri duruyor, ne yapmalıyım?
 
 iOS, kilitlenen ya da arka plana geçen uygulamayı durdurur; bu Apple'ın kuralıdır ve hiçbir uygulama aşamaz. Çeviri sürerken Nino ekranı kendisi açık tutar ve parlaklığı kısar.
@@ -545,8 +489,6 @@ iOS, kilitlenen ya da arka plana geçen uygulamayı durdurur; bu Apple'ın kural
 3. Ekranın açık kalmasını istemiyorsan bilgisayardaki ya da Android telefondaki Nino'yu kullan; Android'de Nino arka planda da çalışır.
 
 Telefon kilitlenmeden de duruyor mu?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/iphone-ekran-kapaniyor.png`
 
 ## Kurulum (genel)
 
@@ -564,8 +506,6 @@ Bilgisayarda Nino'yu baştan kurmak için uygulamayı silmene gerek yok; Sıfır
 
 Hangi cihazda sıfırlamak istiyorsun?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/sifirla-yeniden-kur.png`
-
 ### Kurulumu bitirdim, şimdi ne yapacağım?
 
 Kurulum bittiyse her oynayışında yalnız şunları yaparsın:
@@ -579,8 +519,6 @@ Kurulum bittiyse her oynayışında yalnız şunları yaparsın:
 4. Çeviri başlayınca TV'de Nino: Altyazılar Çevriliyor yazar ve altyazılar oyunun üstünde akar. Durdurmak için fişi çek.
 
 Fişi taktıktan sonra TV'de altyazı çıktı mı?
-
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/kurulum-sonrasi-baslatma.png`
 
 ## Oyun desteği
 
@@ -598,8 +536,6 @@ Nino, PS5 ve Xbox Series X|S'teki oyunlarda ekranda görünen İngilizce yazıy�
 
 Hangi oyunu oynamak istiyorsun?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/hangi-oyunlar.png`
-
 ### GTA 6 çevirisi nasıl çalışıyor; GTA 6 paketi neden listede yok?
 
 GTA 6 için ayrı bir paket indirmen gerekmez:
@@ -614,8 +550,6 @@ GTA 6 için ayrı bir paket indirmen gerekmez:
 
 GTA 6'da altyazılar çevriliyor mu?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/gta6-havuz.png`
-
 ## Gizlilik / hesap
 
 ### Nino'daki PSN ya da Xbox hesabından nasıl çıkış yaparım?
@@ -628,8 +562,6 @@ Nino'nun kendi hesabı yoktur; ayarlar yalnız cihazında kalır. PSN ve Microso
 
 Hangi cihazda çıkış yapmak istiyorsun?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/hesaptan-cikis.png`
-
 ## İstekler
 
 ### Nino PS4'te çalışır mı?
@@ -638,12 +570,9 @@ Hangi cihazda çıkış yapmak istiyorsun?
 
 PS5 ya da Xbox'ın varsa kurulumda adım adım yardım edeyim mi?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/ps4-destegi.png`
-
 ### Nino dublaj (sesli Türkçe) yapabiliyor mu?
 
 Dublaj için elimde güncel ve kesin bilgi yok; yanlış bir şey söylemek istemem. Nino'nun bilinen işi, oyundaki İngilizce yazıyı okuyup çevirmek ve altyazı olarak göstermek. İsteğini ekibe iletmek için Sorunu Bildir'den yazabilirsin.
 
 Altyazı kurulumunda yardım edeyim mi?
 
-> 📷 Ekran görüntüsü eklenecek: `docs/gorseller/sss/dublaj.png`

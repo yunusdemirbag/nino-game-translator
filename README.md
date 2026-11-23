@@ -67,12 +67,16 @@ Sonra oyunu aç, Nino'daki fişi tak. Hepsi bu.
 
 | Cihaz | Bağlantı |
 |---|---|
-| Mac | yayın günü eklenecek |
-| Windows | yayın günü eklenecek |
-| iPhone ve iPad | yayın günü eklenecek |
-| Android telefon | yayın günü eklenecek |
-| Linux | yayın günü eklenecek |
-| Android TV | yayın günü eklenecek |
+| Mac (macOS 14+) | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) |
+| Android telefon ve tablet | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) |
+| iPhone ve iPad | [TestFlight ile katıl](https://testflight.apple.com/join/1K3Q1KXp) · App Store onayı bekleniyor |
+| Android TV / Google TV | [Nino-TV.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · Nino TV'ye kendisi de kurar |
+| LG TV | [Nino-TV.ipk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · Nino TV'ye kendisi kurar |
+| Samsung TV | [Nino-TV.wgt](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt) · Nino TV'ye kendisi kurar |
+| Windows | 4.5 yakında · şimdilik [4.0.6](https://github.com/yunusdemirbag/nino-game-translator/releases/tag/v4.0.6) |
+| Linux | 4.5 yakında |
+
+Mac'te ilk açılışta uyarı çıkarsa: Sistem Ayarları › Gizlilik ve Güvenlik › **Yine de Aç**. Bütün dosyalar ve kurulum notları: [Nino 4.5 sürüm sayfası](https://github.com/yunusdemirbag/nino-game-translator/releases/latest).
 
 ## Hangi TV'lerde çalışır?
 

@@ -71,12 +71,16 @@
 
 | الجهاز | الرابط |
 |---|---|
-| Mac | يُضاف يوم الإصدار |
-| Windows | يُضاف يوم الإصدار |
-| iPhone و iPad | يُضاف يوم الإصدار |
-| هاتف Android | يُضاف يوم الإصدار |
-| Linux | يُضاف يوم الإصدار |
-| Android TV | يُضاف يوم الإصدار |
+| Mac (macOS 14+) | [Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip) |
+| هاتف وجهاز لوحي Android | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) |
+| iPhone و iPad | [انضم عبر TestFlight](https://testflight.apple.com/join/1K3Q1KXp) · بانتظار موافقة App Store |
+| Android TV / Google TV | [Nino-TV.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · يثبّته Nino بنفسه أيضًا |
+| تلفاز LG | [Nino-TV.ipk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · يثبّته Nino بنفسه |
+| تلفاز Samsung | [Nino-TV.wgt](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt) · يثبّته Nino بنفسه |
+| Windows | الإصدار 4.5 قريبًا · حاليًا [4.0.6](https://github.com/yunusdemirbag/nino-game-translator/releases/tag/v4.0.6) |
+| Linux | الإصدار 4.5 قريبًا |
+
+إذا ظهر تحذير في macOS عند أول تشغيل: إعدادات النظام › الخصوصية والأمان › **فتح على أي حال**. كل الملفات وملاحظات التثبيت: [صفحة إصدار Nino 4.5](https://github.com/yunusdemirbag/nino-game-translator/releases/latest).
 
 ## على أي تلفاز يعمل؟
 

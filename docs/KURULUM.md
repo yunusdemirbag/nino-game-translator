@@ -30,8 +30,6 @@ Hepsinde konsol (PS5 ya da Xbox), telefon/bilgisayar ve TV **aynı Wi-Fi ağınd
 
 ## 2. Mac ve Windows ile kurulum (TV için önerilen)
 
-> 📷 PS5 ve Android TV için adım adım fotoğraflı anlatım: **[Android TV Rehberi](KURULUM-ANDROID-TV.md)**
-
 **Mac**
 1. **[Nino-Mac.zip](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Mac.zip)**
    dosyasını indirip açın.
@@ -245,7 +243,6 @@ kalır (oyunun İngilizce altyazısı da alttan görünür).
 ---
 
 ## 9. Sık karşılaşılan durumlar
-
 
 | Durum | Çözüm |
 |---|---|

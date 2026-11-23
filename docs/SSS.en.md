@@ -40,8 +40,6 @@ On Samsung, installation usually gets stuck at one of these points:
 
 What exact warning do you see on the screen?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/samsung-kurulum-hatasi.png`
-
 ### I get an error installing Nino on my LG TV (passphrase, key, no answer). What should I do?
 
 The most common sticking points with LG. Key Server is the TV setting that hands Nino the install key, and the passphrase is that key's password.
@@ -66,8 +64,6 @@ The most common sticking points with LG. Key Server is the TV setting that hands
 
 Which warning do you see on the screen?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/lg-kurulum-hatasi.png`
-
 ### Installation on my Android TV does not start or Nino cannot find the TV. What should I do?
 
 If installation on Android TV does not start, check these:
@@ -86,8 +82,6 @@ If installation on Android TV does not start, check these:
 
 What does the screen say when you press install?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/android-tv-kurulum-baslamiyor.png`
-
 ### Can I use Nino with a TV box (Xiaomi Mi Box, Android box)?
 
 Nino TV installs on Google TV or Android TV boxes the same way as on an Android TV: you turn on developer options and USB debugging (the setting that lets Nino install onto the box over Wi-Fi) on the box, and Nino on your phone or computer installs it.
@@ -101,8 +95,6 @@ There is one limit: the box shows its own picture. If the PS5 is plugged straigh
 3. If you have a computer, you can also show the subtitles on the computer screen.
 
 Are the PS5 and the box plugged into different inputs of the same TV?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/tv-kutusu.png`
 
 ### My Android TV shows the one-time permission screen, or the permission window never appears. What should I do?
 
@@ -120,8 +112,6 @@ The one-time permission screen asks for the overlay permission, the setting that
 
 After these steps, does the game picture show on the TV?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/android-tv-izin-ekrani.png`
-
 ### My TV has no build row, or tapping it 7 times does not open developer options. What should I do?
 
 If you cannot find the build row, or tapping it 7 times does nothing:
@@ -138,8 +128,6 @@ If you cannot find the build row, or tapping it 7 times does nothing:
 
 Which rows do you see on the TV's About screen?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/android-tv-gelistirici-yok.png`
-
 ### My TV runs Vidaa, TiVo or a non-LG webOS. Can Nino TV be installed?
 
 The Nino TV app installs only on Android TV / Google TV, Samsung and LG TVs. Apps cannot be installed on Vidaa (most Hisense), TiVo OS, Titan OS (newer Philips), Axen or non-Android Vestel TVs. For the LG install, the TV's LG Content Store must offer the Developer Mode app.
@@ -153,8 +141,6 @@ On such a TV you can still use Nino like this:
 3. You can plug an Android TV box into the TV, but for subtitles over the game the game picture must also be on that box's screen.
 
 What operating system name does the TV show in its settings?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/desteklenmeyen-tv.png`
 
 ### Typing 1 2 3 4 5 on my Samsung TV does not open the Developer Mode window. What should I do?
 
@@ -172,8 +158,6 @@ If the Developer Mode window does not open:
 
 Did you find the App Settings screen?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/samsung-gelistirici-penceresi.png`
-
 ### When Nino starts, the game picture disappears or the TV stays black. What should I do?
 
 If the game picture does not show or the TV stays black, try in order. HDR and HDCP are PS5 picture settings; HDCP protects the picture from copying and can make it black on some devices.
@@ -190,8 +174,6 @@ If the game picture does not show or the TV stays black, try in order. HDR and H
 
 Which TV brand does this happen on?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/tv-siyah-ekran.png`
-
 ### Nino on the TV opens and closes right away, or jumps straight to HDMI. What should I do?
 
 If Nino on the TV opens and closes, or jumps straight to HDMI, check this for your TV:
@@ -206,8 +188,6 @@ If Nino on the TV opens and closes, or jumps straight to HDMI, check this for yo
 
 Which TV brand does this happen on?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/tv-uygulamasi-kapaniyor.png`
-
 ### My PS5 is connected to a plain (non-smart) monitor. How can I see the subtitles?
 
 A plain monitor cannot run the TV app, but you can see the subtitles elsewhere:
@@ -221,8 +201,6 @@ A plain monitor cannot run the TV app, but you can see the subtitles elsewhere:
 4. If the monitor is smart, like a Samsung Smart Monitor, Nino TV can be installed on it and subtitles appear over the game.
 
 Which option suits you?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/akilli-olmayan-monitor.png`
 
 ## Connecting to the PS5
 
@@ -248,8 +226,6 @@ If it stays on Connecting, Nino cannot reach the PS5 or the PS5 does not start t
 
 Is there a reason written under the Connecting text?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/ps5-baglaniyorda-kaliyor.png`
-
 ### The PS5 connection keeps dropping while I play. What should I do?
 
 If the connection drops during play, try these:
@@ -267,8 +243,6 @@ If the connection drops during play, try these:
 6. Nino keeps retrying by itself after a drop. If it happens often, report it from the app (Report a Problem); device details are added automatically.
 
 On which device does the drop happen?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/ps5-baglanti-kopuyor.png`
 
 ### The PS5 refuses the connection or rejects the pairing (I get an error code). What should I do?
 
@@ -288,8 +262,6 @@ If the PS5 refuses the connection or rejects the pairing, try in order:
 
 What text appears next to the error code?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/ps5-eslesme-hatasi.png`
-
 ### The 'Remote Play connected' notice keeps showing on the PS5. How do I turn it off?
 
 This notice is turned off in the settings of the second account Nino connects with:
@@ -301,8 +273,6 @@ This notice is turned off in the settings of the second account Nino connects wi
 3. Switch back to your own account and start the game.
 
 Is the notice gone?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/uzaktan-oynama-bildirimi.png`
 
 ### While Nino runs, my controller does not work in the game. What should I do?
 
@@ -316,8 +286,6 @@ If the controller does not work in the game, the PS5 is most likely on Nino's se
 
 Does the controller work after switching to your account?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/kol-calismiyor.png`
-
 ### I get an error at the Sony sign-in with the second account (for example CE-110032). What should I do?
 
 This error code comes from Sony's sign-in page; I do not have confirmed information about what it means. Things you can try:
@@ -329,8 +297,6 @@ This error code comes from Sony's sign-in page; I do not have confirmed informat
 3. If it still fails, send a screenshot with Report a Problem; the team will look at it.
 
 Which device are you signing in on?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/sony-giris-hatasi.png`
 
 ### Nino cannot find my PS5 or says the PS5 is not responding. What should I do?
 
@@ -347,8 +313,6 @@ If Nino cannot reach the PS5, check these:
 5. Nino keeps trying by itself; if the PS5's network address changed, enter the new one.
 
 Are the PS5 and the Nino device on the same network?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/ps5-bulunamiyor.png`
 
 ## Subtitles
 
@@ -372,8 +336,6 @@ If the translation shows on your phone or computer, reading works; the problem i
 
 Does the test line show up on the TV?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/tv-telefonda-var-tvde-yok.png`
-
 ### The TV keeps saying it is waiting for Nino. What should I do?
 
 This message means the TV is ready but has not found your phone or computer yet:
@@ -392,8 +354,6 @@ This message means the TV is ready but has not found your phone or computer yet:
 
 Are the TV and the phone on the same network name?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/tv-nino-bekliyor.png`
-
 ### Everything looks connected but no subtitles come, or they come once and stop. What should I do?
 
 If no subtitles come, or they come once and stop:
@@ -409,8 +369,6 @@ If no subtitles come, or they come once and stop:
 5. The phone or computer, the TV and the console must be on the same Wi-Fi network.
 
 Does the game picture show inside Nino?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/altyazi-hic-gelmiyor.png`
 
 ### How do I change the subtitle size, background or the Nino mark on the TV?
 
@@ -430,8 +388,6 @@ You change how subtitles look in Nino's settings: on Mac, Windows and Android, S
 
 Did you find the setting you wanted?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/altyazi-gorunusu.png`
-
 ### Nino translates button hints or the whole screen instead of the subtitles. What should I do?
 
 Nino learns where the game's subtitles are during the first few lines; after that it reads only that area. Directions and button hints are not treated as subtitles.
@@ -445,8 +401,6 @@ Nino learns where the game's subtitles are during the first few lines; after tha
 4. If a big black box bothers you, set the background to None in the subtitle appearance settings.
 
 Did the subtitles start translating in a dialogue scene?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/yanlis-alan-cevriliyor.png`
 
 ## Connecting to the Xbox
 
@@ -466,8 +420,6 @@ If Nino will not connect to the Xbox, check these:
 
 Does the Xbox appear in Nino's list?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/xbox-baglanmiyor.png`
-
 ### Xbox remote play starts and stops right away, or keeps dropping. What should I do?
 
 If Xbox remote play starts and stops, or keeps dropping:
@@ -482,8 +434,6 @@ If Xbox remote play starts and stops, or keeps dropping:
 
 Does it still drop after changing the resolution?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/xbox-baslayip-duruyor.png`
-
 ### With Xbox, the game sound comes from my phone. What should I do?
 
 This is how the Xbox itself behaves: during remote play it sends the sound to the connected device. Ways around it:
@@ -495,8 +445,6 @@ This is how the Xbox itself behaves: during remote play it sends the sound to th
 3. Use a capture card: the console's sound stays on the TV.
 
 Which phone are you using?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/xbox-ses-telefondan.png`
 
 ## Translation, language packs and API keys
 
@@ -511,8 +459,6 @@ I do not have confirmed steps for this screen yet, and I do not want to send you
 3. Send the problem with a screenshot from Settings › Report a Problem; the team will look at it.
 
 Can you send a screenshot?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/dil-paketi-indirilemiyor.png`
 
 ## App problems (Windows, Mac, iPhone, Android)
 
@@ -532,8 +478,6 @@ Depending on what happens on Windows, check these:
 
 What exact warning do you see?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/windows-uygulama-hatasi.png`
-
 ### On iPhone, translation stops when the screen turns off or after a while. What should I do?
 
 iOS stops apps that are locked or moved to the background; this is Apple's rule and no app can get around it. While translating, Nino keeps the screen on by itself and dims the brightness.
@@ -545,8 +489,6 @@ iOS stops apps that are locked or moved to the background; this is Apple's rule 
 3. If you do not want the screen to stay on, use Nino on a computer or an Android phone; on Android Nino also runs in the background.
 
 Does it stop even without the phone locking?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/iphone-ekran-kapaniyor.png`
 
 ## Setup in general
 
@@ -564,8 +506,6 @@ On a computer you do not need to uninstall Nino to start over; use the Reset sec
 
 Which device do you want to reset?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/sifirla-yeniden-kur.png`
-
 ### I finished the setup. What do I do now?
 
 Once setup is done, each time you play you only do this:
@@ -579,8 +519,6 @@ Once setup is done, each time you play you only do this:
 4. When translation starts, the TV shows that Nino is translating subtitles, and the subtitles appear over the game. To stop, pull out the plug.
 
 After plugging in, did subtitles appear on the TV?
-
-> 📷 Screenshot to be added: `docs/gorseller/sss/kurulum-sonrasi-baslatma.png`
 
 ## Supported games
 
@@ -598,8 +536,6 @@ Nino reads and translates the English text shown on screen in PS5 and Xbox Serie
 
 Which game do you want to play?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/hangi-oyunlar.png`
-
 ### How does GTA 6 translation work, and why is there no GTA 6 pack in the list?
 
 You do not need a separate pack for GTA 6:
@@ -614,8 +550,6 @@ You do not need a separate pack for GTA 6:
 
 Are the subtitles being translated in GTA 6?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/gta6-havuz.png`
-
 ## Privacy and accounts
 
 ### How do I sign out of the PSN or Xbox account in Nino?
@@ -628,8 +562,6 @@ Nino has no account of its own; settings stay only on your device. You sign in t
 
 Which device do you want to sign out on?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/hesaptan-cikis.png`
-
 ## Requests and things Nino doesn't do yet
 
 ### Does Nino work with PS4?
@@ -638,12 +570,9 @@ Right now Nino does not support PS4; it works with PS5 and Xbox Series X|S. We h
 
 If you have a PS5 or an Xbox, shall I help you set it up step by step?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/ps4-destegi.png`
-
 ### Can Nino do dubbing (spoken translation)?
 
 I do not have current, confirmed information about dubbing, and I do not want to tell you something wrong. What Nino is known to do is read the English text in the game, translate it and show it as subtitles. To pass your request to the team, write to us with Report a Problem.
 
 Shall I help you with the subtitle setup?
 
-> 📷 Screenshot to be added: `docs/gorseller/sss/dublaj.png`
