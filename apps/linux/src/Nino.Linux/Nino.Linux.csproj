@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Panel\page.html" LogicalName="nino.panel.html" />
-    <EmbeddedResource Include="..\..\..\windows\src\Nino.App\Assets\logo.png" LogicalName="nino.logo.png" />
+    <EmbeddedResource Include="Panel\logo.svg" LogicalName="nino.logo.svg" />
   </ItemGroup>
 
   <!-- TV uygulaması paketleri; sunucu bunları geliştirici modu açık TV'ye kurar. -->

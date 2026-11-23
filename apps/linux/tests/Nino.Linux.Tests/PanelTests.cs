@@ -59,6 +59,7 @@ internal sealed class RecordingBackend : INinoBackend
     public PanelRegion? Region { get; private set; }
     public JsonObject? Style { get; private set; }
     public bool? Online { get; private set; }
+    public bool? Speaker { get; private set; }
 
     public string RedirectPrefix => "https://remoteplay.dl.playstation.net/remoteplay/redirect";
 
@@ -91,9 +92,9 @@ internal sealed class RecordingBackend : INinoBackend
     public Task StopAsync() => Note("stop");
     public Task TogglePauseAsync() => Note("pause");
 
-    public Task ChangeSettingsAsync(PanelRegion? region, JsonObject? style, bool? onlineTranslation)
+    public Task ChangeSettingsAsync(PanelRegion? region, JsonObject? style, bool? onlineTranslation, bool? showSpeakerNames = null)
     {
-        Region = region; Style = style; Online = onlineTranslation;
+        Region = region; Style = style; Online = onlineTranslation; Speaker = showSpeakerNames;
         return Note("settings");
     }
 
@@ -145,10 +146,9 @@ public sealed class PanelServerTests : IAsyncLifetime
         var page = await http.GetAsync("/");
         Assert.Equal("text/html", page.Content.Headers.ContentType!.MediaType);
         Assert.Contains("/api/state", await page.Content.ReadAsStringAsync());
-        var logo = await http.GetAsync("/logo.png");
-        Assert.Equal("image/png", logo.Content.Headers.ContentType!.MediaType);
-        var bytes = await logo.Content.ReadAsByteArrayAsync();
-        Assert.True(bytes.Length > 1000 && bytes[1] == (byte)'P' && bytes[2] == (byte)'N' && bytes[3] == (byte)'G');
+        var logo = await http.GetAsync("/logo.svg");
+        Assert.Equal("image/svg+xml", logo.Content.Headers.ContentType!.MediaType);
+        Assert.Contains("<svg", await logo.Content.ReadAsStringAsync());
     }
 
     [Fact]
@@ -207,6 +207,8 @@ public sealed class PanelServerTests : IAsyncLifetime
         Assert.Equal(58, (int)backend.Style!["fontSize"]!);
         Assert.True((bool)backend.Style!["bold"]!);
         Assert.Null(backend.Online);
+        await http.PostAsJsonAsync("/api/settings", new { showSpeakerNames = false });
+        Assert.False(backend.Speaker);
     }
 
     [Fact]

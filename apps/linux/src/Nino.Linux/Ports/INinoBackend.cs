@@ -36,7 +36,7 @@ public interface INinoBackend : IDisposable
     Task TogglePauseAsync();
 
     /// <summary>Yalnız verilen alanlar değişir; bölge panelde doğrulanmıştır.</summary>
-    Task ChangeSettingsAsync(PanelRegion? region, JsonObject? style, bool? onlineTranslation);
+    Task ChangeSettingsAsync(PanelRegion? region, JsonObject? style, bool? onlineTranslation, bool? showSpeakerNames = null);
 
     Task<KeyCheck> SaveOnlineKeyAsync(string key);
     Task RemoveOnlineKeyAsync();

@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Nino.Core.Data;
 using Nino.Core.Settings;
+using Nino.Core.Support;
 using Nino.Core.Translation;
 using Nino.Linux.Core;
 using Nino.Linux.Imaging;
@@ -80,7 +81,10 @@ public sealed class CoreBackend(NinoController controller, LinuxPlatform platfor
                 SourceLanguage = settings.SourceLanguage,
                 TargetLanguage = settings.TargetLanguage,
                 OnlineTranslation = settings.OnlineTranslation,
+                ShowSpeakerNames = settings.ShowSpeakerNames,
             },
+            Guides = new PanelGuides(SiteLinks.Setup(Hosting.Language.Code),
+                SiteLinks.TvApp(Hosting.Language.Code, tv?.Brand == CoreTvBrand.AndroidTv), SiteLinks.SiteBase),
         };
     }
 
@@ -119,8 +123,14 @@ public sealed class CoreBackend(NinoController controller, LinuxPlatform platfor
         Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() },
     };
 
-    internal static JsonObject StyleJson(SubtitleStyle style) =>
-        JsonSerializer.SerializeToNode(style, StyleOptions) as JsonObject ?? new JsonObject();
+    /// <summary>Görünüm ayarları; otomatik boy kayıtta boşsa gerçek değeri, arka planın alt sınırı da eklenir.</summary>
+    internal static JsonObject StyleJson(SubtitleStyle style)
+    {
+        var json = JsonSerializer.SerializeToNode(style, StyleOptions) as JsonObject ?? new JsonObject();
+        json["autoSize"] = style.EffectiveAutoSize;
+        json["minBackground"] = MinBackground(style);
+        return json;
+    }
 
     // ---- Sihirbaz ----
 
@@ -214,7 +224,7 @@ public sealed class CoreBackend(NinoController controller, LinuxPlatform platfor
         return Task.CompletedTask;
     }
 
-    public Task ChangeSettingsAsync(PanelRegion? region, JsonObject? style, bool? onlineTranslation)
+    public Task ChangeSettingsAsync(PanelRegion? region, JsonObject? style, bool? onlineTranslation, bool? showSpeakerNames = null)
     {
         var next = controller.Settings;
         if (region is not null)
@@ -224,19 +234,29 @@ public sealed class CoreBackend(NinoController controller, LinuxPlatform platfor
         }
         if (style is not null) ApplyStyle(next.Style, style);
         if (onlineTranslation is { } online) next.OnlineTranslation = online;
+        if (showSpeakerNames is { } speaker) next.ShowSpeakerNames = speaker;
         controller.UpdateSettings(next);
         return Task.CompletedTask;
     }
 
-    /// <summary>Panel yalnız yazı boyunu ve yeri değiştirir; öbür alanlar olduğu gibi kalır.</summary>
+    /// <summary>
+    /// Panelin görünüm ayarları Mac'inkiyle aynı: otomatik boy, yazı boyu (20–80), arka plan koyuluğu ve konuşanın adı.
+    /// İngilizce satırın üstüne binerken arka plan en az %60'tır. Panelde görünmeyen alanlar (yer, yazı tipi, renk…)
+    /// kayıtlı değerinde kalır.
+    /// </summary>
     internal static void ApplyStyle(SubtitleStyle target, JsonObject style)
     {
-        if (style["fontSize"] is JsonValue size && size.TryGetValue<int>(out var fontSize) && fontSize is >= 20 and <= 120)
-            target.FontSize = fontSize;
-        if (style["placement"] is JsonValue place && place.TryGetValue<string>(out var text)
-            && Enum.TryParse<SubtitlePlacement>(text, ignoreCase: true, out var placement))
-            target.Placement = placement;
+        if (style["autoSize"] is JsonValue auto && auto.TryGetValue<bool>(out var autoSize)) target.AutoSize = autoSize;
+        if (style["fontSize"] is JsonValue size && size.TryGetValue<int>(out var fontSize))
+            target.FontSize = Math.Clamp(fontSize, MinFontSize, MaxFontSize);
+        if (style["background"] is JsonValue back && back.TryGetValue<int>(out var background))
+            target.Background = Math.Clamp(background, MinBackground(target), 100);
     }
+
+    public const int MinFontSize = 20;
+    public const int MaxFontSize = 80;
+
+    internal static int MinBackground(SubtitleStyle style) => style.Placement == SubtitlePlacement.Cover ? 60 : 0;
 
     public async Task<KeyCheck> SaveOnlineKeyAsync(string key)
     {

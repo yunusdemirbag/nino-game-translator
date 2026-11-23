@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Nino contributors
+# Nino Linux sunucusu. Kurulum: docker compose up -d   →   panel: http://<bu bilgisayarın adresi>:8788
+services:
+  nino:
+    image: ghcr.io/yunusdemirbag/nino:4.5.0
+    container_name: nino
+    # PS5'i ve TV'yi bulabilmek için ev ağına doğrudan bağlı çalışır.
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      NINO_LANG: tr
+    volumes:
+      # PS5 ve TV eşleşmeleri, çeviri modeli, ayarlar burada kalır (güncellemede silinmez).
+      - nino-data:/data
+
+volumes:
+  nino-data:

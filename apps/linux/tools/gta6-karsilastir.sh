@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2026 Nino contributors
 #
-# Gerçek Tesseract ile okuma denemesi: depodaki GTA 6 kareleri (testdata/gta6/gta6-*.jpg) yeni
+# Gerçek Tesseract ile okuma denemesi: depodaki GTA 6 kareleri (core/Tests/NinoAppCoreTests/Fixtures/gta6-*.jpg) yeni
 # sunucunun `--read-raw` komutuyla okunur ve eski sunucunun çıktısıyla (gta6-beklenen.txt) satır satır karşılaştırılır.
 # Gerekenler: libtesseract + eng verisi; Mac'te `sips` (Linux'ta ffmpeg ile çevirin). Önce derleyin:
 #   ~/.dotnet/dotnet build apps/linux/src/Nino.Linux
@@ -18,7 +18,7 @@ work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 dll="$root/apps/linux/src/Nino.Linux/bin/Debug/net10.0/nino.dll"
 dotnet="${DOTNET:-$HOME/.dotnet/dotnet}"
-for jpg in "$root"/testdata/gta6/gta6-*.jpg; do
+for jpg in "$root"/core/Tests/NinoAppCoreTests/Fixtures/gta6-*.jpg; do
   name="$(basename "$jpg" .jpg)"
   if command -v sips >/dev/null; then
     sips -s format bmp "$jpg" --out "$work/$name.bmp" >/dev/null

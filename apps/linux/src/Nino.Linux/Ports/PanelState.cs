@@ -43,6 +43,8 @@ public sealed record PanelState
     public PanelSettings Settings { get; init; } = new();
     /// <summary>Çekirdek henüz bağlı değilse panel bunu gösterir.</summary>
     public string? Notice { get; init; }
+    /// <summary>Nino sitesindeki rehberler (arayüz diline göre).</summary>
+    public PanelGuides Guides { get; init; } = new("", "", "");
 }
 
 public sealed record PanelDevice(string Name, string Host);
@@ -68,7 +70,11 @@ public sealed record PanelSettings
     public string SourceLanguage { get; init; } = "en";
     public string TargetLanguage { get; init; } = "tr";
     public bool OnlineTranslation { get; init; }
+    public bool ShowSpeakerNames { get; init; } = true;
 }
+
+/// <summary>Rehber bağlantıları: kurulum, TV uygulamasını elle kurma, sitenin kökü (kaynak kodu ve lisans).</summary>
+public sealed record PanelGuides(string Setup, string TvApp, string Site);
 
 public sealed record PanelConsole(string Name, string Host, bool IsAwake);
 

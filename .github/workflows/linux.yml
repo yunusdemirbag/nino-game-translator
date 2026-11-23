@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Linux sunucusu (apps/linux, .NET 10): testler. Ortak çekirdek apps/windows/src altından gelir.
-# Docker imajı yalnız elle başlatılınca (workflow_dispatch) derlenir; hiçbir yere gönderilmez.
+# Docker imajı ayrı iş akışındadır: linux-docker.yml (elle başlatılır, ghcr.io'ya yayınlar).
 name: linux
 
 on:
@@ -57,13 +57,3 @@ jobs:
           name: linux-test-sonuclari
           path: ${{ runner.temp }}/test-results
           if-no-files-found: ignore
-
-  # İsteğe bağlı: imajı derler (yerel PS5 kütüphanesi + .NET yayını). İmaj itilmez.
-  docker:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - uses: actions/checkout@v4
-      - name: İmajı derle
-        run: ./apps/linux/build.sh

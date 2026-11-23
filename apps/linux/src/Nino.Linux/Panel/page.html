@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nino</title>
-<link rel="icon" href="/logo.png" type="image/png">
+<link rel="icon" href="/logo.svg">
 <style>
   :root {
     --bg: #F6F4EF; --card: #FFFFFF; --line: #E2DED4; --ink: #17181B; --ink-2: #5B5954;
@@ -59,6 +59,9 @@
   .dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--ink-2); }
   .dot.Good { background: var(--good); } .dot.Warning { background: var(--warn); }
   .gap { margin-top: 8px; }
+  .ends { display: flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: 13px; }
+  .check { display: flex; gap: 8px; align-items: center; color: var(--ink); font-size: 15px; margin: 12px 0 4px; }
+  a { color: var(--ink); }
   .said { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
   .shot { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: 10px; overflow: hidden; }
   .shot img { display: block; width: 100%; height: 100%; object-fit: contain; }
@@ -74,7 +77,7 @@
 </head>
 <body>
 <div class="page">
-  <div class="top"><img src="/logo.png" alt=""><strong>Nino</strong><small id="ver"></small></div>
+  <div class="top"><img src="/logo.svg" alt=""><strong>Nino</strong><small id="ver"></small></div>
   <div id="app" aria-live="polite"></div>
 </div>
 <script>
@@ -120,6 +123,7 @@ const STEPS = {
   Welcome: s => `<h1>${L('Oyunlar Türkçe konuşsun', 'Play in Turkish')}</h1>
     <p>${L('Nino, oyunda beliren İngilizce satırları okuyup Türkçesini TV\'nde, oyunun hemen üstünde gösterir. Hazırlık birkaç dakikalık iş.', 'Nino picks up the English lines a game shows and puts the Turkish version right over the picture on your TV. Getting ready is a matter of minutes.')}</p>
     <div class="box"><p>${L('Hazırlaman gerekenler: PS5, bu sunucuyla aynı evde ağa bağlı bir TV ve yedek bir PSN hesabı.', 'Have ready: your PS5, a TV on this home network and a spare PSN account.')}</p></div>
+    <p><a href="${h(s.guides.setup)}" target="_blank" rel="noopener">${L('Nasıl bağlanır', 'How to connect')}</a></p>
     ${health(s)}`,
   SecondAccount: () => `<h1>${L('Yedek PSN hesabı', 'Spare PSN account')}</h1>
     <p>${L('Nino senin hesabınla girerse PS5 elindeki kolu düşürür. Bunun yerine yedek hesapla izler, sen oynamaya devam edersin.', 'If Nino logged in as you, the PS5 would drop your controller. It watches with the spare account instead, so you keep playing.')}</p>
@@ -153,7 +157,8 @@ const STEPS = {
       ${ui.found.tvs && !ui.found.tvs.length ? `<p class="careful">${L('Hiç TV yakalanmadı. IP adresini elle girebilirsin.', 'No TV turned up. You can enter its IP by hand.')}</p>` : ''}</div>
       ${field('tvHost', L('LG TV için IP', 'IP of the LG TV'), 'autocomplete="off" inputmode="decimal" placeholder="örn. 192.168.0.60"')}
       <div class="row">${button('pair', L('Bu IP\'ye bağlan', 'Use this IP'))}</div>${problem('pair')}</div>
-    ${s.tv ? tvAppBox(s) : ''}`,
+    ${s.tv ? tvAppBox(s) : ''}
+    <p class="soft"><a href="${h(s.guides.tvApp)}" target="_blank" rel="noopener">${L('TV uygulamasını elle kurma rehberi', 'Guide: putting the TV app on by hand')}</a></p>`,
   Translation: s => `<h1>${L('Çevirmen', 'Translator')}</h1>
     <p>${L('Çeviriyi bu sunucu kendisi yapar; satırlar evden çıkmaz. Gereken model bir kerelik iner (530 MB kadar).', 'This server does the translating itself; lines never leave home. The model it needs comes down once (around 530 MB).')}</p>
     <div class="box">${modelBox(s)}</div>`,
@@ -256,9 +261,6 @@ function slider(side, text, value) {
   const percent = Math.round(value * 100);
   return `<label for="side-${side}">${h(text)} <span id="show-${side}">${percent}%</span></label><input type="range" id="side-${side}" data-side="${side}" min="0" max="100" step="1" value="${percent}">`;
 }
-function choice(id, key, options, current) {
-  return `<select id="${id}" data-style="${key}">${options.map(([value, text]) => `<option value="${value}"${current === value ? ' selected' : ''}>${h(text)}</option>`).join('')}</select>`;
-}
 function home(s) {
   const r = s.settings.region, style = s.settings.style || {};
   const read = ui.results.read;
@@ -283,11 +285,7 @@ function home(s) {
       ${slider('top', L('Üst', 'Top'), r.top)}${slider('bottom', L('Alt', 'Bottom'), r.bottom)}${slider('left', L('Sol', 'Left'), r.left)}${slider('right', L('Sağ', 'Right'), r.right)}
       ${problem('settings')}</div>
 
-    <div class="box"><h2>${L('TV\'deki yazı', 'Text on the TV')}</h2>
-      <label for="fontSize">${L('Yazı boyu', 'Letter size')}</label>
-      ${choice('fontSize', 'fontSize', [[36, L('Küçük', 'Small')], [46, L('Orta', 'Medium')], [58, L('Büyük', 'Large')], [72, L('Kocaman', 'Huge')]], style.fontSize)}
-      <label for="placement">${L('Çeviri konumu', 'Translation spot')}</label>
-      ${choice('placement', 'placement', [['Cover', L('İngilizcenin yerine geçer', 'Replaces the English')], ['Above', L('İngilizcenin hemen üstü', 'Just above the English')], ['Below', L('İngilizcenin hemen altı', 'Just below the English')], ['Fixed', L('Sabit, ekranın dibinde', 'Pinned to the screen\'s lower edge')]], style.placement)}</div>
+    ${lookBox(s)}
 
     ${onlineBox(s)}
 
@@ -301,8 +299,42 @@ function home(s) {
       ${s.tv ? tvAppLine(s) : ''}
       <div class="row">${button('tvRefresh', L('TV uygulamasını yokla', 'Recheck the TV app'))}${button('reset', L('Baştan kur', 'Start over'))}</div>${problem('tvRefresh', 'reset')}</div>
 
+    ${aboutBox(s)}
+
     <div class="box"><details id="logs"${ui.logOpen ? ' open' : ''}><summary>${L('Kayıtlar', 'Records')}</summary><pre id="logText"></pre></details></div>`;
 }
+// Altyazının görünüşü: Mac'in üç ayarı (otomatik boy + yazı boyutu, arka plan, konuşanın adı).
+function range(id, key, min, max, value, low, high) {
+  return `<div class="ends"><span>${h(low)}</span><input type="range" id="${id}" data-style="${key}" min="${min}" max="${max}" step="1" value="${value}"><span>${h(high)}</span></div>`;
+}
+function toggle(id, text, on, data) {
+  return `<label class="check"><input type="checkbox" id="${id}" ${data}${on ? ' checked' : ''}> ${h(text)}</label>`;
+}
+function lookBox(s) {
+  const st = s.settings.style || {}, cover = (st.minBackground || 0) > 0;
+  return `<div class="box"><h2>${L('TV\'de', 'On the TV')}</h2>
+    ${toggle('autoSize', L('Boyutu oyundaki altyazıya göre ayarla', 'Match the size of in-game subtitles'), st.autoSize, 'data-style="autoSize"')}
+    <label for="fontSize">${L('Yazı boyutu', 'Text size')}</label>
+    ${range('fontSize', 'fontSize', 20, 80, st.fontSize, L('Küçük', 'Small'), L('Büyük', 'Large'))}
+    ${st.autoSize ? `<p class="soft">${L('Otomatik boy açıkken bu ayar, oyuna göre bulunan boyu büyütür ya da küçültür.', 'With auto size on, this makes the size found from the game bigger or smaller.')}</p>` : ''}
+    <label for="background">${L('Arka plan', 'Background')}</label>
+    ${range('background', 'background', st.minBackground || 0, 100, st.background, cover ? L('Yarı saydam', 'Translucent') : L('Yok', 'None'), L('Opak', 'Solid'))}
+    ${toggle('speaker', L('Konuşanın adını göster', 'Show the speaker\'s name'), s.settings.showSpeakerNames, 'data-speaker="1"')}
+    <p class="soft">${L('Konuşanın adı çevirinin önünde yer alır (ARTHUR: …). Adlar olduğu gibi kalır, çevrilmez.', 'Shows the speaker\'s name before the translation (ARTHUR: …). Names stay untranslated.')}</p>
+    ${problem('settings')}</div>`;
+}
+
+// Nino hakkında: geliştirici, destek verenler, lisans ve kaynak kodu, ölçüm ve marka notları.
+function aboutBox(s) {
+  return `<div class="box"><h2>${L('Nino hakkında', 'About Nino')}</h2>
+    <p>Nino ${h(s.version)}</p>
+    <p class="soft">${L('Geliştirici', 'Developer')}: Yunus Demirbağ · ${L('Destek Verenler', 'Supporters')}: M. Akif Demirbağ</p>
+    <p class="soft">${L('Ücretsiz ve kaynak kodu açık; lisansı GNU AGPL-3.0.', 'Free of charge and open source, licensed under GNU AGPL-3.0.')}
+      <a href="${h(s.guides.site)}" target="_blank" rel="noopener">${L('Kaynak kodu', 'Source code')}</a></p>
+    <p class="soft">${L('Nino\'yu düzeltip hızlandırabilmemiz için anonim hata ve performans verileri gönderilir. Altyazılar, ekran görüntüleri, adlar ve adresler hiçbir zaman gönderilmez.', 'Nino sends anonymous error and speed statistics so it can be fixed and made faster. No subtitles, screenshots, names or addresses are ever sent.')}</p>
+    <p class="soft">${L('Nino\'nun, Sony Interactive Entertainment\'la bir ortaklığı yoktur ve onun onayını taşımaz. PlayStation ve PS5 markaları Sony Interactive Entertainment Inc.\'e aittir.', 'Nino isn\'t affiliated with or endorsed by Sony Interactive Entertainment. The PlayStation and PS5 marks belong to Sony Interactive Entertainment Inc.')}</p></div>`;
+}
+
 function tvAppLine(s) {
   const kind = s.tvApp.kind;
   if (kind === 'UpToDate')
@@ -344,9 +376,13 @@ document.addEventListener('change', event => {
     return;
   }
   if (el.dataset.style) {
-    const style = { ...ui.state.settings.style, [el.dataset.style]: el.dataset.style === 'fontSize' ? Number(el.value) : el.value };
-    act('settings', 'POST', '/api/settings', { style });
+    const key = el.dataset.style;
+    const value = el.type === 'checkbox' ? el.checked : Number(el.value);
+    el.blur();
+    act('settings', 'POST', '/api/settings', { style: { [key]: value } });
+    return;
   }
+  if (el.dataset.speaker) act('settings', 'POST', '/api/settings', { showSpeakerNames: el.checked });
 });
 document.addEventListener('toggle', event => {
   if (event.target.id !== 'logs') return;

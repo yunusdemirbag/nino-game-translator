@@ -46,14 +46,14 @@ public static class PanelServer
     private sealed record PassphraseBody(string? Passphrase);
     private sealed record KeyBody(string? Key);
     private sealed record TextBody(string? Text);
-    private sealed record SettingsBody(PanelRegion? Region, JsonObject? Style, bool? OnlineTranslation);
+    private sealed record SettingsBody(PanelRegion? Region, JsonObject? Style, bool? OnlineTranslation, bool? ShowSpeakerNames);
 
     public static void Map(IEndpointRouteBuilder app, INinoBackend backend, SerialWorker serial, Journal journal)
     {
         var page = Embedded.Text("nino.panel.html");
-        var logo = Embedded.Bytes("nino.logo.png");
+        var logo = Embedded.Text("nino.logo.svg");
         app.MapGet("/", () => Results.Content(page, "text/html; charset=utf-8"));
-        app.MapGet("/logo.png", () => Results.Bytes(logo, "image/png"));
+        app.MapGet("/logo.svg", () => Results.Content(logo, "image/svg+xml"));
 
         app.MapGet("/api/state", () => serial.Invoke(backend.State));
         app.MapGet("/api/log", () => Results.Ok(new { lines = journal.Recent() }));
@@ -85,7 +85,7 @@ public static class PanelServer
         app.MapPost("/api/pause", () => Act(backend.TogglePauseAsync));
         app.MapPost("/api/settings", (SettingsBody body) => Act(() =>
             backend.ChangeSettingsAsync(body.Region is { } region && PanelRules.IsUsable(region) ? region : null,
-                                        body.Style, body.OnlineTranslation)));
+                                        body.Style, body.OnlineTranslation, body.ShowSpeakerNames)));
         app.MapPost("/api/deepl", (KeyBody body) => Ask(() => backend.SaveOnlineKeyAsync(body.Key ?? "")));
         app.MapDelete("/api/deepl", () => Act(backend.RemoveOnlineKeyAsync));
 
@@ -143,14 +143,5 @@ internal static class Embedded
         var copy = new MemoryStream();
         source.CopyTo(copy);
         return System.Text.Encoding.UTF8.GetString(copy.GetBuffer(), 0, (int)copy.Length);
-    }
-
-    public static byte[] Bytes(string name)
-    {
-        using var source = typeof(Embedded).Assembly.GetManifestResourceStream(name)
-                           ?? throw new FileNotFoundException("gömülü kaynak yok", name);
-        var copy = new MemoryStream();
-        source.CopyTo(copy);
-        return copy.ToArray();
     }
 }

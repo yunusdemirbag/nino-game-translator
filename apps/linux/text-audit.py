@@ -39,7 +39,7 @@ FACTS = [
     "Settings › System › Remote Play › Link Device", "Settings › System › Remote Play",
     "Ayarlar › Sistem › Uzaktan Oynatma › Cihaz Bağla", "Ayarlar › Sistem › Uzaktan Oynatma",
     "LG Content Store", "Developer Mode", "Dev Mode Status", "Key Server", "Host PC IP", "Claude Haiku",
-    "API anahtarı", "API key", "TV uygulaması", "Content-Type", "application/json", "image/svg+xml",
+    "API anahtarı", "API key", "Sony Interactive Entertainment Inc", "Sony Interactive Entertainment", "PlayStation", "TV uygulaması", "Content-Type", "application/json", "image/svg+xml",
     "[chiaki info]", "pool-translations", "settings.json", "remoteplay.log", "tvinstall.log",
 ]
 FACT_RE = re.compile("|".join(re.escape(f) for f in sorted(FACTS, key=len, reverse=True)), re.I)

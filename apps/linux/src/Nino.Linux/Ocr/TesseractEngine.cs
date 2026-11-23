@@ -31,7 +31,7 @@ internal sealed class TesseractEngine : IWordRecognizer
 
     public static int PoolSize => Math.Clamp(Environment.ProcessorCount, 2, 4);
 
-    /// <summary>Tesseract kitaplığı veya eğitilmiş dil dosyası bulunamazsa null döner.</summary>
+    /// <summary>Kütüphane ya da dil verisi yoksa null.</summary>
     public static TesseractEngine? Open(string dataName) =>
         Start(dataName) is { } handle ? new TesseractEngine(dataName, handle, PoolSize) : null;
 

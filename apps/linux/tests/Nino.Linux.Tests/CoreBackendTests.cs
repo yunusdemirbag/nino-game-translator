@@ -79,14 +79,24 @@ public sealed class CoreBackendTests : IDisposable
     public async Task AyarlarBolgeVeGorunumKaydedilir()
     {
         await backend.ChangeSettingsAsync(new PanelRegion(0.5, 0.9, 0.1, 0.9),
-            new JsonObject { ["fontSize"] = 58, ["placement"] = "Below", ["bold"] = true }, onlineTranslation: true);
+            new JsonObject { ["fontSize"] = 58, ["autoSize"] = false, ["background"] = 30, ["placement"] = "Below", ["bold"] = true },
+            onlineTranslation: true, showSpeakerNames: false);
         var saved = platform.Settings.Load();
         Assert.Equal(new Region(0.5, 0.9, 0.1, 0.9), saved.Region);
         Assert.Equal(58, saved.Style.FontSize);
-        Assert.Equal(SubtitlePlacement.Below, saved.Style.Placement);
-        Assert.False(saved.Style.Bold); // panel kalınlığı değiştirmez
+        Assert.False(saved.Style.AutoSize);
+        Assert.Equal(60, saved.Style.Background);            // İngilizcenin üstüne binerken en az %60
+        Assert.Equal(SubtitlePlacement.Cover, saved.Style.Placement); // panel yeri değiştirmez (Mac gibi)
+        Assert.False(saved.Style.Bold);
         Assert.True(saved.OnlineTranslation);
-        Assert.Equal("Below", (string?)backend.State().Settings.Style["placement"]);
+        Assert.False(saved.ShowSpeakerNames);
+        var state = backend.State();
+        Assert.False((bool)state.Settings.Style["autoSize"]!);
+        Assert.Equal(60, (int)state.Settings.Style["minBackground"]!);
+        Assert.False(state.Settings.ShowSpeakerNames);
+        Assert.StartsWith("https://", state.Guides.Setup);
+        await backend.ChangeSettingsAsync(null, new JsonObject { ["fontSize"] = 200 }, null);
+        Assert.Equal(CoreBackend.MaxFontSize, platform.Settings.Load().Style.FontSize);
     }
 
     [Fact]

@@ -1,0 +1,116 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Linux sunucusunun Docker imajı: amd64 ve arm64 ayrı (yerel) makinelerde derlenir, imaj içinde testler koşar,
+# kapsayıcı açılıp panelin cevap verdiği denenir; sonra ghcr.io/<sahip>/nino:<sürüm> ve :latest olarak yayınlanır.
+# Yalnız elle başlatılır (Actions → linux-docker → Run workflow).
+name: linux-docker
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Sürüm (sürüm sayfasının etiketi v<sürüm> olmalı)"
+        required: true
+        default: "4.5.0"
+      latest:
+        description: ":latest etiketini de güncelle"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linux-docker
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/nino
+  VERSION: ${{ inputs.version }}
+
+jobs:
+  image:
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: chiaki-ng kaynağı (v1.10.1, resmî depo)
+        run: |
+          git clone -q --depth 1 --branch v1.10.1 --recurse-submodules --shallow-submodules \
+            https://github.com/streetpea/chiaki-ng.git core/NinoRemotePlay/Vendor/chiaki-ng
+
+      - name: Android TV paketi (sürüm sayfasından)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "v$VERSION" -R "$GITHUB_REPOSITORY" -p Nino-TV.apk -O "apps/linux/tv-apk/nino-androidtv_$VERSION.apk"
+          ls -l apps/linux/tv-apk
+
+      - name: Testler (imaj içinde)
+        run: docker build -f apps/linux/Dockerfile --target test -t nino-test .
+
+      - name: İmajı derle
+        run: |
+          docker build -f apps/linux/Dockerfile -t "nino:$VERSION-${{ matrix.arch }}" \
+            --label org.opencontainers.image.source="https://github.com/$GITHUB_REPOSITORY" \
+            --label org.opencontainers.image.description="Nino: PS5 altyazılarını anlık çevirip TV'de gösterir (Linux sunucusu)" \
+            --label org.opencontainers.image.licenses=AGPL-3.0-only \
+            --label org.opencontainers.image.version="$VERSION" \
+            --label org.opencontainers.image.revision="$GITHUB_SHA" .
+          docker image ls "nino"
+
+      - name: Duman testi (kapsayıcı açılıyor, panel cevap veriyor)
+        run: |
+          docker volume create nino-smoke
+          docker run -d --name nino-smoke -p 8788:8788 -v nino-smoke:/data "nino:$VERSION-${{ matrix.arch }}"
+          ok=
+          for i in $(seq 1 60); do
+            if curl -fsS -o /tmp/page.html http://127.0.0.1:8788/ && curl -fsS -o /tmp/state.json http://127.0.0.1:8788/api/state; then ok=1; break; fi
+            sleep 2
+          done
+          docker logs nino-smoke | tail -40
+          test -n "$ok" || { echo "Panel cevap vermedi"; exit 1; }
+          grep -qi "<html" /tmp/page.html
+          VERSION="$VERSION" python3 - <<'PY'
+          import json, os
+          s = json.load(open("/tmp/state.json"))
+          print(json.dumps({k: s.get(k) for k in ("version", "step", "nativeAvailable", "ocrMissing", "bundledTvApp")}, ensure_ascii=False))
+          assert s.get("nativeAvailable") is True, "PS5 kütüphanesi yüklenmedi"
+          assert s.get("ocrMissing") is False, "Tesseract bulunamadı"
+          assert str(s.get("version", "")).startswith(os.environ["VERSION"]), "sürüm tutmuyor"
+          PY
+          curl -fsS -o /dev/null http://127.0.0.1:8788/logo.svg
+          docker stop -t 10 nino-smoke >/dev/null
+          test "$(docker inspect -f '{{.State.ExitCode}}' nino-smoke)" = 0 || echo "uyarı: kapanış kodu sıfır değil"
+          docker rm nino-smoke >/dev/null
+
+      - name: ghcr.io'ya gönder
+        run: |
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag "nino:$VERSION-${{ matrix.arch }}" "$IMAGE:$VERSION-${{ matrix.arch }}"
+          docker push "$IMAGE:$VERSION-${{ matrix.arch }}"
+
+  manifest:
+    needs: image
+    runs-on: ubuntu-24.04
+    permissions:
+      packages: write
+    steps:
+      - name: Çok mimarili etiketler
+        run: |
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          tags="-t $IMAGE:$VERSION"
+          if [ "${{ inputs.latest }}" = "true" ]; then tags="$tags -t $IMAGE:latest"; fi
+          docker buildx imagetools create $tags "$IMAGE:$VERSION-amd64" "$IMAGE:$VERSION-arm64"
+          docker buildx imagetools inspect "$IMAGE:$VERSION"

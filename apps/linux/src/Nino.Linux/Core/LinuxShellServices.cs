@@ -42,7 +42,9 @@ public sealed class LinuxShellServices(LinuxPlatform platform) : CoreShellServic
 
         public bool HasLanguagePack(string language) => Ocr.TesseractReader.IsAvailable(language);
 
-        public byte[]? SmallJpeg(BgraFrame frame, int maxWidth, int quality) => null;
+        /// <summary>TV'deki buzlu zemin ve oyunu ekrandan tanıma için küçük JPEG (kütüphanesiz kodlayıcı).</summary>
+        public byte[]? SmallJpeg(BgraFrame frame, int maxWidth, int quality) =>
+            Imaging.JpegWriter.Encode(Pictures.From(frame), maxWidth, quality);
     }
 }
 

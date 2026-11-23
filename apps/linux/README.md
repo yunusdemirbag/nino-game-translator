@@ -27,7 +27,7 @@ görüntüleri bir klasöre döker).
 ## Tanı
 
 - Panelde **Günlük** ve **Bu alanı şimdi oku**.
-- Konsol bağlamadan, ham bir BGRA karesi üzerinde okumayı ve çeviriyi sınamak için:
+- PS5 olmadan okuma ve çeviri denemesi (ham BGRA kare):
 
 ```bash
 docker run --rm -v "$PWD:/in" nino-linux --read-raw /in/kare.bgra 1920 1080 --translate

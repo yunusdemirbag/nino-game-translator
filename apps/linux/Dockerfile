@@ -5,8 +5,7 @@
 # Aşamalar: LG/Samsung TV paketleri → yerel PS5 kütüphanesi (nino_native.so) → .NET yayını → çalışma imajı.
 # Hepsi Ubuntu 24.04 tabanlı; yerel kütüphane FFmpeg'i statik içerir. Android TV paketi (.apk)
 # isteğe bağlıdır: varsa apps/linux/tv-apk/ altına konur. Sunucu paketleri TV'ye kendisi kurar.
-# NOT: ortak çekirdek ve nino_native kaynağı apps/windows altında (Windows dalından birleştirildi). İmaj
-# henüz hiç derlenmedi (docs/yeni/linux/ilerleme.md).
+# Ortak çekirdek ve nino_native kaynağı apps/windows altındadır. chiaki-ng kaynağını build.sh indirir.
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS tv
 RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends python3 >/dev/null
@@ -35,6 +34,10 @@ COPY apps/windows/src apps/windows/src
 COPY apps/linux apps/linux
 RUN dotnet publish apps/linux/src/Nino.Linux -c Release -o /app --nologo -v q
 COPY --from=native /build/nino_native.so /app/nino_native.so
+
+# Sınama aşaması (imaja girmez): docker build --target test ...
+FROM app AS test
+RUN dotnet test apps/linux/Nino.Linux.slnx -c Release --nologo -v q
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble
 # libchiaki'nin çalışma kütüphaneleri, ONNX çalışma zamanının OpenMP'si, Tesseract (yazı tanıma), ssh-keygen (LG geliştirici anahtarı).
