@@ -14,7 +14,11 @@ on:
       tv_release:
         description: "TV paketlerinin (Nino-TV.apk/.ipk/.wgt) alınacağı sürüm etiketi"
         required: true
-        default: "v4.5.0"
+        default: "v4.5.1"
+      tv_version:
+        description: "TV paketlerinin kendi sürümü (dosya adına yazılır; uygulama TV'deki sürümle bunu karşılaştırır)"
+        required: true
+        default: "4.5.0"
 
 permissions:
   contents: read
@@ -92,7 +96,7 @@ jobs:
           $dir = "dist/tv-app"
           New-Item -ItemType Directory -Force -Path $dir | Out-Null
           gh release download "${{ inputs.tv_release }}" --repo "${{ github.repository }}" -p "Nino-TV.*" -D $env:RUNNER_TEMP/tv
-          $v = "${{ inputs.tv_release }}".TrimStart("v")
+          $v = "${{ inputs.tv_version }}"
           Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.ipk" "$dir/com.ninotranslator.tv_${v}_all.ipk"
           Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.wgt" "$dir/nino-samsung_${v}.wgt"
           Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.apk" "$dir/nino-androidtv_${v}.apk"
