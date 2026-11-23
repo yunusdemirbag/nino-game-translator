@@ -23,37 +23,34 @@ The translation shows up on your TV, on top of the game. You just play as usual.
 ## What it looks like
 
 <p align="center">
-  <img src="docs/img/oyunda-turkce-mesaj.webp" alt="An in-game message with its Turkish translation right above it">
+  <img src="docs/img/oyunda-turkce-mesaj.webp" width="100%" alt="An in-game message with its Turkish translation right above it">
   <br><sub>A message arrives in the game, and its translation sits right above it.</sub>
 </p>
 
 <p align="center">
-  <img src="docs/img/rdr2-turkce-altyazi.webp" width="560" alt="Subtitles on a real TV, on top of the game">
+  <img src="docs/img/rdr2-turkce-altyazi.webp" width="100%" alt="Subtitles on a real TV, on top of the game">
   <br><sub>From a real TV: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ Video with sound (30 s)</a></sub>
 </p>
 
-<table>
-  <tr>
-    <td width="50%" align="center">
-      <img src="docs/img/telefon-mesajlari-tr.webp" alt="Translated chat panel next to the in-game phone"><br>
-      <sub><b>Phone messages</b><br>Next to the in-game phone, one bubble at a time.</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="docs/img/iphone-yatay-map-tr.webp" alt="Translated map mission card"><br>
-      <sub><b>Map cards</b><br>The mission card on top, so you know what to do at a glance.</sub>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="center">
-      <img src="docs/img/iphone-yatay-phone-tr.webp" alt="Subtitles on an iPhone held sideways"><br>
-      <sub><b>iPhone, sideways</b><br>No TV? Turn your phone sideways: messages on top, subtitles in the middle.</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="docs/img/mac-ve-iphone.webp" alt="Nino's home screen on Mac and iPhone"><br>
-      <sub><b>Mac ↔ iPhone</b><br>The same Nino, just as easy on every device.</sub>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="docs/img/telefon-mesajlari-tr.webp" width="100%" alt="Translated chat panel next to the in-game phone">
+  <br><sub><b>Phone messages</b><br>Next to the in-game phone, one bubble at a time.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/iphone-yatay-map-tr.webp" width="100%" alt="Translated map mission card">
+  <br><sub><b>Map cards</b><br>The mission card on top, so you know what to do at a glance.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/iphone-yatay-phone-tr.webp" width="100%" alt="Subtitles on an iPhone held sideways">
+  <br><sub><b>iPhone, sideways</b><br>No TV? Turn your phone sideways: messages on top, subtitles in the middle.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/mac-ve-iphone.webp" width="100%" alt="Nino's home screen on Mac and iPhone">
+  <br><sub><b>Mac ↔ iPhone</b><br>The same Nino, just as easy on every device.</sub>
+</p>
 
 ## Get started in 3 steps
 

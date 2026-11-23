@@ -23,37 +23,34 @@ Altyazıları, oyundaki telefon mesajlarını, görev ve harita kartlarını çe
 ## Nasıl görünüyor?
 
 <p align="center">
-  <img src="docs/img/oyunda-turkce-mesaj.webp" alt="Oyunda gelen mesaj, sağ altta Türkçesiyle birlikte">
+  <img src="docs/img/oyunda-turkce-mesaj.webp" width="100%" alt="Oyunda gelen mesaj, sağ altta Türkçesiyle birlikte">
   <br><sub>Oyunda gelen mesaj, hemen üstünde Türkçesi.</sub>
 </p>
 
 <p align="center">
-  <img src="docs/img/rdr2-turkce-altyazi.webp" width="560" alt="Gerçek bir TV'de, oyunun üstünde Türkçe altyazı">
+  <img src="docs/img/rdr2-turkce-altyazi.webp" width="100%" alt="Gerçek bir TV'de, oyunun üstünde Türkçe altyazı">
   <br><sub>Gerçek bir TV'den: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ Sesli video (30 sn)</a></sub>
 </p>
 
-<table>
-  <tr>
-    <td width="50%" align="center">
-      <img src="docs/img/telefon-mesajlari-tr.webp" alt="Oyundaki telefonun yanında Türkçe mesaj paneli"><br>
-      <sub><b>Telefon mesajları</b><br>Oyundaki telefonun yanında, balon balon Türkçe.</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="docs/img/iphone-yatay-map-tr.webp" alt="Harita görev kartı Türkçe"><br>
-      <sub><b>Harita kartı</b><br>Görev kartı üstte Türkçe; ne yapacağını tek bakışta gör.</sub>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="center">
-      <img src="docs/img/iphone-yatay-uzun-sohbet-tr.webp" alt="iPhone yatay ekranda Türkçe altyazı"><br>
-      <sub><b>iPhone yatay ekran</b><br>TV yoksa telefonu yan çevir: mesajlar üstte, altyazı ortada.</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="docs/img/mac-ve-iphone.webp" alt="Mac ve iPhone'da Nino'nun ana ekranı"><br>
-      <sub><b>Mac ↔ iPhone</b><br>Aynı Nino, her cihazda aynı kolaylık.</sub>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="docs/img/telefon-mesajlari-tr.webp" width="100%" alt="Oyundaki telefonun yanında Türkçe mesaj paneli">
+  <br><sub><b>Telefon mesajları</b><br>Oyundaki telefonun yanında, balon balon Türkçe.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/iphone-yatay-map-tr.webp" width="100%" alt="Harita görev kartı Türkçe">
+  <br><sub><b>Harita kartı</b><br>Görev kartı üstte Türkçe; ne yapacağını tek bakışta gör.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/iphone-yatay-uzun-sohbet-tr.webp" width="100%" alt="iPhone yatay ekranda Türkçe altyazı">
+  <br><sub><b>iPhone yatay ekran</b><br>TV yoksa telefonu yan çevir: mesajlar üstte, altyazı ortada.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/mac-ve-iphone.webp" width="100%" alt="Mac ve iPhone'da Nino'nun ana ekranı">
+  <br><sub><b>Mac ↔ iPhone</b><br>Aynı Nino, her cihazda aynı kolaylık.</sub>
+</p>
 
 ## 3 adımda başla
 

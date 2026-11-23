@@ -25,37 +25,34 @@
 ## كيف يبدو؟
 
 <p align="center">
-  <img src="docs/img/oyunda-turkce-mesaj.webp" alt="رسالة تصل داخل اللعبة وفوقها ترجمتها">
+  <img src="docs/img/oyunda-turkce-mesaj.webp" width="100%" alt="رسالة تصل داخل اللعبة وفوقها ترجمتها">
   <br><sub>رسالة تصل داخل اللعبة، وترجمتها فوقها مباشرةً.</sub>
 </p>
 
 <p align="center">
-  <img src="docs/img/rdr2-turkce-altyazi.webp" width="560" alt="ترجمة على تلفاز حقيقي فوق اللعبة">
+  <img src="docs/img/rdr2-turkce-altyazi.webp" width="100%" alt="ترجمة على تلفاز حقيقي فوق اللعبة">
   <br><sub>من تلفاز حقيقي: Red Dead Redemption 2 · <a href="docs/img/rdr2-turkce-altyazi.mp4">▶️ فيديو بالصوت (30 ثانية)</a></sub>
 </p>
 
-<table>
-  <tr>
-    <td width="50%" align="center">
-      <img src="docs/img/iphone-yatay-phone-ar.webp" alt="رسائل الهاتف داخل اللعبة مترجمة إلى العربية"><br>
-      <sub><b>رسائل الهاتف</b><br>على iPhone بالوضع الأفقي: الرسائل في الأعلى والترجمة في الوسط.</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="docs/img/iphone-yatay-map-ar.webp" alt="بطاقة مهمة من الخريطة مترجمة إلى العربية"><br>
-      <sub><b>بطاقة الخريطة</b><br>بطاقة المهمة في الأعلى، فتعرف المطلوب بنظرة واحدة.</sub>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="center">
-      <img src="docs/img/telefon-mesajlari-tr.webp" alt="لوحة الرسائل بجانب هاتف اللعبة"><br>
-      <sub><b>بجانب هاتف اللعبة</b><br>الرسائل تظهر في لوحة مرتّبة على الجانب.</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="docs/img/mac-ve-iphone.webp" alt="الشاشة الرئيسية لـ Nino على Mac و iPhone"><br>
-      <sub><b>Mac ↔ iPhone</b><br>Nino نفسه وبالسهولة نفسها على كل جهاز.</sub>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="docs/img/iphone-yatay-phone-ar.webp" width="100%" alt="رسائل الهاتف داخل اللعبة مترجمة إلى العربية">
+  <br><sub><b>رسائل الهاتف</b><br>على iPhone بالوضع الأفقي: الرسائل في الأعلى والترجمة في الوسط.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/iphone-yatay-map-ar.webp" width="100%" alt="بطاقة مهمة من الخريطة مترجمة إلى العربية">
+  <br><sub><b>بطاقة الخريطة</b><br>بطاقة المهمة في الأعلى، فتعرف المطلوب بنظرة واحدة.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/telefon-mesajlari-tr.webp" width="100%" alt="لوحة الرسائل بجانب هاتف اللعبة">
+  <br><sub><b>بجانب هاتف اللعبة</b><br>الرسائل تظهر في لوحة مرتّبة على الجانب.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/img/mac-ve-iphone.webp" width="100%" alt="الشاشة الرئيسية لـ Nino على Mac و iPhone">
+  <br><sub><b>Mac ↔ iPhone</b><br>Nino نفسه وبالسهولة نفسها على كل جهاز.</sub>
+</p>
 
 ## ابدأ في 3 خطوات
 
