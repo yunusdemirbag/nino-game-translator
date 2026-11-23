@@ -119,7 +119,7 @@ All files: [Nino Game Translator release page](https://github.com/yunusdemirbag/
 ✅ **Android TV / Google TV**, **Samsung**, **LG**, or a computer screen.
 
 ❌ Hisense (Vidaa), new Philips (Titan OS), TiVo and older non-Android TVs.
-Fix: plug a cheap Android TV box into the TV.
+On these TVs, show the subtitles on your Mac or computer screen instead. Or turn your phone sideways: the subtitles appear on the phone.
 
 ## Questions
 

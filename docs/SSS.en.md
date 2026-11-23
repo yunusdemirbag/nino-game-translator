@@ -138,7 +138,6 @@ On such a TV you can still use Nino like this:
 
 2. If you have a computer, show the subtitles on the computer screen.
 
-3. You can plug an Android TV box into the TV, but for subtitles over the game the game picture must also be on that box's screen.
 
 What operating system name does the TV show in its settings?
 

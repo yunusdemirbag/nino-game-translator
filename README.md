@@ -119,7 +119,7 @@ Bütün dosyalar: [Nino Game Translator sürüm sayfası](https://github.com/yun
 ✅ **Android TV / Google TV**, **Samsung**, **LG**, ya da bilgisayar ekranı.
 
 ❌ Hisense (Vidaa), yeni Philips (Titan OS), TiVo ve Android olmayan eski TV'ler.
-Bunlarda çözüm: TV'ye ucuz bir Android TV kutusu tak.
+Bu TV'lerde altyazıyı Mac ya da bilgisayar ekranında görebilirsin. TV yoksa telefonu yan çevir: altyazı telefonda çıkar.
 
 ## Sık sorulanlar
 

@@ -138,7 +138,6 @@ Böyle bir TV'de Nino'yu şöyle kullanabilirsin:
 
 2. Bilgisayar varsa altyazıyı bilgisayar ekranında göster.
 
-3. TV'ye bir Android TV kutusu takabilirsin; yalnız altyazının oyunun üstünde çıkması için oyun görüntüsünün de o kutunun ekranında olması gerekir.
 
 TV'nin ayarlarında işletim sisteminin adı ne yazıyor?
 
