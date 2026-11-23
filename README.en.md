@@ -122,6 +122,6 @@ Questions and ideas: [GitHub › Issues](https://github.com/yunusdemirbag/nino-g
 
 Made by **Yunus Demirbağ** · Supported by **M. Akif Demirbağ**
 
-Many thanks to **Sinan Yorulmaz**, who inspired our first versions.
+Many thanks to **CouchSubs** and its developer **Sinan Yorulmaz**, who inspired our first versions.
 
 <sub>Nino is not affiliated with Sony, Microsoft, LG or Samsung. PlayStation, PS5, Xbox, LG and Samsung are trademarks of their owners. Game images belong to their owners.</sub>
