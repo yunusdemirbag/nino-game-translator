@@ -16,7 +16,7 @@
 
 ---
 
-## ما هو Nino؟
+## ما هو Nino Game Translator؟
 
 يحوّل النصوص الإنجليزية في ألعابك إلى **العربية**.
 
@@ -48,7 +48,7 @@
 
 <p align="center">
   <img src="docs/img/mac-ve-iphone.webp" width="100%" alt="الشاشة الرئيسية لـ Nino على Mac و iPhone">
-  <br><sub><b>Mac ↔ iPhone</b><br>Nino نفسه وبالسهولة نفسها على كل جهاز.</sub>
+  <br><sub><b>Mac ↔ iPhone</b><br>Nino Game Translator نفسه وبالسهولة نفسها على كل جهاز.</sub>
 </p>
 
 <p align="center">
@@ -58,11 +58,11 @@
 
 ## ابدأ في 3 خطوات
 
-1. **نزّل Nino:** اختر جهازك من الجدول أدناه.
-2. **اربط جهازك:** PS5 أو Xbox. يخبرك Nino بما تفعله خطوة بخطوة.
-3. **اختر تلفازك:** يثبّت Nino تطبيق التلفاز بنفسه.
+1. **نزّل Nino Game Translator:** اختر جهازك من الجدول أدناه.
+2. **اربط جهازك:** PS5 أو Xbox. يخبرك Nino Game Translator بما تفعله خطوة بخطوة.
+3. **اختر تلفازك:** يثبّت Nino Game Translator تطبيق التلفاز بنفسه.
 
-ثم شغّل اللعبة وأدخل قابس Nino. هذا كل شيء.
+ثم شغّل اللعبة وأدخل قابس Nino Game Translator. هذا كل شيء.
 
 ## التحميل
 
@@ -72,7 +72,7 @@
 | Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) | [التثبيت ↓](#setup-windows) |
 | iPhone و iPad | [TestFlight](https://testflight.apple.com/join/1K3Q1KXp) | [التثبيت ↓](#setup-iphone) |
 | هاتف Android | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) | [التثبيت ↓](#setup-android) |
-| التلفاز (Android TV و LG و Samsung) | يثبّته Nino بنفسه | [التثبيت ↓](#setup-tv) |
+| التلفاز (Android TV و LG و Samsung) | يثبّته Nino Game Translator بنفسه | [التثبيت ↓](#setup-tv) |
 | Linux | Docker | [التثبيت ↓](#setup-linux) |
 
 ## التثبيت
@@ -87,23 +87,23 @@
 ### Windows
 1. نزّل **Nino-Windows-Setup.exe** وانقر عليه مرتين.
 2. إذا ظهرت رسالة "Windows protected your PC": **More info › Run anyway**.
-3. يفتح Nino تلقائيًا.
+3. يفتح Nino Game Translator تلقائيًا.
 
 <a id="setup-iphone"></a>
 ### iPhone و iPad
 1. ثبّت **TestFlight** من App Store.
 2. اضغط [هذا الرابط](https://testflight.apple.com/join/1K3Q1KXp) ثم **قبول › تثبيت**.
-3. افتح Nino. (نسخة App Store قريبًا.)
+3. افتح Nino Game Translator. (نسخة App Store قريبًا.)
 
 <a id="setup-android"></a>
 ### هاتف Android
 1. نزّل **Nino-Telefon.apk** على هاتفك وافتحه.
 2. إذا طُلب إذن التطبيقات غير المعروفة، اضغط **سماح**.
-3. اضغط **تثبيت** ثم افتح Nino.
+3. اضغط **تثبيت** ثم افتح Nino Game Translator.
 
 <a id="setup-tv"></a>
 ### التلفاز
-لا حاجة لتنزيل أي شيء: اختر تلفازك في Nino وسيثبّت التطبيق عليه بنفسه.
+لا حاجة لتنزيل أي شيء: اختر تلفازك في Nino Game Translator وسيثبّت التطبيق عليه بنفسه.
 للتثبيت اليدوي: [Android TV](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · [LG](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · [Samsung](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt)
 
 <a id="setup-linux"></a>
@@ -114,7 +114,7 @@ docker compose up -d
 ```
 ثم افتح `http://<عنوان الجهاز>:8788` في المتصفح.
 
-كل الملفات: [صفحة إصدار Nino](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
+كل الملفات: [صفحة إصدار Nino Game Translator](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
 
 ## على أي تلفاز يعمل؟
 
@@ -129,7 +129,7 @@ docker compose up -d
 
 **لماذا أحتاج حساب PSN ثانيًا؟** لا يسمح PS5 بالاتصال بالحساب الذي تلعب به في الوقت نفسه. يكفي حساب ثانٍ مجاني.
 
-**لا يظهر شيء على التلفاز؟** اجعل الجهاز و Nino والتلفاز على شبكة Wi-Fi نفسها. أعد تشغيل Nino.
+**لا يظهر شيء على التلفاز؟** اجعل الجهاز و Nino Game Translator والتلفاز على شبكة Wi-Fi نفسها. أعد تشغيل Nino Game Translator.
 
 **أي ألعاب؟** تقريبًا كل لعبة فيها نص إنجليزي. ولـ GTA 6 دعم خاص.
 
@@ -141,16 +141,16 @@ docker compose up -d
 
 ## من يصنعه؟
 
-- **Yunus Demirbağ**: يصمّم Nino ويطوّره.
+- **Yunus Demirbağ**: يصمّم Nino Game Translator ويطوّره.
 - **M. Akif Demirbağ**: يدعم ويجرّب ويقترح الأفكار.
 
-Nino مفتوح المصدر ([AGPL-3.0](LICENSE))؛ يمكن لأي شخص قراءة الكود.
+Nino Game Translator مفتوح المصدر ([AGPL-3.0](LICENSE))؛ يمكن لأي شخص قراءة الكود.
 وجدت خطأً أو لديك فكرة؟ اكتب في [Issues](https://github.com/yunusdemirbag/nino-game-translator/issues)، نقرأ كل شيء.
-إذا أعجبك Nino، فإن ⭐ في أعلى اليمين تساعدنا كثيرًا.
+إذا أعجبك Nino Game Translator، فإن ⭐ في أعلى اليمين تساعدنا كثيرًا.
 
 ---
 
-<sub>لا يرتبط Nino بشركات Sony أو Microsoft أو LG أو Samsung. أسماء PlayStation و PS5 و Xbox و LG و Samsung علامات تجارية لأصحابها، وصور الألعاب ملك لأصحابها.</sub>
+<sub>لا يرتبط Nino Game Translator بشركات Sony أو Microsoft أو LG أو Samsung. أسماء PlayStation و PS5 و Xbox و LG و Samsung علامات تجارية لأصحابها، وصور الألعاب ملك لأصحابها.</sub>
 
 <p align="center">شكرًا جزيلًا لبرنامج <b>CouchSubs</b> ومطوّره <b>Sinan Yorulmaz</b>، فقد ألهما إصداراتنا الأولى.</p>
 

@@ -14,7 +14,7 @@
 
 ---
 
-## Nino nedir?
+## Nino Game Translator nedir?
 
 Oyunlardaki İngilizce yazıları **Türkçe** yapar.
 
@@ -46,7 +46,7 @@ Oyunlardaki İngilizce yazıları **Türkçe** yapar.
 
 <p align="center">
   <img src="docs/img/mac-ve-iphone.webp" width="100%" alt="Mac ve iPhone'da Nino'nun ana ekranı">
-  <br><sub><b>Mac ↔ iPhone</b><br>Aynı Nino, her cihazda aynı kolaylık.</sub>
+  <br><sub><b>Mac ↔ iPhone</b><br>Aynı Nino Game Translator, her cihazda aynı kolaylık.</sub>
 </p>
 
 <p align="center">
@@ -56,11 +56,11 @@ Oyunlardaki İngilizce yazıları **Türkçe** yapar.
 
 ## 3 adımda başla
 
-1. **Nino'yu indir:** Aşağıdaki tablodan cihazını seç.
-2. **Konsolunu bağla:** PS5 ya da Xbox. Nino ne yapacağını adım adım söyler.
-3. **TV'ni seç:** TV uygulamasını Nino kendisi kurar.
+1. **Nino Game Translator'ı indir:** Aşağıdaki tablodan cihazını seç.
+2. **Konsolunu bağla:** PS5 ya da Xbox. Nino Game Translator ne yapacağını adım adım söyler.
+3. **TV'ni seç:** TV uygulamasını Nino Game Translator kendisi kurar.
 
-Sonra oyunu aç, Nino'daki fişi tak. Hepsi bu.
+Sonra oyunu aç, Nino Game Translator'daki fişi tak. Hepsi bu.
 
 ## İndir
 
@@ -70,7 +70,7 @@ Sonra oyunu aç, Nino'daki fişi tak. Hepsi bu.
 | Windows | [Nino-Windows-Setup.exe](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Windows-Setup.exe) | [Kurulum ↓](#kurulum-windows) |
 | iPhone ve iPad | [TestFlight](https://testflight.apple.com/join/1K3Q1KXp) | [Kurulum ↓](#kurulum-iphone) |
 | Android telefon | [Nino-Telefon.apk](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-Telefon.apk) | [Kurulum ↓](#kurulum-android) |
-| TV (Android TV, LG, Samsung) | Nino kendisi kurar | [Kurulum ↓](#kurulum-tv) |
+| TV (Android TV, LG, Samsung) | Nino Game Translator kendisi kurar | [Kurulum ↓](#kurulum-tv) |
 | Linux | Docker | [Kurulum ↓](#kurulum-linux) |
 
 ## Kurulum
@@ -85,23 +85,23 @@ Sonra oyunu aç, Nino'daki fişi tak. Hepsi bu.
 ### Windows
 1. **Nino-Windows-Setup.exe**'yi indir, çift tıkla.
 2. "Windows bilgisayarınızı korudu" derse: **Ek bilgi › Yine de çalıştır**.
-3. Nino kendiliğinden açılır.
+3. Nino Game Translator kendiliğinden açılır.
 
 <a id="kurulum-iphone"></a>
 ### iPhone ve iPad
 1. App Store'dan **TestFlight**'ı yükle.
 2. [Bu linke](https://testflight.apple.com/join/1K3Q1KXp) dokun, **Kabul Et › Yükle**.
-3. Nino'yu aç. (App Store sürümü yakında.)
+3. Nino Game Translator'ı aç. (App Store sürümü yakında.)
 
 <a id="kurulum-android"></a>
 ### Android telefon
 1. Telefonda **Nino-Telefon.apk**'yı indir ve aç.
 2. "Bilinmeyen uygulamalar" izni sorarsa **İzin ver**.
-3. **Yükle**'ye dokun, Nino'yu aç.
+3. **Yükle**'ye dokun, Nino Game Translator'ı aç.
 
 <a id="kurulum-tv"></a>
 ### TV
-Bir şey indirmene gerek yok: Nino'da TV'ni seç, uygulamayı Nino TV'ye kendisi kurar.
+Bir şey indirmene gerek yok: Nino Game Translator'da TV'ni seç, uygulamayı Nino Game Translator TV'ye kendisi kurar.
 Elle kurmak istersen dosyalar: [Android TV](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.apk) · [LG](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.ipk) · [Samsung](https://github.com/yunusdemirbag/nino-game-translator/releases/latest/download/Nino-TV.wgt)
 
 <a id="kurulum-linux"></a>
@@ -112,7 +112,7 @@ docker compose up -d
 ```
 Sonra tarayıcıda `http://<bilgisayarın adresi>:8788` aç.
 
-Bütün dosyalar: [Nino sürüm sayfası](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
+Bütün dosyalar: [Nino Game Translator sürüm sayfası](https://github.com/yunusdemirbag/nino-game-translator/releases/latest)
 
 ## Hangi TV'lerde çalışır?
 
@@ -127,7 +127,7 @@ Bunlarda çözüm: TV'ye ucuz bir Android TV kutusu tak.
 
 **İkinci PSN hesabı neden lazım?** PS5, oynadığın hesapla aynı anda bağlantıya izin vermiyor. Ücretsiz ikinci hesap yeter.
 
-**TV'de yazı çıkmıyor?** Konsol, Nino ve TV aynı Wi-Fi'da olsun. Nino'yu kapatıp aç.
+**TV'de yazı çıkmıyor?** Konsol, Nino Game Translator ve TV aynı Wi-Fi'da olsun. Nino Game Translator'ı kapatıp aç.
 
 **Hangi oyunlar?** İngilizce yazısı olan neredeyse her oyun. GTA 6'ya özel destek var.
 
@@ -139,16 +139,16 @@ Hesap açmazsın. Oyun görüntün hiçbir yere gitmez. [Gizlilik politikası](P
 
 ## Kimler yapıyor?
 
-- **Yunus Demirbağ**: Nino'yu tasarlayan ve geliştiren.
+- **Yunus Demirbağ**: Nino Game Translator'ı tasarlayan ve geliştiren.
 - **M. Akif Demirbağ**: destekleyen, deneyen, fikir veren.
 
-Nino açık kaynaktır ([AGPL-3.0](LICENSE)); kodu herkes görebilir.
+Nino Game Translator açık kaynaktır ([AGPL-3.0](LICENSE)); kodu herkes görebilir.
 Hata bulursan ya da bir fikrin varsa [Issues](https://github.com/yunusdemirbag/nino-game-translator/issues) sayfasına yaz, okuyoruz.
-Nino'yu beğendiysen sağ üstteki ⭐ ile destek olabilirsin.
+Nino Game Translator'ı beğendiysen sağ üstteki ⭐ ile destek olabilirsin.
 
 ---
 
-<sub>Nino; Sony, Microsoft, LG ve Samsung ile bağlantılı değildir. PlayStation, PS5, Xbox, LG ve Samsung sahiplerinin markalarıdır. Görsellerdeki oyun görüntüleri sahiplerine aittir.</sub>
+<sub>Nino Game Translator; Sony, Microsoft, LG ve Samsung ile bağlantılı değildir. PlayStation, PS5, Xbox, LG ve Samsung sahiplerinin markalarıdır. Görsellerdeki oyun görüntüleri sahiplerine aittir.</sub>
 
 <p align="center">İlk sürümlerimize ilham veren <b>CouchSubs</b> ve geliştiricisi <b>Sinan Yorulmaz</b>'a çok teşekkür ederiz.</p>
 
