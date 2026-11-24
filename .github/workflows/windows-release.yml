@@ -10,11 +10,11 @@ on:
       version:
         description: "Paket sürümü (ör. 4.5.0)"
         required: true
-        default: "4.5.2"
+        default: "4.5.4"
       tv_release:
         description: "TV paketlerinin (Nino-TV.apk/.ipk/.wgt) alınacağı sürüm etiketi"
         required: true
-        default: "v4.5.1"
+        default: "v4.5.3"
       tv_version:
         description: "TV paketlerinin kendi sürümü (dosya adına yazılır; uygulama TV'deki sürümle bunu karşılaştırır)"
         required: true
@@ -24,11 +24,11 @@ on:
         required: false
         default: ""
       androidtv_version:
-        description: "Taslaktaki Android TV APK'sının sürümü"
+        description: "Android TV APK'sının sürümü (boşsa tv_version; taslak verilmediyse tv_release'deki APK bu adla konur)"
         required: false
         default: ""
       androidtv_sha256:
-        description: "Taslaktaki Android TV APK'sının SHA-256'sı (denetlenir)"
+        description: "Android TV APK'sının SHA-256'sı (denetlenir)"
         required: false
         default: ""
 
@@ -130,7 +130,14 @@ jobs:
             $want = "${{ inputs.androidtv_sha256 }}".ToLowerInvariant()
             if ($want -and $sha -ne $want) { throw "APK özeti tutmuyor: $sha" }
           } else {
-            Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.apk" "$dir/nino-androidtv_${v}.apk"
+            $av = "${{ inputs.androidtv_version }}"
+            if (-not $av) { $av = $v }
+            $apk = "$dir/nino-androidtv_${av}.apk"
+            Copy-Item "$env:RUNNER_TEMP/tv/Nino-TV.apk" $apk
+            $sha = (Get-FileHash $apk -Algorithm SHA256).Hash.ToLowerInvariant()
+            Write-Host "Android TV APK: $sha"
+            $want = "${{ inputs.androidtv_sha256 }}".ToLowerInvariant()
+            if ($want -and $sha -ne $want) { throw "APK özeti tutmuyor: $sha" }
           }
           Get-ChildItem $dir
       - name: Testler (köprü testleri dahil)
@@ -183,6 +190,44 @@ jobs:
           Write-Host "nino_native.dll süreçte yüklü mü: $($modules -contains 'nino_native.dll')"
           if (-not $p.MainWindowTitle) { throw "Nino penceresi görünmedi" }
           Stop-Process -Id $p.Id -Force
+
+          # 2b. Ücretsiz motor işçisi (ONNX, Arapça) ayrı süreçte gerçek modelle bir satır çevirir.
+          $m = "$env:RUNNER_TEMP/en-ar"
+          New-Item -ItemType Directory -Force -Path $m | Out-Null
+          $hf = "https://huggingface.co/Xenova/opus-mt-en-ar/resolve/034a684356c19021a187cda4d7f823298b913921/"
+          foreach ($f in "onnx/encoder_model_int8.onnx", "onnx/decoder_model_merged_int8.onnx", "source.spm", "vocab.json") {
+            Invoke-WebRequest -Uri ($hf + $f) -OutFile (Join-Path $m (Split-Path $f -Leaf))
+          }
+          $psi = New-Object System.Diagnostics.ProcessStartInfo "$pub\Nino.exe"
+          foreach ($a in "--free-worker", $m, ">>ara<<") { $psi.ArgumentList.Add($a) }
+          $psi.UseShellExecute = $false
+          $psi.RedirectStandardInput = $true
+          $psi.RedirectStandardOutput = $true
+          $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
+          $psi.StandardInputEncoding = New-Object System.Text.UTF8Encoding $false
+          $w = [System.Diagnostics.Process]::Start($psi)
+          $ready = $w.StandardOutput.ReadLine()
+          Write-Host "işçi: $ready"
+          if ($ready -notmatch '"ready":true') { throw "ücretsiz motor işçisi hazır değil: $ready" }
+          # Kapanma bildirimindeki satırlar (4.5.2'de süreç bu satırlar motora gidince kapanmıştı).
+          foreach ($line in "Y up... already know frow it go with them.", "Yup. Saw him walk out with it next day. Just a bag full of butt.") {
+            $w.StandardInput.WriteLine((@{ text = $line } | ConvertTo-Json -Compress))
+            $w.StandardInput.Flush()
+            $answer = $w.StandardOutput.ReadLine()
+            Write-Host "işçi çevirisi: $answer"
+            if ($answer -notmatch '"text":"' -or $answer -notmatch '[\u0600-\u06FF]') { throw "işçi Arapça çeviri vermedi: $answer" }
+          }
+          $w.StandardInput.Close()
+          if (-not $w.WaitForExit(15000)) { $w.Kill(); throw "işçi girdi kapanınca bitmedi" }
+          Write-Host "işçi çıkış kodu: $($w.ExitCode)"
+          if ($w.ExitCode -ne 0) { throw "işçi çıkış kodu $($w.ExitCode)" }
+
+          # 2c. Çökme izinin olay günlüğü sorgusu bu Windows'ta geçerli (Nino açılışta aynı sorguyu kullanır).
+          $xpath = "*[System[(Provider[@Name='Application Error'] and EventID=1000) or (Provider[@Name='.NET Runtime'] and EventID=1026)] and System[TimeCreated[timediff(@SystemTime) <= 259200000]]]"
+          try { $events = @(Get-WinEvent -LogName Application -FilterXPath $xpath -MaxEvents 5 -ErrorAction Stop) }
+          catch { if ($_.FullyQualifiedErrorId -notlike 'NoMatchingEventsFound*') { throw "olay günlüğü sorgusu geçersiz: $_" }; $events = @() }
+          Write-Host "olay günlüğü sorgusu çalıştı: $($events.Count) kayıt"
+          if (Test-Path (Join-Path $env:LOCALAPPDATA "Nino\hata.log")) { Get-Content (Join-Path $env:LOCALAPPDATA "Nino\hata.log") -Tail 20 }
 
           # 3. Kurulum dosyası sessiz kurulur.
           $setup = (Resolve-Path apps/windows/artifacts/releases/Nino-Windows-Setup.exe).Path
