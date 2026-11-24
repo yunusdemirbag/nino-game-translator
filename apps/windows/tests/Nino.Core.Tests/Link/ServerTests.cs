@@ -404,23 +404,19 @@ public class ConnectorTests
     {
         // Kullanıcı bildirimi: TV bağlantısı gidince günlükte iz yoktu. Arama bir kez yazılır (her 8 sn'lik denemede değil).
         var log = new List<string>();
-        var unused = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0);
-        unused.Start();
-        var closedPort = ((System.Net.IPEndPoint)unused.LocalEndpoint).Port;
-        unused.Stop();
         var locator = new NoTvs();
         await using (var output = new TvOutput(new TvOutputOptions
         {
-            IngressPort = closedPort,
             Locator = locator,
             ConnectorBackoff = [TimeSpan.FromMilliseconds(30)],
             Log = l => { lock (log) log.Add(l); },
         }))
         {
-            output.ConnectAndroidTv("127.0.0.1");
+            // Kayıtlı adres yok: her döngü doğrudan arar (Windows'ta kapalı porta bağlanma ~2 sn sürüyordu).
+            output.ConnectAndroidTv(null);
             Assert.True(await EventuallyAsync(() => locator.Calls >= 3));
             lock (log)
-                Assert.Single(log, l => l.Contains("Android TV aranıyor") && l.Contains("127.0.0.1"));
+                Assert.Single(log, l => l.Contains("Android TV aranıyor") && l.Contains("(yok)"));
         }
 
         using var tv = new FakeAndroidTv();
