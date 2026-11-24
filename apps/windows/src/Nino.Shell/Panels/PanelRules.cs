@@ -167,6 +167,8 @@ public sealed record CardPreviewLook(StatusTone Tone, string? PillKey, bool Plac
             "cardGuide.preview.noPermissionPlaceholder", "cardGuide.preview.noPermissionDetail", false, true),
         CardCaptureState.NoCard => new(StatusTone.Warning, "cardGuide.preview.noCardPill", true, false,
             "cardGuide.preview.searchingPlaceholder", "cardGuide.preview.noCardDetail", false, false),
+        CardCaptureState.InUse => new(StatusTone.Warning, "cardGuide.preview.inUsePill", true, false,
+            "cardGuide.preview.searchingPlaceholder", "cardGuide.preview.inUseDetail", false, false),
         _ => new(StatusTone.Idle, "cardGuide.preview.noCardPill", true, false, "cardGuide.preview.searchingPlaceholder",
             null, false, false),
     };

@@ -262,12 +262,17 @@ public sealed class TvOutput : IAsyncDisposable
                     Backoff = options.ConnectorBackoff ?? [TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2),
                         TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(8)],
                 };
-                connector.HostFound += h => AndroidTvHostFound?.Invoke(h);
+                connector.HostFound += h =>
+                {
+                    options.Log?.Invoke($"Android TV yeni adreste bulundu: {h}");
+                    AndroidTvHostFound?.Invoke(h);
+                };
                 var port = connector.Port;
                 connector.PeerConnected += p => PeerConnected(TvLinkKind.AndroidTv, port, p);
                 connector.PeerEnded += (p, end) => PeerEnded(TvLinkKind.AndroidTv, port, p, end);
                 connector.StateChanged += s =>
                 {
+                    LogAndroidState(s);
                     if (s == LinkConnectorState.Connected && connector?.Connected is { } info) ReportInfo(info);
                     try { AndroidTvStateChanged?.Invoke(s); } catch (Exception) { }
                     NotifyCount(force: false);
@@ -280,6 +285,48 @@ public sealed class TvOutput : IAsyncDisposable
 
     /// <summary>Giden bağlantıyı bırakır.</summary>
     public void DisconnectAndroidTv() => connector?.Stop();
+
+    /// <summary>Android TV aramasının günlükteki son kaydı (aynı durum en çok 5 dakikada bir yazılır).</summary>
+    public static readonly TimeSpan AndroidSearchLogEvery = TimeSpan.FromMinutes(5);
+
+    DateTimeOffset? androidSearchSince;
+    DateTimeOffset androidSearchLogged;
+
+    /// <summary>
+    /// Android TV bağlantısının durumu altyazı günlüğüne: arama başlayınca bir kez, sürerse 5 dakikada bir; başka
+    /// gönderici bağlantıyı alınca ya da TV uygulaması güncelleme isteyince. Bağlanınca arama kaydı sıfırlanır.
+    /// </summary>
+    void LogAndroidState(LinkConnectorState state)
+    {
+        var now = clock.GetUtcNow();
+        switch (state)
+        {
+            case LinkConnectorState.Connected:
+                if (androidSearchSince is { } since && now - since >= TimeSpan.FromSeconds(30))
+                    options.Log?.Invoke($"Android TV {(int)(now - since).TotalSeconds} sn aradıktan sonra bulundu");
+                androidSearchSince = null;
+                break;
+            case LinkConnectorState.Searching:
+                if (androidSearchSince is null)
+                {
+                    androidSearchSince = now;
+                    androidSearchLogged = now;
+                    options.Log?.Invoke($"Android TV aranıyor: kayıtlı adres ({connector?.Host ?? "yok"}) cevap vermedi");
+                }
+                else if (now - androidSearchLogged >= AndroidSearchLogEvery)
+                {
+                    androidSearchLogged = now;
+                    options.Log?.Invoke($"Android TV hâlâ bulunamadı ({(int)(now - androidSearchSince.Value).TotalMinutes} dk); TV'de Nino TV açık ve aynı ağda mı");
+                }
+                break;
+            case LinkConnectorState.Replaced:
+                options.Log?.Invoke("Android TV bağlantısını başka bir gönderici aldı (ör. telefondaki Nino); bu bilgisayar yeni oturuma kadar bağlanmaz");
+                break;
+            case LinkConnectorState.UpdateRequired:
+                options.Log?.Invoke("Android TV uygulaması bu sürümle konuşamıyor; TV uygulaması güncellenmeli");
+                break;
+        }
+    }
 
     /// <summary>Olayı bütün çıkışlara yollar.</summary>
     public void Send(TvEvent e)

@@ -62,6 +62,9 @@ public sealed class AiTranslator : ITranslator, IOnlineEngineStatus
     /// <summary>Kullanılan model.</summary>
     public string Model => _model;
 
+    /// <summary>Hizmet bir satırı çevirmeyi reddetti (neden; ör. Gemini <c>SAFETY</c>). Herhangi bir iş parçacığında.</summary>
+    public event Action<string>? Refused;
+
     /// <summary>Altyazı isteğinin zaman aşımı (bulut 5 sn, yerel 15 sn).</summary>
     public TimeSpan LineTimeout { get; set; }
 
@@ -182,6 +185,13 @@ public sealed class AiTranslator : ITranslator, IOnlineEngineStatus
             translated = await RequestAsync(sentences, game, context, AiProtocol.SubtitleMaxTokens, LineTimeout, cancellationToken)
                 .ConfigureAwait(false);
         }
+        catch (OnlineLineRefusedException e)
+        {
+            // Hizmet çalışıyor, yalnız bu satırı çevirmedi: duraklatma ve uyarı yok, satır yedekten.
+            _health.Succeeded();
+            Refused?.Invoke(e.Reason);
+            return await FallbackLineAsync(text, cancellationToken).ConfigureAwait(false);
+        }
         catch (OnlineRequestException e)
         {
             HandleFailure(e);
@@ -228,7 +238,7 @@ public sealed class AiTranslator : ITranslator, IOnlineEngineStatus
             _health.PauseFor(wait, minute: true);
             return;
         }
-        _health.Failed(e.Failure);
+        _health.Failed(e.Failure, e.TimedOut);
     }
 
     async Task<string> FallbackLineAsync(string text, CancellationToken cancellationToken) =>
@@ -278,6 +288,11 @@ public sealed class AiTranslator : ITranslator, IOnlineEngineStatus
                     _cache.Store(Key(game, texts[chunk[k]]), translated[k]);
                     TranslationProbe.NoteFresh(EngineName);
                 }
+            }
+            catch (OnlineLineRefusedException)
+            {
+                // Bu parça reddedildi; hizmet çalışıyor, kalan parçalar denenir (reddedilenler yedekten).
+                _health.Succeeded();
             }
             catch (OnlineRequestException e)
             {

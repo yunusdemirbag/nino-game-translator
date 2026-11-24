@@ -452,10 +452,12 @@ public sealed partial class NinoController
         if (status == _card) return;
         _card = status;
         if (status.State == CardCaptureState.NeedsPermission) RecordErrorCode("app.capture.denied");
+        if (status.State == CardCaptureState.InUse) RecordErrorCode("app.capture.in_use");
         _logs.Subtitle("yakalama kartı: " + status.State switch
         {
             CardCaptureState.NeedsPermission => "kamera izni yok",
             CardCaptureState.NoCard => "bulunamadı",
+            CardCaptureState.InUse => "başka bir uygulamada açık",
             CardCaptureState.BlackPicture => $"görüntü siyah ({status.DeviceName})",
             CardCaptureState.Capturing => $"okunuyor ({status.DeviceName})",
             _ => "durdu",

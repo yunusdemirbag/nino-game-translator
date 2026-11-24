@@ -30,14 +30,27 @@ public sealed record DeepLUsageResult(KeyCheckStatus Status, long? Used, long? L
 public sealed record MinuteLimit(TimeSpan? RetryAfter, int? RequestLimit);
 
 /// <summary>Çevrimiçi isteğin hatası (iletisinde anahtar yoktur).</summary>
-public sealed class OnlineRequestException(OnlineFailure failure, MinuteLimit? minuteLimit = null)
+public sealed class OnlineRequestException(OnlineFailure failure, MinuteLimit? minuteLimit = null, bool timedOut = false)
     : Exception("Çevrimiçi çeviri isteği başarısız: " + failure)
 {
+    /// <summary>Yanıt süresinde gelmedi (ağ hatası değil; hizmet yavaş).</summary>
+    public bool TimedOut { get; } = timedOut;
+
     /// <summary>Hata türü.</summary>
     public OnlineFailure Failure { get; } = failure;
 
     /// <summary>Dakikalık sınırsa ayrıntısı (hata sayılmaz).</summary>
     public MinuteLimit? MinuteLimit { get; } = minuteLimit;
+}
+
+/// <summary>
+/// Hizmet bu satırı çevirmeyi reddetti (ör. Gemini'nin güvenlik süzgeci). Hizmet çalışıyor: yalnız bu satır yedeğe
+/// gider, hizmet duraklatılmaz, "ulaşılamıyor" denmez.
+/// </summary>
+public sealed class OnlineLineRefusedException(string reason) : Exception("Hizmet satırı çevirmedi: " + reason)
+{
+    /// <summary>Hizmetin verdiği neden.</summary>
+    public string Reason { get; } = reason;
 }
 
 /// <summary>Hata durumu, bekleme ve "dakikalık sınırdaydı" işareti; durum yalnız değişince bildirilir.</summary>
@@ -72,10 +85,42 @@ internal sealed class OnlineHealth(TimeProvider clock)
         PausedForMinute = minute;
     }
 
-    public void Succeeded() => Set(null);
+    /// <summary>Tek zaman aşımında kısa bekleme (durum değişmez).</summary>
+    public static readonly TimeSpan FirstTimeoutPause = TimeSpan.FromSeconds(5);
 
-    public void Failed(OnlineFailure failure)
+    /// <summary>İki zaman aşımı bu süre içindeyse hizmet gerçekten ulaşılamıyor sayılır.</summary>
+    public static readonly TimeSpan TimeoutWindow = TimeSpan.FromMinutes(2);
+
+    DateTimeOffset? _firstTimeout;
+
+    public void Succeeded()
     {
+        lock (_gate) _firstTimeout = null;
+        Set(null);
+    }
+
+    /// <summary>
+    /// Hata: hizmet 60 sn duraklatılır, durum değişir. Zaman aşımı tek başına sayılmaz: tek geç gelen yanıt hizmeti
+    /// 60 sn durdurup "internetini denetle" dedirtiyordu. İlk zaman aşımında 5 sn beklenir, durum değişmez; 2 dakika
+    /// içinde ikincisi gelirse hizmet ulaşılamıyor sayılır. Ağ hatası ve sunucu hatası hemen sayılır.
+    /// </summary>
+    public void Failed(OnlineFailure failure, bool timedOut = false)
+    {
+        if (timedOut)
+        {
+            var now = clock.GetUtcNow();
+            bool first;
+            lock (_gate)
+            {
+                first = _last is null && (_firstTimeout is not { } at || now - at > TimeoutWindow);
+                if (first) _firstTimeout = now;
+            }
+            if (first)
+            {
+                PauseFor(FirstTimeoutPause);
+                return;
+            }
+        }
         PauseFor(FailurePause);
         Set(failure);
     }
@@ -128,7 +173,7 @@ internal static class OnlineHttp
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested is false)
         {
-            throw new OnlineRequestException(OnlineFailure.Unreachable);
+            throw new OnlineRequestException(OnlineFailure.Unreachable, timedOut: true);
         }
         catch (HttpRequestException)
         {

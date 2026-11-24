@@ -108,6 +108,7 @@ public sealed partial class NinoController
     {
         CardCaptureState.NeedsPermission => _text.Get("status.card.noPermission"),
         CardCaptureState.NoCard => _text.Get("status.card.notPlugged"),
+        CardCaptureState.InUse => _text.Get("status.card.inUse"),
         CardCaptureState.BlackPicture => _text.Get("status.card.black"),
         CardCaptureState.Capturing => _text.Format("status.common.reading",
             _card.DeviceName is { Length: > 0 } n ? n : _text.Get("status.card.defaultName")),

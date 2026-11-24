@@ -400,6 +400,49 @@ public class ConnectorTests
     }
 
     [Fact]
+    public async Task AndroidTvSearchAndReplacementAreLogged()
+    {
+        // Kullanıcı bildirimi: TV bağlantısı gidince günlükte iz yoktu. Arama bir kez yazılır (her 8 sn'lik denemede değil).
+        var log = new List<string>();
+        var unused = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0);
+        unused.Start();
+        var closedPort = ((System.Net.IPEndPoint)unused.LocalEndpoint).Port;
+        unused.Stop();
+        var locator = new NoTvs();
+        await using (var output = new TvOutput(new TvOutputOptions
+        {
+            IngressPort = closedPort,
+            Locator = locator,
+            ConnectorBackoff = [TimeSpan.FromMilliseconds(30)],
+            Log = l => { lock (log) log.Add(l); },
+        }))
+        {
+            output.ConnectAndroidTv("127.0.0.1");
+            Assert.True(await EventuallyAsync(() => locator.Calls >= 3));
+            lock (log)
+                Assert.Single(log, l => l.Contains("Android TV aranıyor") && l.Contains("127.0.0.1"));
+        }
+
+        using var tv = new FakeAndroidTv();
+        log.Clear();
+        await using var second = new TvOutput(new TvOutputOptions
+        {
+            IngressPort = tv.Port,
+            Locator = new NoTvs(),
+            ConnectorBackoff = [TimeSpan.FromMilliseconds(50)],
+            Log = l => { lock (log) log.Add(l); },
+        });
+        second.Send(new TranslationStarted());
+        second.ConnectAndroidTv("127.0.0.1");
+        Assert.True(await EventuallyAsync(() => tv.Latest is not null));
+        await tv.Latest!.WaitForTypeAsync("hello");
+        await tv.Latest.SendAsync("{\"app\":\"nino\",\"type\":\"welcome\",\"version\":1,\"name\":\"Salon\"}");
+        await tv.Latest.WaitForTypeAsync("started");
+        await tv.Latest.SendAsync("{\"app\":\"nino\",\"type\":\"error\",\"code\":\"replaced\"}");
+        Assert.True(await EventuallyAsync(() => { lock (log) return log.Any(l => l.Contains("başka bir gönderici")); }));
+    }
+
+    [Fact]
     public async Task UnsupportedVersionWithoutCommonOneAsksForUpdate()
     {
         using var tv = new FakeAndroidTv();

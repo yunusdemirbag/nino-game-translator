@@ -9,7 +9,7 @@ using Nino.App.Startup;
 namespace Nino.App;
 
 /// <summary>
-/// Giriş noktası (kimlikler-veri.md §3.1). Sıra: güvenlik duvarı yardımcısı (tek argüman) → Velopack kancaları →
+/// Giriş noktası (kimlikler-veri.md §3.1). Sıra: güvenlik duvarı yardımcısı (tek argüman) → ücretsiz motor işçisi → Velopack kancaları →
 /// veri klasörü → eksik dosya denetimi → WPF. Her adım ayrı, satır içine alınmayan bir yöntemdedir: bir DLL eksikse
 /// yalnız o adımın derlenmesi düşer, <see cref="Main"/> ve eksik dosya iletisi .NET'in kendi türleriyle çalışmayı sürdürür.
 /// </summary>
@@ -28,6 +28,8 @@ public static partial class Program
     public static int Main(string[] args)
     {
         if (args.Length == 1 && args[0] == FirewallArgument) return RunFirewallHelper();
+        if (args.Length is 2 or 3 && args[0] == Nino.Translation.Local.OnnxWorkerRuntime.Argument)
+            return RunFreeWorker(args[1], args.Length == 3 ? args[2] : null);
 
         RunVelopackHooks(args);
 
@@ -63,6 +65,25 @@ public static partial class Program
 
     /// <summary>Velopack kaldırma öncesi kancası: bu exe'nin yönettiği güvenlik duvarı kuralları sessizce silinir (§11.5).</summary>
     static partial void RemoveFirewallRulesBeforeUninstall();
+
+    // ---- 1b. Ücretsiz motor işçisi (arayüz yok; ONNX Runtime ayrı süreçte, standart girdi/çıktıyla konuşur) ----
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    static int RunFreeWorker(string folder, string? targetToken)
+    {
+        try
+        {
+            var utf8 = new System.Text.UTF8Encoding(false);
+            using var input = new StreamReader(Console.OpenStandardInput(), utf8);
+            using var output = new StreamWriter(Console.OpenStandardOutput(), utf8) { AutoFlush = true };
+            return Nino.Translation.Local.OnnxWorkerHost.Serve(input, output,
+                () => Nino.Translation.Local.OnnxMarianEngine.Open(folder, targetToken));
+        }
+        catch (Exception)
+        {
+            return 1;
+        }
+    }
 
     // ---- 2. Velopack ----
 

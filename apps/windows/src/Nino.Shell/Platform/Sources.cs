@@ -17,7 +17,7 @@ public readonly record struct PixelRect(int X, int Y, int Width, int Height);
 public enum WindowCaptureState { Stopped, LookingForWindow, Capturing }
 
 /// <summary>HDMI yakalama kartının durumu (adları cihaz bilgisine metin olarak yazılır).</summary>
-public enum CardCaptureState { Stopped, NeedsPermission, NoCard, BlackPicture, Capturing }
+public enum CardCaptureState { Stopped, NeedsPermission, NoCard, BlackPicture, Capturing, InUse }
 
 /// <summary>Kartın durumu ve (görüntü varken) aygıtın adı.</summary>
 public sealed record CardStatus(CardCaptureState State, string? DeviceName = null);

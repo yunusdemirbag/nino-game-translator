@@ -150,7 +150,7 @@ public sealed class DeepLTranslator : ITranslator, IOnlineEngineStatus
             }
             catch (OnlineRequestException e)
             {
-                _health.Failed(e.Failure);
+                _health.Failed(e.Failure, e.TimedOut);
                 return TranslationResult.FromEngine(await FallbackAsync(text, cancellationToken).ConfigureAwait(false));
             }
             _health.Succeeded();

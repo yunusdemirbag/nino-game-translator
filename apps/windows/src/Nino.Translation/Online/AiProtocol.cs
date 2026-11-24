@@ -114,6 +114,17 @@ public static partial class AiProtocol
     /// <summary>Tam ekran çevirisindeki çıktı sınırı.</summary>
     public const int ScreenMaxTokens = 8192;
 
+    /// <summary>Gemini'nin "bu satırı çevirmem" bitiş nedenleri (OTHER gibi belirsizler ulaşılamadı sayılır).</summary>
+    static readonly HashSet<string> RefusalReasons =
+        ["SAFETY", "PROHIBITED_CONTENT", "BLOCKLIST", "SPII", "RECITATION", "IMAGE_SAFETY", "LANGUAGE"];
+
+    /// <summary>Gemini'de süzgeci kapatılan güvenlik sınıfları.</summary>
+    public static readonly IReadOnlyList<string> GeminiSafetyCategories =
+    [
+        "HARM_CATEGORY_HARASSMENT", "HARM_CATEGORY_HATE_SPEECH", "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "HARM_CATEGORY_DANGEROUS_CONTENT",
+    ];
+
     /// <summary>İsteği kurar.</summary>
     public static HttpRequestMessage BuildRequest(AiService service, string model, string apiKey, string target,
         IReadOnlyList<string> sentences, string? game, IReadOnlyList<ContextLine> context, int maxTokens,
@@ -163,6 +174,17 @@ public static partial class AiProtocol
                         w.WriteEndObject();
                     }
                     w.WriteEndObject();
+                    // Oyun diyaloğu küfür ve argo içerir: varsayılan güvenlik süzgeci satırı boş döndürüyordu (havuz
+                    // sunucusu da süzgeci kapatır). Çeviri metni üretmez, var olan metni çevirir.
+                    w.WriteStartArray("safetySettings");
+                    foreach (var category in GeminiSafetyCategories)
+                    {
+                        w.WriteStartObject();
+                        w.WriteString("category", category);
+                        w.WriteString("threshold", "BLOCK_NONE");
+                        w.WriteEndObject();
+                    }
+                    w.WriteEndArray();
                     w.WriteEndObject();
                 });
                 break;
@@ -274,10 +296,42 @@ public static partial class AiProtocol
         catch (Exception e) when (e is JsonException or InvalidOperationException or IndexOutOfRangeException
                                       or KeyNotFoundException)
         {
+            if (service == AiService.Gemini && GeminiRefusal(body) is { } reason) throw new OnlineLineRefusedException(reason);
             throw Unreachable();
         }
-        if (string.IsNullOrWhiteSpace(text)) throw Unreachable();
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            if (service == AiService.Gemini && GeminiRefusal(body) is { } reason) throw new OnlineLineRefusedException(reason);
+            throw Unreachable();
+        }
         return text;
+    }
+
+    /// <summary>
+    /// Gemini satırı çevirmeyi reddettiyse nedeni (<c>promptFeedback.blockReason</c> ya da metinsiz adayın
+    /// <c>finishReason</c>'ı: SAFETY, PROHIBITED_CONTENT, BLOCKLIST, RECITATION…; promptFeedback hep sayılır); değilse null.
+    /// </summary>
+    public static string? GeminiRefusal(string body)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(body);
+            var root = doc.RootElement;
+            if (root.ValueKind != JsonValueKind.Object) return null;
+            if (root.TryGetProperty("promptFeedback", out var feedback) && feedback.ValueKind == JsonValueKind.Object
+                && feedback.TryGetProperty("blockReason", out var block) && block.ValueKind == JsonValueKind.String)
+                return block.GetString();
+            if (root.TryGetProperty("candidates", out var candidates) && candidates.ValueKind == JsonValueKind.Array
+                && candidates.GetArrayLength() > 0 && candidates[0].ValueKind == JsonValueKind.Object
+                && candidates[0].TryGetProperty("finishReason", out var finish) && finish.ValueKind == JsonValueKind.String
+                && finish.GetString() is { } reason && RefusalReasons.Contains(reason))
+                return reason;
+            return null;
+        }
+        catch (JsonException)
+        {
+            return null;
+        }
     }
 
     static string? Gemini(JsonElement root)

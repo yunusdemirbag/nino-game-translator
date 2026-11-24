@@ -55,6 +55,9 @@ public static class AppStartup
                     Telemetry = WindowsTelemetry.Setup(dataFolder, pieces.Services),
                 });
             WindowsTelemetry.Attach(app, controller);
+            // Önceki çalışma yerel bir hatayla kapandıysa Windows olay günlüğündeki iz hata.log'a ve ölçüme.
+            var telemetry = controller.Telemetry;
+            CrashEvidence.ReportInBackground(dataFolder, logs.Errors, code => telemetry?.Client.RecordError(code));
 
             // remoteplay.log satırları sağlık kaydına ve altyazı günlüğündeki duraklama izleyicisine de gider.
             tap = RemotePlayLogTap.Attach(logs.RemotePlay, controller.Health, logs.Subtitle);

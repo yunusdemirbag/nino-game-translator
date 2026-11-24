@@ -29,6 +29,15 @@ public sealed record FreeEngineOptions
     /// <summary>İşçi başlatıcı (testte sahte); varsayılan <see cref="Runtime"/>.</summary>
     public Func<string, Ct2Device, int, string?, IWorkerProcess>? StartWorker { get; init; }
 
+    /// <summary>
+    /// ONNX motorunu ayrı süreçte açan işlev (model klasörü, hedef belirteci); null ise motor bu süreçte açılır. Windows'ta
+    /// Nino'nun kendi exe'si işçi kipinde başlar (<see cref="OnnxWorkerRuntime"/>).
+    /// </summary>
+    public Func<string, string?, IWorkerProcess>? OnnxWorker { get; init; }
+
+    /// <summary>İşçi olayları günlüğü (ör. işçi kapandı, yeniden açıldı).</summary>
+    public Action<string>? Log { get; init; }
+
     /// <summary>Belirteçleyiciyi model klasöründen açan işlev (testte sahte); varsayılan <see cref="MarianTokenizer"/>.</summary>
     public Func<string, IPieceTokenizer>? LoadTokenizer { get; init; }
 }
@@ -47,10 +56,15 @@ public sealed class FreeEngineSource(string target, FreeEngineOptions options) :
     /// <inheritdoc />
     public ISentenceEngine Open(CancellationToken cancellationToken)
     {
+        ISentenceEngine OpenOnnx(string onnxFolder, string? token) =>
+            options.OnnxWorker is { } worker
+                ? OnnxWorkerEngine.Open(() => worker(onnxFolder, token), options.Log)
+                : OnnxMarianEngine.Open(onnxFolder, token);
+
         var model = ModelCatalog.For("en", target) ?? throw new FileNotFoundException("bu dil için ücretsiz model yok");
         var folder = Path.Combine(options.Store.Root, model.Folder);
-        if (options.Store.LegacyTurkishInUse(target) is { } legacy) return OnnxMarianEngine.Open(legacy, model.TargetToken);
-        if (!File.Exists(Path.Combine(folder, "model.bin"))) return OnnxMarianEngine.Open(folder, model.TargetToken);
+        if (options.Store.LegacyTurkishInUse(target) is { } legacy) return OpenOnnx(legacy, model.TargetToken);
+        if (!File.Exists(Path.Combine(folder, "model.bin"))) return OpenOnnx(folder, model.TargetToken);
 
         var tokenizer = options.LoadTokenizer?.Invoke(folder)
                         ?? MarianTokenizer.Load(Path.Combine(folder, "source.spm"), Path.Combine(folder, "vocab.json"));

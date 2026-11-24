@@ -48,6 +48,12 @@ public sealed record CoreShellServicesOptions
     /// <summary>Ücretsiz model hiç olmasın (ör. yalnız çevrimiçi çeviri).</summary>
     public bool NoFreeModel { get; init; }
 
+    /// <summary>
+    /// ONNX ücretsiz motorunu ayrı süreçte açan işlev (model klasörü, hedef belirteci); null ise bu süreçte açılır.
+    /// Windows: Nino'nun kendi exe'si işçi kipinde (yerel bir hata uygulamayı kapatmasın).
+    /// </summary>
+    public Func<string, string?, IWorkerProcess>? OnnxWorker { get; init; }
+
     /// <summary>Remote Play günlüğü (yerel köprü satırları dahil).</summary>
     public RpLog RemotePlayLog { get; init; } = RpLog.Silent();
 
@@ -109,7 +115,12 @@ public abstract class CoreShellServices : IShellServices, IDisposable
             // Kullanıcı terim sözlükleri (glossary\*.json) genel sözlüğün üstüne ad sırasıyla eklenir.
             Glossary = new GlossaryFolder(Path.Combine(options.DataFolder, "glossary")),
             Http = options.Http,
-            Free = store is null ? null : new FreeEngineOptions { Store = store, Cuda = cuda, GpuFellBack = _model.OnGpuFellBack },
+            Free = store is null ? null : new FreeEngineOptions
+            {
+                Store = store, Cuda = cuda, GpuFellBack = _model.OnGpuFellBack,
+                OnnxWorker = options.OnnxWorker,
+                Log = line => options.ErrorLog?.Invoke(line, null),
+            },
             FreeEngineFailed = _ => _model.OnEngineFailed(),
         });
         _model.Factory = _factory;

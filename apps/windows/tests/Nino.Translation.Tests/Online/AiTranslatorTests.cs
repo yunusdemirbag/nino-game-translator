@@ -33,10 +33,52 @@ public class AiTranslatorTests
         Assert.Equal(AiPrompts.Instruction("tr"), r.Json.GetProperty("systemInstruction").GetProperty("parts")[0].GetProperty("text").GetString());
         Assert.Equal(1024, r.Json.GetProperty("generationConfig").GetProperty("maxOutputTokens").GetInt32());
         Assert.False(r.Json.GetProperty("generationConfig").TryGetProperty("thinkingConfig", out var _));
+        // Oyun diyaloğu süzgece takılmasın: dört güvenlik sınıfı BLOCK_NONE (havuz sunucusuyla aynı).
+        var safety = r.Json.GetProperty("safetySettings").EnumerateArray().ToList();
+        Assert.Equal(AiProtocol.GeminiSafetyCategories, safety.Select(x => x.GetProperty("category").GetString()));
+        Assert.All(safety, x => Assert.Equal("BLOCK_NONE", x.GetProperty("threshold").GetString()));
         var message = AiFake.Message(r, AiService.Gemini);
         Assert.EndsWith("[\"Open the hatch.\"]", message);
         Assert.DoesNotContain("MARCO", message);
         Assert.Equal("gemini:gemini-3.5-flash-lite", t.EngineName);
+    }
+
+    [Fact]
+    public async Task GeminiReddettigiSatirYedektenHizmetDurmaz()
+    {
+        var calls = 0;
+        var server = new FakeHandler(_ =>
+        {
+            calls++;
+            return calls == 1
+                ? FakeHandler.Json("{\"candidates\":[{\"finishReason\":\"SAFETY\"}]}")
+                : FakeHandler.Json(FakeHandler.Encode(new { candidates = new[] { new { content = new { parts = new[] { new { text = "[\"Kapağı aç.\"]" } } } } } }));
+        });
+        var t = Create(AiService.Gemini, server, "gemini-3.5-flash-lite", fallback: new FakeFallback());
+        var refused = new List<string>();
+        t.Refused += refused.Add;
+        OnlineFailure? seen = null;
+        t.FailureChanged += f => seen = f;
+        Assert.Equal("yerel: Damn it, open the hatch.", (await t.TranslateAsync("Damn it, open the hatch.")).Text);
+        Assert.Equal(["SAFETY"], refused);
+        Assert.Null(seen);
+        Assert.Null(t.LastFailure);
+        Assert.Equal("Kapağı aç.", (await t.TranslateAsync("Open the hatch.")).Text);
+        Assert.Equal(2, calls);
+    }
+
+    [Fact]
+    public async Task TekZamanAsimiUlasilamiyorDemez()
+    {
+        var clock = new TestClock();
+        var slow = new FakeHandler(_ => throw new TaskCanceledException("yavaş"));
+        var t = Create(AiService.Gemini, slow, "gemini-3.5-flash-lite", fallback: new FakeFallback(), clock: clock);
+        Assert.Equal("yerel: Run!", (await t.TranslateAsync("Run!")).Text);
+        Assert.Null(t.LastFailure);
+        clock.Advance(TimeSpan.FromSeconds(6));
+        Assert.Equal("yerel: Swim!", (await t.TranslateAsync("Swim!")).Text);
+        Assert.Equal(OnlineFailure.Unreachable, t.LastFailure);
+        Assert.Equal(2, slow.Requests.Count);
     }
 
     [Fact]

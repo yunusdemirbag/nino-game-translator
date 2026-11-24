@@ -28,6 +28,8 @@ public sealed partial class NinoController
     ITextReader? _readerForExtras;
     ExtraAreaTracker? _extra;
     PhoneOverlay? _overlay;
+    CornerReader? _corners;
+    CornerScreenOutput? _screens;
     bool _phoneFailed;
     bool _phoneQueued;
     BgraFrame? _lastFrame;
@@ -139,8 +141,10 @@ public sealed partial class NinoController
                         Post(SetUpPhoneReaders);
                     }
                     overlay.OnFrame(frame);
+                    Volatile.Read(ref _corners)?.OfferFrame(frame);
+                    Volatile.Read(ref _screens)?.Tick();
                 }
-                else if (overlay.Installed) Post(() => _overlay?.Remove());
+                else if (overlay.Installed) Post(() => { RemoveCorners(); _overlay?.Remove(); });
             }
 
             var entry = _gate.TryEnter(arrived);
@@ -197,9 +201,11 @@ public sealed partial class NinoController
         try { old?.Reset(); } catch (Exception) { }
         DetachOnline();
         ResetReaders();
+        RemoveCorners();
         var overlay = _overlay;
         _overlay = null;
         try { overlay?.Remove(); } catch (Exception) { }
+        _screens = null;
         (_reader as IDisposable)?.Dispose();
         _reader = null;
         _chain = null;
@@ -218,6 +224,7 @@ public sealed partial class NinoController
         _phoneFailed = false;
         _phoneQueued = false;
         try { _overlay?.ResetReaders(); } catch (Exception) { }
+        try { _corners?.Reset(); } catch (Exception) { }
     }
 
     void BuildPipeline()
@@ -235,7 +242,10 @@ public sealed partial class NinoController
         _chain = chain;
         RefreshTranslatorStatus();
         var gen = _pipelineGen;
-        var overlay = new PhoneOverlay(new ServerOutput(_server), _msClock);
+        // Telefon/harita örtüsü ile köşe öğeleri (mesaj kartı, sol üst ipucu, sağ üst bildirim) tek listede gider.
+        var screens = new CornerScreenOutput(new ServerOutput(_server), _msClock);
+        _screens = screens;
+        var overlay = new PhoneOverlay(screens, _msClock);
         _overlay = overlay;
         var quality = _services.Readers.QualityFor(lang);
         var options = new SubtitlePipelineOptions
@@ -549,7 +559,46 @@ public sealed partial class NinoController
         {
             _logs.Error("Telefon okuyucusu kurulamadı", e);
             _phoneFailed = true;
+            return;
         }
+        SetUpCornerReader(overlay, services, lang);
+    }
+
+    /// <summary>
+    /// Köşe okuyucusu (sağ alt mesaj/uygulama bildirimi kartı, sol üst ipucu, sağ üst bildirim): kendi tanıyıcısıyla,
+    /// harita yakında açıkken durur, telefonun kutusundaki yazıyı saymaz. Tanıyıcı kurulamazsa yalnız köşeler yok.
+    /// </summary>
+    void SetUpCornerReader(PhoneOverlay overlay, OverlayServices services, string lang)
+    {
+        RemoveCorners();
+        if (_screens is not { } screens) return;
+        var ocr = _services.Readers.CreateSinglePass(lang);
+        if (ocr is null) return;
+        // Telefon köşe okumasının karesinde ayrıca aranır (telefon okuyucusunun takibine dokunulmaz); bulunamazsa
+        // telefon örtüsü ekrandayken onun son yeri sayılır.
+        var phones = new PhoneTracker(_msClock);
+        CornerReader? corners = null;
+        corners = new CornerReader(services with
+        {
+            Ocr = ocr,
+            Paused = () => overlay.Map?.RecentlyOpen(MapReader.PhonePauseMs) ?? false,
+            PhoneBox = frame => (frame is null ? null : phones.Locate(frame)?.Box)
+                ?? (overlay.Phone is { Items.Count: > 0 } p ? p.Tracker.Last?.Box : null),
+            Changed = () =>
+            {
+                if (corners is { } c && ReferenceEquals(Volatile.Read(ref _corners), c)) screens.SetCorners(c.Items);
+            },
+            Gta6Seen = null,
+        });
+        Volatile.Write(ref _corners, corners);
+    }
+
+    void RemoveCorners()
+    {
+        var corners = Interlocked.Exchange(ref _corners, null);
+        if (corners is null) return;
+        try { corners.Reset(); } catch (Exception) { }
+        _screens?.SetCorners([]);
     }
 
     /// <summary>Telefon ve harita satırının yerelde bilinen çevirisi: paket (etkinse), sonra indirilmiş havuz.</summary>

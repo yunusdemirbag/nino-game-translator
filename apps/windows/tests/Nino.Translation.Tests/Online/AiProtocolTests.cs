@@ -59,7 +59,15 @@ public class AiProtocolTests
         foreach (var bad in new[] { "not json", "{\"promptFeedback\":{\"blockReason\":\"OTHER\"}}",
                      "{\"choices\":[{\"message\":{\"content\":\"   \"}}]}", "{\"choices\":[{\"message\":{\"content\":5}}]}" })
             Assert.Throws<OnlineRequestException>(() => AiProtocol.ExtractText(AiService.Local, bad));
-        Assert.Throws<OnlineRequestException>(() => AiProtocol.ExtractText(AiService.Gemini, "{\"promptFeedback\":{\"blockReason\":\"OTHER\"}}"));
+        // Kullanıcı bildirimi: Gemini'nin reddettiği satır "ulaşılamıyor" sayılıyordu. Ret satıra özeldir.
+        Assert.Equal("OTHER", Assert.Throws<OnlineLineRefusedException>(() =>
+            AiProtocol.ExtractText(AiService.Gemini, "{\"promptFeedback\":{\"blockReason\":\"OTHER\"}}")).Reason);
+        Assert.Equal("SAFETY", Assert.Throws<OnlineLineRefusedException>(() =>
+            AiProtocol.ExtractText(AiService.Gemini, "{\"candidates\":[{\"finishReason\":\"SAFETY\",\"index\":0}]}")).Reason);
+        // Belirsiz bitiş ve boş aday ulaşılamadı kalır.
+        Assert.Throws<OnlineRequestException>(() =>
+            AiProtocol.ExtractText(AiService.Gemini, "{\"candidates\":[{\"finishReason\":\"OTHER\"}]}"));
+        Assert.Throws<OnlineRequestException>(() => AiProtocol.ExtractText(AiService.Gemini, "{\"candidates\":[]}"));
     }
 
     static string Violation(string quotaId, object value, string delay) => FakeHandler.Encode(new

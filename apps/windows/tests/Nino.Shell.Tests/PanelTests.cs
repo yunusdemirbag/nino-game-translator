@@ -225,5 +225,12 @@ public class PanelTests
         var stopped = CardPreviewLook.For(CardCaptureState.Stopped);
         Assert.Equal(StatusTone.Idle, stopped.Tone);
         Assert.Null(stopped.DetailKey);
+        // Kart başka uygulamada açıkken "kartı takın" değil, "kart meşgul" denir.
+        var inUse = CardPreviewLook.For(CardCaptureState.InUse);
+        Assert.Equal(StatusTone.Warning, inUse.Tone);
+        Assert.Equal("cardGuide.preview.inUsePill", inUse.PillKey);
+        Assert.Equal("cardGuide.preview.inUseDetail", inUse.DetailKey);
+        Assert.True(Nino.Shell.WindowsRules.CaptureCardRules.IsInUse(unchecked((int)0xC00D3704)));
+        Assert.False(Nino.Shell.WindowsRules.CaptureCardRules.IsInUse(unchecked((int)0x80004005)));
     }
 }

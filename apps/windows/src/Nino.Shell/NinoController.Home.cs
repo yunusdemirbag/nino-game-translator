@@ -55,6 +55,7 @@ public sealed partial class NinoController
                 {
                     CardCaptureState.NeedsPermission => _text.Get("home.short.permission"),
                     CardCaptureState.NoCard => _text.Get("home.short.noCard"),
+                    CardCaptureState.InUse => _text.Get("home.short.cardInUse"),
                     CardCaptureState.BlackPicture => _text.Get("home.short.darkScreen"),
                     CardCaptureState.Capturing => CardText(),
                     _ => _text.Get("home.short.waiting"),

@@ -38,6 +38,31 @@ public class PhoneHookTests
         new(reader, t, null, o => new SubtitlePipelineOptions { Log = o.Log, Phone = hooks });
 
     [Fact]
+    public async Task QuestStripBelowLineDoesNotHideDialogue()
+    {
+        // Kullanıcı bildirimi (4.5.1): GTA 6'da "Follow Moses" görev şeridi ekrandayken konuşmalar çevrilmiyordu.
+        // Şerit karenin en altında (üstü çizginin altında); konuşma onun üstünde: yalnız konuşma çevrilir.
+        static OcrReading Read() => new([
+            new OcrLine("Lucia: Are you ready for another day of hard labor?", new Box(0.2, 0.40, 0.8, 0.50)),
+            new OcrLine("Follow Moses", new Box(0.42, 0.92, 0.58, 0.98)),
+        ]);
+        var t = new FakeTranslator();
+        var h = new Harness(new FuncReader(_ => Read()), t, null,
+            o => new SubtitlePipelineOptions { Log = o.Log, QuestLine = () => 0.935 });
+        for (var i = 0; i < 3; i++) await h.Frame(area: Area);
+        Assert.NotEmpty(t.Requests);
+        Assert.All(t.Requests, r => Assert.DoesNotContain("Follow", r));
+        Assert.Contains(t.Requests, r => r.Contains("hard labor"));
+
+        // Şerit tek başına kaldığında çevrilmez.
+        var alone = new FakeTranslator();
+        var h2 = new Harness(new FuncReader(_ => new OcrReading([new OcrLine("Follow Moses", new Box(0.42, 0.92, 0.58, 0.98))])),
+            alone, null, o => new SubtitlePipelineOptions { Log = o.Log, QuestLine = () => 0.935 });
+        for (var i = 0; i < 3; i++) await h2.Frame(area: Area);
+        Assert.Empty(alone.Requests);
+    }
+
+    [Fact]
     public async Task MapOpenMeansNoSubtitle()
     {
         var t = new FakeTranslator();

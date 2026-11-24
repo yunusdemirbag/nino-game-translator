@@ -46,6 +46,9 @@ public sealed record OverlayServices
     /// <summary>Telefon: duraklatılsın mı (harita yakında açıktı).</summary>
     public Func<bool>? Paused { get; init; }
 
+    /// <summary>Köşe okuyucusu: okunan karede açık telefonun kutusu (telefon yoksa ya da kare yoksa null).</summary>
+    public Func<Nino.Core.Imaging.BgraFrame?, Nino.Core.Imaging.Box?>? PhoneBox { get; init; }
+
     /// <summary>Telefon ekranı ya da GTA 6'ya özgü yazı görüldü (oyun = GTA 6).</summary>
     public Action? Gta6Seen { get; init; }
 

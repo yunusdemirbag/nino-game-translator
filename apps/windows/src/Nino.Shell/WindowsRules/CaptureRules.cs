@@ -46,6 +46,23 @@ public static class CaptureCardRules
     /// <summary>Açma hatasında yeniden deneme.</summary>
     public static readonly TimeSpan OpenRetry = TimeSpan.FromSeconds(3);
 
+    /// <summary>Kartın açılışında beklenen en uzun süre (dönmezse kart meşgul sayılır).</summary>
+    public static readonly TimeSpan OpenTimeout = TimeSpan.FromSeconds(10);
+
+    /// <summary>
+    /// "Aygıt başka bir uygulamada" anlamına gelen açma hataları: donanım akışı başlatamadı
+    /// (MF_E_HW_MFT_FAILED_START_STREAMING), aygıt başkasına geçti (MF_E_VIDEO_RECORDING_DEVICE_PREEMPTED /
+    /// _INVALIDATED), paylaşım ihlali, sistem kaynağı yok.
+    /// </summary>
+    static readonly int[] InUseCodes =
+    [
+        unchecked((int)0xC00D3704), unchecked((int)0xC00D3EA3), unchecked((int)0xC00D3EA2), unchecked((int)0x80070020),
+        unchecked((int)0x800705AA),
+    ];
+
+    /// <summary>Kartın açılamamasının nedeni başka bir uygulama mı.</summary>
+    public static bool IsInUse(int hresult) => InUseCodes.Contains(hresult);
+
     /// <summary>Oturum koptuğunda yeniden deneme.</summary>
     public static readonly TimeSpan FailedRetry = TimeSpan.FromSeconds(1);
 

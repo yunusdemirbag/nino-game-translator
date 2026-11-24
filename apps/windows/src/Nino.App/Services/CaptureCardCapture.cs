@@ -250,7 +250,10 @@ public sealed class CaptureCardCapture : ICaptureCardSource
             {
                 _log($"yakalama kartı açılamadı: {e.GetType().Name}: 0x{e.HResult:X8} {e.Message}");
                 await ReleaseAsync().ConfigureAwait(false);
-                if (_cardStatus?.State != CardCaptureState.Capturing) SetCard(gen, new CardStatus(CardCaptureState.NoCard));
+                // Kart takılı ama açılamıyorsa en sık neden başka bir uygulamanın (OBS, Kamera, kartın kendi
+                // uygulaması) kartı tutmasıdır: "kartı takın" demek yanlıştı.
+                var state = e is TimeoutException || CaptureCardRules.IsInUse(e.HResult) ? CardCaptureState.InUse : CardCaptureState.NoCard;
+                if (_cardStatus?.State != CardCaptureState.Capturing) SetCard(gen, new CardStatus(state, card.Name));
                 RetryIn(gen, CaptureCardRules.OpenRetry);
             }
         }
@@ -287,13 +290,7 @@ public sealed class CaptureCardCapture : ICaptureCardSource
 
     async Task OpenAsync(int gen, CaptureDevice card)
     {
-        var capture = new MediaCapture();
-        _capture = capture;
-        var init = new MediaCaptureInitializationSettings { VideoDeviceId = card.Id };
-        init.StreamingCaptureMode = StreamingCaptureMode.Video; // yalnız görüntü
-        init.MemoryPreference = MediaCaptureMemoryPreference.Cpu; // işlemci belleği
-        init.SharingMode = MediaCaptureSharingMode.ExclusiveControl; // özel denetim
-        await capture.InitializeAsync(init).AsTask().ConfigureAwait(false);
+        var capture = await InitializeAsync(card, MediaCaptureSharingMode.ExclusiveControl).ConfigureAwait(false);
         capture.Failed += (_, e) =>
         {
             _log($"kart bağlantısı kesildi: 0x{e.Code:X8} {e.Message}");
@@ -339,6 +336,37 @@ public sealed class CaptureCardCapture : ICaptureCardSource
         _log($"yakalama kartı açıldı: {card.Name}, {described}");
         SetCard(gen, new CardStatus(CardCaptureState.Capturing, card.Name));
         if (_o.ShowGameHere && Current(gen)) await StartAudioAsync(gen, card).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Kartı açar: önce özel denetim (biçim seçilebilir). Kart başka bir uygulamada açıksa (OBS, Kamera…) özel açma
+    /// başarısız olur; o zaman paylaşımlı okuma denenir (biçim değiştirilemez, görüntü yine gelir). İzin hatası ve
+    /// paylaşımlı açmanın hatası çağırana gider.
+    /// </summary>
+    async Task<MediaCapture> InitializeAsync(CaptureDevice card, MediaCaptureSharingMode mode)
+    {
+        var capture = new MediaCapture();
+        _capture = capture;
+        var init = new MediaCaptureInitializationSettings
+        {
+            VideoDeviceId = card.Id,
+            StreamingCaptureMode = StreamingCaptureMode.Video, // yalnız görüntü
+            MemoryPreference = MediaCaptureMemoryPreference.Cpu, // işlemci belleği
+            SharingMode = mode,
+        };
+        try
+        {
+            // Bazı sürücüler kart başka uygulamadayken açılışta hiç dönmüyordu: ekran "Kart bekleniyor"da kalıyordu.
+            await capture.InitializeAsync(init).AsTask().WaitAsync(CaptureCardRules.OpenTimeout).ConfigureAwait(false);
+            return capture;
+        }
+        catch (Exception e) when (mode == MediaCaptureSharingMode.ExclusiveControl && e is not UnauthorizedAccessException)
+        {
+            _log($"yakalama kartı özel açılamadı (0x{e.HResult:X8}); başka bir uygulama kullanıyor olabilir, paylaşımlı okunuyor");
+            try { capture.Dispose(); } catch (Exception) { }
+            _capture = null;
+            return await InitializeAsync(card, MediaCaptureSharingMode.SharedReadOnly).ConfigureAwait(false);
+        }
     }
 
     static CaptureFormat Describe(MediaFrameFormat f) => new((int)f.VideoFormat.Width, (int)f.VideoFormat.Height,

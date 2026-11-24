@@ -15,6 +15,7 @@ using Nino.Core.Settings;
 using Nino.RemotePlay;
 using Nino.Shell.Platform;
 using RpLog = Nino.RemotePlay.RemotePlayLog;
+using Nino.Translation.Local;
 
 namespace Nino.App.Services;
 
@@ -102,6 +103,10 @@ public static class WindowsPlatform
                 ?? PackUpdater.ResolveAddress(null, poolEndpoint.ToString()),
             OpenBrowser = browser.Open,
             CudaDriverPresent = NvidiaDriverPresent,
+            // Arapça gibi ONNX'li diller ayrı süreçte: ONNX Runtime'daki yerel bir hata Nino'yu kapatmasın.
+            OnnxWorker = Environment.ProcessPath is { } exe
+                ? (folder, token) => OnnxWorkerRuntime.Start(exe, folder, token)
+                : null,
             ErrorLog = (m, e) => { try { errors.Write(m, e); } catch (Exception) { } },
         };
         Action<string> sourceLog = line =>

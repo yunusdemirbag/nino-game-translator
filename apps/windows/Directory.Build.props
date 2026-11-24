@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <!-- Yeni Windows (ve Linux) sürümü; eski kurulumun üstüne Velopack güncellemesi olarak kurulur. -->
-    <Version>4.5.2</Version>
+    <Version>4.5.4</Version>
     <Company>Nino</Company>
     <Product>Nino</Product>
     <Copyright>Copyright (C) 2026 Nino contributors. AGPL-3.0-only.</Copyright>

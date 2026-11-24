@@ -347,4 +347,34 @@ public class EngineTests
         Assert.True(TargetLanguages.IsWrittenInTargetScript(text, "ar"), text);
         Assert.True(watch.Elapsed < TimeSpan.FromMinutes(2));
     }
+
+    sealed class FolderSource(string folder) : ISentenceEngineSource
+    {
+        public bool IsInstalled => true;
+
+        public ISentenceEngine Open(CancellationToken cancellationToken) => OnnxMarianEngine.Open(folder, ">>ara<<");
+    }
+
+    /// <summary>
+    /// Kapanma bildiriminde (4.5.2, en→ar) süreç bu satırlar ücretsiz motora gidince kapanmıştı: gerçek model ve tam
+    /// ücretsiz çevirmen hattıyla (bölme, metin kuralları, önbellek) çevrilir, süreç ayakta kalır.
+    /// </summary>
+    [ArabicModelFact]
+    public async Task GercekArapcaKapanmaSatirlari()
+    {
+        using var translator = new FreeTranslator(new FolderSource(ArabicModelFactAttribute.Folder!), "ar",
+            new Nino.Core.Data.TranslationCache(null));
+        foreach (var line in new[]
+                 {
+                     "Y up... already know frow it go with them.",
+                     "Yup. Saw him walk out with it next day. Just a bag full of butt.",
+                     "And allegedly... he caught her ass cheatin' with one of them Sanfo / niggas.",
+                     "Said since he paid for her BBL, he could take it away...",
+                     "PHOTO STUDIO (3",
+                 })
+        {
+            var r = await translator.TranslateAsync(line);
+            Assert.False(string.IsNullOrWhiteSpace(r.Text), line);
+        }
+    }
 }
