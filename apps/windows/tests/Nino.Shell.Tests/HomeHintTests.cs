@@ -158,10 +158,12 @@ public sealed class HomeHintTests
     [Fact]
     public void VersionLabel_ShortAndTooltip()
     {
-        Assert.Equal("V4.0", VersionLabel.Short("4.0.5"));
-        Assert.Equal("V4.1", VersionLabel.Short("4.1.0-beta.2"));
+        Assert.Equal("V4.0.5", VersionLabel.Short("4.0.5"));
+        Assert.Equal("V4.5.4", VersionLabel.Short("4.5.4"));
+        Assert.Equal("V4.1.0", VersionLabel.Short("4.1.0-beta.2"));
         Assert.Equal("V0.0", VersionLabel.Short(""));
-        Assert.Equal("V4.0 (4.0.5)", VersionLabel.Tooltip("4.0.5"));
+        Assert.Equal("V4.0.5", VersionLabel.Tooltip("4.0.5"));
+        Assert.Equal("V4.1.0 (4.1.0-beta.2)", VersionLabel.Tooltip("4.1.0-beta.2"));
     }
 
     [Fact]

@@ -13,15 +13,15 @@ namespace Nino.Shell;
 /// <summary>Başlıktaki sürüm hapı.</summary>
 public static class VersionLabel
 {
-    /// <summary>Kısa ad: "4.0.5" → "V4.0" (ilk iki parça); boşsa "V0.0".</summary>
+    /// <summary>Ad: derleme sürümünün tamamı, ön sürüm eki olmadan ("4.5.4" → "V4.5.4", "4.1.0-beta.2" → "V4.1.0"); boşsa "V0.0".</summary>
     public static string Short(string? full)
     {
-        var parts = (string.IsNullOrWhiteSpace(full) ? "0.0" : full.Trim()).Split('.', '-', '+');
-        return "V" + string.Join('.', parts.Take(2));
+        var core = (string.IsNullOrWhiteSpace(full) ? "0.0" : full.Trim()).Split('-', '+')[0];
+        return "V" + string.Join('.', core.Split('.').Take(3));
     }
 
-    /// <summary>İpucu: "V4.0 (4.0.5)".</summary>
-    public static string Tooltip(string? full) => $"{Short(full)} ({full})";
+    /// <summary>İpucu: "V4.5.4"; ön sürüm ekliyse "V4.1.0 (4.1.0-beta.2)".</summary>
+    public static string Tooltip(string? full) => Short(full) == "V" + full?.Trim() ? Short(full) : $"{Short(full)} ({full})";
 }
 
 /// <summary>Elle ya da açılışta yapılan güncelleme denetiminin sonucu (alt şeridin ortası).</summary>
